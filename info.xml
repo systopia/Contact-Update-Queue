@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<extension key="be.aivl.i3val" type="module">
+  <file>i3val</file>
+  <name>I3 Validation</name>
+  <description>Ilja's Initiative for Input Validation</description>
+  <license>AGPL-3.0</license>
+  <maintainer>
+    <author>SYSTOPIA</author>
+    <email>endres@systopia.de</email>
+  </maintainer>
+  <urls>
+    <url desc="Main Extension Page">https://github.com/systopia/be.aivl.i3val</url>
+    <url desc="Documentation">https://github.com/systopia/be.aivl.i3val</url>
+    <url desc="Support">https://github.com/systopia/be.aivl.i3val</url>
+    <url desc="Licensing">http://www.gnu.org/licenses/agpl-3.0.html</url>
+  </urls>
+  <releaseDate></releaseDate>
+  <version>0.1.dev</version>
+  <develStage>dev</develStage>
+  <compatibility>
+    <ver>4.6</ver>
+  </compatibility>
+  <comments></comments>
+  <civix>
+    <namespace>CRM/I3val</namespace>
+  </civix>
+</extension>
