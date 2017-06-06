@@ -69,6 +69,11 @@ function i3val_civicrm_uninstall() {
  */
 function i3val_civicrm_enable() {
   _i3val_civix_civicrm_enable();
+
+  require_once 'CRM/I3val/CustomData.php';
+  $customData = new CRM_I3val_CustomData('de.systopia.contract');
+  $customData->syncOptionGroup(__DIR__ . '/resources/activity_types_option_group.json');
+  $customData->syncCustomGroup(__DIR__ . '/resources/contact_updates_custom_group.json');
 }
 
 /**
