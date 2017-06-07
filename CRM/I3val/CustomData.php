@@ -314,13 +314,17 @@ class CRM_I3val_CustomData {
   /**
    * internal function to replace "<custom_group_name>.<custom_field_name>"
    * in the data array with the custom_XX notation.
+   *
+   * @param $data          array  key=>value data, keys will be changed
+   * @param $customgroups  array  if given, restrict to those groups
+   *
    */
-  public static function resolveCustomFields(&$data, $customgroups) {
+  public static function resolveCustomFields(&$data, $customgroups = NULL) {
     // first: find out which ones to cache
     $customgroups_used = array();
     foreach ($data as $key => $value) {
       if (preg_match('/^(?P<group_name>\w+)[.](?P<field_name>\w+)$/', $key, $match)) {
-        if (in_array($match['group_name'], $customgroups)) {
+        if (empty($customgroups) || in_array($match['group_name'], $customgroups)) {
           $customgroups_used[$match['group_name']] = 1;
         }
       }
@@ -332,7 +336,7 @@ class CRM_I3val_CustomData {
     // now: replace stuff
     foreach (array_keys($data) as $key) {
       if (preg_match('/^(?P<group_name>\w+)[.](?P<field_name>\w+)$/', $key, $match)) {
-        if (in_array($match['group_name'], $customgroups)) {
+        if (empty($customgroups) || in_array($match['group_name'], $customgroups)) {
           if (isset(self::$custom_group_cache[$match['group_name']][$match['field_name']])) {
             $custom_field = self::$custom_group_cache[$match['group_name']][$match['field_name']];
             $custom_key = 'custom_' . $custom_field['id'];
