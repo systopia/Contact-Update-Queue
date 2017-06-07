@@ -40,9 +40,7 @@ class CRM_I3val_Logic {
     $activity_data['activity_type_id'] = CRM_Core_OptionGroup::getValue('activity_type', 'FWTM Contact Update', 'name');
 
     // create activity, reload and return
-    error_log("IN: " . json_encode($activity_data));
     CRM_I3val_CustomData::resolveCustomFields($activity_data);
-    error_log("OUT: " . json_encode($activity_data));
     $activity = civicrm_api3('Activity', 'create', $activity_data);
     return civicrm_api3('Activity', 'getsingle', array('id' => $activity['id']));
   }
@@ -92,4 +90,59 @@ class CRM_I3val_Logic {
     $activity_data['target_id'] = $contact_id;
   }
 
+
+  /**
+   * Inject the JavaScript to adjust the activity view
+   */
+  public static function adjustAcitivityView($activity_id, $activity_type_id) {
+    switch ($activity_type_id) {
+      case CRM_Core_OptionGroup::getValue('activity_type', 'FWTM Contact Update', 'name'):
+        $fields = CRM_I3val_Configuration::getContactUpdateFields();
+        break;
+
+      case CRM_Core_OptionGroup::getValue('activity_type', 'FWTM Mandate Update', 'name'):
+        $fields = CRM_I3val_Configuration::getMandateUpdateFields();
+        break;
+
+      default:
+        // that's not one of ours -> do nothing!
+        error_log("OUT");
+        return;
+    }
+
+    // load data
+    $activity = civicrm_api3('Activity', 'getsingle', array('id' => $activity_id));
+    $values = array();
+    foreach ($fields as $field_name => $field_spec) {
+      $original_data_field = CRM_I3val_CustomData::getCustomField($field_spec['custom_group'], "{$field_name}_original");
+      $submitted_data_field = CRM_I3val_CustomData::getCustomField($field_spec['custom_group'], "{$field_name}_submitted");
+      $applied_data_field = CRM_I3val_CustomData::getCustomField($field_spec['custom_group'], "{$field_name}_applied");
+      if (isset($activity["custom_{$original_data_field['id']}"])) {
+        // i.e. the value is set
+        $values[] = array(
+          'title'      => $field_spec['title'],
+          'field_name' => $field_name,
+          'original'   => CRM_Utils_Array::value("custom_{$original_data_field['id']}",  $activity, ''),
+          'submitted'  => CRM_Utils_Array::value("custom_{$submitted_data_field['id']}", $activity, ''),
+          'applied'    => CRM_Utils_Array::value("custom_{$applied_data_field['id']}",   $activity, ''),
+          );
+      }
+    }
+
+    // render panel
+    $smarty = CRM_Core_Smarty::singleton();
+    $smarty->assign('i3val_activity', $activity);
+    $smarty->assign('i3val_values', $values);
+    $smarty->assign('i3val_edit', ($activity['status_id'] == 1));
+    $panel = array(
+      'html'   => $smarty->fetch('CRM/Activity/I3valPanel.tpl'),
+      'fields' => $fields);
+
+    $script = file_get_contents(__DIR__ . '/../../js/activity_view_changes.js');
+    $script = str_replace('INJECTED_ACTIVITY_ID', $activity_id, $script);
+    $script = str_replace('INJECTED_ACTIVITY_TYPE_ID', $activity_type_id, $script);
+    $script = str_replace('INJECTED_PANEL', json_encode($panel), $script);
+
+    CRM_Core_Region::instance('page-footer')->add(array('script' => $script));
+  }
 }

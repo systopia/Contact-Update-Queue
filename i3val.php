@@ -18,6 +18,16 @@
 require_once 'i3val.civix.php';
 
 /**
+ * Implements hook_civicrm_buildForm()
+ *  to inject JS code for UI manipulations
+ */
+function i3val_civicrm_buildForm($formName, &$form) {
+  if ($formName == 'CRM_Activity_Form_Activity') {
+    CRM_I3val_Logic::adjustAcitivityView($form->_activityId, $form->_activityTypeId);
+  }
+}
+
+/**
  * Implements hook_civicrm_config().
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_config
