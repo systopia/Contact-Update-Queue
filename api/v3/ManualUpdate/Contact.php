@@ -17,7 +17,7 @@
 
 
 /**
- * ManualValidation.contactupdate (optional)
+ * ManualUpdate.contact (optional)
  * Create an activity for manual review of contact updates
  *
  * @param array $spec description of fields supported by this API call
@@ -34,7 +34,6 @@ function civicrm_api3_manual_update_contact($params) {
       'return'         => 'contact_id',
       'activity_id'    => $params['activity_id'],
       'record_type_id' => 'Activity Targets'));
-    error_log(json_encode($contact_id));
   }
 
   // we NEED the activity ID
@@ -63,7 +62,7 @@ function civicrm_api3_manual_update_contact($params) {
 
 
 /**
- * ManualValidation.contactupdate (optional)
+ * ManualUpdate.contact (optional)
  * Create an activity for manual review of contact updates
  *
  * @param array $spec description of fields supported by this API call

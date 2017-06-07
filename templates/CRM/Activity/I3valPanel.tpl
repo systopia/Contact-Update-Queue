@@ -20,9 +20,11 @@
       <td>{ts}Field{/ts}</td>
       <td>{ts}Original Value{/ts}</td>
       <td>{ts}Submitted Value{/ts}</td>
-      <td>{ts}Value to be Applied{/ts}</td>
       {if $i3val_edit}
+      <td>{ts}Value to be Applied{/ts}</td>
       <td>{ts}Apply{/ts}</td>
+      {else}
+      <td>{ts}Applied Value{/ts}</td>
       {/if}
     </tr>
   </thead>
