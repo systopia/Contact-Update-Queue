@@ -77,11 +77,35 @@ function i3val_submit(button) {
   });
 
   if (!update_found) {
-    alert("NOTHING TO DO!");
+    CRM.alert("NOTHING TO DO!", "error");
     return;
   }
   update['activity_id'] = "{/literal}{$i3val_activity.id}{literal}";
-  console.log(update);
+
+  // finally: submit data
+  CRM.api('ManualUpdate', 'apply', update, {
+    success: function(data) {
+      // yay, it worked -> show the good news to the user
+      var message = "<p>The following changes were applied:<ul>";
+      for (var i = 0; i < data.values.length; i++) {
+        message += "<li>" + data.values[i] + "</li>";
+      }
+      message += "</ul></p>";
+      CRM.alert(message, "Changes applied!", "success");
+
+      // reload page
+      window.location.reload(true);
+    },
+    error: function(data) {
+      // well, that didn't work -> show the errors to the user
+      var message = "<p>The changes could not be applied. The following problems were identified:<ul>";
+      for (var i = 0; i < data.error_list.length; i++) {
+        message += "<li>" + data.error_list[i] + "</li>";
+      }
+      message += "</ul></p>";
+      CRM.alert(message, "Validation Error", "error");
+    }
+  });
 }
 </script>
 {/literal}
