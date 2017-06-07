@@ -35,8 +35,8 @@
       <td>{$value.original}</td>
       <td>{$value.submitted}</td>
       {if $i3val_edit}
-      <td><input type="text" value="{$value.submitted}" name="{$value.field_name}"/></td>
-      <td><input type="checkbox" checked="checked" name="{$value.field_name}"/></td>
+      <td><input type="text" value="{$value.submitted}" name="{$value.field_name}" class="i3val-value"/></td>
+      <td><input type="checkbox" checked="checked" class="i3val-apply" name="{$value.field_name}"/></td>
       {else}
       <td>{$value.applied}</td>
       {/if}
@@ -46,7 +46,7 @@
     {if $i3val_edit}
     <tr>
       <td colspan="5">
-        <a style="margin-right:5px; padding:2px; float:right;" class="edit button" title="{ts}Apply Now{/ts}&nbsp;">
+        <a onclick="i3val_submit(this)" style="margin-right:5px; padding:2px; float:right;" class="edit button" title="{ts}Apply Now{/ts}&nbsp;">
           <span><div class="icon ui-icon-check"></div>{ts}Apply Now{/ts}&nbsp;</span>
         </a>
       </td>
@@ -54,3 +54,34 @@
     {/if}
   </tbody>
 </table>
+
+{literal}
+<script type="text/javascript">
+
+/**
+ * submit function, triggered by the "Apply Now" button
+ */
+function i3val_submit(button) {
+  // compile change log
+  var table = cj(button).closest("table.i3val");
+  var update = {};
+  var update_found = false;
+  table.find("input.i3val-apply").each(function() {
+    var checkbox = cj(this);
+    if (checkbox.prop('checked')) {
+      var field_name = checkbox.attr('name');
+      var value_field = cj("input.i3val-value[name=" + field_name + "]");
+      update[field_name] = value_field.val();
+      update_found = true;
+    }
+  });
+
+  if (!update_found) {
+    alert("NOTHING TO DO!");
+    return;
+  }
+  update['activity_id'] = "{/literal}{$i3val_activity.id}{literal}";
+  console.log(update);
+}
+</script>
+{/literal}
