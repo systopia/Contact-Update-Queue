@@ -1,0 +1,38 @@
+<?php
+/*-------------------------------------------------------+
+| Ilja's Input Validation Extension                      |
+| Amnesty International Vlaanderen                       |
+| Copyright (C) 2017 SYSTOPIA                            |
+| Author: B. Endres (endres@systopia.de)                 |
+| http://www.systopia.de/                                |
++--------------------------------------------------------+
+| This program is released as free software under the    |
+| Affero GPL license. You can redistribute it and/or     |
+| modify it under the terms of this license which you    |
+| can read by viewing the included agpl.txt or online    |
+| at www.gnu.org/licenses/agpl.html. Removal of this     |
+| copyright header is strictly prohibited without        |
+| written permission from the original author(s).        |
++--------------------------------------------------------*/
+
+/**
+ * this class will handle performing the changes
+ *  that are passed on from the API call
+ */
+class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
+
+  /**
+   * Load and assign necessary data to the form
+   */
+  public function renderActivityData($activity, $form) {
+    // TODO
+  }
+
+  /**
+   * Get the path of the template rendering the form
+   */
+  public function getTemplate() {
+    return 'CRM/I3val/Handler/ContactUpdate.tpl';
+  }
+
+}

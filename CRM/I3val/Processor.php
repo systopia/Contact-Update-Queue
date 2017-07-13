@@ -23,19 +23,19 @@ abstract class CRM_I3val_Processor {
 
   protected static $processor_list = NULL;
 
-  protected static function getProcessors() {
-    if (self::$processor_list === NULL) {
-      self::$processor_list = array();
-      $files = scandir(__DIR__ . '/Processor');
-      foreach ($files as $file) {
-        if (preg_match('#^(?P<name>\w+)[.]php$#', $file, $match)) {
-          $processor_class = "CRM_I3val_Processor_{$match['name']}";
-          self::$processor_list[] = new $processor_class();
-        }
-      }
-    }
-    return self::$processor_list;
-  }
+  // protected static function getProcessors() {
+  //   if (self::$processor_list === NULL) {
+  //     self::$processor_list = array();
+  //     $files = scandir(__DIR__ . '/Processor');
+  //     foreach ($files as $file) {
+  //       if (preg_match('#^(?P<name>\w+)[.]php$#', $file, $match)) {
+  //         $processor_class = "CRM_I3val_Processor_{$match['name']}";
+  //         self::$processor_list[] = new $processor_class();
+  //       }
+  //     }
+  //   }
+  //   return self::$processor_list;
+  // }
 
   /**
    * See if the changes make sense
