@@ -81,4 +81,19 @@ abstract class CRM_I3val_ActivityHandler {
       }
     }
   }
+
+  /**
+   * restrict the given changes to the ones submitted
+   */
+  protected function getMyChanges($changes) {
+    $fields = $this->getFields();
+    $my_changes = array();
+
+    foreach ($changes as $fieldname => $value) {
+      if (in_array($fieldname, $fields)) {
+        $my_changes[$fieldname] = $value;
+      }
+    }
+    return $my_changes;
+  }
 }

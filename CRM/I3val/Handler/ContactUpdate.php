@@ -39,7 +39,7 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
    * @return array $key -> error message
    */
   public function verifyChanges($activity, $changes, $objects = array()) {
-    // TODO
+    // TODO: check?
     return array();
   }
 
@@ -49,8 +49,28 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
    * @return array with changes to the activity
    */
   public function applyChanges($activity, $changes, $objects = array()) {
-    // TODO
-    return array();
+    $activity_update = array();
+    $contact_update = array();
+    $contact = $objects['contact'];
+    $my_changes = $this->getMyChanges($changes);
+
+    // compile update
+    foreach ($my_changes as $fieldname => $value) {
+      if ($value != $contact[$fieldname]) {
+        $contact_update[$fieldname] = $value;
+      }
+      $activity_update[self::$group_name . ".{$fieldname}_submitted"] = $value;
+    }
+    $contact = $objects['contact'];
+
+    // execute update
+    if (!empty($contact_update)) {
+      $contact_update['id'] = $contact['id'];
+      error_log("UPDATE contact " . json_encode($contact_update));
+      // civicrm_api3('Contact', 'create', $contact_update);
+    }
+
+    return $activity_update;
   }
 
 

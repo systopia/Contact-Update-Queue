@@ -165,7 +165,12 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
         break;
     }
 
-    parent::postProcess();
+    // go to the next one
+    $next_url = CRM_Utils_System::url("civicrm/i3val/desktop", "reset=1&laid={$this->activity_id}");
+    CRM_Utils_System::redirect($next_url);
+
+    // shouldn't get here:
+    // parent::postProcess();
   }
 
 
@@ -208,6 +213,7 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
   }
 
 
+
   /**
    * Apply the changes
    */
@@ -227,25 +233,29 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
         }
       }
     }
-
     error_log("CHANGES " . json_encode($changes));
 
     // verify changes
     // TODO: move to validate function
+    $errors = array();
+    foreach ($handlers as $handler) {
+      $errors = array_merge($errors, $handler->verifyChanges($this->activity, $changes, $objects));
+    }
+    if (!empty($errors)) {
+      // TODO: error handling
+    }
 
     // apply changes
     $activity_update = array();
     foreach ($handlers as $handler) {
-      $activity_update = array_merge($activity_update, $handler->applyChanges($this->activity, $changes, $objects));
+      $changed_fields = $handler->applyChanges($this->activity, $changes, $objects);
+      $activity_update = array_merge($activity_update, $changed_fields);
     }
 
     // update the acvitiy
-    // TODO:
-
-
-    // go to the next one
-    $next_url = CRM_Utils_System::url("civicrm/i3val/desktop", "reset=1&laid={$this->activity_id}");
-    CRM_Utils_System::redirect($next_url);
+    $activity_update['status_id'] = 2; // Completed
+    CRM_I3val_CustomData::resolveCustomFields($activity_update);
+    error_log("UPDATE ACTIVITY " . json_encode($activity_update));
   }
 
   /**
