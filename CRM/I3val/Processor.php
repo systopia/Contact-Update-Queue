@@ -18,6 +18,7 @@
 /**
  * this class will handle performing the changes
  *  that are passed on from the API call
+ * @deprecated
  */
 abstract class CRM_I3val_Processor {
 

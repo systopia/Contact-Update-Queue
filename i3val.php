@@ -23,7 +23,7 @@ require_once 'i3val.civix.php';
  */
 function i3val_civicrm_buildForm($formName, &$form) {
   if ($formName == 'CRM_Activity_Form_Activity') {
-    CRM_I3val_Logic::adjustAcitivityView($form->_activityId, $form->_activityTypeId);
+    // CRM_I3val_Logic::adjustAcitivityView($form->_activityId, $form->_activityTypeId);
   }
 }
 

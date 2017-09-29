@@ -59,9 +59,11 @@ class CRM_I3val_Configuration {
   /**
    * get a hander instance for the given activity type
    */
-  public function getHandlerForActivityType($activity_type_id) {
+  public function getHandlersForActivityType($activity_type_id) {
     // TODO:
-    return new CRM_I3val_Handler_ContactUpdate();
+    return array(
+      new CRM_I3val_Handler_ContactUpdate()
+    );
   }
 
   /**

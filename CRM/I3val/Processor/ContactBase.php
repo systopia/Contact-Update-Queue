@@ -18,6 +18,7 @@
 /**
  * this class will handle performing the changes
  *  that are passed on from the API call
+ * @deprecated
  */
 class CRM_I3val_Processor_ContactBase extends CRM_I3val_Processor {
 

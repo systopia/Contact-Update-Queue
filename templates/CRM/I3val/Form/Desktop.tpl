@@ -14,7 +14,12 @@
 | written permission from the original author(s).        |
 +-------------------------------------------------------*}
 
+{* form parameters (hidden) *}
+{$form.aid.html}{$form.laid.html}
+
 {* header with progress bar *}
+<div id="progressbar"></div>
+<br/>
 
 {* activity info *}
 <table class="crm-info-panel">
@@ -78,13 +83,26 @@
   </div>
 </div>
 
+<br/>
 
 {* handler rendering *}
+{foreach from=$handler_templates item=handler_template}
 <div class="i3val-update">
 {include file=$handler_template}
 </div>
+{/foreach}
 
 {* actions *}
 <div class="crm-submit-buttons">
   {include file="CRM/common/formButtons.tpl" location="bottom"}
 </div>
+
+
+<script type="text/javascript">
+// create progress bar
+{literal}
+cj(function() {
+  cj("#progressbar").progressbar({value: 37, disable: true});
+});
+{/literal}
+</script>

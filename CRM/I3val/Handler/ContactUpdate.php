@@ -21,11 +21,72 @@
  */
 class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
 
+  public static $group_name = 'fwtm_contact_updates';
+  public static $fields     = array('first_name' => 'First Name',
+                                    'last_name'  => 'Last Name');
+
+
+  /**
+   * get the list of
+   */
+  public function getFields() {
+    return array_keys(self::$fields);
+  }
+
+  /**
+   * Verify whether the changes make sense
+   *
+   * @return array $key -> error message
+   */
+  public function verifyChanges($activity, $changes, $objects = array()) {
+    // TODO
+    return array();
+  }
+
+  /**
+   * Apply the changes
+   *
+   * @return array with changes to the activity
+   */
+  public function applyChanges($activity, $changes, $objects = array()) {
+    // TODO
+    return array();
+  }
+
+
+
   /**
    * Load and assign necessary data to the form
    */
   public function renderActivityData($activity, $form) {
-    // TODO
+    $values = $this->compileValues(self::$group_name, self::$fields, $activity);
+    $this->addCurrentValues($values, $form->contact);
+
+    $form->assign('i3val_contact_fields', self::$fields);
+    $form->assign('i3val_contact_values', $values);
+
+    // create input fields and apply checkboxes
+    foreach (self::$fields as $fieldname => $fieldlabel) {
+      // add the text input
+      $form->add(
+        'text',
+        "{$fieldname}_applied",
+        $fieldlabel
+      );
+      if (!empty($values[$fieldname]['applied'])) {
+        $form->setDefaults(array("{$fieldname}_applied" => $values[$fieldname]['applied']));
+      } else {
+        $form->setDefaults(array("{$fieldname}_applied" => $values[$fieldname]['submitted']));
+      }
+
+      // add the apply checkbox
+      $form->add(
+        'checkbox',
+        "{$fieldname}_apply",
+        $fieldlabel
+      );
+      $form->setDefaults(array("{$fieldname}_apply" => 1));
+    }
   }
 
   /**

@@ -22,6 +22,10 @@
  */
 class CRM_I3val_Form_Desktop extends CRM_Core_Form {
 
+  public $command     = NULL;
+  public $activity_id = NULL;
+  public $contact     = NULL;
+
   /**
    * build the form.
    *
@@ -33,8 +37,12 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     $configuration = CRM_I3val_Configuration::getConfiguration();
 
     // find out what there is to be done
-    $activity_id      = CRM_Utils_Request::retrieve('aid', 'Integer');
+    $activity_id      = CRM_Utils_Request::retrieve('aid',  'Integer');
     $last_activity_id = CRM_Utils_Request::retrieve('laid', 'Integer');
+
+    // preserve the parameters in hidden fields
+    $this->add('hidden', 'aid',  $activity_id);
+    $this->add('hidden', 'laid', $last_activity_id);
 
     if ($activity_id) {
       $activity_id = $configuration->getNextPendingActivity('single', $activity_id);
@@ -43,23 +51,43 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     } else {
       $activity_id = $configuration->getNextPendingActivity('first');
     }
+    $this->activity_id = $activity_id;
 
     if (!$activity_id) {
       // TODO: NOTHING FOUND!
+      CRM_Core_Session::setStatus(ts("Couldn't find activity!"), ts('Error'), 'error');
       return;
     }
 
     // load activity
-    $activity = civicrm_api3('Activity', 'getsingle', array('id' => $activity_id));
-    $this->renderActivity($activity);
-    $this->assign('activity', $activity);
+    $this->activity = civicrm_api3('Activity', 'getsingle', array('id' => $activity_id));
+    CRM_I3val_CustomData::labelCustomFields($this->activity);
+
+    // load contact
+    $contact_id = civicrm_api3('ActivityContact', 'getvalue', array(
+      'return'         => 'contact_id',
+      'activity_id'    => $this->activity_id,
+      'record_type_id' => 'Activity Targets'));
+    if (empty($contact_id)) {
+      // NO CONTACT
+      CRM_Core_Session::setStatus(ts("Activity not connected to a contact!"), ts('Error'), 'error');
+      return;
+    }
+    $this->contact = civicrm_api3('Contact', 'getsingle', array('id' => $contact_id));
+
+    $this->renderActivity($this->activity);
+    $this->assign('activity', $this->activity);
     $this->assign('history', $this->getContactHistory($activity_id));
     $this->assign('total_count', $configuration->getPendingActivityCount());
 
     // render activity form
-    $handler = $configuration->getHandlerForActivityType($activity['activity_type_id']);
-    $handler->renderActivityData($activity, $this);
-    $this->assign('handler_template', $handler->getTemplate());
+    $handlers = $configuration->getHandlersForActivityType($this->activity['activity_type_id']);
+    $handler_templates = array();
+    foreach ($handlers as $handler) {
+      $handler->renderActivityData($this->activity, $this);
+      $handler_templates[] = $handler->getTemplate();
+    }
+    $this->assign('handler_templates', $handler_templates);
 
     // add control structures
     $this->add(
@@ -75,11 +103,11 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
         'name' => ts('Postpone'),
       ),
       array(
-        'type' => 'fail',
+        'type' => 'flag',
         'name' => ts('Problem'),
       ),
       array(
-        'type' => 'apply',
+        'type' => 'submit',
         'name' => ts('Apply'),
         'isDefault' => TRUE,
       ),
@@ -88,10 +116,55 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     parent::buildQuickForm();
   }
 
+  /**
+   * Redirect all (custom) actions ('command', 'flag', and 'submit')
+   * to submit
+   */
+  public function handle($command) {
+    switch ($command) {
+      case 'postpone':
+      case 'flag':
+      case 'submit':
+        $this->command = $command;
+        $command = 'submit';
+        break;
 
+      default:
+        break;
+    }
+
+    parent::handle($command);
+  }
+
+  /**
+   * General postprocessing
+   */
   public function postProcess() {
-    $values = $this->exportValues();
-    // TODO
+    switch ($this->command) {
+      case 'postpone':
+        // Process this later
+        // $this->saveChanges();
+        CRM_I3val_Logic::postponeActivity($this->activity_id);
+        CRM_Core_Session::setStatus(ts("Update request has been marked to be reviewed again later"), ts('Postponed!'), 'info');
+        break;
+
+      case 'flag':
+        // Mark
+        // $this->saveChanges();
+        CRM_I3val_Logic::flagActivity($this->activity_id);
+        CRM_Core_Session::setStatus(ts("Update request has been flagged."), ts('Flagged!'), 'info');
+        break;
+
+      case 'submit':
+        // Apply changes
+        $this->applyChanges();
+        break;
+
+      default:
+        CRM_Core_Session::setStatus(ts("Unkown action."), ts('Error'), 'error');
+        break;
+    }
+
     parent::postProcess();
   }
 
@@ -125,6 +198,54 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
         'return' => "title",
         'id'     => $activity['campaign_id']));
     }
+  }
+
+ /**
+   * Save the changes to
+   */
+  protected function saveChanges() {
+    // is there anything to do here?
+  }
+
+
+  /**
+   * Apply the changes
+   */
+  protected function applyChanges() {
+    // extract changes
+    $changes = array();
+    $values  = $_REQUEST; // TODO: why doesn't $this->exportValues(); work?
+    $objects = array('contact' => $this->contact, 'activity' => $this->activity);
+
+    $configuration = CRM_I3val_Configuration::getConfiguration();
+    $handlers = $configuration->getHandlersForActivityType($this->activity['activity_type_id']);
+    foreach ($handlers as $handler) {
+      $handler_fields = $handler->getFields();
+      foreach ($handler_fields as $field_name) {
+        if (!empty($values["{$field_name}_apply"])) {
+          $changes[$field_name] = $values["{$field_name}_applied"];
+        }
+      }
+    }
+
+    error_log("CHANGES " . json_encode($changes));
+
+    // verify changes
+    // TODO: move to validate function
+
+    // apply changes
+    $activity_update = array();
+    foreach ($handlers as $handler) {
+      $activity_update = array_merge($activity_update, $handler->applyChanges($this->activity, $changes, $objects));
+    }
+
+    // update the acvitiy
+    // TODO:
+
+
+    // go to the next one
+    $next_url = CRM_Utils_System::url("civicrm/i3val/desktop", "reset=1&laid={$this->activity_id}");
+    CRM_Utils_System::redirect($next_url);
   }
 
   /**

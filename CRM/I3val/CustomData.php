@@ -14,8 +14,8 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-define('CUSTOM_DATA_HELPER_VERSION', '0.3.2.dev');
-define('CUSTOM_DATA_HELPER_LOG_LEVEL', 3);
+define('CUSTOM_DATA_HELPER_VERSION', '0.3.8.dev');
+define('CUSTOM_DATA_HELPER_LOG_LEVEL', 1);
 
 // log levels
 define('CUSTOM_DATA_HELPER_LOG_DEBUG', 1);
@@ -25,7 +25,9 @@ define('CUSTOM_DATA_HELPER_LOG_ERROR', 5);
 class CRM_I3val_CustomData {
 
   /** caches custom field data, indexed by group name */
+  protected static $custom_group2name  = NULL;
   protected static $custom_group_cache = array();
+  protected static $custom_field_cache = array();
 
   protected $ts_domain = NULL;
   protected $version   = CUSTOM_DATA_HELPER_VERSION;
@@ -123,6 +125,7 @@ class CRM_I3val_CustomData {
   * those specs
   */
   public function syncCustomGroup($source_file) {
+    $force_update = FALSE;
     $data = json_decode(file_get_contents($source_file), TRUE);
     if (empty($data)) {
        throw new Exception("CRM_Utils_CustomData::syncCustomGroup: Invalid custom specs");
@@ -130,6 +133,7 @@ class CRM_I3val_CustomData {
 
     // if extends_entity_column_value, make sure it's sensible data
     if (isset($data['extends_entity_column_value'])) {
+      $force_update = TRUE; // this doesn't get returned by the API, so differences couldn't be detected
       if ($data['extends'] == 'Activity') {
         $extends_list = array();
         foreach ($data['extends_entity_column_value'] as $activity_type) {
@@ -142,7 +146,12 @@ class CRM_I3val_CustomData {
         }
         $data['extends_entity_column_value'] = $extends_list;
       }
+
+      if (is_array($data['extends_entity_column_value'])) {
+        $data['extends_entity_column_value'] = CRM_Utils_Array::implodePadded($data['extends_entity_column_value']);
+      }
     }
+
 
     // first: find or create custom group
     $this->translateStrings($data);
@@ -156,35 +165,34 @@ class CRM_I3val_CustomData {
        return;
     } else {
        // update CustomGroup
-       $this->updateEntity('CustomGroup', $data, $customGroup, array('extends', 'style'));
+       $this->updateEntity('CustomGroup', $data, $customGroup, array('extends', 'style', 'is_active', 'title', 'extends_entity_column_value'), $force_update);
     }
 
     // now run the update for the CustomFields
     foreach ($data['_fields'] as $customFieldSpec) {
-       $this->translateStrings($customFieldSpec);
-       $customFieldSpec['custom_group_id'] = $customGroup['id'];
-       $customFieldSpec['_lookup'][] = 'custom_group_id';
-       if (!empty($customFieldSpec['option_group_id']) && !is_numeric($customFieldSpec['option_group_id'])) {
-          // look up custom group id
-          $optionGroup = $this->getEntityID('OptionGroup', array('name' => $customFieldSpec['option_group_id']));
-          if ($optionGroup == 'FAILED' || $optionGroup==NULL) {
-            $this->log(CUSTOM_DATA_HELPER_LOG_ERROR, "Couldn't create/update CustomField, bad option_group: {$customFieldSpec['option_group_id']}");
-            return;
-          }
-          $customFieldSpec['option_group_id'] = $optionGroup['id'];
-       }
-
-       $customField = $this->identifyEntity('CustomField', $customFieldSpec);
-       if (empty($customField)) {
-          // create CustomField
-          $customField = $this->createEntity('CustomField', $customFieldSpec);
-       } elseif ($customField == 'FAILED') {
-          // Couldn't identify:
-          $this->log(CUSTOM_DATA_HELPER_LOG_ERROR, "Couldn't create/update CustomField: " . json_encode($customFieldSpec));
-       } else {
-          // update CustomField
-          $this->updateEntity('CustomField', $customFieldSpec, $customField, array('in_selector', 'is_view', 'is_searchable'));
-       }
+      $this->translateStrings($customFieldSpec);
+      $customFieldSpec['custom_group_id'] = $customGroup['id'];
+      $customFieldSpec['_lookup'][] = 'custom_group_id';
+      if (!empty($customFieldSpec['option_group_id']) && !is_numeric($customFieldSpec['option_group_id'])) {
+        // look up custom group id
+        $optionGroup = $this->getEntityID('OptionGroup', array('name' => $customFieldSpec['option_group_id']));
+        if ($optionGroup == 'FAILED' || $optionGroup==NULL) {
+          $this->log(CUSTOM_DATA_HELPER_LOG_ERROR, "Couldn't create/update CustomField, bad option_group: {$customFieldSpec['option_group_id']}");
+          return;
+        }
+        $customFieldSpec['option_group_id'] = $optionGroup['id'];
+      }
+      $customField = $this->identifyEntity('CustomField', $customFieldSpec);
+      if (empty($customField)) {
+        // create CustomField
+        $customField = $this->createEntity('CustomField', $customFieldSpec);
+      } elseif ($customField == 'FAILED') {
+        // Couldn't identify:
+        $this->log(CUSTOM_DATA_HELPER_LOG_ERROR, "Couldn't create/update CustomField: " . json_encode($customFieldSpec));
+      } else {
+        // update CustomField
+        $this->updateEntity('CustomField', $customFieldSpec, $customField, array('in_selector', 'is_view', 'is_searchable', 'html_type', 'data_type', 'custom_group_id'));
+      }
     }
   }
 
@@ -262,7 +270,7 @@ class CRM_I3val_CustomData {
   /**
   * create a new entity
   */
-  protected function updateEntity($entity_type, $requested_data, $current_data, $required_fields = array()) {
+  protected function updateEntity($entity_type, $requested_data, $current_data, $required_fields = array(), $force = FALSE) {
     $update_query = array();
 
     // first: identify fields that need to be updated
@@ -278,15 +286,17 @@ class CRM_I3val_CustomData {
     }
 
     // run update if required
-    if (!empty($update_query)) {
+    if ($force || !empty($update_query)) {
        $update_query['id'] = $current_data['id'];
 
        // add required fields
        foreach ($required_fields as $required_field) {
           if (isset($requested_data[$required_field])) {
             $update_query[$required_field] = $requested_data[$required_field];
-          } else {
+          } elseif (isset($current_data[$required_field])) {
             $update_query[$required_field] = $current_data[$required_field];
+          } else {
+            // nothing we can do...
           }
        }
 
@@ -310,6 +320,54 @@ class CRM_I3val_CustomData {
     }
   }
 
+  /**
+   * function to replace custom_XX notation with the more
+   * stable "<custom_group_name>.<custom_field_name>" format
+   *
+   * @param $data   array  key=>value data, keys will be changed
+   * @param $depth  int    recursively follow arrays
+   */
+  public static function labelCustomFields(&$data, $depth=1) {
+    if ($depth == 0) return;
+
+    $custom_fields_used = array();
+    foreach ($data as $key => $value) {
+      if (preg_match('#^custom_(?P<field_id>\d+)$#', $key, $match)) {
+        $custom_fields_used[] = $match['field_id'];
+      }
+    }
+
+    // cache fields
+    self::cacheCustomFields($custom_fields_used);
+
+    // replace names
+    foreach ($data as $key => &$value) {
+      if (preg_match('#^custom_(?P<field_id>\d+)$#', $key, $match)) {
+        $new_key = self::getFieldIdentifier($match['field_id']);
+        $data[$new_key] = $value;
+        unset($data[$key]);
+      }
+
+      // recursively look into that array
+      if (is_array($value) && $depth > 0) {
+        self::labelCustomFields($value, $depth-1);
+      }
+    }
+  }
+
+  public static function getFieldIdentifier($field_id) {
+    // just to be on the safe side
+    self::cacheCustomFields(array($field_id));
+
+    // get custom field
+    $custom_field = self::$custom_field_cache[$field_id];
+    if ($custom_field) {
+      $group_name = self::getGroupName($custom_field['custom_group_id']);
+      return "{$group_name}.{$custom_field['name']}";
+    } else {
+      return 'FIELD_NOT_FOUND_' . $field_id;
+    }
+  }
 
   /**
    * internal function to replace "<custom_group_name>.<custom_field_name>"
@@ -324,6 +382,11 @@ class CRM_I3val_CustomData {
     $customgroups_used = array();
     foreach ($data as $key => $value) {
       if (preg_match('/^(?P<group_name>\w+)[.](?P<field_name>\w+)$/', $key, $match)) {
+        if ($match['group_name'] == 'option' || $match['group_name'] == 'options') {
+          // exclude API options
+          continue;
+        }
+
         if (empty($customgroups) || in_array($match['group_name'], $customgroups)) {
           $customgroups_used[$match['group_name']] = 1;
         }
@@ -354,6 +417,18 @@ class CRM_I3val_CustomData {
   /**
   * Get CustomField entity (cached)
   */
+  public static function getCustomFieldKey($custom_group_name, $custom_field_name) {
+    $field = self::getCustomField($custom_group_name, $custom_field_name);
+    if ($field) {
+      return 'custom_' . $field['id'];
+    } else {
+      return NULL;
+    }
+  }
+
+  /**
+  * Get CustomField entity (cached)
+  */
   public static function getCustomField($custom_group_name, $custom_field_name) {
     self::cacheCustomGroups(array($custom_group_name));
 
@@ -365,8 +440,8 @@ class CRM_I3val_CustomData {
   }
 
   /**
-  * Get CustomField entity (cached)
-  */
+   * Precache a list of custom groups
+   */
   public static function cacheCustomGroups($custom_group_names) {
     foreach ($custom_group_names as $custom_group_name) {
       if (!isset(self::$custom_group_cache[$custom_group_name])) {
@@ -377,6 +452,89 @@ class CRM_I3val_CustomData {
           'option.limit'    => 0));
         foreach ($fields['values'] as $field) {
           self::$custom_group_cache[$custom_group_name][$field['name']] = $field;
+          self::$custom_group_cache[$custom_group_name][$field['id']]   = $field;
+        }
+      }
+    }
+  }
+
+  /**
+   * Precache a list of custom fields
+   */
+  public static function cacheCustomFields($custom_field_ids) {
+    // first: check if they are already cached
+    $fields_to_load = array();
+    foreach ($custom_field_ids as $field_id) {
+      if (!array_key_exists($field_id, self::$custom_field_cache)) {
+        $fields_to_load[] = $field_id;
+      }
+    }
+
+    // load missing fields
+    if (!empty($fields_to_load)) {
+      $loaded_fields = civicrm_api3('CustomField', 'get', array(
+        'id'           => array('IN' => $fields_to_load),
+        'option.limit' => 0,
+        ));
+      foreach ($loaded_fields['values'] as $field) {
+        self::$custom_field_cache[$field['id']] = $field;
+      }
+    }
+  }
+
+  /**
+   * Get a mapping: custom_group_id => custom_group_name
+   */
+  public static function getGroup2Name() {
+    if (self::$custom_group2name === NULL) {
+      // load groups
+      $group_search = civicrm_api3('CustomGroup', 'get', array(
+        'return'       => 'name',
+        'option.limit' => 0,
+        ));
+      self::$custom_group2name = array();
+      foreach ($group_search['values'] as $customGroup) {
+        self::$custom_group2name[$customGroup['id']] = $customGroup['name'];
+      }
+    }
+
+    return self::$custom_group2name;
+  }
+
+  /**
+   * Get the internal name of a custom gruop
+   */
+  public static function getGroupName($custom_group_id) {
+    $group2name = self::getGroup2Name();
+    return $group2name[$custom_group_id];
+  }
+
+  /**
+   * If an API call is received via REST, the notation
+   * used by this tool:
+   *   "<custom_group_name>.<custom_field_name>"
+   * can be mangled to
+   *   "<custom_group_name>_<custom_field_name>"
+   *
+   * This function reverses this in the array itself
+   *
+   * @todo make it more efficient?
+   *
+   * @param $params      the parameter array as used by the API
+   * @param $group_names list of group names to process. Default is: all
+   */
+  public static function unREST(&$params, $group_names = NULL) {
+    if ($group_names == NULL || !is_array($group_names)) {
+      $groups = self::getGroup2Name();
+      $group_names = array_values($groups);
+    }
+
+    // look for all group names in all variables
+    foreach ($group_names as $group_name) {
+      foreach (array_keys($params) as $key) {
+        $new_key = preg_replace("#^{$group_name}_#", "{$group_name}.", $key);
+        if ($new_key != $key) {
+          $params[$new_key] = $params[$key];
         }
       }
     }
