@@ -39,6 +39,8 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     // find out what there is to be done
     $activity_id      = CRM_Utils_Request::retrieve('aid',  'Integer');
     $last_activity_id = CRM_Utils_Request::retrieve('laid', 'Integer');
+    $total_count      = CRM_Utils_Request::retrieve('count', 'Integer');
+    $index            = CRM_Utils_Request::retrieve('idx', 'Integer');
 
     // preserve the parameters in hidden fields
     $this->add('hidden', 'aid',  $activity_id);
@@ -53,11 +55,27 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     }
     $this->activity_id = $activity_id;
 
+    // Check if DONE....
     if (!$activity_id) {
-      // TODO: NOTHING FOUND!
-      CRM_Core_Session::setStatus(ts("Couldn't find activity!"), ts('Error'), 'error');
+      CRM_Core_Session::setStatus(ts("No more activities pending."), ts('All done!'), 'info');
+      CRM_Utils_System::redirect(CRM_Utils_System::url("civicrm/dashboard"));
       return;
     }
+
+    // some bookkeeping
+    if (!$total_count) {
+      $total_count = $configuration->getPendingActivityCount();
+    }
+    $this->total_count = $total_count;
+    $this->add('hidden', 'count', $total_count);
+    $this->assign('total_count', $total_count);
+
+    if (!$index) {
+      $index = 1;
+    }
+    $this->index = $index;
+    $this->add('hidden', 'idx', $index);
+    $this->assign('index', $index);
 
     // load activity
     $this->activity = civicrm_api3('Activity', 'getsingle', array('id' => $activity_id));
@@ -78,7 +96,6 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     $this->renderActivity($this->activity);
     $this->assign('activity', $this->activity);
     $this->assign('history', $this->getContactHistory($activity_id));
-    $this->assign('total_count', $configuration->getPendingActivityCount());
 
     // render activity form
     $handlers = $configuration->getHandlersForActivityType($this->activity['activity_type_id']);
@@ -99,17 +116,17 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
 
     $this->addButtons(array(
       array(
-        'type' => 'postpone',
-        'name' => ts('Postpone'),
+        'type' => 'submit',
+        'name' => ts('Apply'),
+        'isDefault' => TRUE,
       ),
       array(
         'type' => 'flag',
         'name' => ts('Problem'),
       ),
       array(
-        'type' => 'submit',
-        'name' => ts('Apply'),
-        'isDefault' => TRUE,
+        'type' => 'postpone',
+        'name' => ts('Postpone'),
       ),
     ));
 
@@ -140,18 +157,18 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
    * General postprocessing
    */
   public function postProcess() {
+    $configuration = CRM_I3val_Configuration::getConfiguration();
+
     switch ($this->command) {
       case 'postpone':
         // Process this later
-        // $this->saveChanges();
-        CRM_I3val_Logic::postponeActivity($this->activity_id);
+        $configuration->postponeActivity($this->activity_id);
         CRM_Core_Session::setStatus(ts("Update request has been marked to be reviewed again later"), ts('Postponed!'), 'info');
         break;
 
       case 'flag':
         // Mark
-        // $this->saveChanges();
-        CRM_I3val_Logic::flagActivity($this->activity_id);
+        $configuration->flagActivity($this->activity_id);
         CRM_Core_Session::setStatus(ts("Update request has been flagged."), ts('Flagged!'), 'info');
         break;
 
@@ -166,7 +183,8 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     }
 
     // go to the next one
-    $next_url = CRM_Utils_System::url("civicrm/i3val/desktop", "reset=1&laid={$this->activity_id}");
+    $next_index = $this->index + 1;
+    $next_url = CRM_Utils_System::url("civicrm/i3val/desktop", "reset=1&laid={$this->activity_id}&count={$this->total_count}&idx={$next_index}");
     CRM_Utils_System::redirect($next_url);
 
     // shouldn't get here:
@@ -204,15 +222,6 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
         'id'     => $activity['campaign_id']));
     }
   }
-
- /**
-   * Save the changes to
-   */
-  protected function saveChanges() {
-    // is there anything to do here?
-  }
-
-
 
   /**
    * Apply the changes

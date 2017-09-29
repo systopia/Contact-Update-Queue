@@ -17,7 +17,9 @@
 
 class CRM_I3val_Configuration {
 
-  protected static $configuration = NULL;
+  // cache of relevant activity types
+  protected $activity_types = NULL;
+  protected $activity_queue = NULL;
 
   /**
    * get the configuration namespace
@@ -27,6 +29,7 @@ class CRM_I3val_Configuration {
     return 'AIVL';
   }
 
+  private static $configuration = NULL;
   /**
    * get the configuration singleton
    */
@@ -44,17 +47,64 @@ class CRM_I3val_Configuration {
   }
 
 
-
-
-
-
-
-  // cache of relevant activity types
-  protected $activity_types = NULL;
-
   public function __construct() {
   }
 
+
+
+  public function getActivityQueue($after_activity_id = NULL, $type = NULL) {
+    if ($this->activity_queue === NULL) {
+      // TODO: DB cache queue?
+      $this->activity_queue = array();
+      $activity_status_ids = implode(',', $this->getLiveActivityStatuses());
+      $activity_type_ids   = implode(',', array_keys($this->getEligibleActivityTypes()));
+      if (empty($activity_status_ids) || empty($activity_type_ids)) {
+        return $this->activity_queue;
+      }
+
+      // see if there is a marker
+      $after_activity_id = (int) $after_activity_id;
+      if ($after_activity_id) {
+        $extra_join = "JOIN civicrm_activity reference ON reference.id = {$after_activity_id}";
+        $extra_where_clause = "AND activity.id <> {$after_activity_id} AND activity.activity_date_time >= reference.activity_date_time";
+      } else {
+        $extra_join = '';
+        $extra_where_clause = '';
+      }
+
+      // get queue from DB
+      $queue_sql = "SELECT activity.id AS activity_id
+                    FROM civicrm_activity activity
+                    {$extra_join}
+                    WHERE activity.activity_type_id IN ({$activity_type_ids})
+                      AND activity.status_id IN ({$activity_status_ids})
+                      AND activity.activity_date_time < NOW()
+                      {$extra_where_clause}
+                    ORDER BY activity.activity_date_time ASC, activity.id ASC";
+      $queue = CRM_Core_DAO::executeQuery($queue_sql);
+      while ($queue->fetch()) {
+        $this->activity_queue[] = $queue->activity_id;
+      }
+      $queue->free();
+    }
+    return $this->activity_queue;
+  }
+
+
+  /**
+   * POSTPONE activity
+   */
+  public function postponeActivity($activity_id, $mode = NULL) {
+    $activity_id = (int) $activity_id;
+    if ($activity_id) {
+      error_log("ENABLE POSTPONE");
+      return;
+      civicrm_api3('Activity', 'create', array(
+        'id'                 => $activity_id,
+        'activity_date_time' => date('YmdHis')
+      ));
+    }
+  }
 
   /**
    * get a hander instance for the given activity type
@@ -67,16 +117,29 @@ class CRM_I3val_Configuration {
   }
 
   /**
+   * get the count of the current queue
+   */
+  public function getPendingActivityCount() {
+    error_log("GET COUNT");
+    $queue = $this->getActivityQueue();
+    return count($queue);
+  }
+
+  /**
    * calculate information on the pending activties
    */
   public function getNextPendingActivity($mode, $reference = NULL) {
     switch ($mode) {
       case 'first':
-        $next_activity_id = $this->getNextPendingActivitySQL();
+        $queue = $this->getActivityQueue();
+        return reset($queue);
+        // $next_activity_id = $this->getNextPendingActivitySQL();
         break;
 
       case 'next':
-        $next_activity_id = $this->getNextRelatedPendingActivity($reference);
+        $queue = $this->getActivityQueue($reference);
+        return reset($queue);
+        // $next_activity_id = $this->getNextPendingActivitySQL($reference);
         if (!$next_activity_id) {
           // there is no more related activities
           return $this->getNextPendingActivity('first');
@@ -84,7 +147,7 @@ class CRM_I3val_Configuration {
         break;
 
       case 'single':  # jump to one activity
-        return $activity_id;
+        return $reference;
         break;
 
       default:
@@ -95,43 +158,56 @@ class CRM_I3val_Configuration {
     return $next_activity_id;
   }
 
-  /**
-   * get the next pending activity
-   */
-  protected function getNextPendingActivitySQL() {
-    $activity_status_ids = implode(',', $this->getLiveActivityStatuses());
-    $activity_type_ids   = implode(',', array_keys($this->getActivityTypes()));
-    if (empty($activity_status_ids) || empty($activity_type_ids)) {
-      return NULL;
-    }
 
-    // build the query
-    $sql = "SELECT civicrm_activity.id
-            FROM civicrm_activity
-            WHERE activity_type_id IN ({$activity_type_ids})
-              AND status_id IN ({$activity_status_ids})
-            ORDER BY activity_date_time ASC
-            LIMIT 1";
-    return CRM_Core_DAO::singleValueQuery($sql);
-  }
+  // /**
+  //  * get the next pending activity
+  //  */
+  // protected function getNextPendingActivitySQL($after_activity_id = NULL) {
+  //   $activity_status_ids = implode(',', $this->getLiveActivityStatuses());
+  //   $activity_type_ids   = implode(',', array_keys($this->getActivityTypes()));
+  //   if (empty($activity_status_ids) || empty($activity_type_ids)) {
+  //     return NULL;
+  //   }
 
-  /**
-   * get the pending activity count
-   */
-  public function getPendingActivityCount() {
-    $activity_status_ids = implode(',', $this->getLiveActivityStatuses());
-    $activity_type_ids   = implode(',', array_keys($this->getEligibleActivityTypes()));
-    if (empty($activity_status_ids) || empty($activity_type_ids)) {
-      return NULL;
-    }
+  //   // see if there is a marker
+  //   $after_activity_id = (int) $after_activity_id;
+  //   if ($after_activity_id) {
+  //     $extra_join = "JOIN civicrm_activity reference ON reference.id = {$after_activity_id}";
+  //     $extra_where_clause = "AND activity.id <> {$after_activity_id} AND activity.activity_date_time >= reference.activity_date_time";
+  //   } else {
+  //     $extra_join = '';
+  //     $extra_where_clause = '';
+  //   }
 
-    // build the query
-    $sql = "SELECT COUNT(civicrm_activity.id)
-            FROM civicrm_activity
-            WHERE activity_type_id IN ({$activity_type_ids})
-              AND status_id IN ({$activity_status_ids})";
-    return CRM_Core_DAO::singleValueQuery($sql);
-  }
+  //   // build the query
+  //   $sql = "SELECT activity.id
+  //           FROM civicrm_activity activity
+  //           {$extra_join}
+  //           WHERE activity.activity_type_id IN ({$activity_type_ids})
+  //             AND activity.status_id IN ({$activity_status_ids})
+  //             {$extra_where_clause}
+  //           ORDER BY activity.activity_date_time ASC, id ASC
+  //           LIMIT 1";
+  //   return CRM_Core_DAO::singleValueQuery($sql);
+  // }
+
+  // /**
+  //  * get the pending activity count
+  //  */
+  // public function getPendingActivityCount() {
+  //   $activity_status_ids = implode(',', $this->getLiveActivityStatuses());
+  //   $activity_type_ids   = implode(',', array_keys($this->getEligibleActivityTypes()));
+  //   if (empty($activity_status_ids) || empty($activity_type_ids)) {
+  //     return NULL;
+  //   }
+
+  //   // build the query
+  //   $sql = "SELECT COUNT(civicrm_activity.id)
+  //           FROM civicrm_activity
+  //           WHERE activity_type_id IN ({$activity_type_ids})
+  //             AND status_id IN ({$activity_status_ids})";
+  //   return CRM_Core_DAO::singleValueQuery($sql);
+  // }
 
   /**
    * get the activity types based on the current user

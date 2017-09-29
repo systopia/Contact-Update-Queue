@@ -15,7 +15,7 @@
 +-------------------------------------------------------*}
 
 {* form parameters (hidden) *}
-{$form.aid.html}{$form.laid.html}
+{$form.aid.html}{$form.laid.html}{$form.idx.html}{$form.count.html}
 
 {* header with progress bar *}
 <div id="progressbar"></div>
@@ -100,9 +100,11 @@
 
 <script type="text/javascript">
 // create progress bar
+var total_count = {$total_count};
+var index       = {$index};
 {literal}
 cj(function() {
-  cj("#progressbar").progressbar({value: 37, disable: true});
+  cj("#progressbar").progressbar({value: index * 100 / total_count, disable: true});
 });
 {/literal}
 </script>

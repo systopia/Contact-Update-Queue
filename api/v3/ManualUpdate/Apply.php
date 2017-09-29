@@ -22,8 +22,11 @@
  *
  * @param array $spec description of fields supported by this API call
  * @return void
+ * @deprecated
  */
 function civicrm_api3_manual_update_apply($params) {
+  return civicrm_api3_create_error("DEPRECATED!");
+
   // load activity and contact
   $activity = civicrm_api3('Activity', 'getsingle', array('id' => $params['activity_id']));
   if ($activity['status_id'] != CRM_Core_OptionGroup::getValue('activity_status', 'Scheduled', 'name')) {
