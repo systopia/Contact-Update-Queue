@@ -1,0 +1,17 @@
+todo
+- install/unisntall
+
+- select all/none
+- current value column
+- submit default: is submitted, current if it differs
+- use identity tracker
+- update "call assignment" on API call: (Scheduled/Cancelled/Completed/TO Process)
+   Scheduled -> To process (other) -> Completed
+- AIVL custom
+
+
+- 2x Custom screen => starting point for SDD OR basic processing
+ - SDD order: oldest SDD change, + all contact changes
+ - basic oder: oldest contact changes
+ - "gamification": percentage done!
+ - contact history

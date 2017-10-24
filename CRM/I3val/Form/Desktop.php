@@ -35,6 +35,7 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
    */
   public function buildQuickForm() {
     $configuration = CRM_I3val_Configuration::getConfiguration();
+    $session = CRM_I3val_Session::getSession();
 
     // find out what there is to be done
     $activity_id      = CRM_Utils_Request::retrieve('aid',  'Integer');
@@ -47,11 +48,11 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     $this->add('hidden', 'laid', $last_activity_id);
 
     if ($activity_id) {
-      $activity_id = $configuration->getNextPendingActivity('single', $activity_id);
+      $activity_id = $session->getNextPendingActivity('single', $activity_id);
     } elseif ($last_activity_id) {
-      $activity_id = $configuration->getNextPendingActivity('next', $last_activity_id);
+      $activity_id = $session->getNextPendingActivity('next', $last_activity_id);
     } else {
-      $activity_id = $configuration->getNextPendingActivity('first');
+      $activity_id = $session->getNextPendingActivity('first');
     }
     $this->activity_id = $activity_id;
 
@@ -63,12 +64,9 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     }
 
     // some bookkeeping
-    if (!$total_count) {
-      $total_count = $configuration->getPendingActivityCount();
-    }
-    $this->total_count = $total_count;
-    $this->add('hidden', 'count', $total_count);
-    $this->assign('total_count', $total_count);
+    $this->assign('progress', $session->getProgress());
+    $this->assign('processed_count', $session->getProcessedCount());
+    $this->assign('pending_count', $session->getPendingCount());
 
     if (!$index) {
       $index = 1;
