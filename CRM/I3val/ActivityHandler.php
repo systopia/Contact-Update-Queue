@@ -84,8 +84,11 @@ abstract class CRM_I3val_ActivityHandler {
     foreach ($field_names as $field_name) {
       if (isset($submitted_data[$field_name])) {
         // an update was submitted
-        $diff_data["{$custom_group_name}.{$field_name}_submitted"] = $submitted_data[$field_name];
-        $diff_data["{$custom_group_name}.{$field_name}_original"]  = CRM_Utils_Array::value($field_name, $original_data, '');
+        $original_value = CRM_Utils_Array::value($field_name, $original_data, '');
+        if ($submitted_data[$field_name] != $original_value) {
+          $diff_data["{$custom_group_name}.{$field_name}_submitted"] = $submitted_data[$field_name];
+          $diff_data["{$custom_group_name}.{$field_name}_original"]  = $original_value;
+        }
       }
     }
     return $diff_data;

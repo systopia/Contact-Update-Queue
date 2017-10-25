@@ -21,7 +21,13 @@
           <td style="vertical-align: middle;">{$i3val_contact_values.$fieldkey.original}</td>
           <td style="vertical-align: middle;">{$i3val_contact_values.$fieldkey.submitted}</td>
           <td style="vertical-align: middle;">{$i3val_contact_values.$fieldkey.current}</td>
-          <td style="vertical-align: middle;">{$form.$input_field.html}</td>
+          <td style="vertical-align: middle;">
+            {if $fieldkey eq 'birth_date'}
+              {include file="CRM/common/jcalendar.tpl" elementName=birth_date}
+            {else}
+              {$form.$input_field.html}
+            {/if}
+          </td>
           <td style="vertical-align: middle;">{$form.$checkbox.html}</td>
           <!-- <td style="vertical-align: middle;"><input type="text" name="$fieldkey.applied" value="{$i3val_contact_values.$fieldkey.applied}" /></td> -->
           <!-- <td style="vertical-align: middle;"><input type="checkbox" name="$fieldkey.apply" checked /></td> -->

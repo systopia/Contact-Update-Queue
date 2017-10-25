@@ -34,6 +34,7 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
                                   'household_name'    => E::ts('Household Name'),
                                   'prefix'            => E::ts('Prefix'),
                                   'suffix'            => E::ts('Suffix'),
+                                  'gender'            => E::ts('Gender'),
                                   'birth_date'        => E::ts('Birth Date'),
                                   'email'             => E::ts('Email'),
                                   'phone'             => E::ts('Phone'));
@@ -113,6 +114,14 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
     $values = $this->compileValues(self::$group_name, $field2label, $activity);
     $this->addCurrentValues($values, $form->contact);
 
+    // exceptions for current values
+    if (isset($values['prefix']) && !empty($form->contact['individual_prefix'])) {
+      $values['prefix']['current'] = $form->contact['individual_prefix'];
+    }
+    if (isset($values['suffix']) && !empty($form->contact['individual_suffix'])) {
+      $values['suffix']['current'] = $form->contact['individual_suffix'];
+    }
+
     $form->assign('i3val_contact_fields', $field2label);
     $form->assign('i3val_contact_values', $values);
 
@@ -126,14 +135,33 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
       }
 
       // this field has data:
-      $active_fields[$fieldname] = $field2label;
+      $active_fields[$fieldname] = $fieldlabel;
 
-      // add the text input
-      $form->add(
-        'text',
-        "{$fieldname}_applied",
-        $fieldlabel
-      );
+      // generate input field
+      if (in_array($fieldname, array('prefix', 'suffix', 'gender'))) {
+        // add the text input
+        $form->add(
+          'select',
+          "{$fieldname}_applied",
+          $fieldlabel,
+          $this->getOptionList($fieldname)
+        );
+      } elseif ($fieldname == 'birth_date') {
+        $form->addDate(
+          "{$fieldname}_applied",
+          $fieldlabel,
+          FALSE,
+          array('formatType' => 'activityDate')
+        );
+      } else {
+        // add the text input
+        $form->add(
+          'text',
+          "{$fieldname}_applied",
+          $fieldlabel
+        );
+      }
+
       if (!empty($values[$fieldname]['applied'])) {
         $form->setDefaults(array("{$fieldname}_applied" => $values[$fieldname]['applied']));
       } else {
@@ -164,6 +192,15 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
    * @todo specify
    */
   public function createData($entity, $entity_id, $entity_data, $submitted_data, &$activity_data) {
+    error_log(json_encode($entity_data));
+    // resolve prefix/suffix
+    if (!empty($entity_data['individual_prefix'])) {
+      $entity_data['prefix'] = $entity_data['individual_prefix'];
+    }
+    if (!empty($entity_data['individual_suffix'])) {
+      $entity_data['suffix'] = $entity_data['individual_suffix'];
+    }
+
     $raw_diff = $this->createDiff($entity_data, $submitted_data);
 
     // TODO: sort out special cases (e.g. dates)
@@ -173,4 +210,42 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
     }
   }
 
+  /**
+   * Get dropdown lists
+   */
+  protected function getOptionList($fieldname) {
+    $option_group_name = NULL;
+
+    switch ($fieldname) {
+      case 'gender':
+        $option_group_name = 'gender';
+        break;
+
+      case 'prefix':
+        $option_group_name = 'individual_prefix';
+        break;
+
+      case 'suffix':
+        $option_group_name = 'individual_suffix';
+        break;
+
+      default:
+        $option_group_name = $fieldname;
+    }
+
+    $option_query = civicrm_api3('OptionValue', 'get', array(
+      'option_group_id' => $option_group_name,
+      'return'          => 'label',
+      'option.sort'     => 'weight ASC',
+      'option.limit'    => 0
+    ));
+
+    $options = array();
+    foreach ($option_query['values'] as $option_value) {
+      // we want the labels here, because we want then to see in the database
+      $options[$option_value['label']] = $option_value['label'];
+    }
+
+    return $options;
+  }
 }
