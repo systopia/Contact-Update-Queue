@@ -15,6 +15,8 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
+use CRM_I3val_ExtensionUtil as E;
+
 /**
  * Desktop form controller
  *

@@ -73,7 +73,7 @@ class CRM_I3val_Session {
    */
   public function markProcessed($activity_id) {
     $activity_id = (int) $activity_id;
-    error_log("MARKED PROCESSED: $activity_id");
+    // error_log("MARKED PROCESSED: $activity_id");
 
     // increase processed count
     $processed_count = $this->getProcessedCount();
@@ -86,7 +86,7 @@ class CRM_I3val_Session {
     // get next
     $next_activity_id = $this->getNext();
     $this->set('activity_id', $next_activity_id);
-    error_log("CURRENT IS $next_activity_id");
+    // error_log("CURRENT IS $next_activity_id");
   }
 
 
@@ -94,7 +94,7 @@ class CRM_I3val_Session {
    * Get the next activity id from our list
    */
   protected function getNext($grab_more_if_needed = TRUE) {
-    error_log("GET NEXT");
+    // error_log("GET NEXT");
     $cache_key = $this->getSessionKey();
     $next_activity_id = CRM_Core_DAO::singleValueQuery("
         SELECT activity_id
@@ -124,7 +124,7 @@ class CRM_I3val_Session {
    * 2) fill prev_next_cache with the next couple of items
    */
   public function reset() {
-    error_log("RESET");
+    // error_log("RESET");
     // destroy the user's current session (if any)
     $cache_key = $this->get('cache_key');
     if ($cache_key) {
@@ -145,7 +145,7 @@ class CRM_I3val_Session {
     // fill next cache
     $first_activity_id = $this->getNext();
     $this->set('activity_id', $first_activity_id);
-    error_log("CURRENT IS $first_activity_id (reset)");
+    // error_log("CURRENT IS $first_activity_id (reset)");
   }
 
   /**
@@ -212,7 +212,7 @@ class CRM_I3val_Session {
    * Assign another {$max_count} activities to this session
    */
   protected function grabMoreActivities($max_count = 0) {
-    error_log("GRAB MORE $max_count");
+    // error_log("GRAB MORE $max_count");
     $after_activity_id = $this->get('activity_id');
 
     $configuration = CRM_I3val_Configuration::getConfiguration();
@@ -310,7 +310,7 @@ class CRM_I3val_Session {
   public function postponeActivity($activity_id, $mode = NULL) {
     $activity_id = (int) $activity_id;
     if ($activity_id) {
-      error_log("ENABLE POSTPONE");
+      // error_log("ENABLE POSTPONE");
       return;
       civicrm_api3('Activity', 'create', array(
         'id'                 => $activity_id,

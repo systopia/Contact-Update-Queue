@@ -24,7 +24,7 @@ abstract class CRM_I3val_ActivityHandler {
   public static $columns = array('original', 'submitted', 'applied');
 
   /**
-   * get the list of
+   * get the list of fields
    */
   public abstract function getFields();
 
@@ -34,6 +34,11 @@ abstract class CRM_I3val_ActivityHandler {
    * @return array $key -> error message
    */
   public abstract function verifyChanges($activity, $changes, $objects = array());
+
+  /**
+   * Get the JSON specification file defining the custom group used for this data
+   */
+  public abstract function getCustomGroupSpeficationFile();
 
   /**
    * Apply the changes
@@ -52,6 +57,11 @@ abstract class CRM_I3val_ActivityHandler {
    */
   public abstract function getTemplate();
 
+  /**
+   * Calculate the data to be created and add it to the $activiy_data Activity.create params
+   * @todo specify
+   */
+  public abstract function createData($entity, $entity_id, &$activiy_data);
 
 
   /**

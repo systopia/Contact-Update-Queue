@@ -13,7 +13,7 @@
         </tr>
       </thead>
       <tbody>
-        {foreach from=$i3val_contact_fields item=fieldlabel key=fieldkey}
+        {foreach from=$i3val_active_contact_fields item=fieldlabel key=fieldkey}
         <tr>
           {capture assign=input_field}{$fieldkey}_applied{/capture}
           {capture assign=checkbox}{$fieldkey}_apply{/capture}

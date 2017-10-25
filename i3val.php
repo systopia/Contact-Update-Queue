@@ -80,6 +80,12 @@ function i3val_civicrm_uninstall() {
 function i3val_civicrm_enable() {
   _i3val_civix_civicrm_enable();
 
+  // create the session table
+  $config = CRM_Core_Config::singleton();
+  $sqlfile = dirname(__FILE__) . '/sql/install.sql';
+  CRM_Utils_File::sourceSQLFile($config->dsn, $sqlfile, NULL, false);
+
+  // create custom data
   require_once 'CRM/I3val/CustomData.php';
   $customData = new CRM_I3val_CustomData('de.systopia.contract');
   $customData->syncOptionGroup(__DIR__ . '/resources/activity_types_option_group.json');
@@ -92,6 +98,11 @@ function i3val_civicrm_enable() {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_disable
  */
 function i3val_civicrm_disable() {
+  // remove the session table
+  $config = CRM_Core_Config::singleton();
+  $sqlfile = dirname(__FILE__) . '/sql/uninstall.sql';
+  CRM_Utils_File::sourceSQLFile($config->dsn, $sqlfile, NULL, false);
+
   _i3val_civix_civicrm_disable();
 }
 
