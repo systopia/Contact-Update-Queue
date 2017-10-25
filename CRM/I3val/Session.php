@@ -56,7 +56,7 @@ class CRM_I3val_Session {
     switch ($mode) {
       default:
       case 'first':
-        $this->resetSession();
+        $this->reset();
         return $this->getNext();
         break;
 
@@ -65,7 +65,7 @@ class CRM_I3val_Session {
         break;
 
       case 'single':  # jump to one activity
-        $this->resetSession($reference);
+        $this->reset($reference);
         return $this->getNext();
         break;
     }
@@ -102,8 +102,10 @@ class CRM_I3val_Session {
    * reset the user session:
    * 1) clear values
    * 2) fill prev_next_cache with the next couple of items
+   *
+   * @param $activity_id if given, create a session with only this activity
    */
-  protected function reset() {
+  protected function reset($activity_id = NULL) {
     // destroy the user's current session (if any)
     $cache_key = $this->get('cache_key');
     if ($cache_key) {
@@ -118,10 +120,14 @@ class CRM_I3val_Session {
     $this->set('cache_key', $cache_key);
     $this->set('start_time', date('YmdHis'));
     $this->set('processed_count', 0);
-    $this->set('open_count', $this->getPendingActivityCount());
+    $this->set('open_count', $this->calculateOpenActivityCount());
 
     // fill next cache
-    $this->grabMoreActivities(10);
+    if ($activity_id) {
+
+    } else {
+      $this->grabMoreActivities(10);
+    }
   }
 
   /**
@@ -135,6 +141,50 @@ class CRM_I3val_Session {
     } else {
       throw new Exception("Session not intialised!", 1);
     }
+  }
+
+  /**
+   * get the number of processed items
+   */
+  public function getProcessedCount() {
+    return (int) $this->get('processed_count');
+  }
+
+  /**
+   * Get a progress between 0..1
+   * @return float
+   */
+  public function getProgress() {
+    $open_count = (int) $this->getOpenActivityCount();
+    if ($open_count) {
+      $processed_count = $this->getProcessedCount();
+      $progress = (float) $processed_count / (float) $open_count;
+      return min(1.0, $progress);
+    } else {
+      // open_count is 0
+      return 1.0;
+    }
+  }
+
+  /**
+   * Get the (approximate) number still pending activites
+   */
+  public function getPendingCount() {
+    $open_count = $this->getOpenActivityCount();
+    $processed_count = $this->getProcessedCount();
+    return max($open_count - $processed_count, 0);
+  }
+
+  /**
+   * Get the (approximate) number of open activities
+   */
+  public function getOpenActivityCount() {
+    $open_count = $this->get('open_count');
+    if ($open_count === NULL) {
+      $open_count = $this->calculateOpenActivityCount();
+      $this->set('open_count', $open_count);
+    }
+    return $open_count;
   }
 
   /**
@@ -176,7 +226,7 @@ class CRM_I3val_Session {
               AND activity.status_id IN ({$activity_status_ids})
               AND i3val_session_cache.session_key IS NULL
               {$extra_where_clause}
-            ORDER BY activity.activity_date_time ASC, id ASC
+            ORDER BY activity.activity_date_time ASC, activity.id ASC
             {$limit}";
     $entries = CRM_Core_DAO::executeQuery($sql);
     while ($entries->fetch()) {
@@ -216,6 +266,19 @@ class CRM_I3val_Session {
     return $this->user_session->get($name, 'i3val_');
   }
 
+  /**
+   * Calculate the pending activity count
+   */
+  protected function calculateOpenActivityCount() {
+    $configuration = CRM_I3val_Configuration::getConfiguration();
+    $activity_status_ids = implode(',', $configuration->getLiveActivityStatuses());
+    $activity_type_ids   = implode(',', array_keys($configuration->getActivityTypes()));
+    $sql = "SELECT COUNT(activity.id)
+            FROM civicrm_activity activity
+            WHERE activity.activity_type_id IN ({$activity_type_ids})
+              AND activity.status_id IN ({$activity_status_ids})";
+    return CRM_Core_DAO::singleValueQuery($sql);
+  }
 
 
 
@@ -282,7 +345,7 @@ class CRM_I3val_Session {
   // /**
   //  * get the count of the current queue
   //  */
-  // public function getPendingActivityCount() {
+  // public function getOpenActivityCount() {
   //   error_log("GET COUNT");
   //   $queue = $this->getActivityQueue();
   //   return count($queue);
@@ -359,7 +422,7 @@ class CRM_I3val_Session {
   // /**
   //  * get the pending activity count
   //  */
-  // public function getPendingActivityCount() {
+  // public function getOpenActivityCount() {
   //   $activity_status_ids = implode(',', $this->getLiveActivityStatuses());
   //   $activity_type_ids   = implode(',', array_keys($this->getEligibleActivityTypes()));
   //   if (empty($activity_status_ids) || empty($activity_type_ids)) {

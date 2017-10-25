@@ -64,9 +64,9 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     }
 
     // some bookkeeping
-    $this->assign('progress', $session->getProgress());
+    $this->assign('progress',        $session->getProgress());
     $this->assign('processed_count', $session->getProcessedCount());
-    $this->assign('pending_count', $session->getPendingCount());
+    $this->assign('pending_count',   $session->getPendingCount());
 
     if (!$index) {
       $index = 1;

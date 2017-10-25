@@ -14,11 +14,28 @@
 | written permission from the original author(s).        |
 +-------------------------------------------------------*}
 
+{literal}
+<style>
+  .ui-progressbar {
+    position: relative;
+  }
+  .progress-label {
+    position: absolute;
+    left: 50%;
+    top: 4px;
+    font-weight: bold;
+    text-shadow: 1px 1px 0 #fff;
+  }
+</style>
+{/literal}
+
 {* form parameters (hidden) *}
 {$form.aid.html}{$form.laid.html}{$form.idx.html}{$form.count.html}
 
 {* header with progress bar *}
-<div id="progressbar"></div>
+<div id="progressbar" class="ui-progressbar">
+  <div class="progress-label"></div>
+</div>
 <br/>
 
 {* activity info *}
@@ -100,11 +117,13 @@
 
 <script type="text/javascript">
 // create progress bar
-var total_count = {$total_count};
-var index       = {$index};
+var processed_count = {$processed_count};
+var pending_count   = {$pending_count};
+var progress        = {$progress};
 {literal}
 cj(function() {
-  cj("#progressbar").progressbar({value: index * 100 / total_count, disable: true});
+  cj("#progressbar").progressbar({value: progress * 100 + 0.01, disable: true});
+  cj("div.progress-label").text(processed_count + " / " + (processed_count + pending_count));
 });
 {/literal}
 </script>

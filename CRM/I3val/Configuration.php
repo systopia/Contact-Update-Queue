@@ -51,7 +51,12 @@ class CRM_I3val_Configuration {
   }
 
 
-
+  /**
+   * How long is a session valid
+   */
+  public function getSessionTTL() {
+    return "4 hours";
+  }
 
 
   /**
