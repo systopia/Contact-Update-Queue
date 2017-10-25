@@ -29,9 +29,6 @@
 </style>
 {/literal}
 
-{* form parameters (hidden) *}
-{$form.aid.html}{$form.laid.html}{$form.idx.html}{$form.count.html}
-
 {* header with progress bar *}
 <div id="progressbar" class="ui-progressbar">
   <div class="progress-label"></div>
@@ -117,13 +114,13 @@
 
 <script type="text/javascript">
 // create progress bar
-var processed_count = {$processed_count};
+var processed_count = {$processed_count}; // the one we're working on
 var pending_count   = {$pending_count};
 var progress        = {$progress};
 {literal}
 cj(function() {
-  cj("#progressbar").progressbar({value: progress * 100 + 0.01, disable: true});
-  cj("div.progress-label").text(processed_count + " / " + (processed_count + pending_count));
+  cj("#progressbar").progressbar({value: progress * 100, disable: true});
+  cj("div.progress-label").text((processed_count + 1 ) + " / " + (processed_count + pending_count));
 });
 {/literal}
 </script>

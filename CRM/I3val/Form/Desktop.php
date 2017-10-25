@@ -37,27 +37,17 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     $configuration = CRM_I3val_Configuration::getConfiguration();
     $session = CRM_I3val_Session::getSession();
 
-    // find out what there is to be done
-    $activity_id      = CRM_Utils_Request::retrieve('aid',  'Integer');
-    $last_activity_id = CRM_Utils_Request::retrieve('laid', 'Integer');
-    $total_count      = CRM_Utils_Request::retrieve('count', 'Integer');
-    $index            = CRM_Utils_Request::retrieve('idx', 'Integer');
-
-    // preserve the parameters in hidden fields
-    $this->add('hidden', 'aid',  $activity_id);
-    $this->add('hidden', 'laid', $last_activity_id);
-
-    if ($activity_id) {
-      $activity_id = $session->getNextPendingActivity('single', $activity_id);
-    } elseif ($last_activity_id) {
-      $activity_id = $session->getNextPendingActivity('next', $last_activity_id);
-    } else {
-      $activity_id = $session->getNextPendingActivity('first');
+    // check for reset
+    $reset = CRM_Utils_Request::retrieve('reset',  'Integer');
+    if ($reset) {
+      $session->reset();
     }
-    $this->activity_id = $activity_id;
+
+    // fetch current activity
+    $this->activity_id = $session->getCurrentActivityID();
 
     // Check if DONE....
-    if (!$activity_id) {
+    if (!$this->activity_id) {
       CRM_Core_Session::setStatus(ts("No more activities pending."), ts('All done!'), 'info');
       CRM_Utils_System::redirect(CRM_Utils_System::url("civicrm/dashboard"));
       return;
@@ -68,15 +58,8 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     $this->assign('processed_count', $session->getProcessedCount());
     $this->assign('pending_count',   $session->getPendingCount());
 
-    if (!$index) {
-      $index = 1;
-    }
-    $this->index = $index;
-    $this->add('hidden', 'idx', $index);
-    $this->assign('index', $index);
-
     // load activity
-    $this->activity = civicrm_api3('Activity', 'getsingle', array('id' => $activity_id));
+    $this->activity = civicrm_api3('Activity', 'getsingle', array('id' => $this->activity_id));
     CRM_I3val_CustomData::labelCustomFields($this->activity);
 
     // load contact
@@ -93,7 +76,7 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
 
     $this->renderActivity($this->activity);
     $this->assign('activity', $this->activity);
-    $this->assign('history', $this->getContactHistory($activity_id));
+    $this->assign('history', $this->getContactHistory($this->activity_id));
 
     // render activity form
     $handlers = $configuration->getHandlersForActivityType($this->activity['activity_type_id']);
@@ -155,18 +138,19 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
    * General postprocessing
    */
   public function postProcess() {
+    $session = CRM_I3val_Session::getSession();
     $configuration = CRM_I3val_Configuration::getConfiguration();
 
     switch ($this->command) {
       case 'postpone':
         // Process this later
-        $configuration->postponeActivity($this->activity_id);
+        $session->postponeActivity($this->activity_id);
         CRM_Core_Session::setStatus(ts("Update request has been marked to be reviewed again later"), ts('Postponed!'), 'info');
         break;
 
       case 'flag':
         // Mark
-        $configuration->flagActivity($this->activity_id);
+        $session->flagActivity($this->activity_id);
         CRM_Core_Session::setStatus(ts("Update request has been flagged."), ts('Flagged!'), 'info');
         break;
 
@@ -180,10 +164,16 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
         break;
     }
 
+    // mark received
+    $session->markProcessed($this->activity_id);
+
     // go to the next one
-    $next_index = $this->index + 1;
-    $next_url = CRM_Utils_System::url("civicrm/i3val/desktop", "reset=1&laid={$this->activity_id}&count={$this->total_count}&idx={$next_index}");
-    CRM_Utils_System::redirect($next_url);
+    // $next_url = CRM_Utils_System::url("civicrm/i3val/desktop");
+    // CRM_Utils_System::redirect($next_url);
+
+    // redirect to schedule reload
+    $url = CRM_Utils_System::url("civicrm/i3val/desktop");
+    CRM_Utils_System::redirect($url);
 
     // shouldn't get here:
     // parent::postProcess();

@@ -48,42 +48,54 @@ class CRM_I3val_Session {
     $this->user_session = CRM_Core_Session::singleton();
   }
 
+  /**
+   * See if this is initialised
+   */
+  protected function isInitialised() {
+    $session_key = $this->get('cache_key');
+    return $session_key != NULL;
+  }
 
   /**
-   * main entry point: get the next activity.
+   * get the current activity_id
    */
-  public function getNextPendingActivity($mode, $reference = NULL) {
-    switch ($mode) {
-      default:
-      case 'first':
-        $this->reset();
-        return $this->getNext();
-        break;
-
-      case 'next':
-        return $this->getNext();
-        break;
-
-      case 'single':  # jump to one activity
-        $this->reset($reference);
-        return $this->getNext();
-        break;
+  public function getCurrentActivityID() {
+    // lazy initialisation
+    if (!$this->isInitialised()) {
+      $this->reset();
     }
+
+    return $this->get('activity_id');
   }
 
   /**
-   * free the given activity
+   * mark this activity as processed
    */
-  protected function releaseActivityID($activity_id) {
+  public function markProcessed($activity_id) {
     $activity_id = (int) $activity_id;
-    CRM_Core_DAO::singleValueQuery("DELETE FROM i3val_session_cache WHERE activity_id = {$activity_id}");
+    error_log("MARKED PROCESSED: $activity_id");
+
+    // increase processed count
+    $processed_count = $this->getProcessedCount();
+    $this->set('processed_count', $processed_count + 1);
+
+    // remove from session
+    $session_key = $this->getSessionKey();
+    CRM_Core_DAO::executeQuery("DELETE FROM i3val_session_cache WHERE session_key = '{$session_key}' AND activity_id = {$activity_id}");
+
+    // get next
+    $next_activity_id = $this->getNext();
+    $this->set('activity_id', $next_activity_id);
+    error_log("CURRENT IS $next_activity_id");
   }
+
 
   /**
    * Get the next activity id from our list
    */
   protected function getNext($grab_more_if_needed = TRUE) {
-    $cache_key = $this->getCacheKey();
+    error_log("GET NEXT");
+    $cache_key = $this->getSessionKey();
     $next_activity_id = CRM_Core_DAO::singleValueQuery("
         SELECT activity_id
         FROM i3val_session_cache
@@ -99,13 +111,20 @@ class CRM_I3val_Session {
   }
 
   /**
+   * free the given activity
+   */
+  protected function releaseActivityID($activity_id) {
+    $activity_id = (int) $activity_id;
+    CRM_Core_DAO::singleValueQuery("DELETE FROM i3val_session_cache WHERE activity_id = {$activity_id}");
+  }
+
+  /**
    * reset the user session:
    * 1) clear values
    * 2) fill prev_next_cache with the next couple of items
-   *
-   * @param $activity_id if given, create a session with only this activity
    */
-  protected function reset($activity_id = NULL) {
+  public function reset() {
+    error_log("RESET");
     // destroy the user's current session (if any)
     $cache_key = $this->get('cache_key');
     if ($cache_key) {
@@ -119,22 +138,21 @@ class CRM_I3val_Session {
     $cache_key = sha1('i3val' . microtime(TRUE) . rand());
     $this->set('cache_key', $cache_key);
     $this->set('start_time', date('YmdHis'));
+    $this->set('activity_id', 0);
     $this->set('processed_count', 0);
     $this->set('open_count', $this->calculateOpenActivityCount());
 
     // fill next cache
-    if ($activity_id) {
-
-    } else {
-      $this->grabMoreActivities(10);
-    }
+    $first_activity_id = $this->getNext();
+    $this->set('activity_id', $first_activity_id);
+    error_log("CURRENT IS $first_activity_id (reset)");
   }
 
   /**
    * get the cache key
    * WARNING: throws exception if not set (not intialised)
    */
-  public function getCacheKey() {
+  public function getSessionKey() {
     $cache_key = $this->get('cache_key');
     if ($cache_key) {
       return $cache_key;
@@ -154,10 +172,13 @@ class CRM_I3val_Session {
    * Get a progress between 0..1
    * @return float
    */
-  public function getProgress() {
+  public function getProgress($including_current = TRUE) {
     $open_count = (int) $this->getOpenActivityCount();
     if ($open_count) {
       $processed_count = $this->getProcessedCount();
+      if ($including_current) {
+        $processed_count += 1;
+      }
       $progress = (float) $processed_count / (float) $open_count;
       return min(1.0, $progress);
     } else {
@@ -190,7 +211,10 @@ class CRM_I3val_Session {
   /**
    * Assign another {$max_count} activities to this session
    */
-  protected function grabMoreActivities($max_count = 0, $after_activity_id = 0) {
+  protected function grabMoreActivities($max_count = 0) {
+    error_log("GRAB MORE $max_count");
+    $after_activity_id = $this->get('activity_id');
+
     $configuration = CRM_I3val_Configuration::getConfiguration();
     $activity_status_ids = implode(',', $configuration->getLiveActivityStatuses());
     $activity_type_ids   = implode(',', array_keys($configuration->getActivityTypes()));
@@ -215,7 +239,7 @@ class CRM_I3val_Session {
     }
 
     // build the query: all pending activities that are not already assigned
-    $cache_key   = $this->getCacheKey();
+    $cache_key   = $this->getSessionKey();
     $session_ttl = $configuration->getSessionTTL();
     $expires     = date('YmdHis', strtotime("+{$session_ttl}"));
     $sql = "SELECT activity.id AS activity_id
@@ -280,52 +304,6 @@ class CRM_I3val_Session {
     return CRM_Core_DAO::singleValueQuery($sql);
   }
 
-
-
-
-
-
-
-
-  // public function getActivityQueue($after_activity_id = NULL, $type = NULL) {
-  //   if ($this->activity_queue === NULL) {
-  //     // TODO: DB cache queue?
-  //     $this->activity_queue = array();
-  //     $activity_status_ids = implode(',', $this->getLiveActivityStatuses());
-  //     $activity_type_ids   = implode(',', array_keys($this->getEligibleActivityTypes()));
-  //     if (empty($activity_status_ids) || empty($activity_type_ids)) {
-  //       return $this->activity_queue;
-  //     }
-
-  //     // see if there is a marker
-  //     $after_activity_id = (int) $after_activity_id;
-  //     if ($after_activity_id) {
-  //       $extra_join = "JOIN civicrm_activity reference ON reference.id = {$after_activity_id}";
-  //       $extra_where_clause = "AND activity.id <> {$after_activity_id} AND activity.activity_date_time >= reference.activity_date_time";
-  //     } else {
-  //       $extra_join = '';
-  //       $extra_where_clause = '';
-  //     }
-
-  //     // get queue from DB
-  //     $queue_sql = "SELECT activity.id AS activity_id
-  //                   FROM civicrm_activity activity
-  //                   {$extra_join}
-  //                   WHERE activity.activity_type_id IN ({$activity_type_ids})
-  //                     AND activity.status_id IN ({$activity_status_ids})
-  //                     AND activity.activity_date_time < NOW()
-  //                     {$extra_where_clause}
-  //                   ORDER BY activity.activity_date_time ASC, activity.id ASC";
-  //     $queue = CRM_Core_DAO::executeQuery($queue_sql);
-  //     while ($queue->fetch()) {
-  //       $this->activity_queue[] = $queue->activity_id;
-  //     }
-  //     $queue->free();
-  //   }
-  //   return $this->activity_queue;
-  // }
-
-
   /**
    * POSTPONE activity
    */
@@ -340,100 +318,4 @@ class CRM_I3val_Session {
       ));
     }
   }
-
-
-  // /**
-  //  * get the count of the current queue
-  //  */
-  // public function getOpenActivityCount() {
-  //   error_log("GET COUNT");
-  //   $queue = $this->getActivityQueue();
-  //   return count($queue);
-  // }
-
-  /**
-   * calculate information on the pending activties
-   */
-  // public function getNextPendingActivity($mode, $reference = NULL) {
-  //   switch ($mode) {
-  //     case 'first':
-  //       $this->reset();
-  //       $queue = $this->getActivityQueue();
-  //       return reset($queue);
-  //       // $next_activity_id = $this->getNextPendingActivitySQL();
-  //       break;
-
-  //     case 'next':
-  //       $queue = $this->getActivityQueue($reference);
-  //       return reset($queue);
-  //       // $next_activity_id = $this->getNextPendingActivitySQL($reference);
-  //       if (!$next_activity_id) {
-  //         // there is no more related activities
-  //         return $this->getNextPendingActivity('first');
-  //       }
-  //       break;
-
-  //     case 'single':  # jump to one activity
-  //       return $reference;
-  //       break;
-
-  //     default:
-  //       $next_activity_id = NULL;
-  //       break;
-  //   }
-
-  //   return $next_activity_id;
-  // }
-
-
-
-  // /**
-  //  * get the next pending activity
-  //  */
-  // protected function getNextPendingActivitySQL($after_activity_id = NULL) {
-  //   $activity_status_ids = implode(',', $this->getLiveActivityStatuses());
-  //   $activity_type_ids   = implode(',', array_keys($this->getActivityTypes()));
-  //   if (empty($activity_status_ids) || empty($activity_type_ids)) {
-  //     return NULL;
-  //   }
-
-  //   // see if there is a marker
-  //   $after_activity_id = (int) $after_activity_id;
-  //   if ($after_activity_id) {
-  //     $extra_join = "JOIN civicrm_activity reference ON reference.id = {$after_activity_id}";
-  //     $extra_where_clause = "AND activity.id <> {$after_activity_id} AND activity.activity_date_time >= reference.activity_date_time";
-  //   } else {
-  //     $extra_join = '';
-  //     $extra_where_clause = '';
-  //   }
-
-  //   // build the query
-  //   $sql = "SELECT activity.id
-  //           FROM civicrm_activity activity
-  //           {$extra_join}
-  //           WHERE activity.activity_type_id IN ({$activity_type_ids})
-  //             AND activity.status_id IN ({$activity_status_ids})
-  //             {$extra_where_clause}
-  //           ORDER BY activity.activity_date_time ASC, id ASC
-  //           LIMIT 1";
-  //   return CRM_Core_DAO::singleValueQuery($sql);
-  // }
-
-  // /**
-  //  * get the pending activity count
-  //  */
-  // public function getOpenActivityCount() {
-  //   $activity_status_ids = implode(',', $this->getLiveActivityStatuses());
-  //   $activity_type_ids   = implode(',', array_keys($this->getEligibleActivityTypes()));
-  //   if (empty($activity_status_ids) || empty($activity_type_ids)) {
-  //     return NULL;
-  //   }
-
-  //   // build the query
-  //   $sql = "SELECT COUNT(civicrm_activity.id)
-  //           FROM civicrm_activity
-  //           WHERE activity_type_id IN ({$activity_type_ids})
-  //             AND status_id IN ({$activity_status_ids})";
-  //   return CRM_Core_DAO::singleValueQuery($sql);
-  // }
 }
