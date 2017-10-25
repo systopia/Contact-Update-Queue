@@ -41,6 +41,11 @@ abstract class CRM_I3val_ActivityHandler {
   public abstract function getCustomGroupSpeficationFile();
 
   /**
+   * Get the custom group name
+   */
+  public abstract function getCustomGroupName();
+
+  /**
    * Apply the changes
    *
    * @return array with changes to the activity
@@ -58,10 +63,33 @@ abstract class CRM_I3val_ActivityHandler {
   public abstract function getTemplate();
 
   /**
-   * Calculate the data to be created and add it to the $activiy_data Activity.create params
+   * Calculate the data to be created and add it to the $activity_data Activity.create params
    * @todo specify
    */
-  public abstract function createData($entity, $entity_id, &$activiy_data);
+  public abstract function createData($entity, $entity_id, $entity_data, $submitted_data, &$activity_data);
+
+
+
+  /**
+   * Generate the orginal/submitted data for the given fields
+   *
+   * @param $original_data  array the data as it's currently present in DB
+   * @param $submitted_data array the data as it's been submitted
+   * @param $field_specs    array see CRM_I3val_Configuration::getContactUpdateFields()
+   */
+  protected function createDiff($original_data, $submitted_data) {
+    $diff_data = array();
+    $field_names = $this->getFields();
+    $custom_group_name = $this->getCustomGroupName();
+    foreach ($field_names as $field_name) {
+      if (isset($submitted_data[$field_name])) {
+        // an update was submitted
+        $diff_data["{$custom_group_name}.{$field_name}_submitted"] = $submitted_data[$field_name];
+        $diff_data["{$custom_group_name}.{$field_name}_original"]  = CRM_Utils_Array::value($field_name, $original_data, '');
+      }
+    }
+    return $diff_data;
+  }
 
 
   /**

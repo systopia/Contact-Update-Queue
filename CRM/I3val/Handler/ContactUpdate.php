@@ -57,6 +57,13 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
   }
 
   /**
+   * Get the custom group name
+   */
+  public function getCustomGroupName() {
+    return 'fwtm_contact_updates';
+  }
+
+  /**
    * Verify whether the changes make sense
    *
    * @return array $key -> error message
@@ -153,13 +160,17 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
   }
 
   /**
-   * Calculate the data to be created and add it to the $activiy_data Activity.create params
+   * Calculate the data to be created and add it to the $activity_data Activity.create params
    * @todo specify
    */
-  public function createData($entity, $entity_id, &$activiy_data) {
-    // TODO:
-    throw new Exception("Not implemented", 1);
+  public function createData($entity, $entity_id, $entity_data, $submitted_data, &$activity_data) {
+    $raw_diff = $this->createDiff($entity_data, $submitted_data);
 
+    // TODO: sort out special cases (e.g. dates)
+
+    foreach ($raw_diff as $key => $value) {
+      $activity_data[$key] = $value;
+    }
   }
 
 }

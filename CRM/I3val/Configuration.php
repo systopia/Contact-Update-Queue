@@ -58,6 +58,24 @@ class CRM_I3val_Configuration {
     return "4 hours";
   }
 
+  /**
+   * get Handlers for entity
+   */
+  public function getHandlersForEntity($entity) {
+    $handlers = array();
+
+    switch ($entity) {
+      case 'Contact':
+        $handlers[] = new CRM_I3val_Handler_ContactUpdate();
+        break;
+
+      default:
+        break;
+    }
+
+    return $handlers;
+  }
+
 
   /**
    * get a hander instance for the given activity type
@@ -68,8 +86,6 @@ class CRM_I3val_Configuration {
       new CRM_I3val_Handler_ContactUpdate()
     );
   }
-
-
 
 
   /**

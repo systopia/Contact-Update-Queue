@@ -15,28 +15,38 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
+use CRM_I3val_ExtensionUtil as E;
+
 class CRM_I3val_Logic {
 
   /**
-   * Create a Manual Update Activity with the given data
+   * Create a Contact Update Request Activity with the given data
    *
    * @param $contact_id  int    the contact to be updated
-   * @param $update      array  the new values
-   * @param $params      array  additional parameters like 'activity_id' for the trigger activity
+   * @param $params      array  the new values
    */
-  public static function createManualContactUpdateActivity($contact_id, $update, $params = array()) {
+  public static function createContactUpdateRequest($contact_id, $params) {
+    $config = CRM_I3val_Configuration::getConfiguration();
+
     // first: load contact
     $contact = civicrm_api3('Contact', 'getsingle', array('id' => $contact_id));
 
-    // generate diff data
-    $activity_data = self::createDiff($contact, $update, CRM_I3val_Configuration::getContactUpdateFields());
+    $activity_data = array();
+    $handlers = $config->getHandlersForEntity('Contact');
+    foreach ($handlers as $handler) {
+      $handler->createData('Contact', $contact_id, $contact, $params, $activity_data);
+    }
+
+    // if no data was created, there is nothing to do...
+    if (empty($activity_data)) {
+      return NULL;
+    }
 
     // add basic activity params
     self::addActivityParams($params, $contact_id, $activity_data);
 
     // add specific activity params
-    // TODO:
-    $activity_data['subject'] = "Manual Contact Updgrade (TODO)";
+    $activity_data['subject'] = E::ts("Contact Update Request");
     $activity_data['activity_type_id'] = CRM_Core_OptionGroup::getValue('activity_type', 'FWTM Contact Update', 'name');
 
     // create activity, reload and return
@@ -45,25 +55,6 @@ class CRM_I3val_Logic {
     return civicrm_api3('Activity', 'getsingle', array('id' => $activity['id']));
   }
 
-
-  /**
-   * Generate the orginal/submitted data for the given fields
-   *
-   * @param $original_data  array the data as it's currently present in DB
-   * @param $submitted_data array the data as it's been submitted
-   * @param $field_specs    array see CRM_I3val_Configuration::getContactUpdateFields()
-   */
-  protected static function createDiff($original_data, $submitted_data, $field_specs) {
-    $diff_data = array();
-    foreach ($field_specs as $field_name => $field_spec) {
-      if (isset($submitted_data[$field_name])) {
-        // an update was submitted
-        $diff_data["{$field_spec['custom_group']}.{$field_name}_submitted"] = $submitted_data[$field_name];
-        $diff_data["{$field_spec['custom_group']}.{$field_name}_original"]  = CRM_Utils_Array::value($field_name, $original_data, '');
-      }
-    }
-    return $diff_data;
-  }
 
   /**
    * Add the generic activity parameters, partly derived from the $params
@@ -89,6 +80,14 @@ class CRM_I3val_Logic {
     $activity_data['source_contact_id'] = CRM_I3val_Configuration::getCurrentUserID();
     $activity_data['target_id'] = $contact_id;
   }
+
+
+
+
+
+
+
+
 
 
   /**
