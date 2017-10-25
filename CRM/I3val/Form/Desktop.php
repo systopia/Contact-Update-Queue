@@ -47,10 +47,11 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
 
     // fetch current activity
     $this->activity_id = $session->getCurrentActivityID();
+    CRM_Utils_System::setTitle(E::ts("Process requested update [%1]", array(1 => $this->activity_id)));
 
     // Check if DONE....
     if (!$this->activity_id) {
-      CRM_Core_Session::setStatus(ts("No more activities pending."), ts('All done!'), 'info');
+      CRM_Core_Session::setStatus(E::ts("No more activities pending."), E::ts('All done!'), 'info');
       CRM_Utils_System::redirect(CRM_Utils_System::url("civicrm/dashboard"));
       return;
     }
@@ -71,7 +72,7 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
       'record_type_id' => 'Activity Targets'));
     if (empty($contact_id)) {
       // NO CONTACT
-      CRM_Core_Session::setStatus(ts("Activity not connected to a contact!"), ts('Error'), 'error');
+      CRM_Core_Session::setStatus(E::ts("Activity not connected to a contact!"), E::ts('Error'), 'error');
       return;
     }
     $this->contact = civicrm_api3('Contact', 'getsingle', array('id' => $contact_id));
@@ -84,8 +85,10 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     $handlers = $configuration->getHandlersForActivityType($this->activity['activity_type_id']);
     $handler_templates = array();
     foreach ($handlers as $handler) {
-      $handler->renderActivityData($this->activity, $this);
-      $handler_templates[] = $handler->getTemplate();
+      if ($handler->hasData($this->activity)) {
+        $handler->renderActivityData($this->activity, $this);
+        $handler_templates[] = $handler->getTemplate();
+      }
     }
     $this->assign('handler_templates', $handler_templates);
 
@@ -93,23 +96,23 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     $this->add(
       'select',
       'postpone',
-      ts('postpone'),
+      E::ts('postpone'),
       $configuration->getPostponeOptions()
     );
 
     $this->addButtons(array(
       array(
         'type' => 'submit',
-        'name' => ts('Apply'),
+        'name' => E::ts('Apply'),
         'isDefault' => TRUE,
       ),
       array(
         'type' => 'flag',
-        'name' => ts('Problem'),
+        'name' => E::ts('Flag Problem'),
       ),
       array(
         'type' => 'postpone',
-        'name' => ts('Postpone'),
+        'name' => E::ts('Postpone for:'),
       ),
     ));
 
@@ -146,14 +149,15 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     switch ($this->command) {
       case 'postpone':
         // Process this later
-        $session->postponeActivity($this->activity_id);
-        CRM_Core_Session::setStatus(ts("Update request has been marked to be reviewed again later"), ts('Postponed!'), 'info');
+        $postpone_option = CRM_Utils_Request::retrieve('postpone', 'String');
+        $session->postponeActivity($this->activity_id, $postpone_option);
+        CRM_Core_Session::setStatus(E::ts("Requested update has been marked to be reviewed again later"), E::ts('Postponed!'), 'info');
         break;
 
       case 'flag':
         // Mark
         $session->flagActivity($this->activity_id);
-        CRM_Core_Session::setStatus(ts("Update request has been flagged."), ts('Flagged!'), 'info');
+        CRM_Core_Session::setStatus(E::ts("Requested update has been flagged as a problem."), E::ts('Flagged!'), 'info');
         break;
 
       case 'submit':
@@ -162,7 +166,7 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
         break;
 
       default:
-        CRM_Core_Session::setStatus(ts("Unkown action."), ts('Error'), 'error');
+        CRM_Core_Session::setStatus(E::ts("Unkown action."), E::ts('Error'), 'error');
         break;
     }
 

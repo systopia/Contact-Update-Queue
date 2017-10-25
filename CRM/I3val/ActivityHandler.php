@@ -69,13 +69,28 @@ abstract class CRM_I3val_ActivityHandler {
   public abstract function createData($entity, $entity_id, $entity_data, $submitted_data, &$activity_data);
 
 
+  /**
+   * Check if this activity has data, i.e. should this panel even be rendered?
+   * Overwrite if wrong
+   */
+  public function hasData($activity) {
+    // simply check if there is an entry with our group_name
+    $sentinel = $this->getCustomGroupName() . '.';
+    $sentinel_length = strlen($sentinel);
+    foreach ($activity as $key => $value) {
+      if ($sentinel == substr($key, 0, $sentinel_length)) {
+        return TRUE;
+      }
+    }
+    return FALSE;
+  }
+
 
   /**
    * Generate the orginal/submitted data for the given fields
    *
    * @param $original_data  array the data as it's currently present in DB
    * @param $submitted_data array the data as it's been submitted
-   * @param $field_specs    array see CRM_I3val_Configuration::getContactUpdateFields()
    */
   protected function createDiff($original_data, $submitted_data) {
     $diff_data = array();

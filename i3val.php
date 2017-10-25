@@ -86,10 +86,12 @@ function i3val_civicrm_enable() {
   CRM_Utils_File::sourceSQLFile($config->dsn, $sqlfile, NULL, false);
 
   // create custom data
+  // TODO: move to configuration
   require_once 'CRM/I3val/CustomData.php';
   $customData = new CRM_I3val_CustomData('de.systopia.contract');
   $customData->syncOptionGroup(__DIR__ . '/resources/activity_types_option_group.json');
   $customData->syncCustomGroup(__DIR__ . '/resources/contact_updates_custom_group.json');
+  $customData->syncCustomGroup(__DIR__ . '/resources/address_updates_custom_group.json');
 }
 
 /**

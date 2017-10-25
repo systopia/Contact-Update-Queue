@@ -92,11 +92,12 @@ class CRM_I3val_Logic {
 
   /**
    * Inject the JavaScript to adjust the activity view
+   * @todo fix
    */
   public static function adjustAcitivityView($activity_id, $activity_type_id) {
     switch ($activity_type_id) {
       case CRM_Core_OptionGroup::getValue('activity_type', 'FWTM Contact Update', 'name'):
-        $fields = CRM_I3val_Configuration::getContactUpdateFields();
+        // $fields = CRM_I3val_Configuration::getContactUpdateFields();
         break;
 
       case CRM_Core_OptionGroup::getValue('activity_type', 'FWTM Mandate Update', 'name'):

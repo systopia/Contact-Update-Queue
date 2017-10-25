@@ -67,6 +67,12 @@ class CRM_I3val_Configuration {
     switch ($entity) {
       case 'Contact':
         $handlers[] = new CRM_I3val_Handler_ContactUpdate();
+        $handlers[] = new CRM_I3val_Handler_AddressUpdate();
+        $handlers[] = new CRM_I3val_Handler_EmailUpdate();
+        break;
+
+      case 'Address':
+        $handlers[] = new CRM_I3val_Handler_AddressUpdate();
         break;
 
       default:
@@ -82,9 +88,7 @@ class CRM_I3val_Configuration {
    */
   public function getHandlersForActivityType($activity_type_id) {
     // TODO:
-    return array(
-      new CRM_I3val_Handler_ContactUpdate()
-    );
+    return $this->getHandlersForEntity('Contact');
   }
 
 
@@ -137,6 +141,14 @@ class CRM_I3val_Configuration {
   }
 
   /**
+   * get the activity status ID meaning "flagged as problem"
+   */
+  public function getErrorStatusID() {
+    // TODO: create a setting for this
+    return 3;
+  }
+
+  /**
    * get options for postpone button
    * format is days => label
    */
@@ -156,32 +168,5 @@ class CRM_I3val_Configuration {
   public function getCurrentUserID() {
     // TODO: sanity checks needed?
     return CRM_Core_Session::getLoggedInContactID();
-  }
-
-  /**
-   * Get an array(field_name => array) of all the
-   * fields that can be recorded in an update activity
-   */
-  public function getContactUpdateFields() {
-    return array(
-      'first_name' => array(
-          'title'        => 'First Name',
-          'type'         => CRM_Utils_Type::T_STRING,
-          'custom_group' => 'fwtm_contact_updates'),
-
-      'last_name' => array(
-          'title'        => 'Last Name',
-          'type'         => CRM_Utils_Type::T_STRING,
-          'custom_group' => 'fwtm_contact_updates'),
-      );
-  }
-
-
-  /**
-   * Get an array(field_name => title) of all the
-   * fields that can be recorded in an update activity
-   */
-  public function getMandateUpdateFields() {
-
   }
 }

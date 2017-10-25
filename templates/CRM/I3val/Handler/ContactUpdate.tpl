@@ -23,7 +23,8 @@
           <td style="vertical-align: middle;">{$i3val_contact_values.$fieldkey.current}</td>
           <td style="vertical-align: middle;">
             {if $fieldkey eq 'birth_date'}
-              {include file="CRM/common/jcalendar.tpl" elementName=birth_date}
+              {* doesn't work: {include file="CRM/common/jcalendar.tpl" elementName=birth_date *}
+              {$form.$input_field.html}
             {else}
               {$form.$input_field.html}
             {/if}

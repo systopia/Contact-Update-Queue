@@ -21,21 +21,20 @@ use CRM_I3val_ExtensionUtil as E;
  * this class will handle performing the changes
  *  that are passed on from the API call
  */
-class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
+class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_ActivityHandler {
 
-  public static $group_name = 'i3val_contact_updates';
+  public static $group_name = 'i3val_address_updates';
   public static $field2label = NULL;
 
   protected static function getField2Label() {
     if (self::$field2label === NULL) {
-      self::$field2label = array( 'first_name'        => E::ts('First Name'),
-                                  'last_name'         => E::ts('Last Name'),
-                                  'organization_name' => E::ts('Organisation Name'),
-                                  'household_name'    => E::ts('Household Name'),
-                                  'prefix'            => E::ts('Prefix'),
-                                  'suffix'            => E::ts('Suffix'),
-                                  'gender'            => E::ts('Gender'),
-                                  'birth_date'        => E::ts('Birth Date'));
+      self::$field2label = array( 'street_address'         => E::ts('Street Address'),
+                                  'postal_code'            => E::ts('Postal Code'),
+                                  'supplemental_address_1' => E::ts('Supplemental Address 1'),
+                                  'supplemental_address_2' => E::ts('Supplemental Address 2'),
+                                  'city'                   => E::ts('City'),
+                                  'country'                => E::ts('Country'),
+                                  'location_type'          => E::ts('Location Type'));
     }
     return self::$field2label;
   }
@@ -52,7 +51,7 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
    * Get the JSON specification file defining the custom group used for this data
    */
   public function getCustomGroupSpeficationFile() {
-    return 'contact_updates_custom_group.json';
+    return 'address_updates_custom_group.json';
   }
 
   /**
@@ -95,7 +94,7 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
     // execute update
     if (!empty($contact_update)) {
       $contact_update['id'] = $contact['id'];
-      error_log("UPDATE contact " . json_encode($contact_update));
+      error_log("UPDATE address " . json_encode($contact_update));
       // civicrm_api3('Contact', 'create', $contact_update);
     }
 
@@ -112,17 +111,8 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
     $values = $this->compileValues(self::$group_name, $field2label, $activity);
     $this->addCurrentValues($values, $form->contact);
 
-    // exceptions for current values
-    if (isset($values['prefix']) && !empty($form->contact['individual_prefix'])) {
-      $values['prefix']['current'] = $form->contact['individual_prefix'];
-    }
-    if (isset($values['suffix']) && !empty($form->contact['individual_suffix'])) {
-      $values['suffix']['current'] = $form->contact['individual_suffix'];
-    }
-
-    $form->assign('i3val_contact_fields', $field2label);
-    $form->assign('i3val_contact_values', $values);
-
+    $form->assign('i3val_address_fields', $field2label);
+    $form->assign('i3val_address_values', $values);
 
     // create input fields and apply checkboxes
     $active_fields = array();
@@ -136,20 +126,14 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
       $active_fields[$fieldname] = $fieldlabel;
 
       // generate input field
-      if (in_array($fieldname, array('prefix', 'suffix', 'gender'))) {
+      if ($fieldname=='country') {
         // add the text input
         $form->add(
           'select',
           "{$fieldname}_applied",
           $fieldlabel,
-          $this->getOptionList($fieldname)
-        );
-      } elseif ($fieldname == 'birth_date') {
-        $form->addDate(
-          "{$fieldname}_applied",
-          $fieldlabel,
-          FALSE,
-          array('formatType' => 'activityDate')
+          $this->getCountryList(),
+          array('class' => 'crm-select2')
         );
       } else {
         // add the text input
@@ -175,75 +159,49 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
       $form->setDefaults(array("{$fieldname}_apply" => 1));
     }
 
-    $form->assign('i3val_active_contact_fields', $active_fields);
+    $form->assign('i3val_active_address_fields', $active_fields);
   }
 
   /**
    * Get the path of the template rendering the form
    */
   public function getTemplate() {
-    return 'CRM/I3val/Handler/ContactUpdate.tpl';
+    return 'CRM/I3val/Handler/AddressUpdate.tpl';
   }
+
 
   /**
    * Calculate the data to be created and add it to the $activity_data Activity.create params
    * @todo specify
    */
   public function createData($entity, $entity_id, $entity_data, $submitted_data, &$activity_data) {
-
-    // resolve prefix/suffix
-    if (!empty($entity_data['individual_prefix'])) {
-      $entity_data['prefix'] = $entity_data['individual_prefix'];
-    }
-    if (!empty($entity_data['individual_suffix'])) {
-      $entity_data['suffix'] = $entity_data['individual_suffix'];
-    }
+    // TODO: entity = Address
 
     $raw_diff = $this->createDiff($entity_data, $submitted_data);
+    if ($raw_diff) {
+      // address updates work differently: if there is a change, add ALL address fields
+      $field_names = $this->getFields();
+      $custom_group_name = $this->getCustomGroupName();
+      foreach ($field_names as $field_name) {
+        $activity_data["{$custom_group_name}.{$field_name}_original"] = CRM_Utils_Array::value($fieldname, $entity_data, '');
 
-    // TODO: sort out special cases (e.g. dates)
-
-    foreach ($raw_diff as $key => $value) {
-      $activity_data[$key] = $value;
+        if (isset($submitted_data[$field_name])) {
+          $activity_data["{$custom_group_name}.{$field_name}_submitted"] = $submitted_data[$field_name];
+        }
+      }
     }
   }
 
+
   /**
-   * Get dropdown lists
+   * Get a list of (eligible) countries
    */
-  protected function getOptionList($fieldname) {
-    $option_group_name = NULL;
-
-    switch ($fieldname) {
-      case 'gender':
-        $option_group_name = 'gender';
-        break;
-
-      case 'prefix':
-        $option_group_name = 'individual_prefix';
-        break;
-
-      case 'suffix':
-        $option_group_name = 'individual_suffix';
-        break;
-
-      default:
-        $option_group_name = $fieldname;
+  protected function getCountryList() {
+    $country_list = array();
+    $countries = CRM_Core_PseudoConstant::country();
+    foreach ($countries as $country_id => $country_name) {
+      $country_list[$country_name] = $country_name;
     }
-
-    $option_query = civicrm_api3('OptionValue', 'get', array(
-      'option_group_id' => $option_group_name,
-      'return'          => 'label',
-      'option.sort'     => 'weight ASC',
-      'option.limit'    => 0
-    ));
-
-    $options = array();
-    foreach ($option_query['values'] as $option_value) {
-      // we want the labels here, because we want then to see in the database
-      $options[$option_value['label']] = $option_value['label'];
-    }
-
-    return $options;
+    return $country_list;
   }
 }

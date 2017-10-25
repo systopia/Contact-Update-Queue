@@ -249,6 +249,7 @@ class CRM_I3val_Session {
             WHERE activity.activity_type_id IN ({$activity_type_ids})
               AND activity.status_id IN ({$activity_status_ids})
               AND i3val_session_cache.session_key IS NULL
+              AND activity.activity_date_time < NOW()
               {$extra_where_clause}
             ORDER BY activity.activity_date_time ASC, activity.id ASC
             {$limit}";
@@ -300,6 +301,7 @@ class CRM_I3val_Session {
     $sql = "SELECT COUNT(activity.id)
             FROM civicrm_activity activity
             WHERE activity.activity_type_id IN ({$activity_type_ids})
+              AND activity.activity_date_time < NOW()
               AND activity.status_id IN ({$activity_status_ids})";
     return CRM_Core_DAO::singleValueQuery($sql);
   }
@@ -307,14 +309,35 @@ class CRM_I3val_Session {
   /**
    * POSTPONE activity
    */
-  public function postponeActivity($activity_id, $mode = NULL) {
+  public function postponeActivity($activity_id, $delay) {
+    error_log("POSTPONING $activity_id by $delay");
     $activity_id = (int) $activity_id;
     if ($activity_id) {
-      // error_log("ENABLE POSTPONE");
-      return;
+      if ($delay) {
+        $new_date = date('YmdHis', strtotime("+{$delay} days"));
+      } else {
+        $new_date = date('YmdHis');
+      }
+
       civicrm_api3('Activity', 'create', array(
         'id'                 => $activity_id,
-        'activity_date_time' => date('YmdHis')
+        'activity_date_time' => $new_date
+      ));
+    }
+  }
+
+  /**
+   * FLAG activity
+   */
+  public function flagActivity($activity_id) {
+    error_log("FLAGGING $activity_id");
+    $activity_id = (int) $activity_id;
+    if ($activity_id) {
+      $configuration = CRM_I3val_Configuration::getConfiguration();
+      $error_status_id = $configuration->getErrorStatusID();
+      civicrm_api3('Activity', 'create', array(
+        'id'        => $activity_id,
+        'status_id' => $error_status_id
       ));
     }
   }

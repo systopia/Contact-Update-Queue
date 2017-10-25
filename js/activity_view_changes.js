@@ -17,7 +17,7 @@
 var i3val_activity_id = INJECTED_ACTIVITY_ID;
 var i3val_activity_type_id = INJECTED_ACTIVITY_TYPE_ID;
 var i3val_panel = INJECTED_PANEL;
-var i3val_selector = "td[id^=fwtm_contact_updates_]";
+var i3val_selector = "td[id^=i3val_contact_updates_]";
 
 
 function i3val_tryDoingUpdate() {
