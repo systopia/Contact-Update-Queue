@@ -34,7 +34,7 @@ class CRM_I3val_Logic {
     $activity_data = array();
     $handlers = $config->getHandlersForEntity('Contact');
     foreach ($handlers as $handler) {
-      $handler->createData('Contact', $contact_id, $contact, $params, $activity_data);
+      $handler->generateDiffData('Contact', $contact_id, $contact, $params, $activity_data);
     }
 
     // if no data was created, there is nothing to do...

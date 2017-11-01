@@ -67,12 +67,16 @@ class CRM_I3val_Configuration {
     switch ($entity) {
       case 'Contact':
         $handlers[] = new CRM_I3val_Handler_ContactUpdate();
-        $handlers[] = new CRM_I3val_Handler_AddressUpdate();
+        // $handlers[] = new CRM_I3val_Handler_AddressUpdate();
         $handlers[] = new CRM_I3val_Handler_EmailUpdate();
         break;
 
       case 'Address':
         $handlers[] = new CRM_I3val_Handler_AddressUpdate();
+        break;
+
+      case 'Email':
+        $handlers[] = new CRM_I3val_Handler_EmailUpdate();
         break;
 
       default:

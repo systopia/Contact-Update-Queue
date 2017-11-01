@@ -76,6 +76,7 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
       return;
     }
     $this->contact = civicrm_api3('Contact', 'getsingle', array('id' => $contact_id));
+    $this->add('hidden', 'contact_id', $contact_id);
 
     $this->renderActivity($this->activity);
     $this->assign('activity', $this->activity);
@@ -222,37 +223,28 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
    */
   protected function applyChanges() {
     // extract changes
-    $changes = array();
     $values  = $_REQUEST; // TODO: why doesn't $this->exportValues(); work?
     $objects = array('contact' => $this->contact, 'activity' => $this->activity);
 
     $configuration = CRM_I3val_Configuration::getConfiguration();
+    $errors = array();
+    $activity_update = array();
     $handlers = $configuration->getHandlersForActivityType($this->activity['activity_type_id']);
     foreach ($handlers as $handler) {
-      $handler_fields = $handler->getFields();
-      foreach ($handler_fields as $field_name) {
-        if (!empty($values["{$field_name}_apply"])) {
-          $changes[$field_name] = $values["{$field_name}_applied"];
-        }
+      // first: verify changes
+      $handler_errors = $handler->verifyChanges($this->activity, $values, $objects);
+      if (empty($errors)) {
+        // do the update
+        $changed_fields = $handler->applyChanges($this->activity, $values, $objects);
+        $activity_update = array_merge($activity_update, $changed_fields);
+      } else {
+        // collect the errors
+        $errors = array_merge($errors, $handler_errors);
       }
     }
-    error_log("CHANGES " . json_encode($changes));
 
-    // verify changes
-    // TODO: move to validate function
-    $errors = array();
-    foreach ($handlers as $handler) {
-      $errors = array_merge($errors, $handler->verifyChanges($this->activity, $changes, $objects));
-    }
     if (!empty($errors)) {
-      // TODO: error handling
-    }
-
-    // apply changes
-    $activity_update = array();
-    foreach ($handlers as $handler) {
-      $changed_fields = $handler->applyChanges($this->activity, $changes, $objects);
-      $activity_update = array_merge($activity_update, $changed_fields);
+      // TODO: Error handling
     }
 
     // update the acvitiy

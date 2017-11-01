@@ -67,7 +67,7 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
    *
    * @return array $key -> error message
    */
-  public function verifyChanges($activity, $changes, $objects = array()) {
+  public function verifyChanges($activity, $values, $objects = array()) {
     // TODO: check?
     return array();
   }
@@ -77,11 +77,13 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
    *
    * @return array with changes to the activity
    */
-  public function applyChanges($activity, $changes, $objects = array()) {
+  public function applyChanges($activity, $values, $objects = array()) {
+    // TODO: rework
+
     $activity_update = array();
     $contact_update = array();
     $contact = $objects['contact'];
-    $my_changes = $this->getMyChanges($changes);
+    $my_changes = $this->getMyChanges($values);
 
     // compile update
     foreach ($my_changes as $fieldname => $value) {
@@ -189,7 +191,7 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
    * Calculate the data to be created and add it to the $activity_data Activity.create params
    * @todo specify
    */
-  public function createData($entity, $entity_id, $entity_data, $submitted_data, &$activity_data) {
+  public function generateDiffData($entity, $entity_id, $entity_data, $submitted_data, &$activity_data) {
 
     // resolve prefix/suffix
     if (!empty($entity_data['individual_prefix'])) {

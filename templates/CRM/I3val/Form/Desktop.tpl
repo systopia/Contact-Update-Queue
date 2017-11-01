@@ -29,6 +29,9 @@
 </style>
 {/literal}
 
+{* hidden fields *}
+{$form.contact_id.html}
+
 {* header with progress bar *}
 <div id="progressbar" class="ui-progressbar">
   <div class="progress-label"></div>
@@ -111,7 +114,6 @@
   {include file="CRM/common/formButtons.tpl" location="bottom"}
   {$form.postpone.html}
 </div>
-
 
 <script type="text/javascript">
 // create progress bar

@@ -33,7 +33,7 @@ abstract class CRM_I3val_ActivityHandler {
    *
    * @return array $key -> error message
    */
-  public abstract function verifyChanges($activity, $changes, $objects = array());
+  public abstract function verifyChanges($activity, $values, $objects = array());
 
   /**
    * Get the JSON specification file defining the custom group used for this data
@@ -50,7 +50,7 @@ abstract class CRM_I3val_ActivityHandler {
    *
    * @return array with changes to the activity
    */
-  public abstract function applyChanges($activity, $changes, $objects = array());
+  public abstract function applyChanges($activity, $values, $objects = array());
 
   /**
    * Load and assign necessary data to the form
@@ -66,7 +66,7 @@ abstract class CRM_I3val_ActivityHandler {
    * Calculate the data to be created and add it to the $activity_data Activity.create params
    * @todo specify
    */
-  public abstract function createData($entity, $entity_id, $entity_data, $submitted_data, &$activity_data);
+  public abstract function generateDiffData($entity, $entity_id, $entity_data, $submitted_data, &$activity_data);
 
 
   /**
@@ -109,6 +109,21 @@ abstract class CRM_I3val_ActivityHandler {
     return $diff_data;
   }
 
+  /**
+   * Extract the values of a certain type ('original', 'submitted', 'applied')
+   */
+  protected function getMyValues($activity, $type = 'submitted') {
+    $data       = array();
+    $group_name = $this->getCustomGroupName();
+    $fields     = $this->getFields();
+    foreach ($fields as $fieldname) {
+      $key = "{$group_name}.{$fieldname}_{$type}";
+      if (isset($activity[$key])) {
+        $data[$fieldname] = $activity[$key];
+      }
+    }
+    return $data;
+  }
 
   /**
    * Compile the activity data into a structure compatible
