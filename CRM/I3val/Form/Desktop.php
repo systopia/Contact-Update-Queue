@@ -47,7 +47,7 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
 
     // fetch current activity
     $this->activity_id = $session->getCurrentActivityID();
-    CRM_Utils_System::setTitle(E::ts("Process requested update [%1]", array(1 => $this->activity_id)));
+    CRM_Utils_System::setTitle(E::ts("Processing requested update #%1", array(1 => $this->activity_id)));
 
     // Check if DONE....
     if (!$this->activity_id) {

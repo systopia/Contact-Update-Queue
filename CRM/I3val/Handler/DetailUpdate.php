@@ -27,6 +27,12 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
   static $_location_types = NULL;
 
   /**
+   * Get the main attributes. If these are not present,
+   *  no record at all is created
+   */
+  abstract protected function getMainFields();
+
+  /**
    * get the general processing options
    */
   protected function getProcessingOptions($data_submitted, $data_existing, $attribute) {
@@ -110,7 +116,7 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
    * present, that 'location_type' and 'location_type_id' are
    * properly set
    */
-  protected function resolveLocationType(&$data) {
+  protected function resolveLocationType(&$data, $add_default = FALSE) {
     if (!empty($data['location_type_id'])) {
       if (is_numeric($data['location_type_id'])) {
         $location_type = $this->getLocationTypeByID($data['location_type_id']);
@@ -126,6 +132,13 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
       }
     } elseif (!empty($data['location_type'])) {
       $location_type = $this->getMatchingLocationType($data['location_type']);
+      $data['location_type_id'] = $location_type['id'];
+      $data['location_type']    = $location_type['display_name'];
+    }
+
+    if (empty($data['location_type_id']) && $add_default) {
+      // no location type set -> add default
+      $location_type = $this->getDefaultLocationType();
       $data['location_type_id'] = $location_type['id'];
       $data['location_type']    = $location_type['display_name'];
     }
@@ -151,12 +164,32 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
    *  clients need to pass detail entity, NOT contact
    */
   public function generateDiffData($entity, $entity_id, $entity_data, $submitted_data, &$activity_data) {
-    $raw_diff = $this->createDiff($entity_data, $submitted_data);
+    $diff_data         = array();
+    $main_attributes   = $this->getMainFields();
+    $all_attributes    = $this->getFields();
+    $custom_group_name = $this->getCustomGroupName();
 
-    // todo exception for location type
+    // first: check all main attriutes
+    foreach ($main_attributes as $field_name) {
+      if (isset($submitted_data[$field_name])) {
+        // an update was submitted
+        $diff_data["{$custom_group_name}.{$field_name}_submitted"] = $submitted_data[$field_name];
+        $diff_data["{$custom_group_name}.{$field_name}_original"]  = CRM_Utils_Array::value($field_name, $original_data, '');
+      }
+    }
 
-    foreach ($raw_diff as $key => $value) {
-      $activity_data[$key] = $value;
+    if (!empty($diff_data)) {
+      // there is something there -> run it again
+      foreach ($all_attributes as $field_name) {
+        if (isset($submitted_data[$field_name])) {
+          // an update was submitted
+          $original_value = CRM_Utils_Array::value($field_name, $original_data, '');
+          if (in_array($field_name, $main_attributes) || ($submitted_data[$field_name] != $original_value)) {
+            $activity_data["{$custom_group_name}.{$field_name}_submitted"] = $submitted_data[$field_name];
+            $activity_data["{$custom_group_name}.{$field_name}_original"]  = $original_value;
+          }
+        }
+      }
     }
   }
 }
