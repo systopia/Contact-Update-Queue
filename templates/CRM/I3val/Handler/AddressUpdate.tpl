@@ -27,5 +27,15 @@
         {/foreach}
       </tbody>
     </table>
+
+    <hr/>
+
+    {$form.i3val_email_updates_address_id.html}
+
+    <div class="crm-section">
+      <div class="label">{$form.i3val_address_updates_action.label}</div>
+      <div class="content">{$form.i3val_address_updates_action.html}</div>
+      <div class="clear"></div>
+    </div>
   </div>
 </div>

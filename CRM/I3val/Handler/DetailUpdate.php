@@ -36,15 +36,21 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
    * get the general processing options
    */
   protected function getProcessingOptions($data_submitted, $data_existing, $attribute) {
+    if (isset($data_submitted[$attribute])) {
+      $name = "'{$data_submitted[$attribute]}'";
+    } else {
+      $name = $attribute;
+    }
+
     $options = array();
-    $options['add']         = E::ts("Add '%1'", array(1 => $data_submitted[$attribute]));
-    $options['add_primary'] = E::ts("Add '%1' as primary", array(1 => $data_submitted[$attribute]));
+    $options['add']         = E::ts("Add '%1'", array(1 => $name));
+    $options['add_primary'] = E::ts("Add '%1' as primary", array(1 => $name));
 
     if ($data_existing) {
       $options['update'] = E::ts("Overwrite '%1'", array(1 => $data_existing[$attribute]));
     }
 
-    $options['discard']   = E::ts("Discard '%1' (do nothing)", array(1 => $data_submitted[$attribute]));
+    $options['discard']   = E::ts("Discard '%1' (do nothing)", array(1 => $name));
     $options['duplicate'] = E::ts("Already Exists (do nothing)");
     return $options;
   }
@@ -112,6 +118,14 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
   }
 
   /**
+   * Resolve the text field names (e.g. 'location_type')
+   *  to their ID representations ('location_type_id').
+   */
+  protected function resolveFields(&$data, $add_default = FALSE) {
+    $this->resolveLocationType($data, $add_default);
+  }
+
+  /**
    * make sure that if there is any location_type data
    * present, that 'location_type' and 'location_type_id' are
    * properly set
@@ -141,6 +155,67 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
       $location_type = $this->getDefaultLocationType();
       $data['location_type_id'] = $location_type['id'];
       $data['location_type']    = $location_type['display_name'];
+    }
+  }
+
+  /**
+   * extract all of my fields and apply to update
+   */
+  protected function applyUpdateData(&$update, $values, $target_prefix = '', $source_suffix = '_applied') {
+    $fields = $this->getFields();
+    foreach ($fields as $field_name) {
+      $key = "{$field_name}{$source_suffix}";
+      if (isset($values[$key])) {
+        $update["{$target_prefix}{$field_name}"] = $values[$key];
+      }
+    }
+  }
+
+  /**
+   * compare all main fields of the two entities
+   *
+   * @return TRUE if equal
+   */
+  protected function hasEqualMainFields($entity1, $entity2, $identical = FALSE) {
+    $main_fields = $this->getMainFields();
+    foreach ($main_fields as $field_name) {
+      $entity1_value = CRM_Utils_Array::value($field_name, $entity1, '');
+      $entity2_value = CRM_Utils_Array::value($field_name, $entity2, '');
+      if (!$identical) {
+        $entity1_value = strtolower(trim($entity1_value));
+        $entity2_value = strtolower(trim($entity2_value));
+      }
+      if ($entity1_value != $entity2_value) {
+        return FALSE;
+      }
+    }
+    return TRUE;
+  }
+
+  /**
+   * Compare all main fields of the two entities
+   *  using similar_text()
+   *
+   * @return TRUE if equal
+   */
+  protected function getMainFieldSimilarity($entity1, $entity2) {
+    $similarity_sum   = 0.0;
+    $similarity_count = 0;
+
+    $main_fields = $this->getMainFields();
+    foreach ($main_fields as $field_name) {
+      $entity1_value = CRM_Utils_Array::value($field_name, $entity1, '');
+      $entity2_value = CRM_Utils_Array::value($field_name, $entity2, '');
+      // TODO: exclude empty strings similiarty?
+      similar_text($entity1_value, $entity2_value, $similarity);
+      $similarity_sum   += $similarity;
+      $similarity_count += 1;
+    }
+
+    if ($similarity_count) {
+      return ((double) $similarity_sum / (double) $similarity_count);
+    } else {
+      return 0;
     }
   }
 

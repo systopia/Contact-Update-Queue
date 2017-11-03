@@ -21,7 +21,7 @@ use CRM_I3val_ExtensionUtil as E;
  * this class will handle performing the changes
  *  that are passed on from the API call
  */
-class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_ActivityHandler {
+class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
 
   public static $group_name = 'i3val_address_updates';
   public static $field2label = NULL;
@@ -45,6 +45,19 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_ActivityHandler {
   public function getFields() {
     $field2label = self::getField2Label();
     return array_keys($field2label);
+  }
+
+  /**
+   * Get the main attributes. If these are not present,
+   *  no record at all is created
+   */
+  protected function getMainFields() {
+    return array('street_address',
+                 'postal_code',
+                 'supplemental_address_1',
+                 'supplemental_address_2',
+                 'city',
+                 'country');
   }
 
   /**
@@ -77,26 +90,43 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_ActivityHandler {
    * @return array with changes to the activity
    */
   public function applyChanges($activity, $values, $objects = array()) {
-    // TODO: rework
     $activity_update = array();
-    $contact_update = array();
-    $contact = $objects['contact'];
-    $my_changes = $this->getMyChanges($values);
 
-    // compile update
-    foreach ($my_changes as $fieldname => $value) {
-      if ($value != $contact[$fieldname]) {
-        $contact_update[$fieldname] = $value;
-      }
-      $activity_update[self::$group_name . ".{$fieldname}_submitted"] = $value;
+    $address_update = array();
+    $action = CRM_Utils_Array::value('i3val_address_updates_action', $values, '');
+    switch ($action) {
+      case 'add_primary':
+        $address_update['is_primary'] = 1;
+      case 'add':
+        $activity_update[self::$group_name . ".action"] = E::ts("New address added.");
+        $address_update['contact_id'] = $values['contact_id'];
+        $this->applyUpdateData($address_update, $values);
+        $this->applyUpdateData($activity_update, $values, self::$group_name . '.');
+        break;
+
+      case 'update':
+        $activity_update[self::$group_name . ".action"]= E::ts("Address corrected");
+        $address_update['id']         = $values['i3val_address_updates_address_id'];
+        $address_update['contact_id'] = $values['contact_id']; // not necessary, but causes notices in 4.6
+        $this->applyUpdateData($address_update, $values);
+        $this->applyUpdateData($activity_update, $values, self::$group_name . '.');
+        break;
+
+      case 'duplicate':
+        $activity_update[self::$group_name . ".action"] = E::ts("Entry already existed.");
+        break;
+
+      default:
+      case 'discard':
+        $activity_update[self::$group_name . ".action"] = E::ts("Data discarded.");
+        break;
     }
-    $contact = $objects['contact'];
 
-    // execute update
-    if (!empty($contact_update)) {
-      $contact_update['id'] = $contact['id'];
-      error_log("UPDATE address " . json_encode($contact_update));
-      // civicrm_api3('Contact', 'create', $contact_update);
+    if (!empty($address_update)) {
+      // perform update
+      error_log("ADDRESS UPDATE: " . json_encode($address_update));
+      $this->resolveLocationType($address_update);
+      civicrm_api3('Address', 'create', $address_update);
     }
 
     return $activity_update;
@@ -110,7 +140,18 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_ActivityHandler {
   public function renderActivityData($activity, $form) {
     $field2label = self::getField2Label();
     $values = $this->compileValues(self::$group_name, $field2label, $activity);
-    $this->addCurrentValues($values, $form->contact);
+
+    // find existing address
+    $default_action  = 'add';
+    $address_submitted = $this->getMyValues($activity);
+    $address_submitted['contact_id'] = $form->contact['id'];
+    $existing_address = $this->getExistingAddress($address_submitted, $default_action);
+    if ($existing_address) {
+      $form->add('hidden', 'i3val_address_updates_address_id', $existing_address['id']);
+      $this->addCurrentValues($values, $existing_address);
+    } else {
+      $form->add('hidden', 'i3val_address_updates_address_id', 0);
+    }
 
     $form->assign('i3val_address_fields', $field2label);
     $form->assign('i3val_address_values', $values);
@@ -118,47 +159,59 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_ActivityHandler {
     // create input fields and apply checkboxes
     $active_fields = array();
     foreach ($field2label as $fieldname => $fieldlabel) {
-      // if there is no values, omit field
-      if (empty($values[$fieldname]['submitted'])) {
-        continue;
-      }
+      // LOCATION TYPE is always there...
+      if ($fieldname=='location_type') {
+        $active_fields[$fieldname] = $fieldlabel;
 
-      // this field has data:
-      $active_fields[$fieldname] = $fieldlabel;
-
-      // generate input field
-      if ($fieldname=='country') {
         // add the text input
         $form->add(
           'select',
           "{$fieldname}_applied",
           $fieldlabel,
-          $this->getCountryList(),
+          $this->getLocationTypeList(),
           array('class' => 'crm-select2')
         );
+        if (isset($values[$fieldname]['submitted'])) {
+          $matching_location_type = $this->getMatchingLocationType($values[$fieldname]['submitted']);
+        } else {
+          $matching_location_type = $this->getDefaultLocationType();
+        }
+        $form->setDefaults(array("{$fieldname}_applied" => $matching_location_type['id']));
+
       } else {
-        // add the text input
+        // if there is no values, omit field
+        if (empty($values[$fieldname]['submitted'])) {
+          continue;
+        }
+
+        // this field has data:
+        $active_fields[$fieldname] = $fieldlabel;
+
         $form->add(
           'text',
           "{$fieldname}_applied",
           $fieldlabel
         );
-      }
 
-      if (!empty($values[$fieldname]['applied'])) {
-        $form->setDefaults(array("{$fieldname}_applied" => $values[$fieldname]['applied']));
-      } else {
-        $form->setDefaults(array("{$fieldname}_applied" => $values[$fieldname]['submitted']));
+        // calculate proposed value
+        if (!empty($values[$fieldname]['applied'])) {
+          $form->setDefaults(array("{$fieldname}_applied" => $values[$fieldname]['applied']));
+        } else {
+          $form->setDefaults(array("{$fieldname}_applied" => $values[$fieldname]['submitted']));
+        }
       }
-
-      // add the apply checkbox
-      $form->add(
-        'checkbox',
-        "{$fieldname}_apply",
-        $fieldlabel
-      );
-      $form->setDefaults(array("{$fieldname}_apply" => 1));
     }
+
+    // add processing options
+    $form->add(
+      'select',
+      "i3val_address_updates_action",
+      E::ts("Action"),
+      $this->getProcessingOptions($address_submitted, $existing_address, 'address'),
+      TRUE,
+      array('class' => 'huge')
+    );
+    $form->setDefaults(array("i3val_address_updates_action" => $default_action));
 
     $form->assign('i3val_active_address_fields', $active_fields);
   }
@@ -176,21 +229,33 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_ActivityHandler {
    * @todo specify
    */
   public function generateDiffData($entity, $entity_id, $entity_data, $submitted_data, &$activity_data) {
-    // TODO: entity = Address
+    // make sure the location type is resolved
+    $this->resolveLocationType($entity_data);
+    $this->resolveLocationType($submitted_data);
 
-    $raw_diff = $this->createDiff($entity_data, $submitted_data);
-    if ($raw_diff) {
-      // address updates work differently: if there is a change, add ALL address fields
-      $field_names = $this->getFields();
-      $custom_group_name = $this->getCustomGroupName();
-      foreach ($field_names as $field_name) {
-        $activity_data["{$custom_group_name}.{$field_name}_original"] = CRM_Utils_Array::value($fieldname, $entity_data, '');
+    switch ($entity) {
+      case 'Contact':
+        $submitted_data['contact_id'] = $entity_id;
+        $address = $this->getExistingAddress($submitted_data);
+        parent::generateDiffData('Address', $address['id'], $address, $submitted_data, $activity_data);
+        break;
 
-        if (isset($submitted_data[$field_name])) {
-          $activity_data["{$custom_group_name}.{$field_name}_submitted"] = $submitted_data[$field_name];
-        }
-      }
+      case 'Address':
+        parent::generateDiffData('Address', $entity_id, $entity_data, $submitted_data, $activity_data);
+        break;
+
+      default:
+        // nothing to do
+        break;
     }
+  }
+
+  /**
+   * Resolve the text field names (e.g. 'location_type')
+   *  to their ID representations ('location_type_id').
+   */
+  protected function resolveFields(&$data, $add_default = FALSE) {
+    parent::resolveFields($data, $add_default);
   }
 
 
@@ -204,5 +269,73 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_ActivityHandler {
       $country_list[$country_name] = $country_name;
     }
     return $country_list;
+  }
+
+  /**
+   * find a matching address based on
+   *  address, location_type (and contact_id obviously)
+   */
+  protected function getExistingAddress($values, &$default_action) {
+    $address_submitted = array();
+    $this->applyUpdateData($address_update, $values);
+    if (empty($address_submitted) || empty($values['contact_id'])) {
+      // there's nothing we can do
+      return NULL;
+    }
+
+    // first, make sure that the location type is resolved
+    $this->resolveLocationType($address_submitted, TRUE);
+
+    // then: load all addresss
+    $query = civicrm_api3('Address', 'get', array(
+      'contact_id'   => $values['contact_id'],
+      'option.limit' => 0,
+      'option.sort'  => 'is_primary desc',
+      'sequential'   => 1));
+    $addresss = $query['values'];
+
+    // first: find by exact values
+    foreach ($addresss as $address) {
+      if ($this->hasEqualMainFields($address_submitted, $address)) {
+        $this->resolveLocationType($address);
+        if ($address_submitted['location_type'] == $address['location_type']) {
+          // even the location type is identical
+          if ($this->hasEqualMainFields($address_submitted, $address, TRUE)) {
+            $default_action = 'duplicate';
+          } else {
+            $default_action = 'update';
+          }
+        } else {
+          // location type differs
+          $default_action = 'update';
+        }
+        return $address;
+      }
+    }
+
+    // second: find by location type
+    if (isset($values['location_type_id'])) {
+      foreach ($addresss as $address) {
+        if ($values['location_type_id'] == $address['location_type_id']) {
+          $this->resolveLocationType($address);
+          $default_action = 'update';
+          return $address;
+        }
+      }
+    }
+
+    // third: find by similarity
+    $best_matching_address = NULL;
+    $highest_similarity    = 0;
+    foreach ($addresss as $address) {
+      $similarity = $this->getMainFieldSimilarity($address_submitted, $address);
+      if ($similarity > $highest_similarity) {
+        $highest_similarity = $similarity;
+        $best_matching_address = $address;
+      }
+    }
+    $this->resolveLocationType($best_matching_address);
+    $default_action = 'add';
+    return $best_matching_address;
   }
 }
