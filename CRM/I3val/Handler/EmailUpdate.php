@@ -176,6 +176,7 @@ class CRM_I3val_Handler_EmailUpdate extends CRM_I3val_Handler_DetailUpdate {
           "{$form_fieldname}_applied",
           $fieldlabel,
           $this->getLocationTypeList(),
+          FALSE,
           array('class' => 'crm-select2')
         );
 
@@ -217,7 +218,7 @@ class CRM_I3val_Handler_EmailUpdate extends CRM_I3val_Handler_DetailUpdate {
       E::ts("Action"),
       $this->getProcessingOptions($email_submitted, $existing_email, 'email'),
       TRUE,
-      array('class' => 'huge')
+      array('class' => 'huge crm-select2')
     );
     $form->setDefaults(array("i3val_email_updates_action" => $default_action));
 

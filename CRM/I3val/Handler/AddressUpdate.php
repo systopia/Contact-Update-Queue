@@ -104,6 +104,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     }
 
     $address_update = array();
+    $prefix = $this->getKey() . '_';
     $action = CRM_Utils_Array::value('i3val_address_updates_action', $values, '');
     switch ($action) {
       case 'add_primary':
@@ -111,16 +112,16 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
       case 'add':
         $activity_update[self::$group_name . ".action"] = E::ts("New address added.");
         $address_update['contact_id'] = $values['contact_id'];
-        $this->applyUpdateData($address_update, $values, '%s', '%s_applied');
-        $this->applyUpdateData($activity_update, $values, self::$group_name . '.%s_applied', '%s_applied');
+        $this->applyUpdateData($address_update, $values, '%s', "{$prefix}%s_applied");
+        $this->applyUpdateData($activity_update, $values, self::$group_name . '.%s_applied', "{$prefix}%s_applied");
         break;
 
       case 'update':
         $activity_update[self::$group_name . ".action"]= E::ts("Address updated");
         $address_update['id']         = $values['i3val_address_updates_address_id'];
         $address_update['contact_id'] = $values['contact_id']; // not necessary, but causes notices in 4.6
-        $this->applyUpdateData($address_update, $values, '%s', '%s_applied');
-        $this->applyUpdateData($activity_update, $values, self::$group_name . '.%s_applied', '%s_applied');
+        $this->applyUpdateData($address_update, $values, '%s', "{$prefix}%s_applied");
+        $this->applyUpdateData($activity_update, $values, self::$group_name . '.%s_applied', "{$prefix}%s_applied");
         break;
 
       case 'duplicate':
@@ -150,6 +151,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
    */
   public function renderActivityData($activity, $form) {
     $field2label = self::getField2Label();
+    $prefix = $this->getKey() . '_';
     $values = $this->compileValues(self::$group_name, $field2label, $activity);
 
     // find existing address
@@ -157,6 +159,10 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     $address_submitted = $this->getMyValues($activity);
     $address_submitted['contact_id'] = $form->contact['id'];
     $existing_address = $this->getExistingAddress($address_submitted, $default_action);
+    error_log("FOUND " . json_encode($existing_address));
+    $this->resolveFields($existing_address);
+    $this->resolveFields($address_submitted);
+
     if ($existing_address) {
       $form->add('hidden', 'i3val_address_updates_address_id', $existing_address['id']);
       $this->addCurrentValues($values, $existing_address);
@@ -164,22 +170,26 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
       $form->add('hidden', 'i3val_address_updates_address_id', 0);
     }
 
+    $this->applyUpdateData($form_values, $values, "{$prefix}%s");
     $form->assign('i3val_address_fields', $field2label);
-    $form->assign('i3val_address_values', $values);
+    $form->assign('i3val_address_values', $form_values);
 
     // create input fields and apply checkboxes
     $active_fields = array();
     foreach ($field2label as $fieldname => $fieldlabel) {
+      $form_fieldname = "{$prefix}{$fieldname}";
+
       // LOCATION TYPE is always there...
       if ($fieldname=='location_type') {
-        $active_fields[$fieldname] = $fieldlabel;
+        $active_fields[$form_fieldname] = $fieldlabel;
 
         // add the text input
         $form->add(
           'select',
-          "{$fieldname}_applied",
+          "{$form_fieldname}_applied",
           $fieldlabel,
           $this->getLocationTypeList(),
+          FALSE,
           array('class' => 'crm-select2')
         );
         if (isset($values[$fieldname]['submitted'])) {
@@ -187,7 +197,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
         } else {
           $matching_location_type = $this->getDefaultLocationType();
         }
-        $form->setDefaults(array("{$fieldname}_applied" => $matching_location_type['id']));
+        $form->setDefaults(array("{$form_fieldname}_applied" => $matching_location_type['id']));
 
       } else {
         // if there is no values, omit field
@@ -195,20 +205,36 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
           continue;
         }
 
-        // this field has data:
-        $active_fields[$fieldname] = $fieldlabel;
+        $active_fields[$form_fieldname] = $fieldlabel;
+        if ($fieldname == 'country') {
+          $form->add(
+            'select',
+            "{$form_fieldname}_applied",
+            $fieldlabel,
+            $this->getCountryList(),
+            FALSE,
+            array('class' => 'crm-select2')
+          );
+          if (isset($address_submitted['country'])) {
+            $form->setDefaults(array("{$form_fieldname}_applied" => $address_submitted['country']));
+          } else {
+            $default_country = $this->getDefaultCountryName();
+            $form->setDefaults(array("{$form_fieldname}_applied" => $default_country));
+          }
 
-        $form->add(
-          'text',
-          "{$fieldname}_applied",
-          $fieldlabel
-        );
-
-        // calculate proposed value
-        if (!empty($values[$fieldname]['applied'])) {
-          $form->setDefaults(array("{$fieldname}_applied" => $values[$fieldname]['applied']));
         } else {
-          $form->setDefaults(array("{$fieldname}_applied" => $values[$fieldname]['submitted']));
+          $form->add(
+            'text',
+            "{$form_fieldname}_applied",
+            $fieldlabel
+          );
+
+          // calculate proposed value
+          if (!empty($values[$fieldname]['applied'])) {
+            $form->setDefaults(array("{$form_fieldname}_applied" => $values[$fieldname]['applied']));
+          } else {
+            $form->setDefaults(array("{$form_fieldname}_applied" => $values[$fieldname]['submitted']));
+          }
         }
       }
     }
@@ -220,7 +246,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
       E::ts("Action"),
       $this->getProcessingOptions($address_submitted, $existing_address, 'address'),
       TRUE,
-      array('class' => 'huge')
+      array('class' => 'huge crm-select2')
     );
     $form->setDefaults(array("i3val_address_updates_action" => $default_action));
 
@@ -242,7 +268,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
   public function generateDiffData($entity, $entity_id, $entity_data, $submitted_data, &$activity_data) {
     // make sure the location type is resolved
     $this->resolveFields($entity_data);
-    $this->resolveFields($submitted_data);
+    parent::resolveFields($submitted_data); // don't resolve country
 
     switch ($entity) {
       case 'Contact':
@@ -262,14 +288,124 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
   }
 
   /**
+   * Get the country ID based on a string
+   */
+  protected function getCountryID($country) {
+    $countryId2Name = CRM_Core_PseudoConstant::country();
+
+    if (empty($country)) {
+      return NULL;
+
+    } elseif (is_numeric($country)) {
+      if (isset($countryId2Name[$country])) {
+        return $country;
+      } else {
+        // invalid ID
+        return NULL;
+      }
+
+    } elseif (strlen($country) == 2) {
+      // two characters? maybe it's an iso code
+      $country_id = $this->getCountryIDbyCode($country);
+      if (!empty($country_id)) {
+        return $country_id;
+      }
+
+    } else {
+      // try to find it as a name match
+      foreach ($countryId2Name as $country_id=> $country_name) {
+        if (strtolower($country) == strtolower($country_name)) {
+          return $country_id;
+        }
+      }
+
+      // if this didn't help, try by similarity
+      $max_similarity = 0.0;
+      $best_match     = NULL;
+
+      foreach ($countryId2Name as $country_id=> $country_name) {
+        similar_text($country, $country_name, $similarity);
+        if ($similarity > $max_similarity) {
+          $max_similarity = $similarity;
+          $best_match = $country_id;
+        }
+      }
+      return $best_match;
+    }
+
+    return NULL;
+  }
+
+  /**
+   * get a list of the two-digit country code => country_id
+   */
+  protected function getCountryIDbyCode($code) {
+    $country_code = substr(strtoupper($code), 0, 2);
+
+    if (isset(self::$_countryCode2Id[$country_code])) {
+      // cache hit
+      return self::$_countryCode2Id[$country_code];
+
+    } else {
+      // we have to do the lookup
+      $lookup = civicrm_api3('Country', 'get', array(
+        'iso_code'     => $country_code,
+        'option.limig' => 0,
+        'return'       => 'id'));
+      if (empty($lookup['id'])) {
+        self::$_countryCode2Id[$country_code] = 0;
+      } else {
+        self::$_countryCode2Id[$country_code] = $lookup['id'];
+      }
+      return self::$_countryCode2Id[$country_code];
+    }
+  }
+
+  /**
    * Resolve the text field names (e.g. 'location_type')
    *  to their ID representations ('location_type_id').
    */
   protected function resolveFields(&$data, $add_default = FALSE) {
     parent::resolveFields($data, $add_default);
-    // TODO: resolve country ID?
+
+    // resolve country/country_id (country_id takes preference)
+    $countryId2Name = CRM_Core_PseudoConstant::country();
+    if (!empty($data['country_id'])) {
+      $country_id = $this->getCountryID($data['country_id']);
+      if ($country_id) {
+        $data['country_id'] = $country_id;
+        $data['country']    = $countryId2Name[$country_id];
+      } else {
+        unset($data['country_id']);
+      }
+
+    } elseif (!empty($data['country'])) {
+      $country_id = $this->getCountryID($data['country']);
+      if ($country_id) {
+        $data['country_id'] = $country_id;
+        $data['country']    = $countryId2Name[$country_id];
+      } else {
+        unset($data['country']);
+      }
+    }
   }
 
+  /**
+   * get the default country
+   */
+  protected function getDefaultCountryID() {
+    $config = CRM_Core_Config::singleton();
+    return $config->defaultContactCountry;
+  }
+
+  /**
+   * get the default country
+   */
+  protected function getDefaultCountryName() {
+    $country_id = $this->getDefaultCountryID();
+    $countryId2Name = CRM_Core_PseudoConstant::country();
+    return $countryId2Name[$country_id];
+  }
 
   /**
    * Get a list of (eligible) countries
@@ -289,7 +425,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
    */
   protected function getExistingAddress($values, &$default_action) {
     $address_submitted = array();
-    $this->applyUpdateData($address_update, $values);
+    $this->applyUpdateData($address_submitted, $values);
     if (empty($address_submitted) || empty($values['contact_id'])) {
       // there's nothing we can do
       return NULL;
