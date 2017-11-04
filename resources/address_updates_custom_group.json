@@ -264,6 +264,62 @@
       "is_search_range": "1",
       "is_active": "1",
       "is_view": "1"
+    },
+    {
+      "_lookup": ["column_name", "custom_group_id"],
+      "_translate": ["label"],
+      "name": "location_type_original",
+      "column_name": "location_type_original",
+      "label": "Location Type (original)",
+      "data_type": "String",
+      "html_type": "Text",
+      "is_required": "0",
+      "is_searchable": "1",
+      "is_search_range": "0",
+      "is_active": "1",
+      "is_view": "1"
+    },
+    {
+      "_lookup": ["column_name", "custom_group_id"],
+      "_translate": ["label"],
+      "name": "location_type_submitted",
+      "column_name": "location_type_submitted",
+      "label": "Location Type (submitted)",
+      "data_type": "String",
+      "html_type": "Text",
+      "is_required": "0",
+      "is_searchable": "1",
+      "is_search_range": "0",
+      "is_active": "1",
+      "is_view": "1"
+    },
+    {
+      "_lookup": ["column_name", "custom_group_id"],
+      "_translate": ["label"],
+      "name": "location_type_applied",
+      "column_name": "location_type_applied",
+      "label": "Location Type (applied)",
+      "data_type": "String",
+      "html_type": "Text",
+      "is_required": "0",
+      "is_searchable": "1",
+      "is_search_range": "0",
+      "is_active": "1",
+      "is_view": "1"
+    },
+    {
+      "_lookup": ["column_name", "custom_group_id"],
+      "_translate": ["label"],
+      "name": "action",
+      "column_name": "action",
+      "label": "Applied Action",
+      "data_type": "String",
+      "html_type": "Text",
+      "is_required": "0",
+      "is_searchable": "1",
+      "is_search_range": "0",
+      "is_active": "1",
+      "is_view": "1"
     }
   ]
 }

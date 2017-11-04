@@ -40,6 +40,13 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
   }
 
   /**
+   * get the main key/identifier for this handler
+   */
+  public function getKey() {
+    return 'address';
+  }
+
+  /**
    * get the list of
    */
   public function getFields() {
@@ -91,6 +98,10 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
    */
   public function applyChanges($activity, $values, $objects = array()) {
     $activity_update = array();
+    if (!$this->hasData($activity)) {
+      // NO DATA, no updates
+      return $activity_update;
+    }
 
     $address_update = array();
     $action = CRM_Utils_Array::value('i3val_address_updates_action', $values, '');
@@ -100,16 +111,16 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
       case 'add':
         $activity_update[self::$group_name . ".action"] = E::ts("New address added.");
         $address_update['contact_id'] = $values['contact_id'];
-        $this->applyUpdateData($address_update, $values);
-        $this->applyUpdateData($activity_update, $values, self::$group_name . '.');
+        $this->applyUpdateData($address_update, $values, '%s', '%s_applied');
+        $this->applyUpdateData($activity_update, $values, self::$group_name . '.%s_applied', '%s_applied');
         break;
 
       case 'update':
-        $activity_update[self::$group_name . ".action"]= E::ts("Address corrected");
+        $activity_update[self::$group_name . ".action"]= E::ts("Address updated");
         $address_update['id']         = $values['i3val_address_updates_address_id'];
         $address_update['contact_id'] = $values['contact_id']; // not necessary, but causes notices in 4.6
-        $this->applyUpdateData($address_update, $values);
-        $this->applyUpdateData($activity_update, $values, self::$group_name . '.');
+        $this->applyUpdateData($address_update, $values, '%s', '%s_applied');
+        $this->applyUpdateData($activity_update, $values, self::$group_name . '.%s_applied', '%s_applied');
         break;
 
       case 'duplicate':
@@ -124,8 +135,8 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
 
     if (!empty($address_update)) {
       // perform update
+      $this->resolveFields($address_update);
       error_log("ADDRESS UPDATE: " . json_encode($address_update));
-      $this->resolveLocationType($address_update);
       civicrm_api3('Address', 'create', $address_update);
     }
 
@@ -230,8 +241,8 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
    */
   public function generateDiffData($entity, $entity_id, $entity_data, $submitted_data, &$activity_data) {
     // make sure the location type is resolved
-    $this->resolveLocationType($entity_data);
-    $this->resolveLocationType($submitted_data);
+    $this->resolveFields($entity_data);
+    $this->resolveFields($submitted_data);
 
     switch ($entity) {
       case 'Contact':
@@ -256,6 +267,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
    */
   protected function resolveFields(&$data, $add_default = FALSE) {
     parent::resolveFields($data, $add_default);
+    // TODO: resolve country ID?
   }
 
 
@@ -284,7 +296,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     }
 
     // first, make sure that the location type is resolved
-    $this->resolveLocationType($address_submitted, TRUE);
+    $this->resolveFields($address_submitted, TRUE);
 
     // then: load all addresss
     $query = civicrm_api3('Address', 'get', array(
@@ -297,7 +309,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     // first: find by exact values
     foreach ($addresss as $address) {
       if ($this->hasEqualMainFields($address_submitted, $address)) {
-        $this->resolveLocationType($address);
+        $this->resolveFields($address);
         if ($address_submitted['location_type'] == $address['location_type']) {
           // even the location type is identical
           if ($this->hasEqualMainFields($address_submitted, $address, TRUE)) {
@@ -317,7 +329,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     if (isset($values['location_type_id'])) {
       foreach ($addresss as $address) {
         if ($values['location_type_id'] == $address['location_type_id']) {
-          $this->resolveLocationType($address);
+          $this->resolveFields($address);
           $default_action = 'update';
           return $address;
         }
@@ -334,7 +346,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
         $best_matching_address = $address;
       }
     }
-    $this->resolveLocationType($best_matching_address);
+    $this->resolveFields($best_matching_address);
     $default_action = 'add';
     return $best_matching_address;
   }

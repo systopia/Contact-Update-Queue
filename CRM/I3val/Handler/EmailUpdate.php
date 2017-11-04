@@ -35,6 +35,13 @@ class CRM_I3val_Handler_EmailUpdate extends CRM_I3val_Handler_DetailUpdate {
   }
 
   /**
+   * get the main key/identifier for this handler
+   */
+  public function getKey() {
+    return 'email';
+  }
+
+  /**
    * get the list of
    */
   public function getFields() {
@@ -81,31 +88,30 @@ class CRM_I3val_Handler_EmailUpdate extends CRM_I3val_Handler_DetailUpdate {
    */
   public function applyChanges($activity, $values, $objects = array()) {
     $activity_update = array();
+    if (!$this->hasData($activity)) {
+      // NO DATA, no updates
+      return $activity_update;
+    }
 
     $email_update = array();
+    $prefix = $this->getKey() . '_';
     $action = CRM_Utils_Array::value('i3val_email_updates_action', $values, '');
     switch ($action) {
       case 'add_primary':
         $email_update['is_primary'] = 1;
       case 'add':
         $activity_update[self::$group_name . ".action"] = E::ts("New email added.");
-        $activity_update[self::$group_name . ".location_type_applied"] = $values['location_type_applied'];
-        $activity_update[self::$group_name . ".email_applied"]         = $values['email_applied'];
-        $email_update['contact_id']    = $values['contact_id'];
-        $email_update['email']         = $values['email_applied'];
-        $email_update['location_type'] = $values['location_type_applied'];
-        $this->resolveLocationType($email_update);
+        $email_update['contact_id'] = $values['contact_id'];
+        $this->applyUpdateData($email_update, $values, '%s', "{$prefix}%s_applied");
+        $this->applyUpdateData($activity_update, $values, self::$group_name . '.%s_applied', "{$prefix}%s_applied");
         break;
 
       case 'update':
-        $activity_update[self::$group_name . ".action"]        = E::ts("Email corrected");
-        $activity_update[self::$group_name . ".email_applied"] = $values['email_applied'];
-        $email_update['id']            = $values['i3val_email_updates_email_id'];
-        $email_update['contact_id']    = $values['contact_id']; // not necessary, but causes notices in 4.6
-        $email_update['email']         = $values['email_applied'];
-        $activity_update[self::$group_name . ".location_type_applied"] = $values['location_type_applied'];
-        $email_update['location_type'] = $values['location_type_applied'];
-        $this->resolveLocationType($email_update);
+        $activity_update[self::$group_name . ".action"]= E::ts("Email updated");
+        $email_update['id']         = $values['i3val_email_updates_email_id'];
+        $email_update['contact_id'] = $values['contact_id']; // not necessary, but causes notices in 4.6
+        $this->applyUpdateData($email_update, $values, '%s', "{$prefix}%s_applied");
+        $this->applyUpdateData($activity_update, $values, self::$group_name . '.%s_applied', "{$prefix}%s_applied");
         break;
 
       case 'duplicate':
@@ -120,6 +126,7 @@ class CRM_I3val_Handler_EmailUpdate extends CRM_I3val_Handler_DetailUpdate {
 
     if (!empty($email_update)) {
       // perform update
+      $this->resolveFields($email_update);
       error_log("EMAIL UPDATE: " . json_encode($email_update));
       civicrm_api3('Email', 'create', $email_update);
     }
@@ -134,6 +141,7 @@ class CRM_I3val_Handler_EmailUpdate extends CRM_I3val_Handler_DetailUpdate {
    */
   public function renderActivityData($activity, $form) {
     $field2label = self::getField2Label();
+    $prefix = $this->getKey() . '_';
     $values = $this->compileValues(self::$group_name, $field2label, $activity);
 
     // find existing email
@@ -148,30 +156,35 @@ class CRM_I3val_Handler_EmailUpdate extends CRM_I3val_Handler_DetailUpdate {
       $form->add('hidden', 'i3val_email_updates_email_id', 0);
     }
 
+    $this->applyUpdateData($form_values, $values, "{$prefix}%s");
+    $form->assign('i3val_email_values', $form_values);
     $form->assign('i3val_email_fields', $field2label);
-    $form->assign('i3val_email_values', $values);
 
     // create input fields and apply checkboxes
     $active_fields = array();
     foreach ($field2label as $fieldname => $fieldlabel) {
+      $form_fieldname = "{$prefix}{$fieldname}";
+
       // LOCATION TYPE is always there...
       if ($fieldname=='location_type') {
-        $active_fields[$fieldname] = $fieldlabel;
+        // will be added below, since it clashes with the other fields
+        $active_fields[$form_fieldname] = $fieldlabel;
 
         // add the text input
         $form->add(
           'select',
-          "{$fieldname}_applied",
+          "{$form_fieldname}_applied",
           $fieldlabel,
           $this->getLocationTypeList(),
           array('class' => 'crm-select2')
         );
+
         if (isset($values[$fieldname]['submitted'])) {
           $matching_location_type = $this->getMatchingLocationType($values[$fieldname]['submitted']);
         } else {
           $matching_location_type = $this->getDefaultLocationType();
         }
-        $form->setDefaults(array("{$fieldname}_applied" => $matching_location_type['id']));
+        $form->setDefaults(array("{$form_fieldname}_applied" => $matching_location_type['id']));
 
       } else {
         // if there is no values, omit field
@@ -180,19 +193,19 @@ class CRM_I3val_Handler_EmailUpdate extends CRM_I3val_Handler_DetailUpdate {
         }
 
         // this field has data:
-        $active_fields[$fieldname] = $fieldlabel;
+        $active_fields[$form_fieldname] = $fieldlabel;
 
         $form->add(
           'text',
-          "{$fieldname}_applied",
+          "{$form_fieldname}_applied",
           $fieldlabel
         );
 
         // calculate proposed value
         if (!empty($values[$fieldname]['applied'])) {
-          $form->setDefaults(array("{$fieldname}_applied" => $values[$fieldname]['applied']));
+          $form->setDefaults(array("{$form_fieldname}_applied" => $values[$fieldname]['applied']));
         } else {
-          $form->setDefaults(array("{$fieldname}_applied" => $values[$fieldname]['submitted']));
+          $form->setDefaults(array("{$form_fieldname}_applied" => $values[$fieldname]['submitted']));
         }
       }
     }
@@ -207,6 +220,7 @@ class CRM_I3val_Handler_EmailUpdate extends CRM_I3val_Handler_DetailUpdate {
       array('class' => 'huge')
     );
     $form->setDefaults(array("i3val_email_updates_action" => $default_action));
+
 
     $form->assign('i3val_active_email_fields', $active_fields);
   }
@@ -225,8 +239,8 @@ class CRM_I3val_Handler_EmailUpdate extends CRM_I3val_Handler_DetailUpdate {
    */
   public function generateDiffData($entity, $entity_id, $entity_data, $submitted_data, &$activity_data) {
     // make sure the location type is resolved
-    $this->resolveLocationType($entity_data);
-    $this->resolveLocationType($submitted_data);
+    $this->resolveFields($entity_data);
+    $this->resolveFields($submitted_data);
 
     switch ($entity) {
       case 'Contact':
@@ -251,13 +265,81 @@ class CRM_I3val_Handler_EmailUpdate extends CRM_I3val_Handler_DetailUpdate {
    *  email, location_type (and contact_id obviously)
    */
   protected function getExistingEmail($values, &$default_action) {
+    $email_submitted = array();
+    $this->applyUpdateData($email_submitted, $values);
+    if (empty($email_submitted) || empty($values['contact_id'])) {
+      // there's nothing we can do
+      return NULL;
+    }
+
+    // first, make sure that the location type is resolved
+    $this->resolveFields($email_submitted, TRUE);
+
+    // then: load all emails
+    $query = civicrm_api3('Email', 'get', array(
+      'contact_id'   => $values['contact_id'],
+      'option.limit' => 0,
+      'option.sort'  => 'is_primary desc',
+      'sequential'   => 1));
+    $emails = $query['values'];
+
+    // first: find by exact values
+    foreach ($emails as $email) {
+      if ($this->hasEqualMainFields($email_submitted, $email)) {
+        $this->resolveFields($email);
+        if ($email_submitted['location_type'] == $email['location_type']) {
+          // even the location type is identical
+          if ($this->hasEqualMainFields($email_submitted, $email, TRUE)) {
+            $default_action = 'duplicate';
+          } else {
+            $default_action = 'update';
+          }
+        } else {
+          // location type differs
+          $default_action = 'update';
+        }
+        return $email;
+      }
+    }
+
+    // second: find by location type
+    if (isset($values['location_type_id'])) {
+      foreach ($emails as $email) {
+        if ($values['location_type_id'] == $email['location_type_id']) {
+          $this->resolveFields($email);
+          $default_action = 'update';
+          return $email;
+        }
+      }
+    }
+
+    // third: find by similarity
+    $best_matching_email = NULL;
+    $highest_similarity    = 0;
+    foreach ($emails as $email) {
+      $similarity = $this->getMainFieldSimilarity($email_submitted, $email);
+      if ($similarity > $highest_similarity) {
+        $highest_similarity = $similarity;
+        $best_matching_email = $email;
+      }
+    }
+    $this->resolveFields($best_matching_email);
+    $default_action = 'add';
+    return $best_matching_email;
+  }
+
+  /**
+   * find a matching email based on
+   *  email, location_type (and contact_id obviously)
+   */
+  protected function _getExistingEmail($values, &$default_action) {
     if (empty($values['email']) || empty($values['contact_id'])) {
       // there's nothing we can do
       return NULL;
     }
 
     // first, make sure that the location type is resolved
-    $this->resolveLocationType($values, TRUE);
+    $this->resolveFields($values, TRUE);
 
     // then: load all emails
     $query = civicrm_api3('Email', 'get', array(
@@ -271,7 +353,7 @@ class CRM_I3val_Handler_EmailUpdate extends CRM_I3val_Handler_DetailUpdate {
     $email_value = trim(strtolower($values['email']));
     foreach ($emails as $email) {
       if ($email_value == trim(strtolower($email['email']))) {
-        $this->resolveLocationType($email);
+        $this->resolveFields($email);
         if (   $values['email'] == $email['email']
             && $values['location_type_id'] == $email['location_type_id']) {
           $default_action = 'duplicate';
@@ -286,7 +368,7 @@ class CRM_I3val_Handler_EmailUpdate extends CRM_I3val_Handler_DetailUpdate {
     if (isset($values['location_type_id'])) {
       foreach ($emails as $email) {
         if ($values['location_type_id'] == $email['location_type_id']) {
-          $this->resolveLocationType($email);
+          $this->resolveFields($email);
           $default_action = 'update';
           return $email;
         }
@@ -303,7 +385,7 @@ class CRM_I3val_Handler_EmailUpdate extends CRM_I3val_Handler_DetailUpdate {
         $best_matching_email = $email;
       }
     }
-    $this->resolveLocationType($best_matching_email);
+    $this->resolveFields($best_matching_email);
     $default_action = 'add';
     return $best_matching_email;
   }

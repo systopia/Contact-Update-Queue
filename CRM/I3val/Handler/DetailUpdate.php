@@ -62,7 +62,7 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
     $location_types = $this->_getLocationTypes();
     $location_type_list = array();
     foreach ($location_types as $location_type) {
-      $location_type_list[$location_type['id']] = $location_type['display_name'];
+      $location_type_list[$location_type['display_name']] = $location_type['display_name'];
     }
     return $location_type_list;
   }
@@ -161,12 +161,13 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
   /**
    * extract all of my fields and apply to update
    */
-  protected function applyUpdateData(&$update, $values, $target_prefix = '', $source_suffix = '_applied') {
+  protected function applyUpdateData(&$update, $values, $target_format = '%s', $source_format = '%s') {
     $fields = $this->getFields();
     foreach ($fields as $field_name) {
-      $key = "{$field_name}{$source_suffix}";
+      $key = sprintf($source_format, $field_name);
       if (isset($values[$key])) {
-        $update["{$target_prefix}{$field_name}"] = $values[$key];
+        $target_key = sprintf($target_format, $field_name);
+        $update[$target_key] = $values[$key];
       }
     }
   }

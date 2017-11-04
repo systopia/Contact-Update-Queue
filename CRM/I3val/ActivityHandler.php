@@ -24,6 +24,11 @@ abstract class CRM_I3val_ActivityHandler {
   public static $columns = array('original', 'submitted', 'applied');
 
   /**
+   * get the main key/identifier for this handler
+   */
+  public abstract function getKey();
+
+  /**
    * get the list of fields
    */
   public abstract function getFields();

@@ -228,7 +228,7 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
 
     $configuration = CRM_I3val_Configuration::getConfiguration();
     $errors = array();
-    $activity_update = array();
+    $activity_update = array('id' => $this->activity_id);
     $handlers = $configuration->getHandlersForActivityType($this->activity['activity_type_id']);
     foreach ($handlers as $handler) {
       // first: verify changes
@@ -251,6 +251,7 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     $activity_update['status_id'] = 2; // Completed
     CRM_I3val_CustomData::resolveCustomFields($activity_update);
     error_log("UPDATE ACTIVITY " . json_encode($activity_update));
+    civicrm_api3('Activity', 'create', $activity_update);
   }
 
   /**

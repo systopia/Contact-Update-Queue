@@ -41,6 +41,13 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
   }
 
   /**
+   * get the main key/identifier for this handler
+   */
+  public function getKey() {
+    return 'contact';
+  }
+
+  /**
    * get the list of
    */
   public function getFields() {
