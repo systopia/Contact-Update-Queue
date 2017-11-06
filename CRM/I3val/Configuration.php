@@ -69,6 +69,7 @@ class CRM_I3val_Configuration {
         $handlers[] = new CRM_I3val_Handler_ContactUpdate();
         $handlers[] = new CRM_I3val_Handler_AddressUpdate();
         $handlers[] = new CRM_I3val_Handler_EmailUpdate();
+        $handlers[] = new CRM_I3val_Handler_PhoneUpdate();
         break;
 
       case 'Address':
@@ -77,6 +78,10 @@ class CRM_I3val_Configuration {
 
       case 'Email':
         $handlers[] = new CRM_I3val_Handler_EmailUpdate();
+        break;
+
+      case 'Phone':
+        $handlers[] = new CRM_I3val_Handler_PhoneUpdate();
         break;
 
       default:

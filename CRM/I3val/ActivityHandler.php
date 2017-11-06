@@ -21,6 +21,9 @@
  */
 abstract class CRM_I3val_ActivityHandler {
 
+  /** cache for option values */
+  protected static $_option_values = array();
+
   public static $columns = array('original', 'submitted', 'applied');
 
   /**
@@ -171,5 +174,147 @@ abstract class CRM_I3val_ActivityHandler {
       }
     }
     return $my_changes;
+  }
+
+  /**
+   * Resolve fields (e.g. location_type_id <-> location_type)
+   */
+  protected function resolveFields(&$data, $add_default = FALSE) {
+    // nothing to do here, please overwrite in subclasses
+  }
+
+
+  /******************************************************
+   **                OPTION VALUE TOOLS                **
+   ******************************************************/
+
+  /**
+   * resolve the entityID <--> entity
+   */
+  protected function resolveOptionValueField(&$data, $option_group, $fieldname, $add_default = FALSE) {
+    $id_fieldname = "{$fieldname}_id";
+    if (!empty($data[$id_fieldname])) {
+      $option_value = $this->getMatchingOptionValue($option_group, $data[$id_fieldname]);
+      if ($option_value) {
+        $data[$id_fieldname] = $option_value['value'];
+        $data[$fieldname]    = $option_value['label'];
+      } else {
+        unset($data[$id_fieldname]);
+      }
+    } elseif (!empty($data[$fieldname])) {
+      $option_value = $this->getMatchingOptionValue($option_group, $data[$fieldname]);
+      if ($option_value) {
+        $data[$id_fieldname] = $option_value['value'];
+        $data[$fieldname]    = $option_value['label'];
+      } else {
+        unset($data[$id_fieldname]);
+        unset($data[$fieldname]);
+      }
+    }
+  }
+
+  /**
+   * get the default country
+   */
+  protected function getDefaultOptionValue($option_group) {
+    $option_values = $this->getOptionValues($option_group);
+    foreach ($option_values as $option_value) {
+      if (!empty($option_value['is_default'])) {
+        return $option_value;
+      }
+    }
+    return NULL;
+  }
+
+  /**
+   * get the default country
+   */
+  protected function getDefaultOptionValueLabel($option_group) {
+    $default_value = $this->getDefaultOptionValue($option_group);
+    if ($default_value) {
+      return $default_value['label'];
+    } else {
+      return NULL;
+    }
+  }
+
+  /**
+   * Get a dropdown list of (eligible) option values
+   */
+  protected function getOptionValueList($option_group, $indexed_by_value = FALSE) {
+    $option_values = $this->getOptionValues($option_group);
+    $option_list = array();
+    foreach ($option_values as $option_value) {
+      if ($indexed_by_value) {
+        $option_list[$option_value['value']] = $option_value['label'];
+      } else {
+        $option_list[$option_value['label']] = $option_value['label'];
+      }
+    }
+    return $option_list;
+  }
+
+
+  /**
+   * Get the matching option value based on a label string
+   */
+  protected function getMatchingOptionValue($option_group, $label, $return_best_match = TRUE) {
+    $option_values = $this->getOptionValues($option_group);
+
+    if (empty($label)) {
+      return NULL;
+
+    } elseif (is_numeric($label)) {
+      if (isset($option_values[$label])) {
+        return $option_values[$label];
+      }
+
+    } else {
+      // try to find it as a name match
+      foreach ($option_values as $option_value) {
+        if (strtolower($label) == strtolower($option_value['label'])) {
+          return $option_value;
+        }
+      }
+
+      // if this didn't help, try by similarity
+      if ($$return_best_match) {
+        $max_similarity = 0.0;
+        $best_match     = NULL;
+
+        foreach ($option_values as $option_value) {
+          similar_text($label, $option_value['label'], $similarity);
+          if ($similarity > $max_similarity) {
+            $max_similarity = $similarity;
+            $best_match = $option_value;
+          }
+        }
+        return $best_match;
+      }
+    }
+
+    return NULL;
+  }
+
+
+
+  /**
+   * Get all option values for the given group
+   */
+  protected function getOptionValues($option_group) {
+    if (!isset(self::$_option_values[$option_group])) {
+      $option_values = array();
+      $query = civicrm_api3('OptionValue', 'get', array(
+        'option_group_id' => $option_group,
+        'sequential'      => 1,
+        'option.limit'    => 0,
+        'is_active'       => 1,
+        'return'          => 'id,name,label,is_active,is_default,value'));
+      foreach ($query['values'] as $option_value) {
+        $option_values[$option_value['value']] = $option_value;
+      }
+      self::$_option_values[$option_group] = $option_values;
+    }
+    return self::$_option_values[$option_group];
   }
 }

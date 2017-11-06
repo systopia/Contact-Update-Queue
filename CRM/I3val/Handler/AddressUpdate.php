@@ -197,7 +197,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
         } else {
           $matching_location_type = $this->getDefaultLocationType();
         }
-        $form->setDefaults(array("{$form_fieldname}_applied" => $matching_location_type['id']));
+        $form->setDefaults(array("{$form_fieldname}_applied" => $matching_location_type['display_name']));
 
       } else {
         // if there is no values, omit field

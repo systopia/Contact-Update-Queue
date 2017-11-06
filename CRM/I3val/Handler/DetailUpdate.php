@@ -122,6 +122,7 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
    *  to their ID representations ('location_type_id').
    */
   protected function resolveFields(&$data, $add_default = FALSE) {
+    parent::resolveFields($data, $add_default);
     $this->resolveLocationType($data, $add_default);
   }
 

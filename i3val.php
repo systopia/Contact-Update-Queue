@@ -91,8 +91,9 @@ function i3val_civicrm_enable() {
   $customData = new CRM_I3val_CustomData('de.systopia.contract');
   $customData->syncOptionGroup(__DIR__ . '/resources/activity_types_option_group.json');
   $customData->syncCustomGroup(__DIR__ . '/resources/contact_updates_custom_group.json');
-  // $customData->syncCustomGroup(__DIR__ . '/resources/address_updates_custom_group.json');
+  $customData->syncCustomGroup(__DIR__ . '/resources/address_updates_custom_group.json');
   $customData->syncCustomGroup(__DIR__ . '/resources/email_updates_custom_group.json');
+  $customData->syncCustomGroup(__DIR__ . '/resources/phone_updates_custom_group.json');
 }
 
 /**
