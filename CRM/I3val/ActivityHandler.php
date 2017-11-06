@@ -184,6 +184,20 @@ abstract class CRM_I3val_ActivityHandler {
   }
 
 
+  /**
+   * extract all of my fields and apply to update
+   */
+  protected function applyUpdateData(&$update, $values, $target_format = '%s', $source_format = '%s') {
+    $fields = $this->getFields();
+    foreach ($fields as $field_name) {
+      $key = sprintf($source_format, $field_name);
+      if (isset($values[$key])) {
+        $target_key = sprintf($target_format, $field_name);
+        $update[$target_key] = $values[$key];
+      }
+    }
+  }
+
   /******************************************************
    **                OPTION VALUE TOOLS                **
    ******************************************************/
@@ -309,6 +323,7 @@ abstract class CRM_I3val_ActivityHandler {
         'sequential'      => 1,
         'option.limit'    => 0,
         'is_active'       => 1,
+        'option.sort'     => 'weight ASC',
         'return'          => 'id,name,label,is_active,is_default,value'));
       foreach ($query['values'] as $option_value) {
         $option_values[$option_value['value']] = $option_value;

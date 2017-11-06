@@ -160,20 +160,6 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
   }
 
   /**
-   * extract all of my fields and apply to update
-   */
-  protected function applyUpdateData(&$update, $values, $target_format = '%s', $source_format = '%s') {
-    $fields = $this->getFields();
-    foreach ($fields as $field_name) {
-      $key = sprintf($source_format, $field_name);
-      if (isset($values[$key])) {
-        $target_key = sprintf($target_format, $field_name);
-        $update[$target_key] = $values[$key];
-      }
-    }
-  }
-
-  /**
    * compare all main fields of the two entities
    *
    * @return TRUE if equal
