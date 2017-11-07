@@ -70,6 +70,7 @@ class CRM_I3val_Configuration {
         $handlers[] = new CRM_I3val_Handler_AddressUpdate();
         $handlers[] = new CRM_I3val_Handler_EmailUpdate();
         $handlers[] = new CRM_I3val_Handler_PhoneUpdate();
+        $handlers[] = new CRM_I3val_Handler_SddUpdate();
         break;
 
       case 'Address':
@@ -82,6 +83,10 @@ class CRM_I3val_Configuration {
 
       case 'Phone':
         $handlers[] = new CRM_I3val_Handler_PhoneUpdate();
+        break;
+
+      case 'SepaMandate':
+        $handlers[] = new CRM_I3val_Handler_SddUpdate();
         break;
 
       default:
@@ -100,6 +105,14 @@ class CRM_I3val_Configuration {
     return $this->getHandlersForEntity('Contact');
   }
 
+
+  /**
+   * get the default activity type for the given entity
+   */
+  public function getDefaultActivityTypeForEntity($entity) {
+    // TODO:
+    return CRM_Core_OptionGroup::getValue('activity_type', 'FWTM Contact Update', 'name');
+  }
 
   /**
    * get the activity types based on the current user

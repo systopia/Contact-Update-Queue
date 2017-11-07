@@ -94,6 +94,7 @@ function i3val_civicrm_enable() {
   $customData->syncCustomGroup(__DIR__ . '/resources/address_updates_custom_group.json');
   $customData->syncCustomGroup(__DIR__ . '/resources/email_updates_custom_group.json');
   $customData->syncCustomGroup(__DIR__ . '/resources/phone_updates_custom_group.json');
+  $customData->syncCustomGroup(__DIR__ . '/resources/sdd_updates_custom_group.json');
 }
 
 /**

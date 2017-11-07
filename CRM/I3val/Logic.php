@@ -19,6 +19,50 @@ use CRM_I3val_ExtensionUtil as E;
 
 class CRM_I3val_Logic {
 
+
+  /**
+   * Create an I3Val Update Request Activity with the given data
+   *
+   * @param $entity   int    the contact to be updated
+   * @param $params   array  the new values
+   */
+  public static function createEntityUpdateRequest($entity, $params) {
+    $config = CRM_I3val_Configuration::getConfiguration();
+
+    if (!empty($params['activity_type_id'])) {
+      $activity_type_id = $params['activity_type_id'];
+      $handlers = $config->getHandlersForActivityType($activity_type_id);
+    } else {
+      $activity_type_id = $config->getDefaultActivityTypeForEntity($entity);
+      $handlers = $config->getHandlersForEntity($entity);
+    }
+
+    $activity_data = array();
+    foreach ($handlers as $handler) {
+      $handler->generateDiffData($entity, NULL, NULL, $params, $activity_data);
+    }
+
+    // if no data was created, there is nothing to do...
+    if (empty($activity_data)) {
+      return NULL;
+    }
+
+    // add basic activity params
+    self::addActivityParams($params, $activity_data);
+
+    // add specific activity params
+    $activity_data['subject'] = E::ts("%1 Update Request", array(1 => $entity));
+    $activity_data['activity_type_id'] = $activity_type_id;
+
+    // create activity, reload and return
+    error_log('ACTIVIY ' . json_encode($activity_data));
+    CRM_I3val_CustomData::resolveCustomFields($activity_data);
+    $activity = civicrm_api3('Activity', 'create', $activity_data);
+    return civicrm_api3('Activity', 'getsingle', array('id' => $activity['id']));
+  }
+
+
+
   /**
    * Create a Contact Update Request Activity with the given data
    *
@@ -43,7 +87,7 @@ class CRM_I3val_Logic {
     }
 
     // add basic activity params
-    self::addActivityParams($params, $contact_id, $activity_data);
+    self::addActivityParams($params, $activity_data, $contact_id);
 
     // add specific activity params
     $activity_data['subject'] = E::ts("Contact Update Request");
@@ -62,7 +106,7 @@ class CRM_I3val_Logic {
    * @param $params         array the parameters present
    * @param $activity_data  array the activity parameters will be added to this array
    */
-  protected static function addActivityParams($params, $contact_id, &$activity_data) {
+  protected static function addActivityParams($params, &$activity_data, $contact_id = NULL) {
     $activity_data['activity_date_time'] = date('YmdHis'); // NOW
     $activity_data['status_id'] = CRM_Core_OptionGroup::getValue('activity_status', 'Scheduled', 'name');
 
@@ -78,7 +122,9 @@ class CRM_I3val_Logic {
     // assign contacts
     $activity_data['assignee_id'] = CRM_I3val_Configuration::getAssignee();
     $activity_data['source_contact_id'] = CRM_I3val_Configuration::getCurrentUserID();
-    $activity_data['target_id'] = $contact_id;
+    if (!empty($contact_id)) {
+      $activity_data['target_id'] = $contact_id;
+    }
   }
 
 

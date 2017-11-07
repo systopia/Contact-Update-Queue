@@ -22,12 +22,11 @@
  * @param array $spec description of fields supported by this API call
  * @return void
  */
-function civicrm_api3_contact_request_update($params) {
+function civicrm_api3_sepa_mandate_request_update($params) {
   // first, try to identify the contact
-  $contact_id = (int) $params['id'];
 
   try {
-    $activity = CRM_I3val_Logic::createContactUpdateRequest($contact_id, $params);
+    $activity = CRM_I3val_Logic::createEntityUpdateRequest('SepaMandate', $params);
     if ($activity) {
       return civicrm_api3_create_success($activity);
     } else {
@@ -46,13 +45,17 @@ function civicrm_api3_contact_request_update($params) {
  * @param array $spec description of fields supported by this API call
  * @return void
  */
-function _civicrm_api3_contact_request_update_spec(&$spec) {
-  // _civicrm_api3_contact_create_spec($spec);
-
+function _civicrm_api3_sepa_mandate_request_update_spec(&$spec) {
   $spec['id'] = array(
-    'title'       => 'Contact ID',
-    'description' => 'The contact this update refers to.',
-    'required'    => TRUE,
+    'title'       => 'Mandate ID',
+    'description' => 'References an existing mandate',
+    'required'    => FALSE,
     'type'        => CRM_Utils_Type::T_INT,
+  );
+  $spec['reference'] = array(
+    'title'       => 'Mandate Reference',
+    'description' => 'If reference exists, this is recorded as an update',
+    'required'    => FALSE,
+    'type'        => CRM_Utils_Type::T_STRING,
   );
 }
