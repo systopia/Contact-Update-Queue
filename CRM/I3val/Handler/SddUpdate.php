@@ -114,7 +114,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
       $old_mandate = $this->getMandate(array('reference' => $reference));
       $change_date = date('YmdHis');
 
-      // create a new mandate
+      // CREATE NEW MANDATE
       $new_mandate = array();
       $this->applyUpdateData($new_mandate, $values, '%s', "{$prefix}%s_applied");
       // copy all fields from the old mandate
@@ -123,19 +123,23 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
           $new_mandate[$key] = $old_mandate[$key];
         }
       }
-      // add some extra data
+      // some adjustments...
       unset($new_mandate['reference']);
+      $new_mandate['start_date'] = $change_date;
 
-      // TODO: fix dates
+      // TODO: fix dates?
 
       error_log("CREATE NEW " . json_encode($new_mandate));
+      // civicrm_api3('SepaMandate', 'createfull', $new_mandate);
 
-      // cancel the old mandate
+
+      // CANCEL the old mandate
       // FIXME: use "now" instead of "today" once that's fixed in CiviSEPA
       // CRM_Sepa_BAO_SEPAMandate::terminateMandate($old_mandate['id'], "today", 'i3val');
 
       // update data
       $this->applyUpdateData($activity_update, $values, self::$group_name . '.%s_applied', "{$prefix}%s_applied");
+
       $activity_update[self::$group_name . ".action"] = E::ts("Created replacement mandate.");
 
     } else {
@@ -203,6 +207,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
 
     // set the frequency labels
     if (isset($values['frequency']['original'])) {
+      $frequency = $values['frequency'];
       $values['frequency']['original']  = $this->getFrequencyLabel($values['frequency']['original']);
       $values['frequency']['submitted'] = $this->getFrequencyLabel($values['frequency']['submitted']);
       $values['frequency']['current']   = $this->getFrequencyLabel($values['frequency']['current']);
@@ -241,10 +246,18 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
           'select',
           "{$form_fieldname}_applied",
           $fieldlabel,
-          $this->getFrequencyList(TRUE),
+          $this->getFrequencyList(),
           FALSE,
           array('class' => 'crm-select2')
         );
+
+        if (!empty($frequency['submitted'])) {
+          // error_log("FREQ " . json_encode($frequency));
+          $form->setDefaults(array("{$form_fieldname}_applied" => $frequency['submitted']));
+        } else {
+          $form->setDefaults(array("{$form_fieldname}_applied" => $frequency['original']));
+        }
+        continue; // don't let them overwrite our defaults
 
       } else {
         // text field
