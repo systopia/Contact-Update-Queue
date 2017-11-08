@@ -1,6 +1,11 @@
-<div class="crm-accordion-wrapper crm-i3val-address">
-  <div class="crm-accordion-header active">{ts}Phone Data{/ts}</div>
+<div class="crm-accordion-wrapper crm-i3val-sdd">
+  <div class="crm-accordion-header active">{ts}SEPA Direct Debit Update{/ts}</div>
   <div class="crm-accordion-body">
+    <div class="crm-section">
+      <div class="content">
+        {ts 1=$i3val_sdd_mandate.reference 2=$i3val_sdd_mandate.url}This is an amendmend for mandate <a href="%2"><code>%1</code></a>.{/ts}
+      </div>
+    </div>
     <table>
       <thead>
         <tr>
@@ -26,5 +31,16 @@
       </tbody>
     </table>
 
+    <div class="crm-section crm-i3val-sdd">
+      <div class="content crm-i3val-sdd-newmandate">
+        {ts}This will trigger the creation of a new mandate that will seamlessly replace the current one.{/ts}
+      </div>
+      <div class="content crm-i3val-sdd-amendment">
+        {ts}The current mandate will be adjusted{/ts}
+      </div>
+      <div class="content crm-i3val-sdd-nochange">
+        {ts}No changes will be performed.{/ts}
+      </div>
+    </div>
   </div>
 </div>

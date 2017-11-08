@@ -159,29 +159,23 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
     $values      = $this->compileValues(self::$group_name, $field2label, $activity);
 
     // find existing mandate
-    $mandate_reference = $activity["{$group_name}.reference"];
-    $existing_mandate = civicrm_api3('SepaMandate', 'getsingle', array(
-      'reference' => $mandate_reference));
+    $existing_mandate = $this->getMandate(array('reference' => $activity["{$group_name}.reference"]));
+
     $form->add('hidden', 'i3val_sdd_updates_mandate_id', $existing_mandate['id']);
     $this->resolveFields($existing_mandate);
     $this->addCurrentValues($values, $existing_mandate);
 
-
-
-    // $default_action  = 'add';
-    // $email_submitted = $this->getMyValues($activity);
-    // $email_submitted['contact_id'] = $form->contact['id'];
-    // $existing_email = $this->getExistingEmail($email_submitted, $default_action);
-    // if ($existing_email) {
-    //   $form->add('hidden', 'i3val_email_updates_email_id', $existing_email['id']);
-    //   $this->addCurrentValues($values, $existing_email);
-    // } else {
-    //   $form->add('hidden', 'i3val_email_updates_email_id', 0);
-    // }
+    // set the frequency labels
+    if (isset($values['frequency']['original'])) {
+      $values['frequency']['original']  = $this->getFrequencyLabel($values['frequency']['original']);
+      $values['frequency']['submitted'] = $this->getFrequencyLabel($values['frequency']['submitted']);
+      $values['frequency']['current']   = $this->getFrequencyLabel($values['frequency']['current']);
+    }
 
     $this->applyUpdateData($form_values, $values, "{$prefix}%s");
     $form->assign('i3val_sdd_values', $form_values);
     $form->assign('i3val_sdd_fields', $field2label);
+    $form->assign('i3val_sdd_mandate', $existing_mandate);
 
     // create input fields and apply checkboxes
     $active_fields = array();
@@ -196,11 +190,34 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
       // this field has data:
       $active_fields[$form_fieldname] = $fieldlabel;
 
-      $form->add(
-        'text',
-        "{$form_fieldname}_applied",
-        $fieldlabel
-      );
+      if (strstr($fieldname, 'date')) {
+        // date field
+        $form->addDate(
+          "{$fieldname}_applied",
+          $fieldlabel,
+          FALSE,
+          array('formatType' => 'activityDate')
+        );
+
+      } elseif ($fieldname == 'frequency') {
+        // frequency dropdown
+        $form->add(
+          'select',
+          "{$form_fieldname}_applied",
+          $fieldlabel,
+          $this->getFrequencyList(TRUE),
+          FALSE,
+          array('class' => 'crm-select2')
+        );
+
+      } else {
+        // text field
+        $form->add(
+          'text',
+          "{$form_fieldname}_applied",
+          $fieldlabel
+        );
+      }
 
       // calculate proposed value
       if (!empty($values[$fieldname]['applied'])) {
@@ -243,6 +260,76 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
     // TODO: more
   }
 
+  /**
+   * get the lables for the numeric freuquency numbers
+   */
+  protected function getFrequencyLabel($frequency) {
+    $frequency = (int) $frequency;
+    switch ($frequency) {
+      case 0:
+        return '';
+      case 1:
+        return E::ts('annually');
+      case 2:
+        return E::ts('semi-annually');
+      case 3:
+        return E::ts('trimestral');
+      case 4:
+        return E::ts('quarterly');
+      case 6:
+        return E::ts('bi-monthly');
+      case 12:
+        return E::ts('monthly');
+      default:
+        return E::ts('every %1 months', array(1 => $frequency));
+    }
+  }
+
+  /**
+   * get a list of the eligible frequency labels
+   */
+  protected function getFrequencyList($label_only = FALSE) {
+    $wanted_frequencies = array(1, 2, 3, 4, 6, 12); // TODO: move to config
+    $list = array();
+    foreach ($wanted_frequencies as $frequency) {
+      $label = $this->getFrequencyLabel($frequency);
+      if ($label_only) {
+        $list[$label] = $label;
+      } else {
+        $list[$frequency] = $label;
+      }
+    }
+    return $list;
+  }
+
+  /**
+   * get the mandate based on ID or reference
+   */
+  protected function getMandate($params) {
+    // first: find the mandate
+    $mandate_search = array();
+    if (!empty($params['id'])) {
+      $mandate_search['id'] = $params['id'];
+    }
+    if (!empty($params['reference'])) {
+      $mandate_search['reference'] = $params['reference'];
+    }
+    if (empty($mandate_search)) {
+      throw new Exception("SepaMandate updates need id or reference.", 1);
+    }
+
+    try {
+      $mandate = civicrm_api3('SepaMandate', 'getsingle', $mandate_search);
+      if ($mandate['entity_table'] == 'civicrm_contribution_recur') {
+        $contribution = civicrm_api3('ContributionRecur', 'getsingle', array('id' => $mandate['entity_id']));
+      } else {
+        $contribution = civicrm_api3('Contribution', 'getsingle', array('id' => $mandate['entity_id']));
+      }
+      return array_merge($mandate, $contribution);
+    } catch (Exception $ex) {
+      throw new Exception("SepaMandate not found.", 1);
+    }
+  }
 
   /**
    * Calculate the data to be created and add it to the $activity_data Activity.create params
@@ -254,28 +341,8 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
       throw new Exception("SepaMandate can only be performed on SepaMandate.request_update.", 1);
     }
 
-    // first: find the mandate
-    $mandate_search = array();
-    if (!empty($submitted_data['id'])) {
-      $mandate_search['id'] = $submitted_data['id'];
-    }
-    if (!empty($submitted_data['reference'])) {
-      $mandate_search['reference'] = $submitted_data['reference'];
-    }
-    if (empty($mandate_search)) {
-      throw new Exception("SepaMandate updates need id or reference.", 1);
-    }
-    try {
-      $mandate = civicrm_api3('SepaMandate', 'getsingle', $mandate_search);
-      if ($mandate['entity_table'] == 'civicrm_contribution_recur') {
-        $contribution = civicrm_api3('ContributionRecur', 'getsingle', array('id' => $mandate['entity_id']));
-      } else {
-        $contribution = civicrm_api3('Contribution', 'getsingle', array('id' => $mandate['entity_id']));
-      }
-      $mandate = array_merge($mandate, $contribution);
-    } catch (Exception $ex) {
-      throw new Exception("SepaMandate not found.", 1);
-    }
+    // load mandate
+    $mandate = $this->getMandate($submitted_data);
 
     // some checks
     if ($mandate['type'] == 'OOFF') {
