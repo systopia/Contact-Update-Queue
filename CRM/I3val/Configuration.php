@@ -70,7 +70,7 @@ class CRM_I3val_Configuration {
         $handlers[] = new CRM_I3val_Handler_AddressUpdate();
         $handlers[] = new CRM_I3val_Handler_EmailUpdate();
         $handlers[] = new CRM_I3val_Handler_PhoneUpdate();
-        $handlers[] = new CRM_I3val_Handler_SddUpdate();
+        // $handlers[] = new CRM_I3val_Handler_SddUpdate();
         break;
 
       case 'Address':

@@ -398,7 +398,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
    * Calculate the data to be created and add it to the $activity_data Activity.create params
    * @todo specify
    */
-  public function generateDiffData($entity, $entity_id, $entity_data, $submitted_data, &$activity_data) {
+  public function generateDiffData($entity, $submitted_data, &$activity_data) {
     // works with entity 'SepaMandate'
     if ($entity != 'SepaMandate') {
       throw new Exception("SepaMandate can only be performed on SepaMandate.request_update.", 1);
@@ -406,6 +406,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
 
     // load mandate
     $mandate = $this->getMandate($submitted_data);
+    $activity_data['target_id'] = $mandate['contact_id'];
 
     // some checks
     if ($mandate['type'] == 'OOFF') {

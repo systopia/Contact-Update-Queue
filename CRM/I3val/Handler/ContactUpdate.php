@@ -201,19 +201,27 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
    * Calculate the data to be created and add it to the $activity_data Activity.create params
    * @todo specify
    */
-  public function generateDiffData($entity, $entity_id, $entity_data, $submitted_data, &$activity_data) {
-    // resolve prefix/suffix
-    if (!empty($entity_data['individual_prefix'])) {
-      $entity_data['prefix'] = $entity_data['individual_prefix'];
-    }
-    if (!empty($entity_data['individual_suffix'])) {
-      $entity_data['suffix'] = $entity_data['individual_suffix'];
+  public function generateDiffData($entity, $submitted_data, &$activity_data) {
+    if ($entity != 'Contact') {
+      throw new Exception("Can only process Contact entity");
     }
 
-    $this->resolveFields($entity_data);
+    // load contact
+    $contact = civicrm_api3('Contact', 'getsingle', array('id' => $submitted_data['id']));
+    $activity_data['target_id'] = $contact['id'];
+
+    // resolve prefix/suffix
+    if (!empty($contact['individual_prefix'])) {
+      $contact['prefix'] = $contact['individual_prefix'];
+    }
+    if (!empty($contact['individual_suffix'])) {
+      $contact['suffix'] = $contact['individual_suffix'];
+    }
+
+    $this->resolveFields($contact);
     $this->resolveFields($submitted_data);
 
-    $raw_diff = $this->createDiff($entity_data, $submitted_data);
+    $raw_diff = $this->createDiff($contact, $submitted_data);
     // TODO: sort out special cases (e.g. dates)
 
     foreach ($raw_diff as $key => $value) {

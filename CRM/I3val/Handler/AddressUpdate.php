@@ -265,20 +265,21 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
    * Calculate the data to be created and add it to the $activity_data Activity.create params
    * @todo specify
    */
-  public function generateDiffData($entity, $entity_id, $entity_data, $submitted_data, &$activity_data) {
+  public function generateDiffData($entity, $submitted_data, &$activity_data) {
     // make sure the location type is resolved
-    $this->resolveFields($entity_data);
     parent::resolveFields($submitted_data); // don't resolve country
 
     switch ($entity) {
       case 'Contact':
-        $submitted_data['contact_id'] = $entity_id;
+        $submitted_data['contact_id'] = $submitted_data['id'];
         $address = $this->getExistingAddress($submitted_data);
-        parent::generateDiffData('Address', $address['id'], $address, $submitted_data, $activity_data);
+        $this->generateEntityDiffData('Address', $address['id'], $address, $submitted_data, $activity_data);
         break;
 
       case 'Address':
-        parent::generateDiffData('Address', $entity_id, $entity_data, $submitted_data, $activity_data);
+        $address = civicrm_api3('Address', 'getsingle', array('id' => $submitted_data['id']));
+        $this->resolveFields($address);
+        $this->generateEntityDiffData('Address', $address['id'], $address, $submitted_data, $activity_data);
         break;
 
       default:

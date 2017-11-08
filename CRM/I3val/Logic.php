@@ -18,8 +18,6 @@
 use CRM_I3val_ExtensionUtil as E;
 
 class CRM_I3val_Logic {
-
-
   /**
    * Create an I3Val Update Request Activity with the given data
    *
@@ -39,7 +37,7 @@ class CRM_I3val_Logic {
 
     $activity_data = array();
     foreach ($handlers as $handler) {
-      $handler->generateDiffData($entity, NULL, NULL, $params, $activity_data);
+      $handler->generateDiffData($entity, $params, $activity_data);
     }
 
     // if no data was created, there is nothing to do...
@@ -56,44 +54,6 @@ class CRM_I3val_Logic {
 
     // create activity, reload and return
     error_log('ACTIVIY ' . json_encode($activity_data));
-    CRM_I3val_CustomData::resolveCustomFields($activity_data);
-    $activity = civicrm_api3('Activity', 'create', $activity_data);
-    return civicrm_api3('Activity', 'getsingle', array('id' => $activity['id']));
-  }
-
-
-
-  /**
-   * Create a Contact Update Request Activity with the given data
-   *
-   * @param $contact_id  int    the contact to be updated
-   * @param $params      array  the new values
-   */
-  public static function createContactUpdateRequest($contact_id, $params) {
-    $config = CRM_I3val_Configuration::getConfiguration();
-
-    // first: load contact
-    $contact = civicrm_api3('Contact', 'getsingle', array('id' => $contact_id));
-
-    $activity_data = array();
-    $handlers = $config->getHandlersForEntity('Contact');
-    foreach ($handlers as $handler) {
-      $handler->generateDiffData('Contact', $contact_id, $contact, $params, $activity_data);
-    }
-
-    // if no data was created, there is nothing to do...
-    if (empty($activity_data)) {
-      return NULL;
-    }
-
-    // add basic activity params
-    self::addActivityParams($params, $activity_data, $contact_id);
-
-    // add specific activity params
-    $activity_data['subject'] = E::ts("Contact Update Request");
-    $activity_data['activity_type_id'] = CRM_Core_OptionGroup::getValue('activity_type', 'FWTM Contact Update', 'name');
-
-    // create activity, reload and return
     CRM_I3val_CustomData::resolveCustomFields($activity_data);
     $activity = civicrm_api3('Activity', 'create', $activity_data);
     return civicrm_api3('Activity', 'getsingle', array('id' => $activity['id']));

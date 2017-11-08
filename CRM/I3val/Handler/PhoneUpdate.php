@@ -261,20 +261,21 @@ class CRM_I3val_Handler_PhoneUpdate extends CRM_I3val_Handler_DetailUpdate {
    * Calculate the data to be created and add it to the $activity_data Activity.create params
    * @todo specify
    */
-  public function generateDiffData($entity, $entity_id, $entity_data, $submitted_data, &$activity_data) {
+  public function generateDiffData($entity, $submitted_data, &$activity_data) {
     // make sure the location type is resolved
-    $this->resolveFields($entity_data);
     $this->resolveFields($submitted_data);
 
     switch ($entity) {
       case 'Contact':
-        $submitted_data['contact_id'] = $entity_id;
+        $submitted_data['contact_id'] = $submitted_data['id'];
         $phone = $this->getExistingPhone($submitted_data);
-        parent::generateDiffData('Phone', $phone['id'], $phone, $submitted_data, $activity_data);
+        $this->generateEntityDiffData('Phone', $phone['id'], $phone, $submitted_data, $activity_data);
         break;
 
       case 'Phone':
-        parent::generateDiffData('Phone', $entity_id, $entity_data, $submitted_data, $activity_data);
+        $phone = civicrm_api3('Phone', 'getsingle', array('id' => $submitted_data['id']));
+        $this->resolveFields($phone);
+        $this->generateEntityDiffData('Phone', $phone['id'], $phone, $submitted_data, $activity_data);
         break;
 
       default:

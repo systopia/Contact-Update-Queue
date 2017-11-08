@@ -74,7 +74,7 @@ abstract class CRM_I3val_ActivityHandler {
    * Calculate the data to be created and add it to the $activity_data Activity.create params
    * @todo refactor: drop $entity_id, $entity_data
    */
-  public abstract function generateDiffData($entity, $entity_id, $entity_data, $submitted_data, &$activity_data);
+  public abstract function generateDiffData($entity, $submitted_data, &$activity_data);
 
 
   /**
