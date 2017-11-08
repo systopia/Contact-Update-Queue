@@ -106,9 +106,45 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
       return $activity_update;
     }
 
+    $action = CRM_Utils_Array::value('i3val_sdd_updates_action', $values, '');
+    if ($action) {
+      $prefix = $this->getKey() . '_';
+
+      $reference = $activity[self::$group_name . ".reference"];
+      $old_mandate = $this->getMandate(array('reference' => $reference));
+      $change_date = date('YmdHis');
+
+      // create a new mandate
+      $new_mandate = array();
+      $this->applyUpdateData($new_mandate, $values, '%s', "{$prefix}%s_applied");
+      // copy all fields from the old mandate
+      foreach ($old_mandate as $key => $value) {
+        if (empty($new_mandate[$key])) {
+          $new_mandate[$key] = $old_mandate[$key];
+        }
+      }
+      // add some extra data
+      unset($new_mandate['reference']);
+
+      // TODO: fix dates
+
+      error_log("CREATE NEW " . json_encode($new_mandate));
+
+      // cancel the old mandate
+      // FIXME: use "now" instead of "today" once that's fixed in CiviSEPA
+      // CRM_Sepa_BAO_SEPAMandate::terminateMandate($old_mandate['id'], "today", 'i3val');
+
+      // update data
+      $this->applyUpdateData($activity_update, $values, self::$group_name . '.%s_applied', "{$prefix}%s_applied");
+      $activity_update[self::$group_name . ".action"] = E::ts("Created replacement mandate.");
+
+    } else {
+      $activity_update[self::$group_name . ".action"] = E::ts("Data discarded.");
+    }
+
     // $email_update = array();
     // $prefix = $this->getKey() . '_';
-    // $action = CRM_Utils_Array::value('i3val_email_updates_action', $values, '');
+    //
     // switch ($action) {
     //   case 'add_primary':
     //     $email_update['is_primary'] = 1;
@@ -183,7 +219,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
       $form_fieldname = "{$prefix}{$fieldname}";
 
       // if there is no values, omit field
-      if (empty($values[$fieldname]['submitted'])) {
+      if (empty($values[$fieldname]['submitted']) && empty($values[$fieldname]['original'])) {
         continue;
       }
 
@@ -222,10 +258,24 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
       // calculate proposed value
       if (!empty($values[$fieldname]['applied'])) {
         $form->setDefaults(array("{$form_fieldname}_applied" => $values[$fieldname]['applied']));
-      } else {
+      } elseif (!empty($values[$fieldname]['submitted'])) {
         $form->setDefaults(array("{$form_fieldname}_applied" => $values[$fieldname]['submitted']));
+      } else {
+        $form->setDefaults(array("{$form_fieldname}_applied" => $values[$fieldname]['original']));
       }
     }
+
+    // add processing options
+    $form->add(
+      'select',
+      "i3val_sdd_updates_action",
+      E::ts("Action"),
+      array(0 => E::ts("Don't apply"), 1 => E::ts("Create replacement mandate")),
+      TRUE,
+      array('class' => 'huge crm-select2')
+    );
+    $form->setDefaults(array("i3val_sdd_updates_action" => 1));
+
 
     $form->assign('i3val_active_sdd_fields', $active_fields);
   }
@@ -348,9 +398,9 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
     if ($mandate['type'] == 'OOFF') {
       throw new Exception("Cannot update OOFF mandates", 1);
     }
-    // if ($mandate['status'] == 'COMPLETED' || $mandate['status'] == 'INVALID' || $mandate['contribution_status_id'] != 2) {
-    //   throw new Exception("Mandate is already closed", 1);
-    // }
+    if ($mandate['status'] == 'COMPLETED' || $mandate['status'] == 'INVALID' || $mandate['contribution_status_id'] != 2) {
+      throw new Exception("Mandate is already closed", 1);
+    }
 
     // OK, we have the mandate, look for differences
     $mandate_diff       = array();
@@ -363,15 +413,33 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
     error_log("MANDATE " . json_encode($mandate));
 
     // first: check all main attriutes for differences
+    $differing_attributes = array();
     foreach ($main_attributes as $field_name) {
       if (isset($submitted_data[$field_name])) {
         // an update was submitted
         $original_value = CRM_Utils_Array::value($field_name, $mandate, '');
         if ($submitted_data[$field_name] != $original_value) {
+          $differing_attributes[] = $field_name;
           $mandate_diff["{$custom_group_name}.{$field_name}_submitted"] = $submitted_data[$field_name];
           $mandate_diff["{$custom_group_name}.{$field_name}_original"]  = $original_value;
         }
       }
+    }
+
+    // BIC and IBAN should be together
+    if (in_array('bic', $differing_attributes) || in_array('iban', $differing_attributes)) {
+      $mandate_diff["{$custom_group_name}.bic_submitted"]  = CRM_Utils_Array::value('bic', $submitted_data, '');
+      $mandate_diff["{$custom_group_name}.bic_original"]   = CRM_Utils_Array::value('bic', $mandate, '');
+      $mandate_diff["{$custom_group_name}.iban_submitted"] = CRM_Utils_Array::value('iban', $submitted_data, '');
+      $mandate_diff["{$custom_group_name}.iban_original"]  = CRM_Utils_Array::value('iban', $mandate, '');
+    }
+
+    // amount and frequency should be together
+    if (in_array('amount', $differing_attributes) || in_array('frequency', $differing_attributes)) {
+      $mandate_diff["{$custom_group_name}.amount_submitted"]    = CRM_Utils_Array::value('amount', $submitted_data, '');
+      $mandate_diff["{$custom_group_name}.amount_original"]     = CRM_Utils_Array::value('amount', $mandate, '');
+      $mandate_diff["{$custom_group_name}.frequency_submitted"] = CRM_Utils_Array::value('frequency', $submitted_data, '');
+      $mandate_diff["{$custom_group_name}.frequency_original"]  = CRM_Utils_Array::value('frequency', $mandate, '');
     }
 
     // check if there is a difference

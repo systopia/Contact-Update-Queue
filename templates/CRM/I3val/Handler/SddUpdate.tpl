@@ -3,7 +3,9 @@
   <div class="crm-accordion-body">
     <div class="crm-section">
       <div class="content">
+        <strong>
         {ts 1=$i3val_sdd_mandate.reference 2=$i3val_sdd_mandate.url}This is an amendmend for mandate <a href="%2"><code>%1</code></a>.{/ts}
+        </strong>
       </div>
     </div>
     <table>
@@ -31,16 +33,16 @@
       </tbody>
     </table>
 
-    <div class="crm-section crm-i3val-sdd">
-      <div class="content crm-i3val-sdd-newmandate">
-        {ts}This will trigger the creation of a new mandate that will seamlessly replace the current one.{/ts}
-      </div>
-      <div class="content crm-i3val-sdd-amendment">
-        {ts}The current mandate will be adjusted{/ts}
-      </div>
-      <div class="content crm-i3val-sdd-nochange">
-        {ts}No changes will be performed.{/ts}
-      </div>
+    <div class="crm-section">
+      <div class="label">{$form.i3val_sdd_updates_action.label}</div>
+      <div class="content">{$form.i3val_sdd_updates_action.html}</div>
+      <div class="clear"></div>
     </div>
+
   </div>
 </div>
+
+<script type="text/javascript">
+
+
+</script>
