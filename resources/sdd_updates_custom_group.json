@@ -2,7 +2,7 @@
   "_lookup": ["name"],
   "_translate": ["title"],
   "name": "i3val_sdd_updates",
-  "title": "SEPA DD Updates",
+  "title": "SEPA DD Update",
   "extends": "Activity",
   "extends_entity_column_value": ["FWTM Mandate Update"],
   "style": "Inline",

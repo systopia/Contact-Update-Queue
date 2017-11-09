@@ -37,6 +37,11 @@ abstract class CRM_I3val_ActivityHandler {
   public abstract function getFields();
 
   /**
+   * get the list of fields along with the
+   */
+  public abstract function getField2Label();
+
+  /**
    * Verify whether the changes make sense
    *
    * @return array $key -> error message

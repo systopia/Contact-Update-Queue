@@ -2,7 +2,7 @@
   "_lookup": ["name"],
   "_translate": ["title"],
   "name": "i3val_email_updates",
-  "title": "Email Updates",
+  "title": "Email Update",
   "extends": "Activity",
   "extends_entity_column_value": ["FWTM Contact Update", "FWTM Mandate Update"],
   "style": "Inline",

@@ -58,41 +58,51 @@ class CRM_I3val_Configuration {
     return "4 hours";
   }
 
+
+  /**
+   * This is one of the central configuration elements
+   */
+  protected function getActivityType2HandlerClass() {
+    // TODO: create config UI
+    $contact_update_id = CRM_Core_OptionGroup::getValue('activity_type', 'FWTM Contact Update', 'name');
+    $mandate_update_id = CRM_Core_OptionGroup::getValue('activity_type', 'FWTM Mandate Update', 'name');
+    return array(
+      $contact_update_id => array(CRM_I3val_Handler_ContactUpdate,
+                                  CRM_I3val_Handler_AddressUpdate,
+                                  CRM_I3val_Handler_EmailUpdate,
+                                  CRM_I3val_Handler_PhoneUpdate),
+      $mandate_update_id => array(CRM_I3val_Handler_SddUpdate)
+    );
+  }
+
+  /**
+   * This is one of the central configuration elements
+   */
+  protected function getEntity2HandlerClass() {
+    // TODO: create config UI
+    return array(
+      'Contact'     => array(CRM_I3val_Handler_ContactUpdate,
+                             CRM_I3val_Handler_AddressUpdate,
+                             CRM_I3val_Handler_EmailUpdate,
+                             CRM_I3val_Handler_PhoneUpdate),
+      'Email'       => array(CRM_I3val_Handler_EmailUpdate),
+      'Phone'       => array(CRM_I3val_Handler_PhoneUpdate),
+      'Address'     => array(CRM_I3val_Handler_AddressUpdate),
+      'SepaMandate' => array(CRM_I3val_Handler_SddUpdate),
+    );
+  }
+
   /**
    * get Handlers for entity
    */
   public function getHandlersForEntity($entity) {
     $handlers = array();
-
-    switch ($entity) {
-      case 'Contact':
-        $handlers[] = new CRM_I3val_Handler_ContactUpdate();
-        $handlers[] = new CRM_I3val_Handler_AddressUpdate();
-        $handlers[] = new CRM_I3val_Handler_EmailUpdate();
-        $handlers[] = new CRM_I3val_Handler_PhoneUpdate();
-        // $handlers[] = new CRM_I3val_Handler_SddUpdate();
-        break;
-
-      case 'Address':
-        $handlers[] = new CRM_I3val_Handler_AddressUpdate();
-        break;
-
-      case 'Email':
-        $handlers[] = new CRM_I3val_Handler_EmailUpdate();
-        break;
-
-      case 'Phone':
-        $handlers[] = new CRM_I3val_Handler_PhoneUpdate();
-        break;
-
-      case 'SepaMandate':
-        $handlers[] = new CRM_I3val_Handler_SddUpdate();
-        break;
-
-      default:
-        break;
+    $entity2HandlerClass = $this->getEntity2HandlerClass();
+    if (isset($entity2HandlerClass[$entity])) {
+      foreach ($entity2HandlerClass[$entity] as $handlerClass) {
+        $handlers[] = new $handlerClass();
+      }
     }
-
     return $handlers;
   }
 
@@ -101,8 +111,14 @@ class CRM_I3val_Configuration {
    * get a hander instance for the given activity type
    */
   public function getHandlersForActivityType($activity_type_id) {
-    // TODO:
-    return $this->getHandlersForEntity('Contact');
+    $handlers = array();
+    $activityType2HandlerClass = $this->getActivityType2HandlerClass();
+    if (isset($activityType2HandlerClass[$activity_type_id])) {
+      foreach ($activityType2HandlerClass[$activity_type_id] as $handlerClass) {
+        $handlers[] = new $handlerClass();
+      }
+    }
+    return $handlers;
   }
 
 
@@ -118,6 +134,7 @@ class CRM_I3val_Configuration {
    * get the activity types based on the current user
    */
   public function getEligibleActivityTypes() {
+    // TODO: evaluate permissions
     return $this->getActivityTypes();
   }
 
@@ -125,10 +142,11 @@ class CRM_I3val_Configuration {
    * get an array id => label of the relevant activity types
    */
   public function getActivityTypes() {
+    $activityType2HandlerClass = $this->getActivityType2HandlerClass();
     if ($this->activity_types == NULL) {
       $query = civicrm_api3('OptionValue', 'get', array(
         'option_group_id' => 'activity_type',
-        'name'            => array('IN' => array("FWTM Contact Update", "FWTM Mandate Update")),
+        'value'           => array('IN' => array_keys($activityType2HandlerClass)),
         'options.limit'   => 0,
         'return'          => 'value,name,label'
         ));

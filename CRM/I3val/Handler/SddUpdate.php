@@ -26,7 +26,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
   public static $group_name = 'i3val_sdd_updates';
   public static $field2label = NULL;
 
-  protected static function getField2Label() {
+  public function getField2Label() {
     if (self::$field2label === NULL) {
       self::$field2label = array( 'reference'       => E::ts('Mandate Reference'),
                                   'source'          => E::ts('Source'),
@@ -57,7 +57,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
    * get the list of
    */
   public function getFields() {
-    $field2label = self::getField2Label();
+    $field2label = $this->getField2Label();
     return array_keys($field2label);
   }
 

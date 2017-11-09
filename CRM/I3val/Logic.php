@@ -101,37 +101,40 @@ class CRM_I3val_Logic {
    * @todo fix
    */
   public static function adjustAcitivityView($activity_id, $activity_type_id) {
-    switch ($activity_type_id) {
-      case CRM_Core_OptionGroup::getValue('activity_type', 'FWTM Contact Update', 'name'):
-        // $fields = CRM_I3val_Configuration::getContactUpdateFields();
-        break;
-
-      case CRM_Core_OptionGroup::getValue('activity_type', 'FWTM Mandate Update', 'name'):
-        $fields = CRM_I3val_Configuration::getMandateUpdateFields();
-        break;
-
-      default:
-        // that's not one of ours -> do nothing!
-        error_log("OUT");
-        return;
+    $configuration = CRM_I3val_Configuration::getConfiguration();
+    // get the fields for this activity_type_id
+    $handlers = $configuration->getHandlersForActivityType($activity_type_id);
+    if (empty($handlers)) {
+      return;
     }
+
+    // pre-cache data
+    $custom_groups = array();
+    foreach ($handlers as $handler) {
+      $custom_groups[] = $handler->getCustomGroupName();
+    }
+    CRM_I3val_CustomData::cacheCustomGroups($custom_groups);
 
     // load data
     $activity = civicrm_api3('Activity', 'getsingle', array('id' => $activity_id));
     $values = array();
-    foreach ($fields as $field_name => $field_spec) {
-      $original_data_field = CRM_I3val_CustomData::getCustomField($field_spec['custom_group'], "{$field_name}_original");
-      $submitted_data_field = CRM_I3val_CustomData::getCustomField($field_spec['custom_group'], "{$field_name}_submitted");
-      $applied_data_field = CRM_I3val_CustomData::getCustomField($field_spec['custom_group'], "{$field_name}_applied");
-      if (isset($activity["custom_{$original_data_field['id']}"])) {
-        // i.e. the value is set
-        $values[] = array(
-          'title'      => $field_spec['title'],
-          'field_name' => $field_name,
-          'original'   => CRM_Utils_Array::value("custom_{$original_data_field['id']}",  $activity, ''),
-          'submitted'  => CRM_Utils_Array::value("custom_{$submitted_data_field['id']}", $activity, ''),
-          'applied'    => CRM_Utils_Array::value("custom_{$applied_data_field['id']}",   $activity, ''),
-          );
+    foreach ($handlers as $handler) {
+      $custom_group = $handler->getCustomGroupName();
+      $field2label  = $handler->getField2Label();
+      foreach ($field2label as $field_name => $field_label) {
+        $original_data_field  = CRM_I3val_CustomData::getCustomField($custom_group, "{$field_name}_original");
+        $submitted_data_field = CRM_I3val_CustomData::getCustomField($custom_group, "{$field_name}_submitted");
+        $applied_data_field   = CRM_I3val_CustomData::getCustomField($custom_group, "{$field_name}_applied");
+        if (isset($activity["custom_{$original_data_field['id']}"])) {
+          // i.e. the value is set
+          $values[] = array(
+            'title'      => $field_label,
+            'field_name' => $field_name,
+            'original'   => CRM_Utils_Array::value("custom_{$original_data_field['id']}",  $activity, ''),
+            'submitted'  => CRM_Utils_Array::value("custom_{$submitted_data_field['id']}", $activity, ''),
+            'applied'    => CRM_Utils_Array::value("custom_{$applied_data_field['id']}",   $activity, ''),
+            );
+        }
       }
     }
 
@@ -139,7 +142,7 @@ class CRM_I3val_Logic {
     $smarty = CRM_Core_Smarty::singleton();
     $smarty->assign('i3val_activity', $activity);
     $smarty->assign('i3val_values', $values);
-    $smarty->assign('i3val_edit', ($activity['status_id'] == 1));
+    $smarty->assign('i3val_edit', FALSE);//($activity['status_id'] == 1));
     $panel = array(
       'html'   => $smarty->fetch('CRM/Activity/I3valPanel.tpl'),
       'fields' => $fields);

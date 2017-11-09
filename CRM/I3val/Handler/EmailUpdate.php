@@ -26,7 +26,7 @@ class CRM_I3val_Handler_EmailUpdate extends CRM_I3val_Handler_DetailUpdate {
   public static $group_name = 'i3val_email_updates';
   public static $field2label = NULL;
 
-  protected static function getField2Label() {
+  public function getField2Label() {
     if (self::$field2label === NULL) {
       self::$field2label = array( 'email'         => E::ts('Email'),
                                   'location_type' => E::ts('Location Type'));
@@ -45,7 +45,7 @@ class CRM_I3val_Handler_EmailUpdate extends CRM_I3val_Handler_DetailUpdate {
    * get the list of
    */
   public function getFields() {
-    $field2label = self::getField2Label();
+    $field2label = $this->getField2Label();
     return array_keys($field2label);
   }
 
@@ -140,7 +140,7 @@ class CRM_I3val_Handler_EmailUpdate extends CRM_I3val_Handler_DetailUpdate {
    * Load and assign necessary data to the form
    */
   public function renderActivityData($activity, $form) {
-    $field2label = self::getField2Label();
+    $field2label = $this->getField2Label();
     $prefix = $this->getKey() . '_';
     $values = $this->compileValues(self::$group_name, $field2label, $activity);
 
