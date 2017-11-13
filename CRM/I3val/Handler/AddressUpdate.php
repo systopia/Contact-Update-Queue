@@ -150,7 +150,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
    * Load and assign necessary data to the form
    */
   public function renderActivityData($activity, $form) {
-    $field2label = $getField2Label();
+    $field2label = $this->getField2Label();
     $prefix = $this->getKey() . '_';
     $values = $this->compileValues(self::$group_name, $field2label, $activity);
 

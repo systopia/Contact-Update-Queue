@@ -43,14 +43,14 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
     }
 
     $options = array();
-    $options['add']         = E::ts("Add '%1'", array(1 => $name));
-    $options['add_primary'] = E::ts("Add '%1' as primary", array(1 => $name));
+    $options['add']         = E::ts("Add %1", array(1 => $name));
+    $options['add_primary'] = E::ts("Add %1 as primary", array(1 => $name));
 
     if ($data_existing) {
-      $options['update'] = E::ts("Overwrite '%1'", array(1 => $data_existing[$attribute]));
+      $options['update'] = E::ts("Overwrite %1", array(1 => $name));
     }
 
-    $options['discard']   = E::ts("Discard '%1' (do nothing)", array(1 => $name));
+    $options['discard']   = E::ts("Discard %1 (do nothing)", array(1 => $name));
     $options['duplicate'] = E::ts("Already Exists (do nothing)");
     return $options;
   }

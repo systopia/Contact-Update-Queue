@@ -67,11 +67,11 @@ class CRM_I3val_Configuration {
     $contact_update_id = CRM_Core_OptionGroup::getValue('activity_type', 'FWTM Contact Update', 'name');
     $mandate_update_id = CRM_Core_OptionGroup::getValue('activity_type', 'FWTM Mandate Update', 'name');
     return array(
-      $contact_update_id => array(CRM_I3val_Handler_ContactUpdate,
-                                  CRM_I3val_Handler_AddressUpdate,
-                                  CRM_I3val_Handler_EmailUpdate,
-                                  CRM_I3val_Handler_PhoneUpdate),
-      $mandate_update_id => array(CRM_I3val_Handler_SddUpdate)
+      $contact_update_id => array('CRM_I3val_Handler_ContactUpdate',
+                                  'CRM_I3val_Handler_AddressUpdate',
+                                  'CRM_I3val_Handler_EmailUpdate',
+                                  'CRM_I3val_Handler_PhoneUpdate'),
+      $mandate_update_id => array('CRM_I3val_Handler_SddUpdate')
     );
   }
 
@@ -81,14 +81,14 @@ class CRM_I3val_Configuration {
   protected function getEntity2HandlerClass() {
     // TODO: create config UI
     return array(
-      'Contact'     => array(CRM_I3val_Handler_ContactUpdate,
-                             CRM_I3val_Handler_AddressUpdate,
-                             CRM_I3val_Handler_EmailUpdate,
-                             CRM_I3val_Handler_PhoneUpdate),
-      'Email'       => array(CRM_I3val_Handler_EmailUpdate),
-      'Phone'       => array(CRM_I3val_Handler_PhoneUpdate),
-      'Address'     => array(CRM_I3val_Handler_AddressUpdate),
-      'SepaMandate' => array(CRM_I3val_Handler_SddUpdate),
+      'Contact'     => array('CRM_I3val_Handler_ContactUpdate',
+                             'CRM_I3val_Handler_AddressUpdate',
+                             'CRM_I3val_Handler_EmailUpdate',
+                             'CRM_I3val_Handler_PhoneUpdate'),
+      'Email'       => array('CRM_I3val_Handler_EmailUpdate'),
+      'Phone'       => array('CRM_I3val_Handler_PhoneUpdate'),
+      'Address'     => array('CRM_I3val_Handler_AddressUpdate'),
+      'SepaMandate' => array('CRM_I3val_Handler_SddUpdate'),
     );
   }
 
