@@ -127,7 +127,7 @@ class CRM_I3val_Handler_EmailUpdate extends CRM_I3val_Handler_DetailUpdate {
     if (!empty($email_update)) {
       // perform update
       $this->resolveFields($email_update);
-      error_log("EMAIL UPDATE: " . json_encode($email_update));
+      CRM_Core_Error::debug_log_message("EMAIL UPDATE: " . json_encode($email_update));
       civicrm_api3('Email', 'create', $email_update);
     }
 

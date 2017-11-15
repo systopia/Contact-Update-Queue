@@ -108,7 +108,7 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
     if (!empty($contact_update)) {
       $contact_update['id'] = $contact['id'];
       $this->resolveFields($contact_update);
-      error_log("UPDATE contact " . json_encode($contact_update));
+      CRM_Core_Error::debug_log_message("UPDATE contact " . json_encode($contact_update));
       civicrm_api3('Contact', 'create', $contact_update);
     }
 

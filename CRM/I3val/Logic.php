@@ -53,7 +53,7 @@ class CRM_I3val_Logic {
     $activity_data['activity_type_id'] = $activity_type_id;
 
     // create activity, reload and return
-    error_log('ACTIVIY ' . json_encode($activity_data));
+    CRM_Core_Error::debug_log_message('ACTIVIY ' . json_encode($activity_data));
     CRM_I3val_CustomData::resolveCustomFields($activity_data);
     $activity = civicrm_api3('Activity', 'create', $activity_data);
     return civicrm_api3('Activity', 'getsingle', array('id' => $activity['id']));
@@ -80,7 +80,8 @@ class CRM_I3val_Logic {
     }
 
     // assign contacts
-    $activity_data['assignee_id'] = CRM_I3val_Configuration::getAssignee();
+    // TODO: make it configurable
+    // $activity_data['assignee_id'] = CRM_I3val_Configuration::getAssignee();
     $activity_data['source_contact_id'] = CRM_I3val_Configuration::getCurrentUserID();
     if (!empty($contact_id)) {
       $activity_data['target_id'] = $contact_id;

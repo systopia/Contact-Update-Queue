@@ -129,13 +129,13 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
 
       // TODO: fix dates?
 
-      error_log("CREATE NEW " . json_encode($new_mandate));
-      // civicrm_api3('SepaMandate', 'createfull', $new_mandate);
+      CRM_Core_Error::debug_log_message("CREATE NEW " . json_encode($new_mandate));
+      civicrm_api3('SepaMandate', 'createfull', $new_mandate);
 
 
       // CANCEL the old mandate
       // FIXME: use "now" instead of "today" once that's fixed in CiviSEPA
-      // CRM_Sepa_BAO_SEPAMandate::terminateMandate($old_mandate['id'], "today", 'i3val');
+      CRM_Sepa_BAO_SEPAMandate::terminateMandate($old_mandate['id'], "today", 'i3val');
 
       // update data
       $this->applyUpdateData($activity_update, $values, self::$group_name . '.%s_applied', "{$prefix}%s_applied");
@@ -145,44 +145,6 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
     } else {
       $activity_update[self::$group_name . ".action"] = E::ts("Data discarded.");
     }
-
-    // $email_update = array();
-    // $prefix = $this->getKey() . '_';
-    //
-    // switch ($action) {
-    //   case 'add_primary':
-    //     $email_update['is_primary'] = 1;
-    //   case 'add':
-    //     $activity_update[self::$group_name . ".action"] = E::ts("New email added.");
-    //     $email_update['contact_id'] = $values['contact_id'];
-    //     $this->applyUpdateData($email_update, $values, '%s', "{$prefix}%s_applied");
-    //     $this->applyUpdateData($activity_update, $values, self::$group_name . '.%s_applied', "{$prefix}%s_applied");
-    //     break;
-
-    //   case 'update':
-    //     $activity_update[self::$group_name . ".action"]= E::ts("Email updated");
-    //     $email_update['id']         = $values['i3val_email_updates_email_id'];
-    //     $email_update['contact_id'] = $values['contact_id']; // not necessary, but causes notices in 4.6
-    //     $this->applyUpdateData($email_update, $values, '%s', "{$prefix}%s_applied");
-    //     $this->applyUpdateData($activity_update, $values, self::$group_name . '.%s_applied', "{$prefix}%s_applied");
-    //     break;
-
-    //   case 'duplicate':
-    //     $activity_update[self::$group_name . ".action"] = E::ts("Entry already existed.");
-    //     break;
-
-    //   default:
-    //   case 'discard':
-    //     $activity_update[self::$group_name . ".action"] = E::ts("Data discarded.");
-    //     break;
-    // }
-
-    // if (!empty($email_update)) {
-    //   // perform update
-    //   $this->resolveFields($email_update);
-    //   error_log("EMAIL UPDATE: " . json_encode($email_update));
-    //   civicrm_api3('Email', 'create', $email_update);
-    // }
 
     return $activity_update;
   }

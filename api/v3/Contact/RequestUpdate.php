@@ -54,6 +54,6 @@ function _civicrm_api3_contact_request_update_spec(&$spec) {
     'title'       => 'Contact ID',
     'description' => 'The contact this update refers to.',
     'required'    => TRUE,
-    'type'        => CRM_Utils_Type::T_STRING,
+    'type'        => CRM_Utils_Type::T_INT,
   );
 }

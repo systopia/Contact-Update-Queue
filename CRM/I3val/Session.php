@@ -310,7 +310,7 @@ class CRM_I3val_Session {
    * POSTPONE activity
    */
   public function postponeActivity($activity_id, $delay) {
-    error_log("POSTPONING $activity_id by $delay");
+    CRM_Core_Error::debug_log_message("POSTPONING $activity_id by $delay");
     $activity_id = (int) $activity_id;
     if ($activity_id) {
       if ($delay) {
@@ -330,7 +330,7 @@ class CRM_I3val_Session {
    * FLAG activity
    */
   public function flagActivity($activity_id) {
-    error_log("FLAGGING $activity_id");
+    CRM_Core_Error::debug_log_message("FLAGGING $activity_id");
     $activity_id = (int) $activity_id;
     if ($activity_id) {
       $configuration = CRM_I3val_Configuration::getConfiguration();
