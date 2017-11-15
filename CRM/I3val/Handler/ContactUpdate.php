@@ -35,7 +35,16 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
                                   'prefix'            => E::ts('Prefix'),
                                   'suffix'            => E::ts('Suffix'),
                                   'gender'            => E::ts('Gender'),
-                                  'birth_date'        => E::ts('Birth Date'));
+                                  'birth_date'        => E::ts('Birth Date'),
+                                  'do_not_email'      => E::ts('Do not Email'),
+                                  'do_not_phone'      => E::ts('Do not Phone'),
+                                  'do_not_mail'       => E::ts('Do not Mail'),
+                                  'do_not_sms'        => E::ts('Do not SMS'),
+                                  'do_not_trade'      => E::ts('Do not trade'),
+                                  'is_opt_out'        => E::ts('Opt-Out'),
+                                  'is_deceased'       => E::ts('Deceased'),
+                                  'deceased_date'     => E::ts('Deceased Date'),
+                                );
     }
     return self::$field2label;
   }
@@ -138,6 +147,8 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
 
     // create input fields and apply checkboxes
     $active_fields = array();
+    $checkbox_fields = array(); // these will be displayed as checkboxes rather than strings
+
     foreach ($field2label as $fieldname => $fieldlabel) {
       // if there is no values, omit field
       if (empty($values[$fieldname]['submitted'])) {
@@ -156,13 +167,23 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
           $fieldlabel,
           $this->getOptionList($fieldname)
         );
-      } elseif ($fieldname == 'birth_date') {
+
+      } elseif ($fieldname == 'birth_date' || $fieldname == 'deceased_date') {
         $form->addDate(
           "{$fieldname}_applied",
           $fieldlabel,
           FALSE,
           array('formatType' => 'activityDate')
         );
+
+      } elseif (substr($fieldname, 0, 3) == 'do_' || substr($fieldname, 0, 3) == 'is_') {
+        $checkbox_fields[$fieldname] = 1;
+        $form->add(
+          'checkbox',
+          "{$fieldname}_applied",
+          $fieldlabel
+        );
+
       } else {
         // add the text input
         $form->add(
@@ -188,6 +209,7 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
     }
 
     $form->assign('i3val_active_contact_fields', $active_fields);
+    $form->assign('i3val_active_contact_checkboxes', $checkbox_fields);
   }
 
   /**
