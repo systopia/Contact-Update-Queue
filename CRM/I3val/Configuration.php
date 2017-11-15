@@ -126,8 +126,12 @@ class CRM_I3val_Configuration {
    * get the default activity type for the given entity
    */
   public function getDefaultActivityTypeForEntity($entity) {
-    // TODO:
-    return CRM_Core_OptionGroup::getValue('activity_type', 'FWTM Contact Update', 'name');
+    // TODO: config
+    if ($entity == 'SepaMandate') {
+      return CRM_Core_OptionGroup::getValue('activity_type', 'FWTM Mandate Update', 'name');
+    } else {
+      return CRM_Core_OptionGroup::getValue('activity_type', 'FWTM Contact Update', 'name');
+    }
   }
 
   /**
