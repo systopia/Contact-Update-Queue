@@ -177,7 +177,7 @@ class CRM_I3val_Configuration {
    */
   public function getAssignee() {
     // TODO: create a setting for this
-    return 2;
+    return 215988;
   }
 
   /**
