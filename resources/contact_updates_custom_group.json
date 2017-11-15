@@ -242,6 +242,7 @@
       "_translate": ["label"],
       "name": "birth_date_submitted",
       "column_name": "birth_date_submitted",
+      "label": "Birth Date (submitted)",
       "data_type": "Date",
       "html_type": "Select Date",
       "is_required": "0",
