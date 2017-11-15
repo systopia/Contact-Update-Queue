@@ -20,7 +20,7 @@
           <td style="vertical-align: middle;">{$i3val_address_values.$fieldkey.original}</td>
           <td style="vertical-align: middle;">{$i3val_address_values.$fieldkey.submitted}</td>
           <td style="vertical-align: middle;">{$i3val_address_values.$fieldkey.current}</td>
-          <td style="vertical-align: middle;">{$form.$input_field.html}</td>
+          <td style="vertical-align: middle;" class="i3val-control">{$form.$input_field.html}</td>
         </tr>
         {/foreach}
       </tbody>
@@ -30,7 +30,7 @@
 
     {$form.i3val_email_updates_address_id.html}
 
-    <div class="crm-section">
+    <div class="crm-section" class="i3val-control">
       <div class="label">{$form.i3val_address_updates_action.label}</div>
       <div class="content">{$form.i3val_address_updates_action.html}</div>
       <div class="clear"></div>
