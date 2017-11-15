@@ -168,3 +168,20 @@ function i3val_civicrm_angularModules(&$angularModules) {
 function i3val_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
   _i3val_civix_civicrm_alterSettingsFolders($metaDataFolders);
 }
+
+/**
+ * Implements hook_civicrm_navigationMenu().
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_navigationMenu
+ */
+function i3val_civicrm_navigationMenu(&$menu) {
+  _i3val_civix_insert_navigation_menu($menu, 'Contacts', array(
+    'label'      => ts('Process Update Requests'),
+    'name'       => 'i3val_desktop',
+    'url'        => 'civicrm/i3val/desktop?reset=1',
+    'permission' => 'edit all contacts',
+    'operator'   => 'OR',
+    'separator'  => 1,
+  ));
+  _i3val_civix_navigationMenu($menu);
+}
