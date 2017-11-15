@@ -176,7 +176,7 @@ function i3val_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
  */
 function i3val_civicrm_navigationMenu(&$menu) {
   _i3val_civix_insert_navigation_menu($menu, 'Contacts', array(
-    'label'      => ts('Process Update Requests'),
+    'label'      => ts('Process Pending Update Requests'),
     'name'       => 'i3val_desktop',
     'url'        => 'civicrm/i3val/desktop?reset=1',
     'permission' => 'edit all contacts',
