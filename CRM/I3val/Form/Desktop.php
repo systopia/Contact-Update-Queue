@@ -51,7 +51,7 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
 
     // Check if DONE....
     if (!$this->activity_id) {
-      CRM_Core_Session::setStatus(E::ts("No more activities pending."), E::ts('All done!'), 'info');
+      CRM_Core_Session::setStatus(E::ts("No more update requests pending. You're already done!"), E::ts('All done!'), 'info');
       CRM_Utils_System::redirect(CRM_Utils_System::url("civicrm/dashboard"));
       return;
     }
