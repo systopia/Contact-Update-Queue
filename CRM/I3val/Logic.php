@@ -82,9 +82,18 @@ class CRM_I3val_Logic {
     // assign contacts
     // TODO: make it configurable
     // $activity_data['assignee_id'] = CRM_I3val_Configuration::getAssignee();
-    $activity_data['source_contact_id'] = CRM_I3val_Configuration::getCurrentUserID();
+
+    // make sure the source contact is there
+    $activity_data['source_contact_id'] = CRM_I3val_Configuration::getCurrentUserID($contact_id);
+
+    // add target contact
     if (!empty($contact_id)) {
       $activity_data['target_id'] = $contact_id;
+    }
+
+    // add the note
+    if (!empty($params['i3val_note'])) {
+      $activity_data['details'] = $params['i3val_note'];
     }
   }
 
@@ -155,4 +164,5 @@ class CRM_I3val_Logic {
 
     CRM_Core_Region::instance('page-footer')->add(array('script' => $script));
   }
+
 }

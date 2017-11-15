@@ -56,4 +56,10 @@ function _civicrm_api3_contact_request_update_spec(&$spec) {
     'required'    => TRUE,
     'type'        => CRM_Utils_Type::T_INT,
   );
+  $spec['i3val_note'] = array(
+    'title'       => 'Request note',
+    'description' => 'Add a note for the reviewer',
+    'required'    => FALSE,
+    'type'        => CRM_Utils_Type::T_STRING,
+  );
 }
