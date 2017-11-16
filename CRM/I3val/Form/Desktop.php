@@ -150,12 +150,13 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
   public function postProcess() {
     $session = CRM_I3val_Session::getSession();
     $configuration = CRM_I3val_Configuration::getConfiguration();
+    $timestamp = NULL;
 
     switch ($this->command) {
       case 'postpone':
         // Process this later
         $postpone_option = CRM_Utils_Request::retrieve('postpone', 'String');
-        $session->postponeActivity($this->activity_id, $postpone_option);
+        $timestamp = $session->postponeActivity($this->activity_id, $postpone_option);
         CRM_Core_Session::setStatus(E::ts("Requested update has been marked to be reviewed again later"), E::ts('Postponed!'), 'info');
         break;
 
@@ -176,7 +177,7 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     }
 
     // mark received
-    $session->markProcessed($this->activity_id);
+    $session->markProcessed($this->activity_id, $timestamp);
 
     // go to the next one
     // $next_url = CRM_Utils_System::url("civicrm/i3val/desktop");

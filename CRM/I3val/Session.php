@@ -15,6 +15,9 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
+define('GRAB_CHUNK_SIZE', 10);
+
+
 /**
  * This class will store data about this processing session
  * In particular, it will store the TODO list for the desktop
@@ -71,7 +74,7 @@ class CRM_I3val_Session {
   /**
    * mark this activity as processed
    */
-  public function markProcessed($activity_id) {
+  public function markProcessed($activity_id, $timestamp = NULL) {
     $activity_id = (int) $activity_id;
     // error_log("MARKED PROCESSED: $activity_id");
 
@@ -84,7 +87,7 @@ class CRM_I3val_Session {
     CRM_Core_DAO::executeQuery("DELETE FROM i3val_session_cache WHERE session_key = '{$session_key}' AND activity_id = {$activity_id}");
 
     // get next
-    $next_activity_id = $this->getNext();
+    $next_activity_id = $this->getNext(TRUE, $timestamp);
     $this->set('activity_id', $next_activity_id);
     // error_log("CURRENT IS $next_activity_id");
   }
@@ -93,7 +96,7 @@ class CRM_I3val_Session {
   /**
    * Get the next activity id from our list
    */
-  protected function getNext($grab_more_if_needed = TRUE) {
+  protected function getNext($grab_more_if_needed = TRUE, $after_timestamp = NULL) {
     // error_log("GET NEXT");
     $cache_key = $this->getSessionKey();
     $next_activity_id = CRM_Core_DAO::singleValueQuery("
@@ -104,8 +107,8 @@ class CRM_I3val_Session {
         LIMIT 1");
     if (!$next_activity_id && $grab_more_if_needed) {
       // try to get more
-      $this->grabMoreActivities(10);
-      $next_activity_id = $this->getNext(FALSE);
+      $this->grabMoreActivities(GRAB_CHUNK_SIZE, $after_timestamp);
+      $next_activity_id = $this->getNext(FALSE, $after_timestamp);
     }
     return $next_activity_id;
   }
@@ -211,7 +214,7 @@ class CRM_I3val_Session {
   /**
    * Assign another {$max_count} activities to this session
    */
-  protected function grabMoreActivities($max_count = 0) {
+  protected function grabMoreActivities($max_count = 0, $after_timestamp = NULL) {
     // error_log("GRAB MORE $max_count");
     $after_activity_id = $this->get('activity_id');
 
@@ -224,7 +227,11 @@ class CRM_I3val_Session {
 
     // see if there is a marker
     $after_activity_id = (int) $after_activity_id;
-    if ($after_activity_id) {
+    if ($after_timestamp) {
+      $timestamp = date('YmdHis', strtotime($after_timestamp));
+      $extra_join = '';
+      $extra_where_clause = "AND activity.activity_date_time >= '{$timestamp}'";
+    } elseif ($after_activity_id) {
       $extra_join = "JOIN civicrm_activity reference ON reference.id = {$after_activity_id}";
       $extra_where_clause = "AND activity.id <> {$after_activity_id} AND activity.activity_date_time >= reference.activity_date_time";
     } else {
@@ -313,6 +320,12 @@ class CRM_I3val_Session {
     CRM_Core_Error::debug_log_message("POSTPONING $activity_id by $delay");
     $activity_id = (int) $activity_id;
     if ($activity_id) {
+      // get the old activity timestamp
+      $current_status = civicrm_api3('Activity', 'getsingle', array(
+        'id'     => $activity_id,
+        'return' => 'activity_date_time',
+      ));
+
       if ($delay) {
         $new_date = date('YmdHis', strtotime("+{$delay} days"));
       } else {
@@ -323,6 +336,8 @@ class CRM_I3val_Session {
         'id'                 => $activity_id,
         'activity_date_time' => $new_date
       ));
+
+      return $current_status['activity_date_time'];
     }
   }
 
