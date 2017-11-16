@@ -35,23 +35,18 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
   /**
    * get the general processing options
    */
-  protected function getProcessingOptions($data_submitted, $data_existing, $attribute) {
-    if (isset($data_submitted[$attribute])) {
-      $name = "'{$data_submitted[$attribute]}'";
-    } else {
-      $name = $attribute;
-    }
+  protected function getProcessingOptions($data_submitted, $data_existing, $entity_name) {
 
     $options = array();
-    $options['add']         = E::ts("Add %1", array(1 => $name));
-    $options['add_primary'] = E::ts("Add %1 as primary", array(1 => $name));
+    $options['add']         = E::ts("Add new %1", array(1 => $entity_name));
+    $options['add_primary'] = E::ts("Add new %1 as primary", array(1 => $entity_name));
 
     if ($data_existing) {
-      $options['update'] = E::ts("Overwrite %1", array(1 => $name));
+      $options['update'] = E::ts("Overwrite existing %1", array(1 => $entity_name));
     }
 
-    $options['discard']   = E::ts("Discard %1 (do nothing)", array(1 => $name));
-    $options['duplicate'] = E::ts("Already Exists (do nothing)");
+    $options['discard']   = E::ts("Discard %1 data (do nothing)", array(1 => $entity_name));
+    $options['duplicate'] = E::ts("%1 already exists (do nothing)", array(1 => $entity_name));
     return $options;
   }
 

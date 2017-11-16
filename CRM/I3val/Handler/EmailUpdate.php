@@ -216,7 +216,7 @@ class CRM_I3val_Handler_EmailUpdate extends CRM_I3val_Handler_DetailUpdate {
       'select',
       "i3val_email_updates_action",
       E::ts("Action"),
-      $this->getProcessingOptions($email_submitted, $existing_email, 'email'),
+      $this->getProcessingOptions($email_submitted, $existing_email, 'Email'),
       TRUE,
       array('class' => 'huge crm-select2')
     );

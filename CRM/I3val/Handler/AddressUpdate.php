@@ -244,7 +244,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
       'select',
       "i3val_address_updates_action",
       E::ts("Action"),
-      $this->getProcessingOptions($address_submitted, $existing_address, 'address'),
+      $this->getProcessingOptions($address_submitted, $existing_address, 'Address'),
       TRUE,
       array('class' => 'huge crm-select2')
     );
