@@ -58,6 +58,17 @@ class CRM_I3val_Configuration {
     return "4 hours";
   }
 
+  /**
+   * Sanitise input accorting to the configuration
+   */
+  public function sanitiseInput(&$input) {
+    // TODO: base on setting
+    foreach ($input as $key => &$value) {
+      if ($value == '?') {
+        $value = '';
+      }
+    }
+  }
 
   /**
    * This is one of the central configuration elements

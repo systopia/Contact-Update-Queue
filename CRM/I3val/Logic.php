@@ -28,6 +28,10 @@ class CRM_I3val_Logic {
     CRM_Core_Error::debug_log_message('PROCESS {$entity} update request: ' . json_encode($params));
     $config = CRM_I3val_Configuration::getConfiguration();
 
+    // input sanitation
+    $config->sanitiseInput($params);
+
+    // get handlers
     if (!empty($params['activity_type_id'])) {
       $activity_type_id = $params['activity_type_id'];
       $handlers = $config->getHandlersForActivityType($activity_type_id);
