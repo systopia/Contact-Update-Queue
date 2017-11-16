@@ -147,7 +147,7 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
 
     foreach ($field2label as $fieldname => $fieldlabel) {
       // if there is no values, omit field
-      if (empty($values[$fieldname]['submitted'])) {
+      if (!isset($values[$fieldname]['submitted']) || !strlen($values[$fieldname]['submitted'])) {
         continue;
       }
 
