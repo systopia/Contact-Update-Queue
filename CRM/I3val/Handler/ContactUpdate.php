@@ -141,10 +141,6 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
       $values['suffix']['current'] = $form->contact['individual_suffix'];
     }
 
-    $form->assign('i3val_contact_fields', $field2label);
-    $form->assign('i3val_contact_values', $values);
-
-
     // create input fields and apply checkboxes
     $active_fields = array();
     $checkbox_fields = array(); // these will be displayed as checkboxes rather than strings
@@ -175,6 +171,14 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
           FALSE,
           array('formatType' => 'activityDate')
         );
+
+        // format date (drop time)
+        if (isset($values[$fieldname]['submitted'])) {
+          $values[$fieldname]['submitted'] = substr($values[$fieldname]['submitted'], 0, 10);
+        }
+        if (isset($values[$fieldname]['original'])) {
+          $values[$fieldname]['original'] = substr($values[$fieldname]['original'], 0, 10);
+        }
 
       } elseif (substr($fieldname, 0, 3) == 'do_' || substr($fieldname, 0, 3) == 'is_') {
         $checkbox_fields[$fieldname] = 1;
@@ -208,6 +212,8 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
       $form->setDefaults(array("{$fieldname}_apply" => 1));
     }
 
+    $form->assign('i3val_contact_fields', $field2label);
+    $form->assign('i3val_contact_values', $values);
     $form->assign('i3val_active_contact_fields', $active_fields);
     $form->assign('i3val_active_contact_checkboxes', $checkbox_fields);
   }
