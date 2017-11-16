@@ -102,13 +102,14 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
     }
 
     // calculate generic update
+    $contact_update = array();
     $this->applyUpdateData($contact_update, $values, '%s', "%s_applied");
     $this->applyUpdateData($activity_update, $values, self::$group_name . '.%s_applied', "%s_applied");
 
     // remove the ones that are not flagged as 'apply'
     foreach (array_keys($contact_update) as $key) {
       $apply_key = "{$key}_apply";
-      if (empty($values[$apply_key])) {
+      if (!isset($values[$apply_key]) || !strlen($values[$apply_key])) {
         unset($contact_update[$key]);
       }
     }
