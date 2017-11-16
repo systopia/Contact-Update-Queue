@@ -66,6 +66,12 @@
       <td class="label">{ts}Status{/ts}</td>
       <td class="view-value">{$activity.status}</td>
     </tr>
+    {if $activity.details}
+    <tr>
+      <td class="label">{ts}Note{/ts}</td>
+      <td class="view-value">{$activity.details}</td>
+    </tr>
+    {/if}
   </tbody>
 </table>
 
