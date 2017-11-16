@@ -8,7 +8,7 @@
           <th>{ts}Original Value{/ts}</th>
           <th>{ts}Submitted Value{/ts}</th>
           <th>{ts}Current Value{/ts}</th>
-          <th>{ts}Future Value{/ts}</th>
+          <th>{ts}Value to apply{/ts}</th>
           <th class="i3val-control">{ts}Apply?{/ts}</th>
         </tr>
       </thead>

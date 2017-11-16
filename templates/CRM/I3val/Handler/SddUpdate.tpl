@@ -15,7 +15,7 @@
           <th>{ts}Original Value{/ts}</th>
           <th>{ts}Submitted Value{/ts}</th>
           <th>{ts}Current Value{/ts}</th>
-          <th>{ts}Value to use{/ts}</th>
+          <th>{ts}Value to apply{/ts}</th>
         </tr>
       </thead>
       <tbody>
