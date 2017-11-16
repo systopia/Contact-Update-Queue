@@ -91,9 +91,14 @@ class CRM_I3val_Logic {
       $activity_data['target_id'] = $contact_id;
     }
 
-    // add the note
+    // add the note (if submitted)
     if (!empty($params['i3val_note'])) {
       $activity_data['details'] = $params['i3val_note'];
+    }
+
+    // add parent activity (if submitted)
+    if (!empty($params['i3val_parent_id']) && is_numeric($params['i3val_parent_id'])) {
+      $activity_data['parent_id'] = (int) $params['i3val_parent_id'];
     }
   }
 

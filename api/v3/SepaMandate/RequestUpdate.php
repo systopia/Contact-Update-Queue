@@ -64,4 +64,10 @@ function _civicrm_api3_sepa_mandate_request_update_spec(&$spec) {
     'required'    => FALSE,
     'type'        => CRM_Utils_Type::T_STRING,
   );
+  $spec['i3val_parent_id'] = array(
+    'title'       => 'Parent activity ID',
+    'description' => 'The change request should be recorded as a follow-up to the given activity ID',
+    'required'    => FALSE,
+    'type'        => CRM_Utils_Type::T_INT,
+  );
 }
