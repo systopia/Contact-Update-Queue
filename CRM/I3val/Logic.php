@@ -25,6 +25,7 @@ class CRM_I3val_Logic {
    * @param $params   array  the new values
    */
   public static function createEntityUpdateRequest($entity, $params) {
+    CRM_Core_Error::debug_log_message('PROCESS {$entity} update request: ' . json_encode($params));
     $config = CRM_I3val_Configuration::getConfiguration();
 
     if (!empty($params['activity_type_id'])) {
