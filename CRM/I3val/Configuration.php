@@ -22,19 +22,22 @@ class CRM_I3val_Configuration {
   protected $activity_queue = NULL;
 
   private static $configuration = NULL;
+
+  private $config = NULL;
+
   /**
    * get the configuration singleton
    */
   public static function getConfiguration() {
     if (self::$configuration === NULL) {
-        self::$configuration = new CRM_I3val_Configuration();
-      }
+      self::$configuration = new CRM_I3val_Configuration();
     }
     return self::$configuration;
   }
 
 
   public function __construct() {
+    $this->config = self::getRawConfig();
   }
 
 
@@ -42,17 +45,17 @@ class CRM_I3val_Configuration {
    * How long is a session valid
    */
   public function getSessionTTL() {
-    return "4 hours";
+    return CRM_Utils_Array::value('session_ttl', $this->config, "4 hours");
   }
 
   /**
    * Sanitise input accorting to the configuration
    */
   public function sanitiseInput(&$input) {
-    // TODO: base on setting
-    foreach ($input as $key => &$value) {
-      if ($value == '?') {
-        $value = '';
+    $strip_chars = CRM_Utils_Array::value('strip_chars', $this->config, '');
+    if ($strip_chars) {
+      foreach ($input as $key => &$value) {
+        $value = trim($value, $strip_chars);
       }
     }
   }
@@ -61,33 +64,45 @@ class CRM_I3val_Configuration {
    * This is one of the central configuration elements
    */
   protected function getActivityType2HandlerClass() {
-    // TODO: create config UI
-    $contact_update_id = CRM_Core_OptionGroup::getValue('activity_type', 'FWTM Contact Update', 'name');
-    $mandate_update_id = CRM_Core_OptionGroup::getValue('activity_type', 'FWTM Mandate Update', 'name');
-    return array(
-      $contact_update_id => array('CRM_I3val_Handler_ContactUpdate',
-                                  'CRM_I3val_Handler_AddressUpdate',
-                                  'CRM_I3val_Handler_EmailUpdate',
-                                  'CRM_I3val_Handler_PhoneUpdate'),
-      $mandate_update_id => array('CRM_I3val_Handler_SddUpdate')
-    );
+    $activity2handlers = array();
+    $configurations = CRM_Utils_Array::value('configurations', $this->config, array());
+    foreach ($configurations as $configuration) {
+      $activity2handlers[$configuration['activity_type_id']] = $configuration['handlers'];
+    }
+    return $activity2handlers;
+  }
+
+  /**
+   * This is one of the central configuration elements
+   */
+  protected function getActiveHandlerClasses() {
+    $handler_list = array();
+    $configurations = CRM_Utils_Array::value('configurations', $this->config, array());
+    foreach ($configurations as $configuration) {
+      foreach ($configuration['handlers'] as $handler_class) {
+        $handler_list[$handler_class] = 1;
+      }
+    }
+
+    return array_keys($handler_list);
   }
 
   /**
    * This is one of the central configuration elements
    */
   protected function getEntity2HandlerClass() {
-    // TODO: create config UI
-    return array(
-      'Contact'     => array('CRM_I3val_Handler_ContactUpdate',
-                             'CRM_I3val_Handler_AddressUpdate',
-                             'CRM_I3val_Handler_EmailUpdate',
-                             'CRM_I3val_Handler_PhoneUpdate'),
-      'Email'       => array('CRM_I3val_Handler_EmailUpdate'),
-      'Phone'       => array('CRM_I3val_Handler_PhoneUpdate'),
-      'Address'     => array('CRM_I3val_Handler_AddressUpdate'),
-      'SepaMandate' => array('CRM_I3val_Handler_SddUpdate'),
-    );
+    $entity2handlers = array();
+
+    $handlers = $this->getActiveHandlerClasses();
+    foreach ($handlers as $handler_class) {
+      $handler = new $handler_class();
+      $entities = $handler->handlesEntities();
+      foreach ($entities as $entity) {
+        $entity2handlers[$entity][] = $handler_class;
+      }
+    }
+
+    return $entity2handlers;
   }
 
   /**
@@ -106,7 +121,7 @@ class CRM_I3val_Configuration {
 
 
   /**
-   * get a hander instance for the given activity type
+   * get a handler instance for the given activity type
    */
   public function getHandlersForActivityType($activity_type_id) {
     $handlers = array();
@@ -124,12 +139,18 @@ class CRM_I3val_Configuration {
    * get the default activity type for the given entity
    */
   public function getDefaultActivityTypeForEntity($entity) {
-    // TODO: config
-    if ($entity == 'SepaMandate') {
-      return CRM_Core_OptionGroup::getValue('activity_type', 'FWTM Mandate Update', 'name');
-    } else {
-      return CRM_Core_OptionGroup::getValue('activity_type', 'FWTM Contact Update', 'name');
+    $configurations = CRM_Utils_Array::value('configurations', $this->config, array());
+    foreach ($configurations as $configuration) {
+      foreach ($configuration['handlers'] as $handler_class) {
+        $handler = new $handler_class();
+        $entities = $handler->handlesEntities();
+        if (in_array($entity, $entities)) {
+          return $configuration['activity_type_id'];
+        }
+      }
     }
+
+    return NULL;
   }
 
   /**
@@ -144,20 +165,26 @@ class CRM_I3val_Configuration {
    * get an array id => label of the relevant activity types
    */
   public function getActivityTypes() {
-    $activityType2HandlerClass = $this->getActivityType2HandlerClass();
-    if ($this->activity_types == NULL) {
-      $query = civicrm_api3('OptionValue', 'get', array(
-        'option_group_id' => 'activity_type',
-        'value'           => array('IN' => array_keys($activityType2HandlerClass)),
-        'options.limit'   => 0,
-        'return'          => 'value,name,label'
-        ));
-      $this->activity_types = array();
-      foreach ($query['values'] as $optionValue) {
-        $this->activity_types[$optionValue['value']] = $optionValue;
-      }
+    $activity_types = array();
+    $configurations = CRM_Utils_Array::value('configurations', $this->config, array());
+    foreach ($configurations as $configuration) {
+      $activity_type_id = $configuration['activity_type_id'];
+      $activity_types[$activity_type_id] = "Unknown";
     }
-    return $this->activity_types;
+
+    // TODO: cache labels?
+    $labels = civicrm_api3('OptionValue', 'get', array(
+      'option_group_id' => 'activity_type',
+      'value'           => array('IN' => array_keys($activity_types)),
+      'return'          => 'value,label',
+      'option.limit'    => 0
+    ));
+    foreach ($labels['values'] as $option_value) {
+      $activity_types[$option_value['value']] = $option_value['label'];
+    }
+    error_log("TYPES " . json_encode($activity_types));
+    // return array_keys($activity_types);
+    return $activity_types;
   }
 
   /**
@@ -176,6 +203,7 @@ class CRM_I3val_Configuration {
 
   /**
    * get the contact this activity should be assigend to
+   * @deprecated
    */
   public function getAssignee() {
     // TODO: create a setting for this
@@ -186,8 +214,7 @@ class CRM_I3val_Configuration {
    * get the activity status ID meaning "flagged as problem"
    */
   public function getErrorStatusID() {
-    // TODO: create a setting for this
-    return 3;
+    return CRM_Utils_Array::value('flag_status', $this->config, 3);
   }
 
   /**
@@ -244,10 +271,29 @@ class CRM_I3val_Configuration {
       return $fallback_id;
     }
 
-    // TODO: configure
+    // TODO: configure?
 
     // now: last resort: just get any contact
     $any_contact = civicrm_api3('Contact', 'get', array('option.limit' => 1, 'return' => 'id'));
     return $any_contact['id'];
+  }
+
+  /**
+   * get the raw config array
+   */
+  public static function getRawConfig() {
+    $value = CRM_Core_BAO_Setting::getItem('i3val', 'i3val_config');
+    if (!is_array($value)) {
+      return array();
+    } else {
+      return $value;
+    }
+  }
+
+  /**
+   * set the raw config array
+   */
+  public static function setRawConfig($config) {
+    CRM_Core_BAO_Setting::setItem($config, 'i3val', 'i3val_config');
   }
 }

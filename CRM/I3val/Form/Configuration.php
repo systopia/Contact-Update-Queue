@@ -15,8 +15,9 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-
 use CRM_I3val_ExtensionUtil as E;
+
+define('MAX_CONFIG_COUNT', 10);
 
 /**
  * Form controller class
@@ -81,8 +82,8 @@ class CRM_I3val_Form_Configuration extends CRM_Core_Form {
         array('class' => 'crm-select2 huge', 'multiple' => 'multiple')
       );
     }
-    $this->assign('configurations', range(1, 10));
-    $this->assign('configuration_count', 10);
+    $this->assign('configurations', range(1, MAX_CONFIG_COUNT));
+    $this->assign('configuration_count', MAX_CONFIG_COUNT);
 
     $this->addButtons(array(
       array(
@@ -96,17 +97,61 @@ class CRM_I3val_Form_Configuration extends CRM_Core_Form {
   }
 
 
+  /**
+   * Getter for $_defaultValues.
+   *
+   * @return array
+   */
+  public function setDefaultValues() {
+    $current_config = CRM_I3val_Configuration::getRawConfig();
+
+    // explode configurations
+    $configurations =CRM_Utils_Array::value('configurations', $current_config, array());
+    $i = 1;
+    foreach ($configurations as $configuration) {
+      $current_config["activity_type_id_{$i}"] = $configuration['activity_type_id'];
+      $current_config["handler_classes_{$i}"]  = $configuration['handlers'];
+      $i += 1;
+    }
+
+    return $current_config;
+  }
 
 
+  /**
+   * update the configuration
+   */
   public function postProcess() {
     $values = $this->exportValues();
 
+    // read the raw config blob
+    $current_config = CRM_I3val_Configuration::getRawConfig();
 
-    // CRM_Core_Session::setStatus(E::ts('You picked color "%1"', array(
-    //   1 => $options[$values['favorite_color']],
-    // )));
+    $current_config['session_ttl']  = CRM_Utils_Array::value('session_ttl',  $values, CRM_Utils_Array::value('session_ttl',  $current_config));
+    $current_config['session_size'] = CRM_Utils_Array::value('session_size', $values, CRM_Utils_Array::value('session_size', $current_config));
+    $current_config['strip_chars']  = CRM_Utils_Array::value('strip_chars',  $values, CRM_Utils_Array::value('strip_chars',  $current_config));
+    $current_config['flag_status']  = CRM_Utils_Array::value('flag_status',  $values, CRM_Utils_Array::value('flag_status',  $current_config));
+
+    // extract configurations
+    $configurations = array();
+    for ($i=1; $i <= MAX_CONFIG_COUNT; $i++) {
+      $activity_type_id = CRM_Utils_Array::value("activity_type_id_{$i}", $values);
+      if ($activity_type_id) {
+        $configurations[] = array(
+          'activity_type_id' => $activity_type_id,
+          'handlers'         => CRM_Utils_Array::value("handler_classes_{$i}", $values, array())
+        );
+      }
+    }
+    $current_config['configurations'] = $configurations;
+
+    // write the raw config blob
+    CRM_I3val_Configuration::setRawConfig($current_config);
+
     parent::postProcess();
   }
+
+
 
   /**
    * get some predefined TTL values

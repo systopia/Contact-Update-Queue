@@ -61,6 +61,13 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
   }
 
   /**
+   * returns a list of CiviCRM entities this handler can process
+   */
+  public function handlesEntities() {
+    return array('SepaMandate');
+  }
+
+  /**
    * get the list of
    */
   public function getFields() {

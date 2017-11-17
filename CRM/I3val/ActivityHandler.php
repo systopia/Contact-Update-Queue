@@ -37,6 +37,11 @@ abstract class CRM_I3val_ActivityHandler {
   public abstract function getName();
 
   /**
+   * returns a list of CiviCRM entities this handler can process
+   */
+  public abstract function handlesEntities();
+
+  /**
    * get the list of fields
    */
   public abstract function getFields();

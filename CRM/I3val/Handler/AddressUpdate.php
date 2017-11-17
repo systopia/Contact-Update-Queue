@@ -47,6 +47,13 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
   }
 
   /**
+   * returns a list of CiviCRM entities this handler can process
+   */
+  public function handlesEntities() {
+    return array('Contact', 'Address');
+  }
+
+  /**
    * get the main key/identifier for this handler
    */
   public function getKey() {

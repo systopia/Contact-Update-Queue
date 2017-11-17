@@ -50,6 +50,13 @@ class CRM_I3val_Handler_PhoneUpdate extends CRM_I3val_Handler_DetailUpdate {
   }
 
   /**
+   * returns a list of CiviCRM entities this handler can process
+   */
+  public function handlesEntities() {
+    return array('Contact', 'Phone');
+  }
+
+  /**
    * get the list of
    */
   public function getFields() {
