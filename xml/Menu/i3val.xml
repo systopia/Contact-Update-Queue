@@ -6,4 +6,10 @@
     <title>Desktop</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/admin/i3val</path>
+    <page_callback>CRM_I3val_Form_Configuration</page_callback>
+    <title>I3VAL Configuration</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>

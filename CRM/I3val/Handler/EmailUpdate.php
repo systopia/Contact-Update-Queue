@@ -42,6 +42,13 @@ class CRM_I3val_Handler_EmailUpdate extends CRM_I3val_Handler_DetailUpdate {
   }
 
   /**
+   * get a human readable name for this handler
+   */
+  public function getName() {
+    return E::ts("Email Update");
+  }
+
+  /**
    * get the list of
    */
   public function getFields() {

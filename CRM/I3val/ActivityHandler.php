@@ -32,6 +32,11 @@ abstract class CRM_I3val_ActivityHandler {
   public abstract function getKey();
 
   /**
+   * get a human readable name for this handler
+   */
+  public abstract function getName();
+
+  /**
    * get the list of fields
    */
   public abstract function getFields();

@@ -21,25 +21,12 @@ class CRM_I3val_Configuration {
   protected $activity_types = NULL;
   protected $activity_queue = NULL;
 
-  /**
-   * get the configuration namespace
-   */
-  public static function getConfigNamespace() {
-    // TODO: move into setting
-    return 'AIVL';
-  }
-
   private static $configuration = NULL;
   /**
    * get the configuration singleton
    */
   public static function getConfiguration() {
     if (self::$configuration === NULL) {
-      $namespace = self::getConfigNamespace();
-      if ($namespace) {
-        $class = "CRM_I3val_{$namespace}_Configuration";
-        self::$configuration = new $class();
-      } else {
         self::$configuration = new CRM_I3val_Configuration();
       }
     }

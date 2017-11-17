@@ -57,6 +57,13 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
   }
 
   /**
+   * get a human readable name for this handler
+   */
+  public function getName() {
+    return E::ts("Contact Update");
+  }
+
+  /**
    * get the list of
    */
   public function getFields() {

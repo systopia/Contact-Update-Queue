@@ -15,17 +15,19 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-/**
- * AIVL Customisation
- */
-class CRM_I3val_AIVL_Configuration extends CRM_I3val_Configuration {
-
-
-  /**
-   * get the activity types based on the current user
-   */
-  public function getEligibleActivityTypes() {
-    // TODO: evaluate permissions
-    return $this->getActivityTypes();
-  }
-}
+/*
+* Settings metadata file
+*/
+return array(
+  'i3val_config' => array(
+    'group_name' => 'be.aivl.i3val',
+    'group' => 'i3val',
+    'name' => 'i3val_config',
+    'type' => 'Array',
+    'default' => NULL,
+    'add' => '4.6',
+    'is_domain' => 1,
+    'is_contact' => 0,
+    'description' => 'i3val configuration'
+  )
+ );

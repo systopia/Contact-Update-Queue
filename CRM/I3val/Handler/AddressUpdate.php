@@ -40,6 +40,13 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
   }
 
   /**
+   * get a human readable name for this handler
+   */
+  public function getName() {
+    return E::ts("Address Update");
+  }
+
+  /**
    * get the main key/identifier for this handler
    */
   public function getKey() {
