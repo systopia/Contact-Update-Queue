@@ -172,5 +172,15 @@ function i3val_civicrm_navigationMenu(&$menu) {
     'operator'   => 'OR',
     'separator'  => 1,
   ));
+
+  _i3val_civix_insert_navigation_menu($menu, 'Administer/System Settings', array(
+    'label'      => ts('Configure I3Val'),
+    'name'       => 'i3val_config',
+    'url'        => 'civicrm/admin/i3val?reset=1',
+    'permission' => 'administer CiviCRM',
+    'operator'   => 'OR',
+    'separator'  => 1,
+  ));
+
   _i3val_civix_navigationMenu($menu);
 }
