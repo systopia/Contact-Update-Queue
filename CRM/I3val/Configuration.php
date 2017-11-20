@@ -63,7 +63,7 @@ class CRM_I3val_Configuration {
   /**
    * This is one of the central configuration elements
    */
-  protected function getActivityType2HandlerClass() {
+  protected function getActivityType2HandlerClasses() {
     $activity2handlers = array();
     $configurations = CRM_Utils_Array::value('configurations', $this->config, array());
     foreach ($configurations as $configuration) {
@@ -73,7 +73,7 @@ class CRM_I3val_Configuration {
   }
 
   /**
-   * This is one of the central configuration elements
+   * Returns a list of all active handler *classes*
    */
   protected function getActiveHandlerClasses() {
     $handler_list = array();
@@ -125,7 +125,7 @@ class CRM_I3val_Configuration {
    */
   public function getHandlersForActivityType($activity_type_id) {
     $handlers = array();
-    $activityType2HandlerClass = $this->getActivityType2HandlerClass();
+    $activityType2HandlerClass = $this->getActivityType2HandlerClasses();
     if (isset($activityType2HandlerClass[$activity_type_id])) {
       foreach ($activityType2HandlerClass[$activity_type_id] as $handlerClass) {
         $handlers[] = new $handlerClass();
@@ -182,8 +182,6 @@ class CRM_I3val_Configuration {
     foreach ($labels['values'] as $option_value) {
       $activity_types[$option_value['value']] = $option_value['label'];
     }
-    error_log("TYPES " . json_encode($activity_types));
-    // return array_keys($activity_types);
     return $activity_types;
   }
 
@@ -295,5 +293,59 @@ class CRM_I3val_Configuration {
    */
   public static function setRawConfig($config) {
     CRM_Core_BAO_Setting::setItem($config, 'i3val', 'i3val_config');
+    self::$configuration = NULL;
+  }
+
+  /**
+   * adjust the custom fields to the given configuration, that includes:
+   *  - updating/creating the custom groups of active handers
+   *  - assigning these groups to the associated activity types
+   */
+  public static function synchroniseCustomFields() {
+    // first: create all handler classes
+    $customData = new CRM_I3val_CustomData('be.aivl.i3val');
+
+    $config = self::getConfiguration();
+    $activeHanders = $config->getActiveHandlerClasses();
+    foreach ($activeHanders as $handler_class) {
+      $handler = new $handler_class();
+      $spec_files = $handler->getCustomGroupSpeficationFiles();
+      foreach ($spec_files as $spec_file) {
+        // error_log("RUNNING {$spec_file}");
+        $customData->syncCustomGroup($spec_file);
+      }
+    }
+
+    // then, make sure the activity assignments match
+    $group2types = array();
+
+    // find out which custom groups need to be available for which activity types
+    $type2class = $config->getActivityType2HandlerClasses();
+    foreach ($type2class as $activity_type_id => $handler_classes) {
+      foreach ($handler_classes as $handler_class) {
+        $handler = new $handler_class();
+        $group_name = $handler->getCustomGroupName();
+        $group2types[$group_name][] = $activity_type_id;
+      }
+    }
+
+    // then adjust the settings
+    foreach ($group2types as $group_name => $activity_type_ids) {
+      $custom_group = civicrm_api3('CustomGroup', 'get', array('name' => $group_name));
+      if ($custom_group['id']) {
+        $custom_group = reset($custom_group['values']);
+        // error_log("SETTING {$group_name} to " . json_encode($activity_type_ids));
+        civicrm_api3('CustomGroup', 'create', array(
+          'id'                          => $custom_group['id'],
+          'title'                       => $custom_group['title'], // prevent PHP notices
+          'extends'                     => 'Activity',             // prevent PHP notices
+          'is_active'                   => 1,
+          'extends_entity_column_value' => CRM_Utils_Array::implodePadded($activity_type_ids)
+        ));
+      } else {
+        // ERROR handling
+        error_log("ERROR! Couldn't find custom group '{$group_name}'");
+      }
+    }
   }
 }

@@ -4,7 +4,6 @@
   "name": "i3val_contact_updates",
   "title": "Contact Update",
   "extends": "Activity",
-  "extends_entity_column_value": ["FWTM Contact Update", "FWTM Mandate Update"],
   "style": "Inline",
   "collapse_display": "0",
   "is_active": "1",

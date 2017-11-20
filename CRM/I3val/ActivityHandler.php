@@ -61,7 +61,7 @@ abstract class CRM_I3val_ActivityHandler {
   /**
    * Get the JSON specification file defining the custom group used for this data
    */
-  public abstract function getCustomGroupSpeficationFile();
+  public abstract function getCustomGroupSpeficationFiles();
 
   /**
    * Get the custom group name

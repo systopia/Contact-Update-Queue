@@ -84,8 +84,8 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
   /**
    * Get the JSON specification file defining the custom group used for this data
    */
-  public function getCustomGroupSpeficationFile() {
-    return 'address_updates_custom_group.json';
+  public function getCustomGroupSpeficationFiles() {
+    return array(__DIR__ . '/../../../resources/address_updates_custom_group.json');
   }
 
   /**

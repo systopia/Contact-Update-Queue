@@ -148,6 +148,9 @@ class CRM_I3val_Form_Configuration extends CRM_Core_Form {
     // write the raw config blob
     CRM_I3val_Configuration::setRawConfig($current_config);
 
+    // update the custom groups
+    CRM_I3val_Configuration::synchroniseCustomFields();
+
     parent::postProcess();
   }
 

@@ -87,8 +87,8 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
   /**
    * Get the JSON specification file defining the custom group used for this data
    */
-  public function getCustomGroupSpeficationFile() {
-    return 'sdd_updates_custom_group.json';
+  public function getCustomGroupSpeficationFiles() {
+    return array(__DIR__ . '/../../../resources/sdd_updates_custom_group.json');
   }
 
   /**
