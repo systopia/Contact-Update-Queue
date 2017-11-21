@@ -1021,3 +1021,15 @@ msgstr ""
 #: resources/*.json
 msgid "Replacement Mandate Reference"
 msgstr ""
+
+#: CRM/I3val/Form/Configuration.php
+msgid "Quick History"
+msgstr ""
+
+#: CRM/I3val/Form/Desktop.php
+msgid "Please configure I3Val first."
+msgstr ""
+
+#: CRM/I3val/Form/Desktop.php
+msgid "Warning"
+msgstr ""
