@@ -37,6 +37,15 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
    */
   public function buildQuickForm() {
     $configuration = CRM_I3val_Configuration::getConfiguration();
+
+    // make sure there is a configuration
+    $activity_types = $configuration->getActivityTypes();
+    if (empty($activity_types)) {
+      CRM_Core_Session::setStatus(E::ts("Please configure I3Val first."), E::ts('Warning'), 'info');
+      CRM_Utils_System::redirect(CRM_Utils_System::url("civicrm/admin/i3val"));
+      return;
+    }
+
     $session = CRM_I3val_Session::getSession();
 
     // check for reset

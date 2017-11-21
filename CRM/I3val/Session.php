@@ -305,6 +305,10 @@ class CRM_I3val_Session {
     $configuration = CRM_I3val_Configuration::getConfiguration();
     $activity_status_ids = implode(',', $configuration->getLiveActivityStatuses());
     $activity_type_ids   = implode(',', array_keys($configuration->getActivityTypes()));
+    if (empty($activity_status_ids) || empty($activity_type_ids)) {
+      return 0;
+    }
+
     $sql = "SELECT COUNT(activity.id)
             FROM civicrm_activity activity
             WHERE activity.activity_type_id IN ({$activity_type_ids})
