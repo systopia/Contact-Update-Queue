@@ -32,6 +32,12 @@ div.i3val-config {
 
 <div>
   <div class="crm-section">
+    <div class="label">{$form.quickhistory.label}</div>
+    <div class="content">{$form.quickhistory.html}</div>
+    <div class="clear"></div>
+  </div>
+
+  <div class="crm-section">
     <div class="label">{$form.flag_status.label}</div>
     <div class="content">{$form.flag_status.html}</div>
     <div class="clear"></div>

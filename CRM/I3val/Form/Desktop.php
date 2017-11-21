@@ -80,7 +80,15 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
 
     $this->renderActivity($this->activity);
     $this->assign('activity', $this->activity);
-    $this->assign('history', $this->getContactHistory($this->activity_id));
+
+    // render history
+    $history_types = $configuration->getQuickHistoryTypes();
+    if (empty($history_types)) {
+      // history is disabled
+      $this->assign('history', 'NO');
+    } else {
+      $this->assign('history', $this->getContactHistory($this->activity_id, $history_types));
+    }
 
     // render activity form
     $handlers = $configuration->getHandlersForActivityType($this->activity['activity_type_id']);
@@ -262,7 +270,14 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
   /**
    * efficiently get the contact history for the contact
    */
-  protected function getContactHistory($activity_id) {
+  protected function getContactHistory($activity_id, $activity_types) {
+    $history = array();
+
+    $activity_type_list = implode(',', $activity_types);
+    if (empty($activity_type_list)) {
+      return $history;
+    }
+
     $activity_id = (int) $activity_id;
     $sql = "
       SELECT
@@ -272,33 +287,33 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
         activity_type.label           AS type,
         added_by_contact.display_name AS added_by
       FROM civicrm_activity_contact contact_lead
-      LEFT JOIN civicrm_activity_contact history ON contact_lead.contact_id = history.contact_id
-                                                 AND history.record_type_id IN (3)
-      LEFT JOIN civicrm_activity activity ON activity.id = history.activity_id
+      LEFT JOIN civicrm_activity_contact history      ON contact_lead.contact_id = history.contact_id
+                                                        AND history.record_type_id IN (3)
+      LEFT JOIN civicrm_activity activity             ON activity.id = history.activity_id
 
       -- status
-      LEFT JOIN civicrm_option_value status ON activity.status_id = status.value
-      LEFT JOIN civicrm_option_group status_og ON status_og.id = status.option_group_id
+      LEFT JOIN civicrm_option_value status           ON activity.status_id = status.value
+      LEFT JOIN civicrm_option_group status_og        ON status_og.id = status.option_group_id
 
       -- type
       LEFT JOIN civicrm_option_value activity_type    ON activity.activity_type_id = activity_type.value
       LEFT JOIN civicrm_option_group activity_type_og ON activity_type_og.id = activity_type.option_group_id
 
       -- added by
-      LEFT JOIN civicrm_activity_contact added_by ON history.activity_id = added_by.activity_id
-                                                  AND added_by.record_type_id = 2
-      LEFT JOIN civicrm_contact added_by_contact  ON added_by_contact.id = added_by.contact_id
+      LEFT JOIN civicrm_activity_contact added_by     ON history.activity_id = added_by.activity_id
+                                                        AND added_by.record_type_id = 2
+      LEFT JOIN civicrm_contact added_by_contact      ON added_by_contact.id = added_by.contact_id
 
-      WHERE contact_lead.activity_id = {$activity_id}
+      WHERE contact_lead.activity_id    = {$activity_id}
         AND contact_lead.record_type_id = 3
         AND activity.activity_date_time > (NOW() - INTERVAL 6 MONTH)
-        AND status_og.name = 'activity_status'
-        AND activity_type_og.name = 'activity_type'
+        AND status_og.name              = 'activity_status'
+        AND activity_type_og.name       = 'activity_type'
+        AND activity_type.value         IN ({$activity_type_list})
       ORDER BY activity.activity_date_time DESC
       LIMIT 25;
     ";
     $query = CRM_Core_DAO::executeQuery($sql);
-    $history = array();
     while ($query->fetch()) {
       $history[] = array(
         'date'     => $query->date,

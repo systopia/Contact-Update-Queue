@@ -75,9 +75,10 @@
   </tbody>
 </table>
 
+{if $history neq 'NO'}
 {* contact history *}
 <div class="crm-accordion-wrapper collapsed">
-  <div class="crm-accordion-header">{ts domain="be.aivl.i3val"}Quick Contact History{/ts}</div>
+  <div class="crm-accordion-header">{ts domain="be.aivl.i3val"}Quick Contact History{/ts} [{$history|@count}]</div>
   <div class="crm-accordion-body">
     <table class="i3val">
       <thead style="font-weight: bold;">
@@ -105,8 +106,8 @@
     </table>
   </div>
 </div>
-
 <br/>
+{/if}
 
 {* handler rendering *}
 {foreach from=$handler_templates item=handler_template}

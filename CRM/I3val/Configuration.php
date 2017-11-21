@@ -199,6 +199,12 @@ class CRM_I3val_Configuration {
     return $statuses;
   }
 
+  /**
+   * get the activity types to be shown in the quick history
+   */
+  public function getQuickHistoryTypes() {
+    return CRM_Utils_Array::value('quickhistory', $this->config, array());
+  }
 
 
   /**
