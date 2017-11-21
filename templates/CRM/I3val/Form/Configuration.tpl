@@ -28,7 +28,7 @@ div.i3val-config {
 </style>
 {/literal}
 
-<h3>{ts}General Options{/ts}</h3>
+<h3>{ts domain="be.aivl.i3val"}General Options{/ts}</h3>
 
 <div>
   <div class="crm-section">
@@ -45,7 +45,7 @@ div.i3val-config {
 </div>
 
 <br/>
-<h3>{ts}Processing Session Options{/ts}</h3>
+<h3>{ts domain="be.aivl.i3val"}Processing Session Options{/ts}</h3>
 
 <div>
   <div class="crm-section">
@@ -62,7 +62,7 @@ div.i3val-config {
 </div>
 
 <br/>
-<h3>{ts}Data Configuration{/ts}</h3>
+<h3>{ts domain="be.aivl.i3val"}Data Configuration{/ts}</h3>
 
 {foreach from=$configurations item=index}
   {capture assign=actvivity_type}activity_type_id_{$index}{/capture}

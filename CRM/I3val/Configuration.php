@@ -15,6 +15,8 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
+use CRM_I3val_ExtensionUtil as E;
+
 class CRM_I3val_Configuration {
 
   // cache of relevant activity types
@@ -221,11 +223,11 @@ class CRM_I3val_Configuration {
    */
   public function getPostponeOptions() {
     return array(
-      '1'  => ts("1 day"),
-      '2'  => ts("2 days"),
-      '7'  => ts("1 week"),
-      '14' => ts("2 weeks"),
-      '30' => ts("1 month"),
+      '1'  => E::ts("1 day"),
+      '2'  => E::ts("2 days"),
+      '7'  => E::ts("1 week"),
+      '14' => E::ts("2 weeks"),
+      '30' => E::ts("1 month"),
       );
   }
 

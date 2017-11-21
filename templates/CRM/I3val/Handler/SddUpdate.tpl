@@ -1,10 +1,10 @@
 <div class="crm-accordion-wrapper crm-i3val-sdd">
-  <div class="crm-accordion-header active">{ts}SEPA Direct Debit Update{/ts}</div>
+  <div class="crm-accordion-header active">{ts domain="be.aivl.i3val"}SEPA Direct Debit Update{/ts}</div>
   <div class="crm-accordion-body">
     <div class="crm-section">
       <div class="content">
         <strong>
-        {ts 1=$i3val_sdd_mandate.reference 2=$i3val_sdd_mandate.url}This is an amendmend for mandate <a href="%2"><code>%1</code></a>.{/ts}
+        {ts 1=$i3val_sdd_mandate.reference 2=$i3val_sdd_mandate.url domain="be.aivl.i3val"}This is an amendmend for mandate <a href="%2"><code>%1</code></a>.{/ts}
         </strong>
       </div>
     </div>
@@ -12,10 +12,10 @@
       <thead>
         <tr>
           <th></th>
-          <th>{ts}Original Value{/ts}</th>
-          <th>{ts}Submitted Value{/ts}</th>
-          <th>{ts}Current Value{/ts}</th>
-          <th>{ts}Value to apply{/ts}</th>
+          <th>{ts domain="be.aivl.i3val"}Original Value{/ts}</th>
+          <th>{ts domain="be.aivl.i3val"}Submitted Value{/ts}</th>
+          <th>{ts domain="be.aivl.i3val"}Current Value{/ts}</th>
+          <th>{ts domain="be.aivl.i3val"}Value to apply{/ts}</th>
         </tr>
       </thead>
       <tbody>

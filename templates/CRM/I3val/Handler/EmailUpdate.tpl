@@ -1,14 +1,14 @@
 <div class="crm-accordion-wrapper crm-i3val-address">
-  <div class="crm-accordion-header active">{ts}Email Data{/ts}</div>
+  <div class="crm-accordion-header active">{ts domain="be.aivl.i3val"}Email Data{/ts}</div>
   <div class="crm-accordion-body">
     <table>
       <thead>
         <tr>
           <th></th>
-          <th>{ts}Original Value{/ts}</th>
-          <th>{ts}Submitted Value{/ts}</th>
-          <th>{ts}Current Value{/ts}</th>
-          <th>{ts}Value to apply{/ts}</th>
+          <th>{ts domain="be.aivl.i3val"}Original Value{/ts}</th>
+          <th>{ts domain="be.aivl.i3val"}Submitted Value{/ts}</th>
+          <th>{ts domain="be.aivl.i3val"}Current Value{/ts}</th>
+          <th>{ts domain="be.aivl.i3val"}Value to apply{/ts}</th>
         </tr>
       </thead>
       <tbody>

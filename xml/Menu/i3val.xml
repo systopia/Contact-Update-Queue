@@ -3,7 +3,7 @@
   <item>
     <path>civicrm/i3val/desktop</path>
     <page_callback>CRM_I3val_Form_Desktop</page_callback>
-    <title>Desktop</title>
+    <title>I3Val Desktop</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>

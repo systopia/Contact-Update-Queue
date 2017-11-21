@@ -17,10 +17,10 @@
 <table class="i3val">
   <thead style="font-weight: bold;">
     <tr>
-      <td>{ts}Field{/ts}</td>
-      <td>{ts}Original Value{/ts}</td>
-      <td>{ts}Submitted Value{/ts}</td>
-      <td>{ts}Applied Value{/ts}</td>
+      <td>{ts domain="be.aivl.i3val"}Field{/ts}</td>
+      <td>{ts domain="be.aivl.i3val"}Original Value{/ts}</td>
+      <td>{ts domain="be.aivl.i3val"}Submitted Value{/ts}</td>
+      <td>{ts domain="be.aivl.i3val"}Applied Value{/ts}</td>
     </tr>
   </thead>
   <tbody>

@@ -42,7 +42,7 @@
 <table class="crm-info-panel">
   <tbody>
     <tr>
-      <td class="label">{ts}With Contact{/ts}</td>
+      <td class="label">{ts domain="be.aivl.i3val"}With Contact{/ts}</td>
       <td class="view-value">
         <span class="crm-frozen-field">
           <a class="view-contact no-popup" href="{$activity.with_link}" title="View Contact">{$activity.with_name}</a>
@@ -51,24 +51,24 @@
       </td>
     </tr>
     <tr>
-      <td class="label">{ts}Subject{/ts}</td>
+      <td class="label">{ts domain="be.aivl.i3val"}Subject{/ts}</td>
       <td class="view-value">{$activity.subject}</td>
     </tr>
     <tr>
-      <td class="label">{ts}Campaign{/ts}</td>
-      <td class="view-value">{if $activity.campaign_id}{$activity.campaign_name} [{$activity.campaign_id}]{else}<i>{ts}None{/ts}{/if}</td>
+      <td class="label">{ts domain="be.aivl.i3val"}Campaign{/ts}</td>
+      <td class="view-value">{if $activity.campaign_id}{$activity.campaign_name} [{$activity.campaign_id}]{else}<i>{ts domain="be.aivl.i3val"}None{/ts}{/if}</td>
     </tr>
     <tr>
-      <td class="label">{ts}Scheduled Date{/ts}</td>
+      <td class="label">{ts domain="be.aivl.i3val"}Scheduled Date{/ts}</td>
       <td class="view-value">{$activity.activity_date_time|crmDate}</td>
     </tr>
     <tr>
-      <td class="label">{ts}Status{/ts}</td>
+      <td class="label">{ts domain="be.aivl.i3val"}Status{/ts}</td>
       <td class="view-value">{$activity.status}</td>
     </tr>
     {if $activity.details}
     <tr>
-      <td class="label">{ts}Note{/ts}</td>
+      <td class="label">{ts domain="be.aivl.i3val"}Note{/ts}</td>
       <td class="view-value">{$activity.details}</td>
     </tr>
     {/if}
@@ -77,16 +77,16 @@
 
 {* contact history *}
 <div class="crm-accordion-wrapper collapsed">
-  <div class="crm-accordion-header">{ts}Quick Contact History{/ts}</div>
+  <div class="crm-accordion-header">{ts domain="be.aivl.i3val"}Quick Contact History{/ts}</div>
   <div class="crm-accordion-body">
     <table class="i3val">
       <thead style="font-weight: bold;">
         <tr>
-          <td>{ts}Type{/ts}</td>
-          <td>{ts}Subject{/ts}</td>
-          <td>{ts}Added by{/ts}</td>
-          <td>{ts}Date{/ts}</td>
-          <td>{ts}Status{/ts}</td>
+          <td>{ts domain="be.aivl.i3val"}Type{/ts}</td>
+          <td>{ts domain="be.aivl.i3val"}Subject{/ts}</td>
+          <td>{ts domain="be.aivl.i3val"}Added by{/ts}</td>
+          <td>{ts domain="be.aivl.i3val"}Date{/ts}</td>
+          <td>{ts domain="be.aivl.i3val"}Status{/ts}</td>
           <td></td>
         </tr>
       </thead>

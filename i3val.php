@@ -165,7 +165,7 @@ function i3val_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
  */
 function i3val_civicrm_navigationMenu(&$menu) {
   _i3val_civix_insert_navigation_menu($menu, 'Contacts', array(
-    'label'      => ts('Process Pending Update Requests'),
+    'label'      => ts('Process Pending Update Requests', array('domain' => 'be.aivl.i3val')),
     'name'       => 'i3val_desktop',
     'url'        => 'civicrm/i3val/desktop?reset=1',
     'permission' => 'edit all contacts',
@@ -174,7 +174,7 @@ function i3val_civicrm_navigationMenu(&$menu) {
   ));
 
   _i3val_civix_insert_navigation_menu($menu, 'Administer/System Settings', array(
-    'label'      => ts('Configure I3Val'),
+    'label'      => ts('Configure I3Val', array('domain' => 'be.aivl.i3val')),
     'name'       => 'i3val_config',
     'url'        => 'civicrm/admin/i3val?reset=1',
     'permission' => 'administer CiviCRM',
