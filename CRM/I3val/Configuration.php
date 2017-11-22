@@ -229,11 +229,14 @@ class CRM_I3val_Configuration {
    */
   public function getPostponeOptions() {
     return array(
-      '1'  => E::ts("1 day"),
-      '2'  => E::ts("2 days"),
-      '7'  => E::ts("1 week"),
-      '14' => E::ts("2 weeks"),
-      '30' => E::ts("1 month"),
+      '10 min'  => E::ts("10 minutes"),
+      '1 hour'  => E::ts("1 hour"),
+      '3 hour'  => E::ts("3 hours"),
+      '1 day'   => E::ts("1 day"),
+      '2 days'  => E::ts("2 days"),
+      '7 days'  => E::ts("1 week"),
+      '14 days' => E::ts("2 weeks"),
+      '30 days' => E::ts("1 month"),
       );
   }
 

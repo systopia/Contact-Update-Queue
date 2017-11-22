@@ -331,7 +331,7 @@ class CRM_I3val_Session {
       ));
 
       if ($delay) {
-        $new_date = date('YmdHis', strtotime("+{$delay} days"));
+        $new_date = date('YmdHis', strtotime("+{$delay}"));
       } else {
         $new_date = date('YmdHis');
       }
