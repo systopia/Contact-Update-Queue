@@ -12,21 +12,21 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: German\n"
-"X-Poedit-Country: GERMANY\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"Language: de_DE\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
 #: i3val.php
 msgid "Process Pending Update Requests"
-msgstr ""
+msgstr "Änderungsaktivitäten verarbeiten"
 
 #: i3val.php
 msgid "Configure I3Val"
-msgstr ""
+msgstr "I3Val konfigurieren"
 
 #: templates/CRM/Activity/I3valPanel.tpl
 msgid "Field"
-msgstr ""
+msgstr "Feld"
 
 #: templates/CRM/Activity/I3valPanel.tpl
 #: templates/CRM/I3val/Handler/AddressUpdate.tpl
@@ -35,7 +35,7 @@ msgstr ""
 #: templates/CRM/I3val/Handler/PhoneUpdate.tpl
 #: templates/CRM/I3val/Handler/SddUpdate.tpl
 msgid "Original Value"
-msgstr ""
+msgstr "Ursprünglicher Wert"
 
 #: templates/CRM/Activity/I3valPanel.tpl
 #: templates/CRM/I3val/Handler/AddressUpdate.tpl
@@ -44,75 +44,75 @@ msgstr ""
 #: templates/CRM/I3val/Handler/PhoneUpdate.tpl
 #: templates/CRM/I3val/Handler/SddUpdate.tpl
 msgid "Submitted Value"
-msgstr ""
+msgstr "Übermittelter Wert"
 
 #: templates/CRM/Activity/I3valPanel.tpl
 msgid "Applied Value"
-msgstr ""
+msgstr "Angewendeter Wert"
 
 #: templates/CRM/I3val/Form/Configuration.tpl
 msgid "General Options"
-msgstr ""
+msgstr "Allgemeine Einstellungen"
 
 #: templates/CRM/I3val/Form/Configuration.tpl
 msgid "Processing Session Options"
-msgstr ""
+msgstr "Einstellungen Stapelverarbeitung"
 
 #: templates/CRM/I3val/Form/Configuration.tpl
 msgid "Data Configuration"
-msgstr ""
+msgstr "Einstellungen zur Verarbeitung"
 
 #: templates/CRM/I3val/Form/Configuration.tpl
 msgid "Configuration %1"
-msgstr ""
+msgstr "Einstellungen %1"
 
 #: templates/CRM/I3val/Form/Desktop.tpl
 msgid "With Contact"
-msgstr ""
+msgstr "Beteiligte Kontakte"
 
 #: templates/CRM/I3val/Form/Desktop.tpl
 msgid "Subject"
-msgstr ""
+msgstr "Betreff"
 
 #: templates/CRM/I3val/Form/Desktop.tpl CRM/I3val/Handler/SddUpdate.php
 msgid "Campaign"
-msgstr ""
+msgstr "Kampagne"
 
 #: templates/CRM/I3val/Form/Desktop.tpl
 msgid "None"
-msgstr ""
+msgstr "Keine"
 
 #: templates/CRM/I3val/Form/Desktop.tpl
 msgid "Scheduled Date"
-msgstr ""
+msgstr "Geplantes Datum"
 
 #: templates/CRM/I3val/Form/Desktop.tpl
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: templates/CRM/I3val/Form/Desktop.tpl
 msgid "Note"
-msgstr ""
+msgstr "Notizen"
 
 #: templates/CRM/I3val/Form/Desktop.tpl
 msgid "Quick Contact History"
-msgstr ""
+msgstr "Aktivitätsverlauf"
 
 #: templates/CRM/I3val/Form/Desktop.tpl
 msgid "Type"
-msgstr ""
+msgstr "Art"
 
 #: templates/CRM/I3val/Form/Desktop.tpl
 msgid "Added by"
-msgstr ""
+msgstr "Hinzugefügt von"
 
 #: templates/CRM/I3val/Form/Desktop.tpl
 msgid "Date"
-msgstr ""
+msgstr "Datum"
 
 #: templates/CRM/I3val/Handler/AddressUpdate.tpl
 msgid "Address Data"
-msgstr ""
+msgstr "Adressdaten"
 
 #: templates/CRM/I3val/Handler/AddressUpdate.tpl
 #: templates/CRM/I3val/Handler/ContactUpdate.tpl
@@ -120,7 +120,7 @@ msgstr ""
 #: templates/CRM/I3val/Handler/PhoneUpdate.tpl
 #: templates/CRM/I3val/Handler/SddUpdate.tpl
 msgid "Current Value"
-msgstr ""
+msgstr "Momentaner Wert"
 
 #: templates/CRM/I3val/Handler/AddressUpdate.tpl
 #: templates/CRM/I3val/Handler/ContactUpdate.tpl
@@ -128,914 +128,913 @@ msgstr ""
 #: templates/CRM/I3val/Handler/PhoneUpdate.tpl
 #: templates/CRM/I3val/Handler/SddUpdate.tpl
 msgid "Value to apply"
-msgstr ""
+msgstr "anzuwendender Wert"
 
 #: templates/CRM/I3val/Handler/ContactUpdate.tpl
 msgid "Contact Base Data"
-msgstr ""
+msgstr "Basis-Kontaktdaten"
 
 #: templates/CRM/I3val/Handler/ContactUpdate.tpl
 msgid "Apply?"
-msgstr ""
+msgstr "Anwenden?"
 
 #: templates/CRM/I3val/Handler/EmailUpdate.tpl
 msgid "Email Data"
-msgstr ""
+msgstr "E-Mail-Adressen"
 
 #: templates/CRM/I3val/Handler/PhoneUpdate.tpl
 msgid "Phone Data"
-msgstr ""
+msgstr "Telefonnummern"
 
 #: templates/CRM/I3val/Handler/SddUpdate.tpl
 msgid "SEPA Direct Debit Update"
-msgstr ""
+msgstr "SEPA Daten"
 
 #: templates/CRM/I3val/Handler/SddUpdate.tpl
 msgid "This is an amendmend for mandate <a href=\"%2\"><code>%1</code></a>."
-msgstr ""
+msgstr "Dies ist eine Ergänzung zu Mandat <a href=\"%2\"><code>%1</code></a>."
 
 #: resources/test.php CRM/I3val/Handler/AddressUpdate.php CRM/I3val/Logic.php
 #: resources/*.json
 msgid "Address Update"
-msgstr ""
+msgstr "Adressdaten aktualisieren"
 
 #: resources/test.php CRM/I3val/Handler/ContactUpdate.php resources/*.json
 msgid "Contact Update"
-msgstr ""
+msgstr "Kontaktdaten aktualisieren"
 
 #: resources/test.php CRM/I3val/Handler/EmailUpdate.php resources/*.json
 msgid "Email Update"
-msgstr ""
+msgstr "E-Mail-Adresse aktualisieren"
 
 #: resources/test.php CRM/I3val/Handler/PhoneUpdate.php resources/*.json
 msgid "Phone Update"
-msgstr ""
+msgstr "Telefonnummern aktualisieren"
 
 #: resources/test.php resources/*.json
 msgid "SEPA DD Update"
-msgstr ""
+msgstr "SEPA Angaben aktualisieren"
 
 #: CRM/I3val/Configuration.php CRM/I3val/Form/Configuration.php
 msgid "1 day"
-msgstr ""
+msgstr "1 Tag"
 
 #: CRM/I3val/Configuration.php
 msgid "2 days"
-msgstr ""
+msgstr "2 Tage"
 
 #: CRM/I3val/Configuration.php
 msgid "1 week"
-msgstr ""
+msgstr "1 Woche"
 
 #: CRM/I3val/Configuration.php
 msgid "2 weeks"
-msgstr ""
+msgstr "2 Wochen"
 
 #: CRM/I3val/Configuration.php
 msgid "1 month"
-msgstr ""
+msgstr "1 Monat"
 
 #: CRM/I3val/Form/Configuration.php
 msgid "Timeout"
-msgstr ""
+msgstr "Zeitüberschreitung"
 
 #: CRM/I3val/Form/Configuration.php
 msgid "Batch Size"
-msgstr ""
+msgstr "Größe des Stapels"
 
 #: CRM/I3val/Form/Configuration.php
 msgid "Input Trim Characters"
-msgstr ""
+msgstr "Zeichen in Eingabewerten abschneiden"
 
 #: CRM/I3val/Form/Configuration.php
 msgid "Flaged Request Status"
-msgstr ""
+msgstr "Status für problematische Aktivitäten"
 
 #: CRM/I3val/Form/Configuration.php
 msgid "Activity Type"
-msgstr ""
+msgstr "Aktivitätstyp"
 
 #: CRM/I3val/Form/Configuration.php
 msgid "Handlers"
-msgstr ""
+msgstr "Prozessoren"
 
 #: CRM/I3val/Form/Configuration.php
 msgid "Save"
-msgstr ""
+msgstr "Speichern"
 
 #: CRM/I3val/Form/Configuration.php
 msgid "1 hour"
-msgstr ""
+msgstr "1 Stunde"
 
 #: CRM/I3val/Form/Configuration.php
 msgid "2 hours"
-msgstr ""
+msgstr "2 Stunden"
 
 #: CRM/I3val/Form/Configuration.php
 msgid "4 hours"
-msgstr ""
+msgstr "4 Stunden"
 
 #: CRM/I3val/Form/Configuration.php
 msgid "8 hours"
-msgstr ""
+msgstr "8 Stunden"
 
 #: CRM/I3val/Form/Configuration.php
 msgid "regular (25"
-msgstr ""
+msgstr "normal (25"
 
 #: CRM/I3val/Form/Configuration.php
 msgid "big (50)"
-msgstr ""
+msgstr "groß (50)"
 
 #: CRM/I3val/Form/Configuration.php
 msgid "small (10)"
-msgstr ""
+msgstr "klein (10)"
 
 #: CRM/I3val/Form/Configuration.php
 msgid "single"
-msgstr ""
+msgstr "einzel"
 
 #: CRM/I3val/Form/Configuration.php
 msgid "-disabled-"
-msgstr ""
+msgstr "-deaktiviert-"
 
 #: CRM/I3val/Form/Desktop.php
 msgid "Processing requested update #%1"
-msgstr ""
+msgstr "Verarbeite gewünschte Aktualisierung #%1"
 
 #: CRM/I3val/Form/Desktop.php
 msgid "No more update requests pending. You're already done!"
-msgstr ""
+msgstr "Keine weiteren offenen Änderungsaktivitäten."
 
 #: CRM/I3val/Form/Desktop.php
 msgid "All done!"
-msgstr ""
+msgstr "Alles erledigt!"
 
 #: CRM/I3val/Form/Desktop.php
 msgid "Activity not connected to a contact!"
-msgstr ""
+msgstr "Aktivvität ist nicht mit einem Kontakt verknüpft!"
 
 #: CRM/I3val/Form/Desktop.php
 msgid "Error"
-msgstr ""
+msgstr "Fehler"
 
 #: CRM/I3val/Form/Desktop.php
 msgid "postpone"
-msgstr ""
+msgstr "zurückstellen"
 
 #: CRM/I3val/Form/Desktop.php
 msgid "Apply"
-msgstr ""
+msgstr "Anwenden"
 
 #: CRM/I3val/Form/Desktop.php
 msgid "Flag Problem"
-msgstr ""
+msgstr "Als problematisch markieren"
 
 #: CRM/I3val/Form/Desktop.php
 msgid "Postpone for:"
-msgstr ""
+msgstr "Zurückstellen für:"
 
 #: CRM/I3val/Form/Desktop.php
 msgid "Requested update has been marked to be reviewed again later"
-msgstr ""
+msgstr "Die Änderungsaktivität wird zu einem späteren Zeitpunkt erneut zur Prüfung vorgelegt"
 
 #: CRM/I3val/Form/Desktop.php
 msgid "Postponed!"
-msgstr ""
+msgstr "Zurückgestellt!"
 
 #: CRM/I3val/Form/Desktop.php
 msgid "Requested update has been flagged as a problem."
-msgstr ""
+msgstr "Änderungsaktivität wurde als problematisch markiert."
 
 #: CRM/I3val/Form/Desktop.php
 msgid "Flagged!"
-msgstr ""
+msgstr "Markiert!"
 
 #: CRM/I3val/Form/Desktop.php
 msgid "Unkown action."
-msgstr ""
+msgstr "Unbeaknnte Aktion"
 
 #: CRM/I3val/Handler/AddressUpdate.php
 msgid "Street Address"
-msgstr ""
+msgstr "Straße"
 
 #: CRM/I3val/Handler/AddressUpdate.php
 msgid "Postal Code"
-msgstr ""
+msgstr "Postleitzahl"
 
 #: CRM/I3val/Handler/AddressUpdate.php
 msgid "Supplemental Address 1"
-msgstr ""
+msgstr "Adresszusatz 1"
 
 #: CRM/I3val/Handler/AddressUpdate.php
 msgid "Supplemental Address 2"
-msgstr ""
+msgstr "Adresszusatz 2"
 
 #: CRM/I3val/Handler/AddressUpdate.php
 msgid "City"
-msgstr ""
+msgstr "Stadt"
 
 #: CRM/I3val/Handler/AddressUpdate.php
 msgid "Country"
-msgstr ""
+msgstr "Land"
 
 #: CRM/I3val/Handler/AddressUpdate.php CRM/I3val/Handler/EmailUpdate.php
 #: CRM/I3val/Handler/PhoneUpdate.php
 msgid "Location Type"
-msgstr ""
+msgstr "Adresskategorie"
 
 #: CRM/I3val/Handler/AddressUpdate.php
 msgid "New address added."
-msgstr ""
+msgstr "Neue Adresse hinzugefügt."
 
 #: CRM/I3val/Handler/AddressUpdate.php
 msgid "Address updated"
-msgstr ""
+msgstr "Adresse aktualisiert"
 
 #: CRM/I3val/Handler/AddressUpdate.php CRM/I3val/Handler/EmailUpdate.php
 #: CRM/I3val/Handler/PhoneUpdate.php
 msgid "Entry already existed."
-msgstr ""
+msgstr "Eintrag bereits vorhanden."
 
 #: CRM/I3val/Handler/AddressUpdate.php CRM/I3val/Handler/EmailUpdate.php
 #: CRM/I3val/Handler/PhoneUpdate.php CRM/I3val/Handler/SddUpdate.php
 msgid "Data discarded."
-msgstr ""
+msgstr "Daten verworfen."
 
 #: CRM/I3val/Handler/AddressUpdate.php CRM/I3val/Handler/EmailUpdate.php
 #: CRM/I3val/Handler/PhoneUpdate.php CRM/I3val/Handler/SddUpdate.php
 msgid "Action"
-msgstr ""
+msgstr "Aktion"
 
 #: CRM/I3val/Handler/ContactUpdate.php
 msgid "First Name"
-msgstr ""
+msgstr "Vorname"
 
 #: CRM/I3val/Handler/ContactUpdate.php
 msgid "Last Name"
-msgstr ""
+msgstr "Nachname"
 
 #: CRM/I3val/Handler/ContactUpdate.php
 msgid "Organisation Name"
-msgstr ""
+msgstr "Organisationsname"
 
 #: CRM/I3val/Handler/ContactUpdate.php
 msgid "Household Name"
-msgstr ""
+msgstr "Haushaltsname"
 
 #: CRM/I3val/Handler/ContactUpdate.php
 msgid "Prefix"
-msgstr ""
+msgstr "Präfix"
 
 #: CRM/I3val/Handler/ContactUpdate.php
 msgid "Suffix"
-msgstr ""
+msgstr "Suffix"
 
 #: CRM/I3val/Handler/ContactUpdate.php
 msgid "Gender"
-msgstr ""
+msgstr "Geschlecht"
 
 #: CRM/I3val/Handler/ContactUpdate.php
 msgid "Birth Date"
-msgstr ""
+msgstr "Geburtsdatum"
 
 #: CRM/I3val/Handler/ContactUpdate.php
 msgid "Do not Email"
-msgstr ""
+msgstr "Keine E-Mails senden"
 
 #: CRM/I3val/Handler/ContactUpdate.php
 msgid "Do not Phone"
-msgstr ""
+msgstr "Nicht anrufen"
 
 #: CRM/I3val/Handler/ContactUpdate.php
 msgid "Do not Mail"
-msgstr ""
+msgstr "Nicht per Post anschreiben"
 
 #: CRM/I3val/Handler/ContactUpdate.php
 msgid "Do not SMS"
-msgstr ""
+msgstr "Keine SMS senden"
 
 #: CRM/I3val/Handler/ContactUpdate.php
 msgid "Do not trade"
-msgstr ""
+msgstr "Nicht weitergeben"
 
 #: CRM/I3val/Handler/ContactUpdate.php
 msgid "Opt-Out"
-msgstr ""
+msgstr "Keine Massen-E-Mails (User Opt Out)"
 
 #: CRM/I3val/Handler/ContactUpdate.php
 msgid "Deceased"
-msgstr ""
+msgstr "Kontakt ist verstorben"
 
 #: CRM/I3val/Handler/ContactUpdate.php
 msgid "Deceased Date"
-msgstr ""
+msgstr "Todestag"
 
 #: CRM/I3val/Handler/DetailUpdate.php
 msgid "Add new %1"
-msgstr ""
+msgstr "%1 neu hinzufügen"
 
 #: CRM/I3val/Handler/DetailUpdate.php
 msgid "Add new %1 as primary"
-msgstr ""
+msgstr "%1 neu hinzufügen und als primär markieren"
 
 #: CRM/I3val/Handler/DetailUpdate.php
 msgid "Overwrite existing %1"
-msgstr ""
+msgstr "%1 überschreiben"
 
 #: CRM/I3val/Handler/DetailUpdate.php
 msgid "Discard %1 data (do nothing)"
-msgstr ""
+msgstr "%1 verwerfen (nichts machen)"
 
 #: CRM/I3val/Handler/DetailUpdate.php
 msgid "%1 already exists (do nothing)"
-msgstr ""
+msgstr "%1 existiert bereits (nichts machen)"
 
 #: CRM/I3val/Handler/EmailUpdate.php
 msgid "Email"
-msgstr ""
+msgstr "E-Mail-Adersse"
 
 #: CRM/I3val/Handler/EmailUpdate.php
 msgid "New email added."
-msgstr ""
+msgstr "Neue E-Mail-Adresse hinzugefügt."
 
 #: CRM/I3val/Handler/EmailUpdate.php
 msgid "Email updated"
-msgstr ""
+msgstr "E-Mail-Adresse aktualisiert"
 
 #: CRM/I3val/Handler/PhoneUpdate.php
 msgid "Phone"
-msgstr ""
+msgstr "Telfonnummer"
 
 #: CRM/I3val/Handler/PhoneUpdate.php
 msgid "Phone Type"
-msgstr ""
+msgstr "Anschlussart"
 
 #: CRM/I3val/Handler/PhoneUpdate.php
 msgid "New phone added."
-msgstr ""
+msgstr "Neue Telefonnummer hinzugefügt."
 
 #: CRM/I3val/Handler/PhoneUpdate.php
 msgid "Phone updated"
-msgstr ""
+msgstr "Telefonnummer aktualisiert"
 
 #: CRM/I3val/Handler/SddUpdate.php resources/*.json
 msgid "Mandate Reference"
-msgstr ""
+msgstr "Mandatsreferenz"
 
 #: CRM/I3val/Handler/SddUpdate.php
 msgid "Source"
-msgstr ""
+msgstr "Quelle"
 
 #: CRM/I3val/Handler/SddUpdate.php
 msgid "IBAN"
-msgstr ""
+msgstr "IBAN"
 
 #: CRM/I3val/Handler/SddUpdate.php
 msgid "BIC"
-msgstr ""
+msgstr "BIC"
 
 #: CRM/I3val/Handler/SddUpdate.php
 msgid "Signature Date"
-msgstr ""
+msgstr "Unterschriftsdatum"
 
 #: CRM/I3val/Handler/SddUpdate.php
 msgid "Validation Date"
-msgstr ""
+msgstr "Validierungsdatum"
 
 #: CRM/I3val/Handler/SddUpdate.php
 msgid "Start Date"
-msgstr ""
+msgstr "Startdatum"
 
 #: CRM/I3val/Handler/SddUpdate.php
 msgid "End Date"
-msgstr ""
+msgstr "Enddatum"
 
 #: CRM/I3val/Handler/SddUpdate.php
 msgid "Frequency"
-msgstr ""
+msgstr "Frequenz"
 
 #: CRM/I3val/Handler/SddUpdate.php
 msgid "Cycle Day"
-msgstr ""
+msgstr "Einzugstag"
 
 #: CRM/I3val/Handler/SddUpdate.php
 msgid "Financial Type"
-msgstr ""
+msgstr "Zuwendungsart"
 
 #: CRM/I3val/Handler/SddUpdate.php
 msgid "Amount"
-msgstr ""
+msgstr "Betrag"
 
 #: CRM/I3val/Handler/SddUpdate.php
 msgid "CiviSEPA Mandate Update"
-msgstr ""
+msgstr "Aktualisierung Sepamandat"
 
 #: CRM/I3val/Handler/SddUpdate.php
 msgid "Created replacement mandate."
-msgstr ""
+msgstr "Folgemandat angelegt."
 
 #: CRM/I3val/Handler/SddUpdate.php
 msgid "Don't apply"
-msgstr ""
+msgstr "Nicht anwenden"
 
 #: CRM/I3val/Handler/SddUpdate.php
 msgid "Create replacement mandate"
-msgstr ""
+msgstr "Folgemandat anlegen."
 
 #: CRM/I3val/Handler/SddUpdate.php
 msgid "annually"
-msgstr ""
+msgstr "jährlich"
 
 #: CRM/I3val/Handler/SddUpdate.php
 msgid "semi-annually"
-msgstr ""
+msgstr "halbjährlich"
 
 #: CRM/I3val/Handler/SddUpdate.php
 msgid "trimestral"
-msgstr ""
+msgstr "vierteljährlich"
 
 #: CRM/I3val/Handler/SddUpdate.php
 msgid "quarterly"
-msgstr ""
+msgstr "vierteljährlich"
 
 #: CRM/I3val/Handler/SddUpdate.php
 msgid "bi-monthly"
-msgstr ""
+msgstr "alle zwei Monate"
 
 #: CRM/I3val/Handler/SddUpdate.php
 msgid "monthly"
-msgstr ""
+msgstr "monatlich"
 
 #: CRM/I3val/Handler/SddUpdate.php CRM/I3val/Logic.php
 msgid "every %1 months"
-msgstr ""
+msgstr "alle % Monate"
 
 #: CRM/I3val/Logic.php
 msgid "%1 Update Request"
-msgstr ""
+msgstr "% Änderungsaktivitäten"
 
 #: resources/*.json
 msgid "Street Address (original)"
-msgstr ""
+msgstr "Straße (ursprünglich)"
 
 #: resources/*.json
 msgid "Street Address (submitted)"
-msgstr ""
+msgstr "Straße (übermittelt) (übermittelt)"
 
 #: resources/*.json
 msgid "Street Address (applied)"
-msgstr ""
+msgstr "Straße (angewendet)"
 
 #: resources/*.json
 msgid "Supplemental Address (original)"
-msgstr ""
+msgstr "Adresszusatz 1 (ursprünglich)"
 
 #: resources/*.json
 msgid "Supplemental Address (submitted)"
-msgstr ""
+msgstr "Adresszusatz 1 (übermittelt)"
 
 #: resources/*.json
 msgid "Supplemental Address (applied)"
-msgstr ""
+msgstr "Adresszusatz 1 (angewendet)"
 
 #: resources/*.json
 msgid "Supplemental Address 2 (original)"
-msgstr ""
+msgstr "Adresszusatz 2 (ursprünglich)"
 
 #: resources/*.json
 msgid "Supplemental Address 2 (submitted)"
-msgstr ""
+msgstr "Adresszusatz 2 (übermittelt)"
 
 #: resources/*.json
 msgid "Supplemental Address 2 (applied)"
-msgstr ""
+msgstr "Adresszusatz 2 (angewendet)"
 
 #: resources/*.json
 msgid "Postal Code (original)"
-msgstr ""
+msgstr "Postleitzahl (ursprünglich)"
 
 #: resources/*.json
 msgid "Postal Code (submitted)"
-msgstr ""
+msgstr "Postleitzahl (übermittelt)"
 
 #: resources/*.json
 msgid "Postal Code (applied)"
-msgstr ""
+msgstr "Postleitzahl (angewendet)"
 
 #: resources/*.json
 msgid "City (original)"
-msgstr ""
+msgstr "Stadt (ursprünglich)"
 
 #: resources/*.json
 msgid "City (submitted)"
-msgstr ""
+msgstr "Stadt (übermittelt)"
 
 #: resources/*.json
 msgid "City (applied)"
-msgstr ""
+msgstr "Stadt (angewendet)"
 
 #: resources/*.json
 msgid "Country (original)"
-msgstr ""
+msgstr "Land (ursprünglich)"
 
 #: resources/*.json
 msgid "Country (submitted)"
-msgstr ""
+msgstr "Land (übermittelt)"
 
 #: resources/*.json
 msgid "Country (applied)"
-msgstr ""
+msgstr "Land (angewendet)"
 
 #: resources/*.json
 msgid "Location Type (original)"
-msgstr ""
+msgstr "Adresskategorie (ursprünglich)"
 
 #: resources/*.json
 msgid "Location Type (submitted)"
-msgstr ""
+msgstr "Adresskategorie (übermittelt)"
 
 #: resources/*.json
 msgid "Location Type (applied)"
-msgstr ""
+msgstr "Adresskategorie (angewendet)"
 
 #: resources/*.json
 msgid "Applied Action"
-msgstr ""
+msgstr "Angewendete Aktion"
 
 #: resources/*.json
 msgid "First Name (original)"
-msgstr ""
+msgstr "Vorname (ursprünglich)"
 
 #: resources/*.json
 msgid "First Name (submitted)"
-msgstr ""
+msgstr "Vorname (übermittelt)"
 
 #: resources/*.json
 msgid "First Name (applied)"
-msgstr ""
+msgstr "Vorname (angewendet)"
 
 #: resources/*.json
 msgid "Last Name (original)"
-msgstr ""
+msgstr "Nachname (ursprünglich)"
 
 #: resources/*.json
 msgid "Last Name (submitted)"
-msgstr ""
+msgstr "Nachname (übermittelt)"
 
 #: resources/*.json
 msgid "Last Name (applied)"
-msgstr ""
+msgstr "Nachname (angwendet)"
 
 #: resources/*.json
 msgid "Prefix (original)"
-msgstr ""
+msgstr "Präfix (ursprünglich)"
 
 #: resources/*.json
 msgid "Prefix (submitted)"
-msgstr ""
+msgstr "Präfix (übermittelt)"
 
 #: resources/*.json
 msgid "Prefix (applied)"
-msgstr ""
+msgstr "Präfix (angewendet)"
 
 #: resources/*.json
 msgid "Suffix (original)"
-msgstr ""
+msgstr "Suffix (ursprünglich)"
 
 #: resources/*.json
 msgid "Suffix (submitted)"
-msgstr ""
+msgstr "Suffix (übermittelt)"
 
 #: resources/*.json
 msgid "Suffix (applied)"
-msgstr ""
+msgstr "Suffix (angewendet)"
 
 #: resources/*.json
 msgid "Gender (original)"
-msgstr ""
+msgstr "Geschlecht (ursprünglich)"
 
 #: resources/*.json
 msgid "Gender (submitted)"
-msgstr ""
+msgstr "Geschlecht (übermittelt)"
 
 #: resources/*.json
 msgid "Gender (applied)"
-msgstr ""
+msgstr "Geschlecht (angewendet)"
 
 #: resources/*.json
 msgid "Birth Date (original)"
-msgstr ""
+msgstr "Geburtsdatum (ursprünglich)"
 
 #: resources/*.json
 msgid "Birth Date (submitted)"
-msgstr ""
+msgstr "Geburtsdatum (übermittelt)"
 
 #: resources/*.json
 msgid "Birth Date (applied)"
-msgstr ""
+msgstr "Geburtsdatum (angewendet)"
 
 #: resources/*.json
 msgid "Organisation Name (original)"
-msgstr ""
+msgstr "Organisationsname (ursprünglich)"
 
 #: resources/*.json
 msgid "Organisation Name (submitted)"
-msgstr ""
+msgstr "Organisationsname (übermittelt)"
 
 #: resources/*.json
 msgid "Organisation Name (applied)"
-msgstr ""
+msgstr "Organisationsname (angewendet)"
 
 #: resources/*.json
 msgid "Do Not Email (original)"
-msgstr ""
+msgstr "Keine E-Mails senden "
 
 #: resources/*.json
 msgid "Do Not Email (submitted)"
-msgstr ""
+msgstr "Keine E-Mails senden (übermittelt)"
 
 #: resources/*.json
 msgid "Do Not Email (applied)"
-msgstr ""
+msgstr "Keine E-Mails senden (angewendet)"
 
 #: resources/*.json
 msgid "Do Not Phone (original)"
-msgstr ""
+msgstr "Nicht anrufen (ursprünglich)"
 
 #: resources/*.json
 msgid "Do Not Phone (submitted)"
-msgstr ""
+msgstr "Nicht anrufen (übermittelt)"
 
 #: resources/*.json
 msgid "Do Not Phone (applied)"
-msgstr ""
+msgstr "Nicht anrufen (angewendet)"
 
 #: resources/*.json
 msgid "Do Not Mail (original)"
-msgstr ""
+msgstr "Nicht per Post anschreiben (ursprünglich)"
 
 #: resources/*.json
 msgid "Do Not Mail (submitted)"
-msgstr ""
+msgstr "Nicht per Post anschreiben (übermittelt)"
 
 #: resources/*.json
 msgid "Do Not Mail (applied)"
-msgstr ""
+msgstr "Nicht per Post anschreiben (angewendet)"
 
 #: resources/*.json
 msgid "Do Not SMS (original)"
-msgstr ""
+msgstr "Keine SMS senden (ursprünglich)"
 
 #: resources/*.json
 msgid "Do Not SMS (submitted)"
-msgstr ""
+msgstr "Keine SMS senden (übermittelt)"
 
 #: resources/*.json
 msgid "Do Not SMS (applied)"
-msgstr ""
+msgstr "Keine SMS senden (angewendet)"
 
 #: resources/*.json
 msgid "Do Not Trade (original)"
-msgstr ""
+msgstr "Nicht weitergeben (ursprünglich)"
 
 #: resources/*.json
 msgid "Do Not Trade (submitted)"
-msgstr ""
+msgstr "Nicht weitergeben (übermittelt)"
 
 #: resources/*.json
 msgid "Do Not Trade (applied)"
-msgstr ""
+msgstr "Nicht weitergeben (angewendet)"
 
 #: resources/*.json
 msgid "Opt-Out (original)"
-msgstr ""
+msgstr "Keine Massen-E-Mails (User Opt Out) (ursprünglich)"
 
 #: resources/*.json
 msgid "Opt-Out (submitted)"
-msgstr ""
+msgstr "Keine Massen-E-Mails (User Opt Out) (übermittelt)"
 
 #: resources/*.json
 msgid "Opt-Out (applied)"
-msgstr ""
+msgstr "Keine Massen-E-Mails (User Opt Out) (angewendet)"
 
 #: resources/*.json
 msgid "Contact Deceased (original)"
-msgstr ""
+msgstr "Beteiligte Kontakte (ursprünglich)"
 
 #: resources/*.json
 msgid "Contact Deceased (submitted)"
-msgstr ""
+msgstr "Beteiligte Kontakte (übermittelt)"
 
 #: resources/*.json
 msgid "Contact Deceased (applied)"
-msgstr ""
+msgstr "Beteiligte Kontakte (angewendet)"
 
 #: resources/*.json
 msgid "Deceased Date (original)"
-msgstr ""
+msgstr "Todestag (ursprünglich)"
 
 #: resources/*.json
 msgid "Deceased Date (submitted)"
-msgstr ""
+msgstr "Todestag (übermittelt)"
 
 #: resources/*.json
 msgid "Deceased Date (applied)"
-msgstr ""
+msgstr "Todestag (angewendet)"
 
 #: resources/*.json
 msgid "Email (original)"
-msgstr ""
+msgstr "E-Mail-Adersse (ursprünglich)"
 
 #: resources/*.json
 msgid "Email (submitted)"
-msgstr ""
+msgstr "E-Mail-Adressen (übermittelt)"
 
 #: resources/*.json
 msgid "Email (applied)"
-msgstr ""
+msgstr "E-Mail-Adersse (angewendet)"
 
 #: resources/*.json
 msgid "Phone (original)"
-msgstr ""
+msgstr "Telfonnummer (ursprünglich)"
 
 #: resources/*.json
 msgid "Phone (submitted)"
-msgstr ""
+msgstr "Telfonnummer (übermittelt)"
 
 #: resources/*.json
 msgid "Phone Type (applied)"
-msgstr ""
+msgstr "Anschlussart (angewendet)"
 
 #: resources/*.json
 msgid "Phone Type (original)"
-msgstr ""
+msgstr "Anschlussart (ursprünglich)"
 
 #: resources/*.json
 msgid "Phone Type (submitted)"
-msgstr ""
+msgstr "Anschlussart (übermittelt)"
 
 #: resources/*.json
 msgid "Phone (applied)"
-msgstr ""
+msgstr "Telfonnummer (angewendet)"
 
 #: resources/*.json
 msgid "Amount (original)"
-msgstr ""
+msgstr "Betrag (ursprünglich)"
 
 #: resources/*.json
 msgid "Amount (submitted)"
-msgstr ""
+msgstr "Betrag (übermittelt)"
 
 #: resources/*.json
 msgid "Amount (applied)"
-msgstr ""
+msgstr "Betrag (angewendet)"
 
 #: resources/*.json
 msgid "source (original)"
-msgstr ""
+msgstr "Quelle (ursprünglich)"
 
 #: resources/*.json
 msgid "source (submitted)"
-msgstr ""
+msgstr "Quelle (übermittelt)"
 
 #: resources/*.json
 msgid "source (applied)"
-msgstr ""
+msgstr "Quelle (angewendet)"
 
 #: resources/*.json
 msgid "IBAN (original)"
-msgstr ""
+msgstr "IBAN (ursprünglich)"
 
 #: resources/*.json
 msgid "IBAN (submitted)"
-msgstr ""
+msgstr "IBAN (übermittelt)"
 
 #: resources/*.json
 msgid "IBAN (applied)"
-msgstr ""
+msgstr "IBAN (angewendet)"
 
 #: resources/*.json
 msgid "BIC (original)"
-msgstr ""
+msgstr "BIC (ursprünglich)"
 
 #: resources/*.json
 msgid "BIC (submitted)"
-msgstr ""
+msgstr "BIC (übermittelt)"
 
 #: resources/*.json
 msgid "BIC (applied)"
-msgstr ""
+msgstr "BIC (angewendet)"
 
 #: resources/*.json
 msgid "Financial Type (original)"
-msgstr ""
+msgstr "Zuwendungsart (ursprünglich)"
 
 #: resources/*.json
 msgid "Financial Type (submitted)"
-msgstr ""
+msgstr "Zuwendungsart (übermittelt)"
 
 #: resources/*.json
 msgid "Financial Type (applied)"
-msgstr ""
+msgstr "Zuwendungsart (angewendet)"
 
 #: resources/*.json
 msgid "Campaign (original)"
-msgstr ""
+msgstr "Kampagne (ursprünglich)"
 
 #: resources/*.json
 msgid "Campaign (submitted)"
-msgstr ""
+msgstr "Kampagne (übermittelt)"
 
 #: resources/*.json
 msgid "Campaign (applied)"
-msgstr ""
+msgstr "Kampagne (angewendet)"
 
 #: resources/*.json
 msgid "Frequency (original)"
-msgstr ""
+msgstr "Frequenz (ursprünglich)"
 
 #: resources/*.json
 msgid "Frequency (submitted)"
-msgstr ""
+msgstr "Frequenz (übermittelt)"
 
 #: resources/*.json
 msgid "Frequency (applied)"
-msgstr ""
+msgstr "Frequenz (angewendet)"
 
 #: resources/*.json
 msgid "Cycle Day (original)"
-msgstr ""
+msgstr "Einzugstag (ursprünglich)"
 
 #: resources/*.json
 msgid "Cycle Day (submitted)"
-msgstr ""
+msgstr "Einzugstag (übermittelt)"
 
 #: resources/*.json
 msgid "Cycle Day (applied)"
-msgstr ""
+msgstr "Einzugstag (angewendet)"
 
 #: resources/*.json
 msgid "Signature Date (original)"
-msgstr ""
+msgstr "Unterschriftsdatum (ursprünglich)"
 
 #: resources/*.json
 msgid "Signature Date (submitted)"
-msgstr ""
+msgstr "Unterschriftsdatum (übermittelt)"
 
 #: resources/*.json
 msgid "Signature Date (applied)"
-msgstr ""
+msgstr "Unterschriftsdatum (angewendet)"
 
 #: resources/*.json
 msgid "Validation Date (original)"
-msgstr ""
+msgstr "Validierungsdatum (ursprünglich)"
 
 #: resources/*.json
 msgid "Validation Date (submitted)"
-msgstr ""
+msgstr "Validierungsdatum (übermittelt)"
 
 #: resources/*.json
 msgid "Validation Date (applied)"
-msgstr ""
+msgstr "Validierungsdatum (angewendet)"
 
 #: resources/*.json
 msgid "Start Date (original)"
-msgstr ""
+msgstr "Startdatum (ursprünglich)"
 
 #: resources/*.json
 msgid "Start Date (submitted)"
-msgstr ""
+msgstr "Startdatum (übermittelt)"
 
 #: resources/*.json
 msgid "Start Date (applied)"
-msgstr ""
+msgstr "Startdatum (angewendet)"
 
 #: resources/*.json
 msgid "End Date (original)"
-msgstr ""
+msgstr "Enddatum (ursprünglich)"
 
 #: resources/*.json
 msgid "End Date (submitted)"
-msgstr ""
+msgstr "Enddatum (übermittelt)"
 
 #: resources/*.json
 msgid "End Date (applied)"
-msgstr ""
+msgstr "Enddatum (angewendet)"
 
 #: resources/*.json
 msgid "Replacement Mandate Reference"
-msgstr ""
+msgstr "Folgemandat Referenznummer"
 
 #: CRM/I3val/Form/Configuration.php
 msgid "Quick History"
-msgstr ""
+msgstr "Aktivitätsverlauf"
 
 #: CRM/I3val/Form/Desktop.php
 msgid "Please configure I3Val first."
-msgstr ""
+msgstr "Bitte nehmen Sie erst die Einstellungen für I3Val vor."
 
 #: CRM/I3val/Form/Desktop.php
 msgid "Warning"
-msgstr ""
-
+msgstr "Warnung"
