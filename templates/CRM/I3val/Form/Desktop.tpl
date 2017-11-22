@@ -95,7 +95,7 @@
       {foreach from=$history item=history_entry}
         <tr>
           <td>{$history_entry.type}</td>
-          <td>{$history_entry.subject}</td>
+          <td><a class="crm-popup small-popup" href="{$history_entry.url}">{$history_entry.subject}</a></td>
           <td>{$history_entry.added_by}</td>
           <td>{$history_entry.date|crmDate}</td>
           <td>{$history_entry.status}</td>

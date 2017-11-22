@@ -291,6 +291,8 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     $sql = "
       SELECT
         activity.activity_date_time   AS date,
+        activity.id                   AS activity_id,
+        contact_lead.contact_id       AS contact_id,
         activity.subject              AS subject,
         status.label                  AS status,
         activity_type.label           AS type,
@@ -325,11 +327,14 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     $query = CRM_Core_DAO::executeQuery($sql);
     while ($query->fetch()) {
       $history[] = array(
-        'date'     => $query->date,
-        'status'   => $query->status,
-        'subject'  => $query->subject,
-        'type'     => $query->type,
-        'added_by' => $query->added_by,
+        'date'        => $query->date,
+        'status'      => $query->status,
+        'subject'     => $query->subject,
+        'type'        => $query->type,
+        'added_by'    => $query->added_by,
+        'activity_id' => $query->activity_id,
+        'contact_id'  => $query->contact_id,
+        'url'         => CRM_Utils_System::url("civicrm/activity", "action=view&reset=1&id={$query->activity_id}"),
         );
     }
 
