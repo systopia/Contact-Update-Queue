@@ -45,23 +45,33 @@ class CRM_I3val_Logic {
       $handler->generateDiffData($entity, $params, $activity_data);
     }
 
-    // if no data was created, there is nothing to do...
-    if (empty($activity_data)) {
-      return NULL;
+    // if no vital data was created, there is nothing to do...
+    $ignoreable_attributes = array('target_id', 'activity_type_id'); // TODO: more?
+    $vital_attributes_present = FALSE;
+    foreach ($activity_data as $key => $value) {
+      if (!in_array($key, $ignoreable_attributes)) {
+        $vital_attributes_present = TRUE;
+        break;
+      }
     }
 
-    // add basic activity params
-    self::addActivityParams($params, $activity_data);
 
-    // add specific activity params
-    $activity_data['subject'] = E::ts("%1 Update Request", array(1 => $entity));
-    $activity_data['activity_type_id'] = $activity_type_id;
+    if ($vital_attributes_present) {
+      // add basic activity params
+      self::addActivityParams($params, $activity_data);
 
-    // create activity, reload and return
-    CRM_Core_Error::debug_log_message('ACTIVIY ' . json_encode($activity_data));
-    CRM_I3val_CustomData::resolveCustomFields($activity_data);
-    $activity = civicrm_api3('Activity', 'create', $activity_data);
-    return civicrm_api3('Activity', 'getsingle', array('id' => $activity['id']));
+      // add specific activity params
+      $activity_data['subject'] = E::ts("%1 Update Request", array(1 => $entity));
+      $activity_data['activity_type_id'] = $activity_type_id;
+
+      // create activity, reload and return
+      CRM_Core_Error::debug_log_message('ACTIVIY ' . json_encode($activity_data));
+      CRM_I3val_CustomData::resolveCustomFields($activity_data);
+      $activity = civicrm_api3('Activity', 'create', $activity_data);
+      return civicrm_api3('Activity', 'getsingle', array('id' => $activity['id']));
+    } else {
+      return NULL;
+    }
   }
 
 
