@@ -96,7 +96,7 @@ msgstr "Notizen"
 
 #: templates/CRM/I3val/Form/Desktop.tpl
 msgid "Quick Contact History"
-msgstr "Aktivitätsverlauf"
+msgstr "Verlauf"
 
 #: templates/CRM/I3val/Form/Desktop.tpl
 msgid "Type"
@@ -297,7 +297,7 @@ msgstr "Zurückstellen für:"
 
 #: CRM/I3val/Form/Desktop.php
 msgid "Requested update has been marked to be reviewed again later"
-msgstr "Die Änderungsaktivität wird zu einem späteren Zeitpunkt erneut zur Prüfung vorgelegt"
+msgstr "Die Änderungsaktivität wird später erneut zur Prüfung vorgelegt"
 
 #: CRM/I3val/Form/Desktop.php
 msgid "Postponed!"
@@ -313,7 +313,7 @@ msgstr "Markiert!"
 
 #: CRM/I3val/Form/Desktop.php
 msgid "Unkown action."
-msgstr "Unbeaknnte Aktion"
+msgstr "Unbekannte Aktion"
 
 #: CRM/I3val/Handler/AddressUpdate.php
 msgid "Street Address"
@@ -453,7 +453,7 @@ msgstr "%1 existiert bereits (nichts machen)"
 
 #: CRM/I3val/Handler/EmailUpdate.php
 msgid "Email"
-msgstr "E-Mail-Adersse"
+msgstr "E-Mail-Adresse"
 
 #: CRM/I3val/Handler/EmailUpdate.php
 msgid "New email added."
@@ -581,7 +581,7 @@ msgstr "Straße (ursprünglich)"
 
 #: resources/*.json
 msgid "Street Address (submitted)"
-msgstr "Straße (übermittelt) (übermittelt)"
+msgstr "Straße (übermittelt)"
 
 #: resources/*.json
 msgid "Street Address (applied)"
@@ -1038,4 +1038,3 @@ msgstr "Bitte nehmen Sie erst die Einstellungen für I3Val vor."
 #: CRM/I3val/Form/Desktop.php
 msgid "Warning"
 msgstr "Warnung"
-
