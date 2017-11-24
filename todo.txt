@@ -1,8 +1,7 @@
 todo
-- address / email / phone:
- - implement
- - add overwrite|create new (what to do with the old one?)
- - respect location_type_id
+ - update civicrm_custom_group set style='Inline' where name like '%i3val%';
+ - beautify activities
+ - add 'share address handler' (address_master_contact_id)
 
 - AIVL custom
  - 2x Custom screen => starting point for SDD OR basic processing

@@ -350,6 +350,7 @@ class CRM_I3val_Configuration {
           'id'                          => $custom_group['id'],
           'title'                       => $custom_group['title'], // prevent PHP notices
           'extends'                     => 'Activity',             // prevent PHP notices
+          'style'                       => 'Inline',               // prevent destructive API
           'is_active'                   => 1,
           'extends_entity_column_value' => CRM_Utils_Array::implodePadded($activity_type_ids)
         ));
