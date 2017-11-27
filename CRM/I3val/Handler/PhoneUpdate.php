@@ -306,7 +306,7 @@ class CRM_I3val_Handler_PhoneUpdate extends CRM_I3val_Handler_DetailUpdate {
     parent::resolveFields($data, $add_default);
 
     // resolve phone type
-    $this->resolveOptionValueField($data, 'phone_type', 'phone_type');
+    $this->resolveOptionValueField($data, 'phone_type', 'phone_type', 'phone_type_id');
   }
 
   /**

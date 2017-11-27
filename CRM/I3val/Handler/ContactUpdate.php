@@ -28,22 +28,24 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
 
   public function getField2Label() {
     if (self::$field2label === NULL) {
-      self::$field2label = array( 'first_name'        => E::ts('First Name'),
-                                  'last_name'         => E::ts('Last Name'),
-                                  'organization_name' => E::ts('Organisation Name'),
-                                  'household_name'    => E::ts('Household Name'),
-                                  'prefix'            => E::ts('Prefix'),
-                                  'suffix'            => E::ts('Suffix'),
-                                  'gender'            => E::ts('Gender'),
-                                  'birth_date'        => E::ts('Birth Date'),
-                                  'do_not_email'      => E::ts('Do not Email'),
-                                  'do_not_phone'      => E::ts('Do not Phone'),
-                                  'do_not_mail'       => E::ts('Do not Mail'),
-                                  'do_not_sms'        => E::ts('Do not SMS'),
-                                  'do_not_trade'      => E::ts('Do not trade'),
-                                  'is_opt_out'        => E::ts('Opt-Out'),
-                                  'is_deceased'       => E::ts('Deceased'),
-                                  'deceased_date'     => E::ts('Deceased Date'),
+      self::$field2label = array( 'first_name'         => E::ts('First Name'),
+                                  'last_name'          => E::ts('Last Name'),
+                                  'organization_name'  => E::ts('Organisation Name'),
+                                  'household_name'     => E::ts('Household Name'),
+                                  'preferred_language' => E::ts('Preferred Language'),
+                                  'job_title'          => E::ts('Job Title'),
+                                  'prefix'             => E::ts('Prefix'),
+                                  'suffix'             => E::ts('Suffix'),
+                                  'gender'             => E::ts('Gender'),
+                                  'birth_date'         => E::ts('Birth Date'),
+                                  'do_not_email'       => E::ts('Do not Email'),
+                                  'do_not_phone'       => E::ts('Do not Phone'),
+                                  'do_not_mail'        => E::ts('Do not Mail'),
+                                  'do_not_sms'         => E::ts('Do not SMS'),
+                                  'do_not_trade'       => E::ts('Do not trade'),
+                                  'is_opt_out'         => E::ts('Opt-Out'),
+                                  'is_deceased'        => E::ts('Deceased'),
+                                  'deceased_date'      => E::ts('Deceased Date'),
                                 );
     }
     return self::$field2label;
@@ -132,6 +134,7 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
     if (!empty($contact_update)) {
       $contact_update['id'] = $contact['id'];
       $this->resolveFields($contact_update);
+      $this->resolvePreferredLanguageToLabel($contact_update, FALSE);
       CRM_Core_Error::debug_log_message("UPDATE contact " . json_encode($contact_update));
       civicrm_api3('Contact', 'create', $contact_update);
     }
@@ -146,6 +149,7 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
   public function renderActivityData($activity, $form) {
     $field2label = self::getField2Label();
     $values = $this->compileValues(self::$group_name, $field2label, $activity);
+    $this->resolvePreferredLanguageToLabel($form->contact);
     $this->addCurrentValues($values, $form->contact);
 
     // exceptions for current values
@@ -194,6 +198,16 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
         if (isset($values[$fieldname]['original'])) {
           $values[$fieldname]['original'] = substr($values[$fieldname]['original'], 0, 10);
         }
+
+      } elseif ($fieldname == 'preferred_language') {
+        $form->add(
+          'select',
+          "{$fieldname}_applied",
+          $fieldlabel,
+          $this->getOptionValueList('languages')
+        );
+
+
 
       } elseif (substr($fieldname, 0, 3) == 'do_' || substr($fieldname, 0, 3) == 'is_') {
         $checkbox_fields[$fieldname] = 1;
@@ -262,7 +276,9 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
     }
 
     $this->resolveFields($contact);
+    $this->resolvePreferredLanguageToLabel($contact);
     $this->resolveFields($submitted_data);
+    $this->resolvePreferredLanguageToLabel($submitted_data);
 
     $raw_diff = $this->createDiff($contact, $submitted_data);
     // TODO: sort out special cases (e.g. dates)
@@ -278,9 +294,9 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
    */
   protected function resolveFields(&$data, $add_default = FALSE) {
     parent::resolveFields($data, $add_default);
-    $this->resolveOptionValueField($data, 'gender', 'gender');
-    $this->resolveOptionValueField($data, 'individual_prefix', 'prefix');
-    $this->resolveOptionValueField($data, 'individual_suffix', 'suffix');
+    $this->resolveOptionValueField($data, 'gender', 'gender', 'gender_id');
+    $this->resolveOptionValueField($data, 'individual_prefix', 'prefix', 'prefix_id');
+    $this->resolveOptionValueField($data, 'individual_suffix', 'suffix', 'suffix_id');
   }
 
 
@@ -302,6 +318,38 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
 
       default:
         return $this->getOptionValueList($fieldname);
+    }
+  }
+
+  /**
+   * Since the brilliant preferred_language field has no *_id
+   * counterpart, we are forced to decide whether we want to
+   * store the key or the label. The API needs the ID, while
+   * our activities will store the label
+   */
+  protected function resolvePreferredLanguageToLabel(&$data, $to_label = TRUE) {
+    if (!empty($data['preferred_language'])) {
+      if ($to_label) {
+        // we want to make sure that the label is used...
+        if (preg_match("#^[a-z]{2}_[A-Z]{2}$#", $data['preferred_language'])) {
+          // ... but it is the key -> find the right label
+          $languages = $this->getOptionValues('languages', 'name');
+          if (isset($languages[$data['preferred_language']])) {
+            $data['preferred_language'] = $languages[$data['preferred_language']]['label'];
+          } else {
+            // not found
+            unset($data['preferred_language']);
+          }
+        }
+
+      } else {
+        // we want to make sure that the key is there...
+        if (!preg_match("#^[a-z]{2}_[A-Z]{2}$#", $data['preferred_language'])) {
+          // ...but it seems like it isn't -> find best match
+          $option_value = $this->getMatchingOptionValue('languages', $data['preferred_language'], TRUE, 'name');
+          $data['preferred_language'] = $option_value['name'];
+        }
+      }
     }
   }
 }

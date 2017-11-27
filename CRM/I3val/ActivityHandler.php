@@ -220,12 +220,11 @@ abstract class CRM_I3val_ActivityHandler {
   /**
    * resolve the entityID <--> entity
    */
-  protected function resolveOptionValueField(&$data, $option_group, $fieldname, $add_default = FALSE) {
-    $id_fieldname = "{$fieldname}_id";
+  protected function resolveOptionValueField(&$data, $option_group, $fieldname, $id_fieldname, $value_field = 'value') {
     if (!empty($data[$id_fieldname])) {
       $option_value = $this->getMatchingOptionValue($option_group, $data[$id_fieldname]);
       if ($option_value) {
-        $data[$id_fieldname] = $option_value['value'];
+        $data[$id_fieldname] = $option_value[$value_field];
         $data[$fieldname]    = $option_value['label'];
       } else {
         unset($data[$id_fieldname]);
@@ -233,7 +232,7 @@ abstract class CRM_I3val_ActivityHandler {
     } elseif (!empty($data[$fieldname])) {
       $option_value = $this->getMatchingOptionValue($option_group, $data[$fieldname]);
       if ($option_value) {
-        $data[$id_fieldname] = $option_value['value'];
+        $data[$id_fieldname] = $option_value[$value_field];
         $data[$fieldname]    = $option_value['label'];
       } else {
         unset($data[$id_fieldname]);
@@ -270,15 +269,11 @@ abstract class CRM_I3val_ActivityHandler {
   /**
    * Get a dropdown list of (eligible) option values
    */
-  protected function getOptionValueList($option_group, $indexed_by_value = FALSE) {
+  protected function getOptionValueList($option_group, $indexed_by = 'label') {
     $option_values = $this->getOptionValues($option_group);
     $option_list = array();
     foreach ($option_values as $option_value) {
-      if ($indexed_by_value) {
-        $option_list[$option_value['value']] = $option_value['label'];
-      } else {
-        $option_list[$option_value['label']] = $option_value['label'];
-      }
+      $option_list[$option_value[$indexed_by]] = $option_value['label'];
     }
     return $option_list;
   }
@@ -287,8 +282,8 @@ abstract class CRM_I3val_ActivityHandler {
   /**
    * Get the matching option value based on a label string
    */
-  protected function getMatchingOptionValue($option_group, $label, $return_best_match = TRUE) {
-    $option_values = $this->getOptionValues($option_group);
+  protected function getMatchingOptionValue($option_group, $label, $return_best_match = TRUE, $indexed_by = 'value') {
+    $option_values = $this->getOptionValues($option_group, $indexed_by);
 
     if (empty($label)) {
       return NULL;
@@ -329,8 +324,12 @@ abstract class CRM_I3val_ActivityHandler {
 
   /**
    * Get all option values for the given group
+   *
+   * @param $option_group String  option group name or ID
+   * @param $indexed_by   String  default 'value', but could be 'name' or 'id'.
+   *                              Caution! will be cached with the first value
    */
-  protected function getOptionValues($option_group) {
+  protected function getOptionValues($option_group, $indexed_by = 'value') {
     if (!isset(self::$_option_values[$option_group])) {
       $option_values = array();
       $query = civicrm_api3('OptionValue', 'get', array(
@@ -339,9 +338,9 @@ abstract class CRM_I3val_ActivityHandler {
         'option.limit'    => 0,
         'is_active'       => 1,
         'option.sort'     => 'weight ASC',
-        'return'          => 'id,name,label,is_active,is_default,value'));
+        'return'          => "id,name,label,is_active,is_default,{$indexed_by}"));
       foreach ($query['values'] as $option_value) {
-        $option_values[$option_value['value']] = $option_value;
+        $option_values[$option_value[$indexed_by]] = $option_value;
       }
       self::$_option_values[$option_group] = $option_values;
     }

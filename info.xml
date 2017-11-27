@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <extension key="be.aivl.i3val" type="module">
   <file>i3val</file>
-  <name>I3 Validation</name>
+  <name>I3Val Input Validation</name>
   <description>Ilja's Initiative for Input Validation</description>
   <license>AGPL-3.0</license>
   <maintainer>
