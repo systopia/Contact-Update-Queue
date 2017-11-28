@@ -14,20 +14,6 @@
 | written permission from the original author(s).        |
 +-------------------------------------------------------*}
 
-{literal}
-<style type="text/css">
-
-div.i3val-config {
-  border: 2px solid #a1a1a1;
-  padding: 0px 10px;
-  margin-top: 20px;
-  /*background:#dddddd;*/
-  /*width:300px;*/
-  border-radius:15px;
-}
-</style>
-{/literal}
-
 <h3>{ts domain="be.aivl.i3val"}General Options{/ts}</h3>
 
 <div>

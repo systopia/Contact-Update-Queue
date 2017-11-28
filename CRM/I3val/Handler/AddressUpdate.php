@@ -257,6 +257,9 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
       }
     }
 
+    // add address sharing options
+    $this->renderAddressSharingPanel($activity, $form);
+
     // add processing options
     $form->add(
       'select',
@@ -521,7 +524,60 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
    *  renders the "address sharing" panel to deal with this
    */
   protected function renderAddressSharingPanel($activity, $form) {
-    // TODO
+    error_log("RENDER " . json_encode($activity));
+    $group_name = $this->getCustomGroupName();
+    if (!empty($activity["{$group_name}.shared_with_contact_id"])) {
+      error_log("RENDER2");
+      $shared_with_contact_id = $activity["{$group_name}.shared_with_contact_id"];
+      $other_contacts = civicrm_api3('Contact', 'get', array(
+        'id'     => $shared_with_contact_id,
+        'return' => 'is_deleted,display_name,contact_type,id'));
+      if (empty($other_contacts['values'][$shared_with_contact_id])) {
+        CRM_Core_Session::setStatus(E::ts("Referenced shared address contact [%1] could not be found.", array(1 => $shared_with_contact_id)), E::ts('Warning'), 'info');
+        return;
+      }
+      $other_contact = $other_contacts['values'][$shared_with_contact_id];
+      error_log("RENDER3 " .json_encode($other_contact));
+
+      // pull other addresses and add a display name
+      $other_address_options = array(
+        'none'   => E::ts("don't share"),
+        'new'    => E::ts("new address"),
+      );
+      $other_addresses = civicrm_api3('Address', 'get', array(
+        'contact_id'   => $shared_with_contact_id,
+        'option.limit' => 0,
+        'sequential'   => 1
+      ))['values'];
+      foreach ($other_addresses as $addr) {
+        $this->resolveFields($addr);
+        $other_address_options[$addr['id']] =
+          "({$addr['location_type']}) {$addr['street_address']}, {$addr['postal_code']} {$addr['city']}";
+      }
+
+      // create dropdown
+      $form->add(
+        'select',
+        'i3val_address_sharing_addresses',
+        E::ts("Share with"),
+        $other_address_options,
+        FALSE,
+        array('class' => 'crm-select2 huge')
+      );
+
+      // create location type dropdown
+      $form->add(
+        'select',
+        'i3val_address_sharing_location_type',
+        E::ts("Share"),
+        $this->getLocationTypeList(),
+        FALSE,
+        array('class' => 'crm-select2')
+      );
+
+      // assign stuff
+      $form->assign('i3val_address_sharing_contact', $other_contact);
+    }
   }
 
   /**
