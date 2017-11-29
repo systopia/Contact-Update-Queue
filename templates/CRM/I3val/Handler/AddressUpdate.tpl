@@ -1,7 +1,7 @@
 <div class="crm-accordion-wrapper crm-i3val-address">
   <div class="crm-accordion-header active">{ts domain="be.aivl.i3val"}Address Data{/ts}</div>
   <div class="crm-accordion-body">
-    <table class="i3val-value-table">
+    <table>
       <thead>
         <tr>
           <th></th>
@@ -26,17 +26,8 @@
       </tbody>
     </table>
 
-    <hr/>
-
-    {$form.i3val_email_updates_address_id.html}
-
-    <div class="crm-section" class="i3val-control">
-      <div class="label">{$form.i3val_address_updates_action.label}</div>
-      <div class="content">{$form.i3val_address_updates_action.html}</div>
-      <div class="clear"></div>
-    </div>
-
     {if $i3val_address_sharing_contact}
+    {$form.i3val_address_sharing_contact_id}
     <div class="i3val-suboption">
       <h1><span>{ts}Share address with{/ts}</span></h1>
       <span class="i3val-suboption-item">
@@ -47,6 +38,16 @@
       <span class="i3val-suboption-item i3val-suboption-hint" id="i3val_address_sharing_hint">{ts}This address will be updated as well.{/ts}</span>
     </div>
     {/if}
+
+    <hr/>
+
+    <div class="crm-section" class="i3val-control">
+      <div class="label">{$form.i3val_address_updates_action.label}</div>
+      <div class="content">{$form.i3val_address_updates_action.html}</div>
+      <div class="clear"></div>
+    </div>
+
+    {$form.i3val_email_updates_address_id.html}
 
   </div>
 </div>
