@@ -524,10 +524,8 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
    *  renders the "address sharing" panel to deal with this
    */
   protected function renderAddressSharingPanel($activity, $form) {
-    error_log("RENDER " . json_encode($activity));
     $group_name = $this->getCustomGroupName();
     if (!empty($activity["{$group_name}.shared_with_contact_id"])) {
-      error_log("RENDER2");
       $shared_with_contact_id = $activity["{$group_name}.shared_with_contact_id"];
       $other_contacts = civicrm_api3('Contact', 'get', array(
         'id'     => $shared_with_contact_id,
@@ -537,7 +535,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
         return;
       }
       $other_contact = $other_contacts['values'][$shared_with_contact_id];
-      error_log("RENDER3 " .json_encode($other_contact));
+      $other_contact['link'] = CRM_Utils_System::url("civicrm/contact/view", "reset=1&cid={$other_contact['id']}");
 
       // pull other addresses and add a display name
       $other_address_options = array(

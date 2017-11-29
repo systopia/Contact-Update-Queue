@@ -26,6 +26,16 @@
       </tbody>
     </table>
 
+    <hr/>
+
+    {$form.i3val_email_updates_address_id.html}
+
+    <div class="crm-section" class="i3val-control">
+      <div class="label">{$form.i3val_address_updates_action.label}</div>
+      <div class="content">{$form.i3val_address_updates_action.html}</div>
+      <div class="clear"></div>
+    </div>
+
     {if $i3val_address_sharing_contact}
     <div class="i3val-suboption">
       <h1><span>{ts}Share address with{/ts}</span></h1>
@@ -38,15 +48,6 @@
     </div>
     {/if}
 
-    <hr/>
-
-    {$form.i3val_email_updates_address_id.html}
-
-    <div class="crm-section" class="i3val-control">
-      <div class="label">{$form.i3val_address_updates_action.label}</div>
-      <div class="content">{$form.i3val_address_updates_action.html}</div>
-      <div class="clear"></div>
-    </div>
   </div>
 </div>
 
