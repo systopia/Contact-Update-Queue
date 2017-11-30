@@ -610,7 +610,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
       $master_id = CRM_Utils_Array::value('master_id', $existing_address);
       if ($master_id) {
         $master_address = civicrm_api3('Address', 'getsingle', array(
-          'id'    => $master_id,
+          'id'     => $master_id,
           'return' => 'contact_id'));
         if ($master_address['contact_id'] == $shared_with_contact_id) {
           // the address is already shared with this contact -> do nothing
@@ -633,6 +633,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
 
     // get some variables
     $address_id = $address_update['id'];
+    $contact_id = $address_update['contact_id'];
     $group_name = $this->getCustomGroupName();
     $other_contact_id = $values['i3val_address_sharing_contact_id'];
 
@@ -647,44 +648,58 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
           // this shoudln't happen...
           CRM_Core_Session::setStatus(E::ts("Active address not found!", array(1 => $shared_with_contact_id)), E::ts('Error'), 'error');
         } else {
-          // load the current address, and store it (again) with the other contact
+          // load the current address, and use the date to
+          //   create a new address with the other contact
           $address = civicrm_api3('Address', 'getsingle', array('id' => $address_id));
           unset($address['id']);
-          $address['contact_id'] = $other_contact_id;
-          $address['master_id'] = '';
+          unset($address['is_primary']);
+          unset($address['is_billing']);
+          unset($address['master_id']);
+          unset($address['location_type_id']);
+          $address['contact_id']    = $other_contact_id;
+          $address['master_id']     = ''; // reset old sharing (if exists)
+          $address['location_type'] = $values['i3val_address_sharing_location_type'];
+          $this->resolveFields($address);
           $new_address = civicrm_api3('Address', 'create', $address);
 
-          // now, set the new address as master_id
-          // this seems to be broken:
-          // civicrm_api3('Address', 'create', array(
-          //   'id'        => $address_id,
-          //   'master_id' => $new_address['id']));
-          CRM_Core_DAO::executeQuery("UPDATE civicrm_address SET master_id = %1 WHERE id = %2",
-            array(1 => array($new_address['id'], 'Integer'), 2 => array($address_id, 'Integer')));
+          // now, set the the master_id of the old (contact) address to the newly created one
+          civicrm_api3('Address', 'create', array(
+            'id'         => $address_id,
+            'contact_id' => $contact_id, // API crashes if not provided
+            'master_id'  => $new_address['id']));
+
+          // not to forget: call the function to sync shared address
+          CRM_Core_BAO_Address::processSharedAddress($new_address['id'], $address);
 
           // finally: share the good news
           $activity_update["{$group_name}.action"] .= ' | ' . E::ts("Address shared");
         }
         break;
 
-      default: // SHARE WITH GIVEN ID
+      default: // SHARE WITH EXISTING ADDRESS
         $shared_address_id = $values['i3val_address_sharing_addresses'];
         if (!is_numeric($shared_address_id)) {
           // this shoudln't happen...
           CRM_Core_Session::setStatus(E::ts("Selected address not found!", array(1 => $shared_with_contact_id)), E::ts('Error'), 'error');
         } else {
           // now, set the new address as master_id
-          // this seems to be broken:
-          // civicrm_api3('Address', 'create', array(
-          //   'id'        => $address_id,
-          //   'master_id' => $shared_address_id));
-          CRM_Core_DAO::executeQuery("UPDATE civicrm_address SET master_id = %1 WHERE id = %2",
-            array(1 => array($shared_address_id, 'Integer'), 2 => array($address_id, 'Integer')));
+          civicrm_api3('Address', 'create', array(
+            'id'         => $address_id,
+            'contact_id' => $values['contact_id'], // API crashes if not provided
+            'master_id'  => $shared_address_id));
 
           // but also, apply the same update to the master address
-          $address_update['id'] = $shared_address_id;
-          $address_update['master_id'] = '';
+          $address_update['id']         = $shared_address_id;
+          $address_update['contact_id'] = $other_contact_id;
+          $address_update['master_id']  = '';
+          unset($address_update['is_billing']);
+          unset($address_update['is_primary']);
+          unset($address_update['location_type_id']);
           civicrm_api3('Address', 'create', $address_update);
+
+          // not to forget: call the function to sync shared address
+          $shared_address = civicrm_api3('Address', 'getsingle', array('id' => $shared_address_id));
+          CRM_Core_BAO_Address::processSharedAddress($shared_address_id, $shared_address);
 
           // finally: share the good news
           $activity_update["{$group_name}.action"] .= ' | ' . E::ts("Address shared");
