@@ -309,6 +309,20 @@
     {
       "_lookup": ["column_name", "custom_group_id"],
       "_translate": ["label"],
+      "name": "shared_with_contact_id",
+      "column_name": "shared_with_contact_id",
+      "label": "Shared with Contact ID",
+      "data_type": "Int",
+      "html_type": "Text",
+      "is_required": "0",
+      "is_searchable": "1",
+      "is_search_range": "0",
+      "is_active": "1",
+      "is_view": "1"
+    },
+    {
+      "_lookup": ["column_name", "custom_group_id"],
+      "_translate": ["label"],
       "name": "action",
       "column_name": "action",
       "label": "Applied Action",

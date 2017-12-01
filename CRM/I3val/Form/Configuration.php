@@ -102,6 +102,9 @@ class CRM_I3val_Form_Configuration extends CRM_Core_Form {
       ),
     ));
 
+    // let's add some style...
+    CRM_Core_Resources::singleton()->addStyleFile('be.aivl.i3val', 'css/i3val.css');
+
     parent::buildQuickForm();
   }
 

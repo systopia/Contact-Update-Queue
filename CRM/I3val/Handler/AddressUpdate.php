@@ -152,8 +152,12 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
       // perform update
       $this->resolveFields($address_update);
       CRM_Core_Error::debug_log_message("ADDRESS UPDATE: " . json_encode($address_update));
-      civicrm_api3('Address', 'create', $address_update);
+      $result = civicrm_api3('Address', 'create', $address_update);
+      $address_update['id'] = $result['id'];
     }
+
+    // apply address sharing (if there is any)
+    $this->applyAddressSharingChanges($activity, $values, $activity_update, $address_update);
 
     return $activity_update;
   }
@@ -173,7 +177,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     $address_submitted = $this->getMyValues($activity);
     $address_submitted['contact_id'] = $form->contact['id'];
     $existing_address = $this->getExistingAddress($address_submitted, $default_action);
-    CRM_Core_Error::debug_log_message("FOUND " . json_encode($existing_address));
+    // CRM_Core_Error::debug_log_message("FOUND " . json_encode($existing_address));
     $this->resolveFields($existing_address);
     $this->resolveFields($address_submitted);
 
@@ -253,6 +257,9 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
       }
     }
 
+    // add address sharing options
+    $this->renderAddressSharingPanel($activity, $form, $address_submitted);
+
     // add processing options
     $form->add(
       'select',
@@ -288,12 +295,14 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
         $submitted_data['contact_id'] = $submitted_data['id'];
         $address = $this->getExistingAddress($submitted_data);
         $this->generateEntityDiffData('Address', $address['id'], $address, $submitted_data, $activity_data);
+        $this->addAddressSharingDiffData($address, $submitted_data, $activity_data);
         break;
 
       case 'Address':
         $address = civicrm_api3('Address', 'getsingle', array('id' => $submitted_data['id']));
         $this->resolveFields($address);
         $this->generateEntityDiffData('Address', $address['id'], $address, $submitted_data, $activity_data);
+        $this->addAddressSharingDiffData($address, $submitted_data, $activity_data);
         break;
 
       default:
@@ -442,8 +451,11 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     $address_submitted = array();
     $this->applyUpdateData($address_submitted, $values);
     if (empty($address_submitted) || empty($values['contact_id'])) {
-      // there's nothing we can do
-      return NULL;
+      // there is no address data...execpt if there is
+      if (!$this->getAddressSharingContactID($values)) {
+        // there's nothing we can do
+        return NULL;
+      }
     }
 
     // first, make sure that the location type is resolved
@@ -492,7 +504,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     $highest_similarity    = 0;
     foreach ($addresss as $address) {
       $similarity = $this->getMainFieldSimilarity($address_submitted, $address);
-      if ($similarity > $highest_similarity) {
+      if ($similarity >= $highest_similarity) {
         $highest_similarity = $similarity;
         $best_matching_address = $address;
       }
@@ -500,5 +512,231 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     $this->resolveFields($best_matching_address);
     $default_action = 'add';
     return $best_matching_address;
+  }
+
+
+  /******************************************************
+   **               Address Sharing                    **
+   ******************************************************/
+
+  /**
+   * If the shared_with_contact_id is given this function
+   *  renders the "address sharing" panel to deal with this
+   */
+  protected function renderAddressSharingPanel($activity, $form, $address_submitted) {
+    $group_name = $this->getCustomGroupName();
+    if (!empty($activity["{$group_name}.shared_with_contact_id"])) {
+      $shared_with_contact_id = $activity["{$group_name}.shared_with_contact_id"];
+      $other_contacts = civicrm_api3('Contact', 'get', array(
+        'id'     => $shared_with_contact_id,
+        'return' => 'is_deleted,display_name,contact_type,id'));
+      if (empty($other_contacts['values'][$shared_with_contact_id])) {
+        CRM_Core_Session::setStatus(E::ts("Referenced shared address contact [%1] could not be found.", array(1 => $shared_with_contact_id)), E::ts('Warning'), 'info');
+        return;
+      }
+      $other_contact = $other_contacts['values'][$shared_with_contact_id];
+      $other_contact['link'] = CRM_Utils_System::url("civicrm/contact/view", "reset=1&cid={$other_contact['id']}");
+
+      // pull other addresses and add a display name
+      $other_address_options = array();
+      $other_addresses = civicrm_api3('Address', 'get', array(
+        'contact_id'   => $shared_with_contact_id,
+        'option.limit' => 0,
+        'sequential'   => 1
+      ))['values'];
+      foreach ($other_addresses as $addr) {
+        $this->resolveFields($addr);
+        $other_address_options[$addr['id']] =
+          "({$addr['location_type']}) {$addr['street_address']}, {$addr['postal_code']} {$addr['city']}";
+      }
+      if ($this->hasAddressData($address_submitted)) {
+        $other_address_options['new'] = E::ts("new address");
+      }
+      $other_address_options['none'] = E::ts("don't share");
+
+      // create dropdown
+      $form->add(
+        'select',
+        'i3val_address_sharing_addresses',
+        E::ts("Share with"),
+        $other_address_options,
+        FALSE,
+        array('class' => 'crm-select2 huge')
+      );
+
+      // create location type dropdown
+      $form->add(
+        'select',
+        'i3val_address_sharing_location_type',
+        E::ts("Share"),
+        $this->getLocationTypeList(),
+        FALSE,
+        array('class' => 'crm-select2')
+      );
+
+      // assign stuff
+      $form->add('hidden', 'i3val_address_sharing_contact_id', $other_contact['id']);
+      $form->assign('i3val_address_sharing_contact', $other_contact);
+    }
+  }
+
+  /**
+   * Get address sharing contact ID
+   * It will recognise the contact_id in two parameters:
+   *  - shared_with_contact_id
+   *  - address_master_contact_id
+   */
+  protected function getAddressSharingContactID($submitted_data) {
+    if (!empty($submitted_data['shared_with_contact_id']) && is_numeric($submitted_data['shared_with_contact_id'])) {
+      return $submitted_data['shared_with_contact_id'];
+    }
+    if (!empty($submitted_data['address_master_contact_id']) && is_numeric($submitted_data['address_master_contact_id'])) {
+      return $submitted_data['address_master_contact_id'];
+    }
+    return NULL;
+  }
+
+  /**
+   * Process diff for the address sharing feature
+   * It will recognise the contact_id in two parameters:
+   *  - shared_with_contact_id
+   *  - address_master_contact_id
+   */
+  protected function addAddressSharingDiffData($existing_address, $submitted_data, &$activity_data) {
+    $group_name = $this->getCustomGroupName();
+    $shared_with_contact_id = $this->getAddressSharingContactID($submitted_data);
+    if ($shared_with_contact_id) {
+      // if address share is requested, check if it's already there
+      $master_id = CRM_Utils_Array::value('master_id', $existing_address);
+      if ($master_id) {
+        $master_address = civicrm_api3('Address', 'getsingle', array(
+          'id'     => $master_id,
+          'return' => 'contact_id'));
+        if ($master_address['contact_id'] == $shared_with_contact_id) {
+          // the address is already shared with this contact -> do nothing
+          return;
+        }
+      }
+
+      // all good, let's book it
+      $activity_data["{$group_name}.shared_with_contact_id"] = $shared_with_contact_id;
+    }
+  }
+
+  /**
+   * apply address sharing (if there is any)
+   */
+  protected function applyAddressSharingChanges($activity, $values, &$activity_update, $address_update) {
+    if (empty($values['i3val_address_sharing_addresses'])) {
+      // nothing to do here...
+    }
+
+    // get some variables
+    $address_id = $address_update['id'];
+    $contact_id = $address_update['contact_id'];
+    $group_name = $this->getCustomGroupName();
+    $other_contact_id = $values['i3val_address_sharing_contact_id'];
+
+    // ok, let's see what the user wants:
+    switch ($values['i3val_address_sharing_addresses']) {
+      case 'none': // DON'T SHARE
+        $activity_update["{$group_name}.action"] .= ' | ' . E::ts("Address not shared");
+        break;
+
+      case 'new': // CREATE NEW ADDRESS WITH OTHER CONTACT
+        if (empty($address_id)) {
+          // this shoudln't happen...
+          CRM_Core_Session::setStatus(E::ts("Active address not found!", array(1 => $shared_with_contact_id)), E::ts('Error'), 'error');
+        } else {
+          // load the current address, and use the date to
+          //   create a new address with the other contact
+          $address = civicrm_api3('Address', 'getsingle', array('id' => $address_id));
+          unset($address['id']);
+          unset($address['is_primary']);
+          unset($address['is_billing']);
+          unset($address['master_id']);
+          unset($address['location_type_id']);
+          $address['contact_id']    = $other_contact_id;
+          $address['master_id']     = ''; // reset old sharing (if exists)
+          $address['location_type'] = $values['i3val_address_sharing_location_type'];
+          $this->resolveFields($address);
+          $new_address = civicrm_api3('Address', 'create', $address);
+
+          // now, set the the master_id of the old (contact) address to the newly created one
+          civicrm_api3('Address', 'create', array(
+            'id'         => $address_id,
+            'contact_id' => $contact_id, // API crashes if not provided
+            'master_id'  => $new_address['id']));
+
+          // not to forget: call the function to sync shared address
+          CRM_Core_BAO_Address::processSharedAddress($new_address['id'], $address);
+
+          // finally: share the good news
+          $activity_update["{$group_name}.action"] .= ' | ' . E::ts("Address shared");
+        }
+        break;
+
+      default: // SHARE WITH EXISTING ADDRESS
+        $shared_address_id = $values['i3val_address_sharing_addresses'];
+        if (!is_numeric($shared_address_id)) {
+          // this shoudln't happen...
+          CRM_Core_Session::setStatus(E::ts("Selected address not found!", array(1 => $shared_with_contact_id)), E::ts('Error'), 'error');
+        } else {
+          // now, set the new address as master_id
+          civicrm_api3('Address', 'create', array(
+            'id'         => $address_id,
+            'contact_id' => $values['contact_id'], // API crashes if not provided
+            'master_id'  => $shared_address_id));
+
+          // but also, apply the same update to the master address
+          $address_update['id']         = $shared_address_id;
+          $address_update['contact_id'] = $other_contact_id;
+          $address_update['master_id']  = '';
+          unset($address_update['is_billing']);
+          unset($address_update['is_primary']);
+          unset($address_update['location_type_id']);
+          civicrm_api3('Address', 'create', $address_update);
+
+          // not to forget: call the function to sync shared address
+          $shared_address = civicrm_api3('Address', 'getsingle', array('id' => $shared_address_id));
+          CRM_Core_BAO_Address::processSharedAddress($shared_address_id, $shared_address);
+
+          // finally: share the good news
+          $activity_update["{$group_name}.action"] .= ' | ' . E::ts("Address shared");
+        }
+        break;
+    }
+  }
+
+  /**
+   * get the processing options (override)
+   */
+  protected function getProcessingOptions($data_submitted, $data_existing, $entity_name) {
+    $options = parent::getProcessingOptions($data_submitted, $data_existing, $entity_name);
+
+    if (!$this->hasAddressData($data_submitted)) {
+      // there is not enough address data to create new addresses
+      if (isset($options['add'])) {
+        unset($options['add']);
+      }
+      if (isset($options['add_primary'])) {
+        unset($options['add_primary']);
+      }
+    }
+
+    return $options;
+  }
+
+  /**
+   * Check if there is address data in the
+   */
+  protected function hasAddressData($data) {
+    if (   !empty($data['street_address'])
+        || !empty($data['postal_code'])
+        || !empty($data['city'])) {
+      return TRUE;
+    } else {
+      return FALSE;
+    }
   }
 }
