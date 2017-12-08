@@ -223,7 +223,7 @@ msgstr "Prozessoren"
 msgid "Save"
 msgstr "Speichern"
 
-#: CRM/I3val/Form/Configuration.php
+#: CRM/I3val/Form/Configuration.php CRM/I3val/Configuration.php
 msgid "1 hour"
 msgstr "1 Stunde"
 
@@ -275,7 +275,7 @@ msgstr "Alles erledigt!"
 msgid "Activity not connected to a contact!"
 msgstr "Aktivvität ist nicht mit einem Kontakt verknüpft!"
 
-#: CRM/I3val/Form/Desktop.php
+#: CRM/I3val/Form/Desktop.php CRM/I3val/Handler/AddressUpdate.php
 msgid "Error"
 msgstr "Fehler"
 
@@ -1035,6 +1035,123 @@ msgstr "Aktivitätsverlauf"
 msgid "Please configure I3Val first."
 msgstr "Bitte nehmen Sie erst die Einstellungen für I3Val vor."
 
-#: CRM/I3val/Form/Desktop.php
+#: CRM/I3val/Form/Desktop.php CRM/I3val/Handler/AddressUpdate.php
 msgid "Warning"
 msgstr "Warnung"
+
+#: CRM/I3val/Configuration.php
+msgid "10 minutes"
+msgstr "10 Minuten"
+
+#: CRM/I3val/Configuration.php
+msgid "3 hours"
+msgstr "3 Stunden"
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Address shared"
+msgstr "Adresse geteilt"
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Referenced shared address contact [%1] could not be found."
+msgstr "Der Referenzierte Kontakt zur Adressteilung [%1] ist nicht (mehr) auffindbar."
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "new address"
+msgstr "Neue Adresse"
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "don't share"
+msgstr "nicht teilen"
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Share with"
+msgstr "Teilen mit"
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Share"
+msgstr "Teilen"
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Address not shared"
+msgstr "Adresse nicht geteilt"
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Active address not found!"
+msgstr "Aktive Adresse nicht gefunden"
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Selected address not found!"
+msgstr "Gewählte Adresse nicht gefunden!"
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "You selected an address to share, but to discard the address. As a result, NO sharing was applied."
+msgstr "Sie haben eine Adresse zum Teilen selektiert, aber auch das verwerfen der Adresse gewählt. Daher wurde KEINE Adresse geteilt."
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Not shared!"
+msgstr "Nicht geteilt!"
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Something went wrong, cannot find the sharing address."
+msgstr "Ein Fehler ist aufgetreten, die zu teilende Adresse konnte nicht gefunden werden."
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Share selected address"
+msgstr "Ausgewählte Adresse teilen"
+
+#: CRM/I3val/Handler/ContactUpdate.php
+msgid "Preferred Language"
+msgstr "Bevorzugte Sprache"
+
+#: CRM/I3val/Handler/ContactUpdate.php
+msgid "Job Title"
+msgstr "Funktion"
+
+#: templates/CRM/I3val/Handler/AddressUpdate.tpl
+msgid "Share address with"
+msgstr "Adresse teilen mit"
+
+#: templates/CRM/I3val/Handler/AddressUpdate.tpl
+msgid "This address will be updated as well."
+msgstr "Diese Adresse würde auch aktualisiert."
+
+#: resources/*.json
+msgid "Shared with Contact ID"
+msgstr "Adresse teilen mit Kontakt ID"
+
+#: resources/*.json
+msgid "Household Name (original)"
+msgstr "Haushaltsname (ursprünglich)"
+
+#: resources/*.json
+msgid "Household Name (submitted)"
+msgstr "Haushaltsname (übermittelt)"
+
+#: resources/*.json
+msgid "Household Name (applied)"
+msgstr "Haushaltsname (angwendet)"
+
+#: resources/*.json
+msgid "Job Title (original)"
+msgstr "Funktion (ursprünglich)"
+
+#: resources/*.json
+msgid "Job Title (submitted)"
+msgstr "Funktion (übermittelt)"
+
+#: resources/*.json
+msgid "Job Title (applied)"
+msgstr "Funktion (angewendet)"
+
+#: resources/*.json
+msgid "Preferred Language (original)"
+msgstr "Bevorzugte Sprache (ursprünglich)"
+
+#: resources/*.json
+msgid "Preferred Language (submitted)"
+msgstr "Bevorzugte Sprache (übermittelt)"
+
+#: resources/*.json
+msgid "Preferred Language (applied)"
+msgstr "Bevorzugte Sprache (angewendet)"
+
