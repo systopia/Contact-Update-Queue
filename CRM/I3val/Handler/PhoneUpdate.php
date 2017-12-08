@@ -313,7 +313,7 @@ class CRM_I3val_Handler_PhoneUpdate extends CRM_I3val_Handler_DetailUpdate {
    * find a matching phone based on
    *  phone, location_type (and contact_id obviously)
    */
-  protected function getExistingPhone($values, &$default_action) {
+  protected function getExistingPhone($values, &$default_action = NULL) {
     $phone_submitted = array();
     $this->applyUpdateData($phone_submitted, $values);
     if (empty($phone_submitted) || empty($values['contact_id'])) {

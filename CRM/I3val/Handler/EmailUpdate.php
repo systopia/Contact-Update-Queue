@@ -280,7 +280,7 @@ class CRM_I3val_Handler_EmailUpdate extends CRM_I3val_Handler_DetailUpdate {
    * find a matching email based on
    *  email, location_type (and contact_id obviously)
    */
-  protected function getExistingEmail($values, &$default_action) {
+  protected function getExistingEmail($values, &$default_action = NULL) {
     $email_submitted = array();
     $this->applyUpdateData($email_submitted, $values);
     if (empty($email_submitted) || empty($values['contact_id'])) {
