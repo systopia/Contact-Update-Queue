@@ -75,16 +75,23 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     CRM_I3val_CustomData::labelCustomFields($this->activity);
 
     // load contact
-    $contact_id = civicrm_api3('ActivityContact', 'getvalue', array(
-      'return'         => 'contact_id',
-      'activity_id'    => $this->activity_id,
-      'record_type_id' => 'Activity Targets'));
-    if (empty($contact_id)) {
-      // NO CONTACT
-      CRM_Core_Session::setStatus(E::ts("Activity not connected to a contact!"), E::ts('Error'), 'error');
-      return;
+    $contact_id = NULL;
+    try {
+      $contact_id = civicrm_api3('ActivityContact', 'getvalue', array(
+        'return'         => 'contact_id',
+        'activity_id'    => $this->activity_id,
+        'record_type_id' => 'Activity Targets'));
+      $this->contact = civicrm_api3('Contact', 'getsingle', array('id' => $contact_id));
+    } catch (Exception $e) {
+      // NO CONTACT -> flag and move on.
+      CRM_Core_Session::setStatus(E::ts("Activity not connected to a contact (any more)!"), E::ts('Error'), 'error');
+      CRM_Core_Session::setStatus(E::ts("Requested update has been flagged as a problem."), E::ts('Flagged!'), 'info');
+      $session->flagActivity($this->activity_id);
+      $session->markProcessed($this->activity_id);
+      $url = CRM_Utils_System::url("civicrm/i3val/desktop");
+      CRM_Utils_System::redirect($url);
     }
-    $this->contact = civicrm_api3('Contact', 'getsingle', array('id' => $contact_id));
+
     $this->add('hidden', 'contact_id', $contact_id);
 
     $this->renderActivity($this->activity);
