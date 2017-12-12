@@ -29,7 +29,7 @@
     {if $i3val_address_sharing_contact}
     {$form.i3val_address_sharing_contact_id}
     <div class="i3val-suboption">
-      <h1><span>{ts}Share address with{/ts}</span></h1>
+      <h1><span>{ts domain="be.aivl.i3val"}Share address with{/ts}</span></h1>
       <span class="i3val-suboption-item">
         <a href="{$i3val_address_sharing_contact.link}" title="{$i3val_address_sharing_contact.display_name}"><span class="icon crm-icon {$i3val_address_sharing_contact.contact_type}-icon"></span>{$i3val_address_sharing_contact.display_name}</a>
       </span>
