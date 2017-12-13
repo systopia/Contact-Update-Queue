@@ -1,0 +1,26 @@
+{*-------------------------------------------------------+
+| Ilja's Input Validation Extension                      |
+| Amnesty International Vlaanderen                       |
+| Copyright (C) 2017 SYSTOPIA                            |
+| Author: B. Endres (endres@systopia.de)                 |
+| http://www.systopia.de/                                |
++--------------------------------------------------------+
+| This program is released as free software under the    |
+| Affero GPL license. You can redistribute it and/or     |
+| modify it under the terms of this license which you    |
+| can read by viewing the included agpl.txt or online    |
+| at www.gnu.org/licenses/agpl.html. Removal of this     |
+| copyright header is strictly prohibited without        |
+| written permission from the original author(s).        |
++-------------------------------------------------------*}
+
+{htxt id='id-strip-chars'}
+  <p>{ts domain="be.aivl.i3val"}All the characters listed here will be stripped from the beginning and the end of each submitted value.{/ts}</p>
+  <p>{ts domain="be.aivl.i3val"}For example, entering a simple whitespace ("&nbsp;") here could help if the data is coming from a user input form.{/ts}</p>
+{/htxt}
+
+
+{htxt id='id-empty-token'}
+  <p>{ts domain="be.aivl.i3val"}In I3Val there is a difference between fields that have not been submitted, and those who are submitted with an empty value. By default the empty value is interpreted as you wanting to set that field to an empty string.{/ts}</p>
+  <p>{ts domain="be.aivl.i3val"}You can change that behaviour by providing as string here to symbolise an empty string, e.g. "NULL". This has the effect, that all empty values submitted will be removed alltogether, and all fields submitted with value "NULL" are interpreted as empty value.{/ts}</p>
+{/htxt}

@@ -64,6 +64,12 @@ class CRM_I3val_Form_Configuration extends CRM_Core_Form {
     );
 
     $this->add(
+      'text',
+      'empty_token',
+      E::ts("Empty String Token")
+    );
+
+    $this->add(
       'select',
       'flag_status',
       E::ts("Flaged Request Status"),
@@ -142,6 +148,7 @@ class CRM_I3val_Form_Configuration extends CRM_Core_Form {
     $current_config['session_ttl']  = CRM_Utils_Array::value('session_ttl',  $values, CRM_Utils_Array::value('session_ttl',  $current_config));
     $current_config['session_size'] = CRM_Utils_Array::value('session_size', $values, CRM_Utils_Array::value('session_size', $current_config));
     $current_config['strip_chars']  = CRM_Utils_Array::value('strip_chars',  $values, CRM_Utils_Array::value('strip_chars',  $current_config));
+    $current_config['empty_token']  = CRM_Utils_Array::value('empty_token',  $values, CRM_Utils_Array::value('empty_token',  $current_config));
     $current_config['flag_status']  = CRM_Utils_Array::value('flag_status',  $values, CRM_Utils_Array::value('flag_status',  $current_config));
     $current_config['quickhistory'] = CRM_Utils_Array::value('quickhistory', $values, CRM_Utils_Array::value('quickhistory', $current_config));
 

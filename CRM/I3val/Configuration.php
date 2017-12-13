@@ -60,6 +60,23 @@ class CRM_I3val_Configuration {
         $value = trim($value, $strip_chars);
       }
     }
+
+    $empty_token = CRM_Utils_Array::value('empty_token', $this->config);
+    if ($empty_token) {
+      // if the empty token is set, all '' fields will be removed,
+      foreach (array_keys($input) as $key) {
+        if ($input[$key] == '') {
+          unset($input[$key]);
+        }
+      }
+
+      // ... and all fields that have the token set will be set to ''
+      foreach ($input as $key => &$value) {
+        if ($value == $empty_token) {
+          $value = '';
+        }
+      }
+    }
   }
 
   /**

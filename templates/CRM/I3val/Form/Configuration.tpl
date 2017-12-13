@@ -30,8 +30,14 @@
   </div>
 
   <div class="crm-section">
-    <div class="label">{$form.strip_chars.label}</div>
+    <div class="label">{$form.strip_chars.label}&nbsp;<a onclick='CRM.help("{ts domain="be.aivl.i3val"}Strip Characters{/ts}", {literal}{"id":"id-strip-chars","file":"CRM\/I3val\/Form\/Configuration"}{/literal}); return false;' href="#" title="{ts domain="be.aivl.i3val"}Help{/ts}" class="helpicon">&nbsp;</a></div>
     <div class="content">{$form.strip_chars.html}</div>
+    <div class="clear"></div>
+  </div>
+
+  <div class="crm-section">
+    <div class="label">{$form.empty_token.label}&nbsp;<a onclick='CRM.help("{ts domain="be.aivl.i3val"}Empty Token{/ts}", {literal}{"id":"id-empty-token","file":"CRM\/I3val\/Form\/Configuration"}{/literal}); return false;' href="#" title="{ts domain="be.aivl.i3val"}Help{/ts}" class="helpicon">&nbsp;</a></div>
+    <div class="content">{$form.empty_token.html}</div>
     <div class="clear"></div>
   </div>
 </div>
