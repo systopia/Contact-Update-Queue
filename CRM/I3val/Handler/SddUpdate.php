@@ -393,6 +393,9 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
       // add some basic data
       $activity_data['target_id'] = $mandate['contact_id'];
       $activity_data["{$custom_group_name}.reference"] = $mandate['reference'];
+      if (isset($submitted_data['reference_new'])) {
+        $activity_data["{$custom_group_name}.reference_replaced"] = $submitted_data['reference_new'];
+      }
     }
   }
 
