@@ -115,6 +115,14 @@ class CRM_I3val_Logic {
     if (!empty($params['i3val_parent_id']) && is_numeric($params['i3val_parent_id'])) {
       $activity_data['parent_id'] = (int) $params['i3val_parent_id'];
     }
+
+    // adjust schedule date
+    if (!empty($params['i3val_schedule_date'])) {
+      $schedule_date = strtotime($params['i3val_schedule_date']);
+      if ($schedule_date) {
+        $activity_data['activity_date_time'] = date('YmdHis', $schedule_date);
+      }
+    }
   }
 
 
