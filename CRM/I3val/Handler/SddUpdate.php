@@ -108,62 +108,6 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
     return array();
   }
 
-  /**
-   * Apply the changes
-   *
-   * @return array with changes to the activity
-   */
-  public function applyChanges($activity, $values, $objects = array()) {
-    $activity_update = array();
-    if (!$this->hasData($activity)) {
-      // NO DATA, no updates
-      return $activity_update;
-    }
-
-    $action = CRM_Utils_Array::value('i3val_sdd_updates_action', $values, '');
-    if ($action) {
-      $prefix = $this->getKey() . '_';
-
-      $reference = $activity[self::$group_name . ".reference"];
-      $old_mandate = $this->getMandate(array('reference' => $reference));
-      $change_date = date('YmdHis');
-
-      // CREATE NEW MANDATE
-      $new_mandate = array();
-      $this->applyUpdateData($new_mandate, $values, '%s', "{$prefix}%s_applied");
-      // copy all fields from the old mandate
-      foreach ($old_mandate as $key => $value) {
-        if (empty($new_mandate[$key])) {
-          $new_mandate[$key] = $old_mandate[$key];
-        }
-      }
-      // some adjustments...
-      unset($new_mandate['reference']);
-      $new_mandate['start_date'] = $change_date;
-
-      // TODO: fix dates?
-
-      CRM_Core_Error::debug_log_message("CREATE NEW " . json_encode($new_mandate));
-      civicrm_api3('SepaMandate', 'createfull', $new_mandate);
-
-
-      // CANCEL the old mandate
-      // FIXME: use "now" instead of "today" once that's fixed in CiviSEPA
-      CRM_Sepa_BAO_SEPAMandate::terminateMandate($old_mandate['id'], "today", 'i3val');
-
-      // update data
-      $this->applyUpdateData($activity_update, $values, self::$group_name . '.%s_applied', "{$prefix}%s_applied");
-
-      $activity_update[self::$group_name . ".action"] = E::ts("Created replacement mandate.");
-
-    } else {
-      $activity_update[self::$group_name . ".action"] = E::ts("Data discarded.");
-    }
-
-    return $activity_update;
-  }
-
-
 
   /**
    * Load and assign necessary data to the form
@@ -184,9 +128,14 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
     // set the frequency labels
     if (isset($values['frequency']['original'])) {
       $frequency = $values['frequency'];
-      $values['frequency']['original']  = $this->getFrequencyLabel($values['frequency']['original']);
-      $values['frequency']['submitted'] = $this->getFrequencyLabel($values['frequency']['submitted']);
-      $values['frequency']['current']   = $this->getFrequencyLabel($values['frequency']['current']);
+
+      foreach (array('original', 'submitted', 'current') as $key) {
+        if (isset($values['frequency'][$key])) {
+          $values['frequency'][$key] = $this->getFrequencyLabel($values['frequency'][$key]);
+        } else {
+          $values['frequency'][$key] = '';
+        }
+      }
     }
 
     $this->applyUpdateData($form_values, $values, "{$prefix}%s");
@@ -259,7 +208,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
       'select',
       "i3val_sdd_updates_action",
       E::ts("Action"),
-      array(0 => E::ts("Don't apply"), 1 => E::ts("Create replacement mandate")),
+      array(0 => E::ts("Don't apply"), 1 => E::ts("Update Mandate")),
       TRUE,
       array('class' => 'huge crm-select2')
     );
@@ -364,7 +313,9 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
       } else {
         $contribution = civicrm_api3('Contribution', 'getsingle', array('id' => $mandate['entity_id']));
       }
-      return array_merge($mandate, $contribution);
+      $mandate_data = array_merge($contribution, $mandate);
+      $this->resolveFields($mandate_data);
+      return $mandate_data;
     } catch (Exception $ex) {
       throw new Exception("SepaMandate not found.", 1);
     }
@@ -400,7 +351,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
 
     $this->resolveFields($submitted_data);
     $this->resolveFields($mandate);
-    error_log("MANDATE " . json_encode($mandate));
+    // error_log("MANDATE " . json_encode($mandate));
 
     // first: check all main attriutes for differences
     $differing_attributes = array();
@@ -442,6 +393,113 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
       // add some basic data
       $activity_data['target_id'] = $mandate['contact_id'];
       $activity_data["{$custom_group_name}.reference"] = $mandate['reference'];
+    }
+  }
+
+
+
+
+  /**
+   * Apply the changes
+   *
+   * @return array with changes to the activity
+   */
+  public function applyChanges($activity, $values, $objects = array()) {
+    $activity_update = array();
+    if (!$this->hasData($activity)) {
+      // NO DATA, no updates
+      return $activity_update;
+    }
+
+    $action = CRM_Utils_Array::value('i3val_sdd_updates_action', $values, '');
+
+    if ($action) {
+      // collect some basic values
+      $prefix      = $this->getKey() . '_';
+      $reference   = $activity[self::$group_name . ".reference"];
+      $old_mandate = $this->getMandate(array('reference' => $reference));
+      $this->applyUpdateData($update, $values, '%s', "{$prefix}%s_applied");
+      $this->resolveFields($update);
+
+      // try to mend the current mandate
+      $mandate_was_manded = $this->mendCurrentMandate($old_mandate, $update, $activity, $values, $activity_update);
+
+      if (!$mandate_was_manded) {
+        // didn't work? Then we'll have to...
+        // CREATE A NEW MANDATE
+        $new_mandate = array(
+          'type'   => 'RCUR',
+          'status' => 'FRST',
+        );
+        $this->applyUpdateData($new_mandate, $values, '%s', "{$prefix}%s_applied");
+
+        // adjust start date
+        if (empty($new_mandate['start_date']) || strtotime($new_mandate['start_date']) < strtotime("now")) {
+          $new_mandate['start_date'] = date("YmdHis");
+        }
+
+        // adjust reference
+        if (!empty($activity["{$prefix}.reference_replaced"])) {
+          $new_mandate['reference'] = $activity["{$prefix}.reference_replaced"];
+        }
+
+        // copy other fields
+        $copy_fields = array('iban', 'bic', 'contact_id', 'frequency_interval', 'frequency_unit', 'amount', 'source', 'creditor_id', 'financial_type_id', 'campaign_id', 'cycle_day', 'currency');
+        foreach ($copy_fields as $field_name) {
+          if (empty($new_mandate[$field_name]) && isset($old_mandate[$field_name])) {
+            $new_mandate[$field_name] = $old_mandate[$field_name];
+          }
+        }
+
+        CRM_Core_Error::debug_log_message("CREATE NEW " . json_encode($new_mandate));
+        $create_mandate_result = civicrm_api3('SepaMandate', 'createfull', $new_mandate);
+        $created_mandate = $this->getMandate($create_mandate_result);
+
+        // CANCEL the old mandate
+        CRM_Sepa_BAO_SEPAMandate::terminateMandate($old_mandate['id'], date('Y-m-d', strtotime($new_mandate['start_date'])), 'i3val');
+
+        // update data
+        $this->resolveFields($old_mandate);
+        $this->resolveFields($new_mandate);
+        $this->applyUpdateData($activity_update, $new_mandate, self::$group_name . '.%s_applied', '%s');
+        $this->applyUpdateData($activity_update, $old_mandate, self::$group_name . '.%s_original', '%s');
+
+        $activity_update[self::$group_name . ".reference_replaced"] = $created_mandate['reference'];
+        $activity_update[self::$group_name . ".action"] = E::ts("Created replacement mandate.");
+      }
+
+    } else {
+      $activity_update[self::$group_name . ".action"] = E::ts("Data discarded.");
+    }
+
+    return $activity_update;
+  }
+
+
+  /**
+   * Try to adjust the existing mandate
+   *
+   * @return TRUE if it worked
+   */
+  public function mendCurrentMandate($old_mandate, $update, $activity, $values, &$activity_update) {
+    // check which values have really changed
+    $changes = array();
+    unset($update['frequency']); // this should be resolved anyway
+    foreach ($update as $key => $value) {
+      if ($value != $old_mandate[$key]) {
+        $changes[$key] = $value;
+      }
+    }
+
+    // now see if there's something we can do
+    if (!empty($changes['amount']) && count($changes) == 1) {
+      // if only the amount has changed, go ahead:
+      $success = CRM_Sepa_BAO_SEPAMandate::adjustAmount($old_mandate['id'], $changes['amount']);
+      if ($success) {
+        $activity_update[self::$group_name . ".amount_applied"] = $changes['amount'];
+        $activity_update[self::$group_name . ".action"] = E::ts("Mandate adjusted: changed amount");
+        return TRUE;
+      }
     }
   }
 }
