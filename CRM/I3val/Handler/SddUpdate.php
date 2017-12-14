@@ -140,7 +140,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
 
     // SPECIAL CASE: SOMEBODY WANTS TO CANCEL THE MANDATE
     $requested_status = CRM_Utils_Array::value("{$group_name}.status", $activity, '');
-    if ($requested_status == 'COMPLETED' || $requested_status == 'INVALID') {
+    if ($requested_status == 'COMPLETE' || $requested_status == 'INVALID') {
       $this->renderCancelMandate($activity, $form, $existing_mandate);
       return;
     }
@@ -363,7 +363,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
     $requested_status = CRM_Utils_Array::value('status', $submitted_data, '');
 
     // SPECIAL CASE: SOMEBODY WANTS TO CANCEL THE MANDATE
-    if ($requested_status == 'COMPLETED' || $requested_status == 'INVALID') {
+    if ($requested_status == 'COMPLETE' || $requested_status == 'INVALID') {
       // somebody just wants to cancel the mandate
       if ($mandate['status'] != $requested_status) {
         $activity_data['target_id'] = $mandate['contact_id'];
@@ -378,7 +378,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
     if ($mandate['type'] == 'OOFF') {
       throw new Exception("Cannot update OOFF mandates", 1);
     }
-    if ($mandate['status'] == 'COMPLETED' || $mandate['status'] == 'INVALID' || $mandate['contribution_status_id'] != 2) {
+    if ($mandate['status'] == 'COMPLETE' || $mandate['status'] == 'INVALID' || $mandate['contribution_status_id'] != 2) {
       throw new Exception("Mandate is already closed", 1);
     }
 
@@ -467,7 +467,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
       $this->resolveFields($update);
 
       // CANCEL THE MANDATE?
-      if ($new_status == 'COMPLETED' || $new_status == 'INVALID') {
+      if ($new_status == 'COMPLETE' || $new_status == 'INVALID') {
         // CANCEL the old mandate
         CRM_Sepa_BAO_SEPAMandate::terminateMandate($old_mandate['id'], date('Y-m-d'), $cancel_reason);
         $activity_update[self::$group_name . ".action"] = E::ts("Mandate cancelled");
@@ -576,7 +576,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
       'select',
       "{$prefix}status_applied",
       E::ts("Status"),
-      array('COMPLETED' => 'COMPLETED', 'INVALID' => 'INVALID'),
+      array('COMPLETE' => 'COMPLETE', 'INVALID' => 'INVALID'),
       FALSE,
       array('class' => 'crm-select2')
     );
