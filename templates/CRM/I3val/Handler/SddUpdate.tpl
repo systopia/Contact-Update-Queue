@@ -74,7 +74,6 @@ function i3val_sdd_iban_validation() {
     }).done(function(result) {
       if ('iban' in result) {
         // set IBAN
-        console.log(result);
         cj("input[name=sdd_iban_applied]").val(result.iban);
 
         // set BIC
@@ -98,7 +97,10 @@ function i3val_sdd_iban_validation() {
     });
   }
 }
-cj("input[name=sdd_iban_applied]").change(i3val_sdd_iban_validation);
+cj(document).ready(function() {
+  i3val_sdd_iban_validation();
+  cj("input[name=sdd_iban_applied]").change(i3val_sdd_iban_validation);
+})
 
 {/literal}
 </script>

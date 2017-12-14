@@ -631,9 +631,13 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
 
         // look up the BIC as well
         if (function_exists('bic_civicrm_config')) {
-          $lookup = civicrm_api3('Bic', 'getfromiban', array('iban' => 'BE25000000008282'));
-          if (isset($lookup['bic'])) {
-            $reply['bic'] = $lookup['bic'];
+          try {
+            $lookup = civicrm_api3('Bic', 'getfromiban', array('iban' => $reply['iban']));
+            if (isset($lookup['bic'])) {
+              $reply['bic'] = $lookup['bic'];
+            }
+          } catch (Exception $e) {
+            // cannot handle it...
           }
         }
       }
