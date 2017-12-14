@@ -138,6 +138,12 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
       }
     }
 
+    // take special care of amounts
+    if (isset($values['amount']['submitted']) && $values['amount']['submitted'] == '0.00') {
+      $values['amount']['submitted'] = '';
+    }
+
+
     $this->applyUpdateData($form_values, $values, "{$prefix}%s");
     $form->assign('i3val_sdd_values', $form_values);
     $form->assign('i3val_sdd_fields', $field2label);
