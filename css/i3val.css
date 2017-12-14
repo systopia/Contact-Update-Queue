@@ -4,13 +4,14 @@ table.i3val-value-table {
 }
 
 .i3val-control {
-  border-radius:5px;
-  background-color: #A4A4A4;
+  border-radius:8px;
+  /*background-color: #A4A4A4;*/
+  background-color: rgb(200, 200, 237);
   vertical-align: middle;
 }
 
 .i3val-warning {
-  border-radius:5px;
+  border-radius:8px;
   background-color: red;
 }
 

@@ -63,8 +63,42 @@ for (fieldname in i3val_sdd_error_fields) {
     .attr('title', i3val_sdd_error_fields[fieldname]);
 }
 
+// add IBAN validation
+function i3val_sdd_iban_validation() {
+  if (cj("input[name=sdd_iban_applied]").length) {
+    var iban = cj("input[name=sdd_iban_applied]").val();
+    CRM.api3('I3val', 'service', {
+      "handler": "SddUpdate",
+      "service": "checkIBAN",
+      "iban": iban
+    }).done(function(result) {
+      if ('iban' in result) {
+        // set IBAN
+        console.log(result);
+        cj("input[name=sdd_iban_applied]").val(result.iban);
 
+        // set BIC
+        if ('bic' in result) {
+          cj("input[name=sdd_bic_applied]").val(result.bic);
+        } else {
+          cj("input[name=sdd_bic_applied]").val();
+        }
 
+        // set ERror
+        if ('error' in result) {
+          cj("input[name=sdd_iban_applied]").parent()
+            .addClass("i3val-warning")
+            .attr('title', result.error);
+        } else {
+          cj("input[name=sdd_iban_applied]").parent()
+            .removeClass("i3val-warning")
+            .attr('title', '');
+        }
+      }
+    });
+  }
+}
+cj("input[name=sdd_iban_applied]").change(i3val_sdd_iban_validation);
 
 {/literal}
 </script>

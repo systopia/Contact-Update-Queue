@@ -614,4 +614,33 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
     );
     $form->setDefaults(array("i3val_sdd_updates_action" => 1));
   }
+
+
+  /**
+   * IBAN lookup service
+   */
+  public static function service_checkIBAN($params) {
+    $reply = array();
+    if (isset($params['iban'])) {
+      $reply['iban']  = strtoupper(trim($params['iban']));
+      if (strlen($reply['iban']) > 0) {
+        $error = CRM_Sepa_Logic_Verification::verifyIBAN($reply['iban']);
+        if ($error) {
+          $reply['error'] = $error;
+        }
+
+        // look up the BIC as well
+        if (function_exists('bic_civicrm_config')) {
+          $lookup = civicrm_api3('Bic', 'getfromiban', array('iban' => 'BE25000000008282'));
+          if (isset($lookup['bic'])) {
+            $reply['bic'] = $lookup['bic'];
+          }
+        }
+      }
+      $null = NULL;
+      return civicrm_api3_create_success($null, $params, $null, $null, $null, $reply);
+    } else {
+      return civicrm_api3_create_error("No iban submitted");
+    }
+  }
 }
