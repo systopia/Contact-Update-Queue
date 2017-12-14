@@ -145,6 +145,11 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
       return;
     }
 
+    // take special care of amounts
+    if (isset($values['amount']['submitted']) && $values['amount']['submitted'] == '0.00') {
+      $values['amount']['submitted'] = '';
+    }
+
     $this->applyUpdateData($form_values, $values, "{$prefix}%s");
     $form->assign('i3val_sdd_values', $form_values);
     $form->assign('i3val_sdd_fields', $field2label);
@@ -461,6 +466,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
           'status' => 'FRST',
         );
         $this->applyUpdateData($new_mandate, $values, '%s', "{$prefix}%s_applied");
+        $this->resolveFields($new_mandate);
 
         // adjust start date
         if (empty($new_mandate['start_date']) || strtotime($new_mandate['start_date']) < strtotime("now")) {
