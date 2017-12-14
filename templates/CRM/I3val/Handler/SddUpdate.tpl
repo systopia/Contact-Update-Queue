@@ -85,10 +85,12 @@ function i3val_sdd_iban_validation() {
 
         // set ERror
         if ('error' in result) {
+          cj("input[name=sdd_iban_applied]").addClass("i3val-warning");
           cj("input[name=sdd_iban_applied]").parent()
             .addClass("i3val-warning")
             .attr('title', result.error);
         } else {
+          cj("input[name=sdd_iban_applied]").removeClass("i3val-warning")
           cj("input[name=sdd_iban_applied]").parent()
             .removeClass("i3val-warning")
             .attr('title', '');
