@@ -31,11 +31,11 @@
           {capture assign=checkbox}{$fieldkey}_apply{/capture}
           <td style="vertical-align: middle;">{$fieldlabel}</td>
           {if not $i3val_sdd_hide_original}
-          <td style="vertical-align: middle;">{$i3val_sdd_values.$fieldkey.original}</td>
+          <td style="vertical-align: middle;" sdd_field="{$fieldkey}_original">{$i3val_sdd_values.$fieldkey.original}</td>
           {/if}
-          <td style="vertical-align: middle;">{$i3val_sdd_values.$fieldkey.submitted}</td>
-          <td style="vertical-align: middle;">{$i3val_sdd_values.$fieldkey.current}</td>
-          <td style="vertical-align: middle;" class="i3val-control">{$form.$input_field.html}</td>
+          <td style="vertical-align: middle;" sdd_field="{$fieldkey}_submitted">{$i3val_sdd_values.$fieldkey.submitted}</td>
+          <td style="vertical-align: middle;" sdd_field="{$fieldkey}_current">{$i3val_sdd_values.$fieldkey.current}</td>
+          <td style="vertical-align: middle;" class="i3val-control" sdd_field="{$fieldkey}_applied">{$form.$input_field.html}</td>
         </tr>
         {/foreach}
       </tbody>
@@ -50,7 +50,21 @@
   </div>
 </div>
 
+
+
 <script type="text/javascript">
+var i3val_sdd_error_fields = {$i3val_sdd_errors};
+{literal}
+
+// apply errors
+for (fieldname in i3val_sdd_error_fields) {
+  cj("[sdd_field=" + fieldname + "]")
+    .addClass("i3val-warning")
+    .attr('title', i3val_sdd_error_fields[fieldname]);
+}
 
 
+
+
+{/literal}
 </script>

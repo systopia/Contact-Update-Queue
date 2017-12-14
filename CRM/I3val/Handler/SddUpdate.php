@@ -226,7 +226,16 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
     );
     $form->setDefaults(array("i3val_sdd_updates_action" => 1));
 
+    // calculate error fields
+    $error_fields = array();
+    if (isset($values['iban']['submitted'])) {
+      $error = CRM_Sepa_Logic_Verification::verifyIBAN($values['iban']['submitted']);
+      if ($error) {
+        $error_fields["{$prefix}iban_submitted"] = $error;
+      }
+    }
 
+    $form->assign('i3val_sdd_errors', json_encode($error_fields));
     $form->assign('i3val_active_sdd_fields', $active_fields);
   }
 
