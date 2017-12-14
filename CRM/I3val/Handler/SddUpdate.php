@@ -113,10 +113,11 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
    * Load and assign necessary data to the form
    */
   public function renderActivityData($activity, $form) {
-    $field2label = self::getField2Label();
-    $group_name  = $this->getCustomGroupName();
-    $prefix      = $this->getKey() . '_';
-    $values      = $this->compileValues(self::$group_name, $field2label, $activity);
+    $field2label   = self::getField2Label();
+    $group_name    = $this->getCustomGroupName();
+    $prefix        = $this->getKey() . '_';
+    $values        = $this->compileValues(self::$group_name, $field2label, $activity);
+    $active_fields = array();
 
     // find existing mandate
     $existing_mandate = $this->getMandate(array('reference' => $activity["{$group_name}.reference"]));
@@ -150,13 +151,23 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
       $values['amount']['submitted'] = '';
     }
 
+    // add cancel reason
+    $form_values["{$prefix}reason"]['submitted'] = $activity["{$group_name}.reason_submitted"];
+    $form->add(
+      'text',
+      "{$prefix}reason_applied",
+      E::ts("Update Reason")
+    );
+    $form->setDefaults(array("{$prefix}reason_applied" => $form_values["{$prefix}reason"]['submitted']));
+    $active_fields["{$prefix}reason"] = E::ts("Update Reason");
+    $field2label['reason'] = E::ts("Update Reason");
+
     $this->applyUpdateData($form_values, $values, "{$prefix}%s");
     $form->assign('i3val_sdd_values', $form_values);
     $form->assign('i3val_sdd_fields', $field2label);
     $form->assign('i3val_sdd_mandate', $existing_mandate);
 
     // create input fields and apply checkboxes
-    $active_fields = array();
     foreach ($field2label as $fieldname => $fieldlabel) {
       $form_fieldname = "{$prefix}{$fieldname}";
 
@@ -362,6 +373,9 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
     $custom_group_name = $this->getCustomGroupName();
     $requested_status = CRM_Utils_Array::value('status', $submitted_data, '');
 
+    // add reason
+    $activity_data["{$custom_group_name}.reason_submitted"] = CRM_Utils_Array::value('sdd_reason', $submitted_data, '');
+
     // SPECIAL CASE: SOMEBODY WANTS TO CANCEL THE MANDATE
     if ($requested_status == 'COMPLETE' || $requested_status == 'INVALID') {
       // somebody just wants to cancel the mandate
@@ -369,7 +383,6 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
         $activity_data['target_id'] = $mandate['contact_id'];
         $activity_data["{$custom_group_name}.reference"] = $mandate['reference'];
         $activity_data["{$custom_group_name}.status"] = $requested_status;
-        $activity_data["{$custom_group_name}.reason_submitted"] = CRM_Utils_Array::value('sdd_reason', $submitted_data, '');
       }
       return;
     }
