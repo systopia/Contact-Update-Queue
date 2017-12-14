@@ -448,19 +448,33 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
 
     if ($action) {
       // collect some basic values
-      $prefix        = $this->getKey() . '_';
-      $reference     = $activity[self::$group_name . ".reference"];
-      $old_mandate   = $this->getMandate(array('reference' => $reference));
-      $cancel_reason = CRM_Utils_Array::value("{$prefix}reason_applied", $submitted_data, '');
+      $prefix            = $this->getKey() . '_';
+      $reference         = $activity[self::$group_name . ".reference"];
+      $old_mandate       = $this->getMandate(array('reference' => $reference));
+      $cancel_reason     = CRM_Utils_Array::value("{$prefix}reason_applied", $values, '');
+      $new_status        = CRM_Utils_Array::value("{$prefix}status_applied", $values, '');
+      $mandate_processed = FALSE;
       $this->applyUpdateData($update, $values, '%s', "{$prefix}%s_applied");
       $this->resolveFields($update);
 
-      // try to mend the current mandate
-      $mandate_was_mended = $this->mendCurrentMandate($old_mandate, $update, $activity, $values, $activity_update);
+      // CANCEL THE MANDATE?
+      if ($new_status == 'COMPLETED' || $new_status == 'INVALID') {
+        // CANCEL the old mandate
+        CRM_Sepa_BAO_SEPAMandate::terminateMandate($old_mandate['id'], date('Y-m-d'), $cancel_reason);
+        $activity_update[self::$group_name . ".action"] = E::ts("Mandate cancelled");
+        $activity_update[self::$group_name . ".reason_applied"] = $cancel_reason;
+        $activity_update[self::$group_name . ".status"] = $new_status;
+        $mandate_processed = TRUE;
+      }
 
-      if (!$mandate_was_mended) {
+      // no? check if we can MEND THE MANDATE
+      if (!$mandate_processed) {
+        $mandate_processed = $this->mendCurrentMandate($old_mandate, $update, $activity, $values, $activity_update);
+      }
+
+      if (!$mandate_processed) {
         // didn't work? Then we'll have to...
-        // CREATE A NEW MANDATE
+        // ...CREATE A NEW MANDATE!
         $new_mandate = array(
           'type'   => 'RCUR',
           'status' => 'FRST',
@@ -486,7 +500,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
           }
         }
 
-        CRM_Core_Error::debug_log_message("CREATE NEW " . json_encode($new_mandate));
+        // CRM_Core_Error::debug_log_message("CREATE NEW " . json_encode($new_mandate));
         $create_mandate_result = civicrm_api3('SepaMandate', 'createfull', $new_mandate);
         $created_mandate = $this->getMandate($create_mandate_result);
 
