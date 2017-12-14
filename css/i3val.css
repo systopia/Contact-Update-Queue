@@ -12,7 +12,7 @@ table.i3val-value-table {
 
 .i3val-warning {
   border-radius:8px;
-  background-color: red;
+  background-color: red !important;
 }
 
 div.i3val-suboption {
