@@ -542,10 +542,43 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
    * render cancel fields (rather than update)
    */
   protected function renderCancelMandate($activity, $form, $existing_mandate) {
-    $field2label = self::getField2Label();
     $group_name  = $this->getCustomGroupName();
     $prefix      = $this->getKey() . '_';
-    $values      = $this->compileValues(self::$group_name, $field2label, $activity);
+
+    // add status
+    $form_values["{$prefix}status"]['submitted'] = $activity["{$group_name}.status"];
+    $form_values["{$prefix}status"]['current']   = $existing_mandate['status'];
+    $form_values["{$prefix}status"]['applied']   = $activity["{$group_name}.status"];
+    $form->add(
+      'select',
+      "{$prefix}status_applied",
+      E::ts("Status"),
+      array('COMPLETED' => 'COMPLETED', 'INVALID' => 'INVALID'),
+      FALSE,
+      array('class' => 'crm-select2')
+    );
+    $form->setDefaults(array("{$prefix}status_applied" => $activity["{$group_name}.status"]));
+    $active_fields["{$prefix}status"] = E::ts("Status");
+    $field2label['status'] = E::ts("Status");
+
+    // add cancel reason
+    $form_values["{$prefix}reason"]['submitted'] = $activity["{$group_name}.reason_submitted"];
+    $form->add(
+      'text',
+      "{$prefix}reason_applied",
+      E::ts("Cancel Reason")
+    );
+    $form->setDefaults(array("{$prefix}reason_applied" => $form_values["{$prefix}reason"]['submitted']));
+    $active_fields["{$prefix}reason"] = E::ts("Cancel Reason");
+    $field2label['reason'] = E::ts("Cancel Reason");
+
+    // pass on to form
+    $form->assign('i3val_active_sdd_fields', $active_fields);
+    $form->assign('i3val_sdd_values',        $form_values);
+    $form->assign('i3val_sdd_fields',        $field2label);
+    $form->assign('i3val_sdd_mandate',       $existing_mandate);
+    $form->assign('i3val_sdd_hide_original', 1);
+    $form->assign('i3val_sdd_is_cancel',     1);
 
     // add processing options
     $form->add(
@@ -557,10 +590,5 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
       array('class' => 'huge crm-select2')
     );
     $form->setDefaults(array("i3val_sdd_updates_action" => 1));
-
-    // $form->assign('i3val_active_sdd_fields', $active_fields);
-    $form->assign('i3val_sdd_values',  $form_values);
-    $form->assign('i3val_sdd_fields',  $field2label);
-    $form->assign('i3val_sdd_mandate', $existing_mandate);
   }
 }

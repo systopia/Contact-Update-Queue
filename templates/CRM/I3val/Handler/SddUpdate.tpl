@@ -4,7 +4,11 @@
     <div class="crm-section">
       <div class="content">
         <strong>
-        {ts 1=$i3val_sdd_mandate.reference 2=$i3val_sdd_mandate.url domain="be.aivl.i3val"}This is an amendmend for mandate <a href="%2"><code>%1</code></a>.{/ts}
+        {if $i3val_sdd_is_cancel}
+          {ts 1=$i3val_sdd_mandate.reference 2=$i3val_sdd_mandate.url domain="be.aivl.i3val"}This is a <i>cancellation</i> of mandate <a href="%2"><code>%1</code></a>.{/ts}
+        {else}
+          {ts 1=$i3val_sdd_mandate.reference 2=$i3val_sdd_mandate.url domain="be.aivl.i3val"}This is an amendmend for mandate <a href="%2"><code>%1</code></a>.{/ts}
+        {/if}
         </strong>
       </div>
     </div>
@@ -12,7 +16,9 @@
       <thead>
         <tr>
           <th></th>
+          {if not $i3val_sdd_hide_original}
           <th>{ts domain="be.aivl.i3val"}Original Value{/ts}</th>
+          {/if}
           <th>{ts domain="be.aivl.i3val"}Submitted Value{/ts}</th>
           <th>{ts domain="be.aivl.i3val"}Current Value{/ts}</th>
           <th>{ts domain="be.aivl.i3val"}Value to apply{/ts}</th>
@@ -24,7 +30,9 @@
           {capture assign=input_field}{$fieldkey}_applied{/capture}
           {capture assign=checkbox}{$fieldkey}_apply{/capture}
           <td style="vertical-align: middle;">{$fieldlabel}</td>
+          {if not $i3val_sdd_hide_original}
           <td style="vertical-align: middle;">{$i3val_sdd_values.$fieldkey.original}</td>
+          {/if}
           <td style="vertical-align: middle;">{$i3val_sdd_values.$fieldkey.submitted}</td>
           <td style="vertical-align: middle;">{$i3val_sdd_values.$fieldkey.current}</td>
           <td style="vertical-align: middle;" class="i3val-control">{$form.$input_field.html}</td>
