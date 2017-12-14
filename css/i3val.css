@@ -10,6 +10,10 @@ table.i3val-value-table {
   vertical-align: middle;
 }
 
+.i3val-control input {
+  border-radius:8px;
+}
+
 .i3val-warning {
   border-radius:8px;
   background-color: red !important;

@@ -66,12 +66,6 @@
       <td class="label">{ts domain="be.aivl.i3val"}Status{/ts}</td>
       <td class="view-value">{$activity.status}</td>
     </tr>
-    {if $activity.details}
-    <tr>
-      <td class="label">{ts domain="be.aivl.i3val"}Note{/ts}</td>
-      <td class="view-value">{$activity.details}</td>
-    </tr>
-    {/if}
   </tbody>
 </table>
 
@@ -106,6 +100,11 @@
     </table>
   </div>
 </div>
+<br/>
+{/if}
+
+{if $activity.details}
+<div id="help">{ts domain="be.aivl.i3val"}Note:{/ts} {$activity.details}</div>
 <br/>
 {/if}
 

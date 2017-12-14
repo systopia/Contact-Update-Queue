@@ -152,7 +152,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
     }
 
     // add cancel reason
-    $form_values["{$prefix}reason"]['submitted'] = $activity["{$group_name}.reason_submitted"];
+    $form_values["{$prefix}reason"]['submitted'] = CRM_Utils_Array::value("{$group_name}.reason_submitted", $activity, '');
     $form->add(
       'text',
       "{$prefix}reason_applied",
