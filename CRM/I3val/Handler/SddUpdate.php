@@ -138,6 +138,13 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
       }
     }
 
+    // SPECIAL CASE: SOMEBODY WANTS TO CANCEL THE MANDATE
+    $requested_status = CRM_Utils_Array::value("{$group_name}.status", $activity, '');
+    if ($requested_status == 'COMPLETED' || $requested_status == 'INVALID') {
+      $this->renderCancelMandate($activity, $form, $existing_mandate);
+      return;
+    }
+
     $this->applyUpdateData($form_values, $values, "{$prefix}%s");
     $form->assign('i3val_sdd_values', $form_values);
     $form->assign('i3val_sdd_fields', $field2label);
@@ -335,9 +342,23 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
       throw new Exception("SepaMandate can only be performed on SepaMandate.request_update.", 1);
     }
 
-    // load mandate
+    // load mandate and other stuff
     $mandate = $this->getMandate($submitted_data);
     $activity_data['target_id'] = $mandate['contact_id'];
+    $custom_group_name = $this->getCustomGroupName();
+    $requested_status = CRM_Utils_Array::value('status', $submitted_data, '');
+
+    // SPECIAL CASE: SOMEBODY WANTS TO CANCEL THE MANDATE
+    if ($requested_status == 'COMPLETED' || $requested_status == 'INVALID') {
+      // somebody just wants to cancel the mandate
+      if ($mandate['status'] != $requested_status) {
+        $activity_data['target_id'] = $mandate['contact_id'];
+        $activity_data["{$custom_group_name}.reference"] = $mandate['reference'];
+        $activity_data["{$custom_group_name}.status"] = $requested_status;
+        $activity_data["{$custom_group_name}.reason_submitted"] = CRM_Utils_Array::value('sdd_reason', $submitted_data, '');
+      }
+      return;
+    }
 
     // some checks
     if ($mandate['type'] == 'OOFF') {
@@ -422,16 +443,17 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
 
     if ($action) {
       // collect some basic values
-      $prefix      = $this->getKey() . '_';
-      $reference   = $activity[self::$group_name . ".reference"];
-      $old_mandate = $this->getMandate(array('reference' => $reference));
+      $prefix        = $this->getKey() . '_';
+      $reference     = $activity[self::$group_name . ".reference"];
+      $old_mandate   = $this->getMandate(array('reference' => $reference));
+      $cancel_reason = CRM_Utils_Array::value("{$prefix}reason_applied", $submitted_data, '');
       $this->applyUpdateData($update, $values, '%s', "{$prefix}%s_applied");
       $this->resolveFields($update);
 
       // try to mend the current mandate
-      $mandate_was_manded = $this->mendCurrentMandate($old_mandate, $update, $activity, $values, $activity_update);
+      $mandate_was_mended = $this->mendCurrentMandate($old_mandate, $update, $activity, $values, $activity_update);
 
-      if (!$mandate_was_manded) {
+      if (!$mandate_was_mended) {
         // didn't work? Then we'll have to...
         // CREATE A NEW MANDATE
         $new_mandate = array(
@@ -463,7 +485,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
         $created_mandate = $this->getMandate($create_mandate_result);
 
         // CANCEL the old mandate
-        CRM_Sepa_BAO_SEPAMandate::terminateMandate($old_mandate['id'], date('Y-m-d', strtotime($new_mandate['start_date'])), 'i3val');
+        CRM_Sepa_BAO_SEPAMandate::terminateMandate($old_mandate['id'], date('Y-m-d', strtotime($new_mandate['start_date'])), $cancel_reason);
 
         // update data
         $this->resolveFields($old_mandate);
@@ -508,5 +530,31 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
         return TRUE;
       }
     }
+  }
+
+  /**
+   * render cancel fields (rather than update)
+   */
+  protected function renderCancelMandate($activity, $form, $existing_mandate) {
+    $field2label = self::getField2Label();
+    $group_name  = $this->getCustomGroupName();
+    $prefix      = $this->getKey() . '_';
+    $values      = $this->compileValues(self::$group_name, $field2label, $activity);
+
+    // add processing options
+    $form->add(
+      'select',
+      "i3val_sdd_updates_action",
+      E::ts("Action"),
+      array(0 => E::ts("Don't apply"), 1 => E::ts("Cancel Mandate")),
+      TRUE,
+      array('class' => 'huge crm-select2')
+    );
+    $form->setDefaults(array("i3val_sdd_updates_action" => 1));
+
+    // $form->assign('i3val_active_sdd_fields', $active_fields);
+    $form->assign('i3val_sdd_values',  $form_values);
+    $form->assign('i3val_sdd_fields',  $field2label);
+    $form->assign('i3val_sdd_mandate', $existing_mandate);
   }
 }

@@ -29,6 +29,21 @@
     {
       "_lookup": ["column_name", "custom_group_id"],
       "_translate": ["label"],
+      "name": "status",
+      "column_name": "status",
+      "label": "Requested Mandate Status",
+      "data_type": "String",
+      "html_type": "Text",
+      "text_length": "10",
+      "is_required": "0",
+      "is_searchable": "1",
+      "is_search_range": "0",
+      "is_active": "1",
+      "is_view": "1"
+    },
+    {
+      "_lookup": ["column_name", "custom_group_id"],
+      "_translate": ["label"],
       "name": "amount_original",
       "column_name": "amount_original",
       "label": "Amount (original)",
@@ -539,6 +554,48 @@
     {
       "_lookup": ["column_name", "custom_group_id"],
       "_translate": ["label"],
+      "name": "reason_original",
+      "column_name": "reason_original",
+      "label": "Reason (original)",
+      "data_type": "String",
+      "html_type": "Text",
+      "is_required": "0",
+      "is_searchable": "1",
+      "is_search_range": "0",
+      "is_active": "1",
+      "is_view": "1"
+    },
+    {
+      "_lookup": ["column_name", "custom_group_id"],
+      "_translate": ["label"],
+      "name": "reason_submitted",
+      "column_name": "reason_submitted",
+      "label": "Reason (submitted)",
+      "data_type": "String",
+      "html_type": "Text",
+      "is_required": "0",
+      "is_searchable": "1",
+      "is_search_range": "0",
+      "is_active": "1",
+      "is_view": "1"
+    },
+    {
+      "_lookup": ["column_name", "custom_group_id"],
+      "_translate": ["label"],
+      "name": "reason_applied",
+      "column_name": "reason_applied",
+      "label": "Reason (applied)",
+      "data_type": "String",
+      "html_type": "Text",
+      "is_required": "0",
+      "is_searchable": "1",
+      "is_search_range": "0",
+      "is_active": "1",
+      "is_view": "1"
+    },
+    {
+      "_lookup": ["column_name", "custom_group_id"],
+      "_translate": ["label"],
       "name": "reference_replaced",
       "column_name": "reference_replaced",
       "label": "Replacement Mandate Reference",
@@ -550,7 +607,7 @@
       "is_active": "1",
       "is_view": "1"
     },
-   {
+    {
       "_lookup": ["column_name", "custom_group_id"],
       "_translate": ["label"],
       "name": "action",
