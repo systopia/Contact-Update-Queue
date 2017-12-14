@@ -445,6 +445,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
           'status' => 'FRST',
         );
         $this->applyUpdateData($new_mandate, $values, '%s', "{$prefix}%s_applied");
+        $this->resolveFields($new_mandate);
 
         // adjust start date
         if (empty($new_mandate['start_date']) || strtotime($new_mandate['start_date']) < strtotime("now")) {
