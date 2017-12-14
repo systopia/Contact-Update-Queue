@@ -315,6 +315,10 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
       }
       $mandate_data = array_merge($contribution, $mandate);
       $this->resolveFields($mandate_data);
+
+      // render url
+      $mandate_data['url'] = CRM_Utils_System::url("civicrm/sepa/xmandate", 'reset=1&mid=' . $mandate_data['id'], TRUE);
+
       return $mandate_data;
     } catch (Exception $ex) {
       throw new Exception("SepaMandate not found.", 1);
