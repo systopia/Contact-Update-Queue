@@ -576,7 +576,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
       'select',
       "{$prefix}status_applied",
       E::ts("Status"),
-      array('COMPLETE' => 'COMPLETE', 'INVALID' => 'INVALID'),
+      array('COMPLETE' => 'COMPLETE', /*'INVALID' => 'INVALID'*/),
       FALSE,
       array('class' => 'crm-select2')
     );
