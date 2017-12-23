@@ -510,8 +510,8 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
         }
 
         // adjust reference
-        if (!empty($activity["{$prefix}.reference_replaced"])) {
-          $new_mandate['reference'] = $activity["{$prefix}.reference_replaced"];
+        if (!empty($activity[self::$group_name . ".reference_replaced"])) {
+          $new_mandate['reference'] = $activity[self::$group_name . ".reference_replaced"];
         }
 
         // copy other fields
