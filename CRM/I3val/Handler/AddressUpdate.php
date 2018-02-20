@@ -380,7 +380,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
       // we have to do the lookup
       $lookup = civicrm_api3('Country', 'get', array(
         'iso_code'     => $country_code,
-        'option.limig' => 0,
+        'option.limit' => 0,
         'return'       => 'id'));
       if (empty($lookup['id'])) {
         self::$_countryCode2Id[$country_code] = 0;
