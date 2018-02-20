@@ -86,7 +86,7 @@ msgstr "Keine"
 msgid "Scheduled Date"
 msgstr "Geplantes Datum"
 
-#: templates/CRM/I3val/Form/Desktop.tpl
+#: templates/CRM/I3val/Form/Desktop.tpl CRM/I3val/Handler/SddUpdate.php
 msgid "Status"
 msgstr "Status"
 
@@ -1154,4 +1154,128 @@ msgstr "Bevorzugte Sprache (übermittelt)"
 #: resources/*.json
 msgid "Preferred Language (applied)"
 msgstr "Bevorzugte Sprache (angewendet)"
+
+#: CRM/I3val/Form/Configuration.php
+msgid "Session Timeout"
+msgstr "Stapelverarbeitung Timeout"
+
+#: CRM/I3val/Form/Configuration.php
+msgid "Session Batch Size"
+msgstr "Stapelgröße"
+
+#: CRM/I3val/Form/Configuration.php
+msgid "Empty String Token"
+msgstr "Leersymbol"
+
+#: CRM/I3val/Form/Configuration.php
+msgid "Default Action"
+msgstr "Standardoption"
+
+#: CRM/I3val/Form/Configuration.php
+msgid "Auto"
+msgstr "Automatisch"
+
+#: CRM/I3val/Form/Configuration.php
+msgid "Create New"
+msgstr "Neu Erstellen"
+
+#: CRM/I3val/Form/Configuration.php
+msgid "Overwrite"
+msgstr "Überschreiben"
+
+#: CRM/I3val/Form/Configuration.php
+msgid "Do Nothing"
+msgstr "Nichts Tun"
+
+#: CRM/I3val/Form/Desktop.php
+msgid "Activity not connected to a contact (any more)!"
+msgstr "Aktivität ist nicht mit einem Kontakt verknüpft!"
+
+#: CRM/I3val/Handler/SddUpdate.php
+msgid "Update Reason"
+msgstr "Änderungsgrund"
+
+#: CRM/I3val/Handler/SddUpdate.php
+msgid "Update Mandate"
+msgstr "Mandat Anpassen"
+
+#: CRM/I3val/Handler/SddUpdate.php
+msgid "Mandate cancelled"
+msgstr "Mandat Storniert"
+
+#: CRM/I3val/Handler/SddUpdate.php
+msgid "Mandate adjusted: changed amount"
+msgstr "Mandat angepasst: Betrag"
+
+#: CRM/I3val/Handler/SddUpdate.php
+msgid "Cancel Reason"
+msgstr "Stornogrund"
+
+#: CRM/I3val/Handler/SddUpdate.php
+msgid "Cancel Mandate"
+msgstr "Mandat Stornieren"
+
+#: templates/CRM/I3val/Form/Configuration.hlp
+msgid "All the characters listed here will be stripped from the beginning and the end of each submitted value."
+msgstr "Alle Zeichen in diesem Feld werden von allen übermittelten Eingebewerten am Anfang und Ende enfernt."
+
+#: templates/CRM/I3val/Form/Configuration.hlp
+msgid "For example, entering a simple whitespace (\"&nbsp;\") here could help if the data is coming from a user input form."
+msgstr "Ein Leerzeichen hier könnte zum Beispiel Eingaben von einem Eingabeformular aufwerten, indem unbeabsichtigte Leerzeichen von den Werten entfernt werden."
+
+#: templates/CRM/I3val/Form/Configuration.hlp
+msgid "In I3Val there is a difference between fields that have not been submitted, and those who are submitted with an empty value. By default the empty value is interpreted as you wanting to set that field to an empty string."
+msgstr "In I3Val wird unterschieden zwischen Feldern die nicht übermittelt wurden, und Feldern die als 'leer' übermittelt wurden. Die Standardinterpretation ist, dass eine leer übermitteltes Feld als \"löschen\" interpretiert wird."
+
+#: templates/CRM/I3val/Form/Configuration.hlp
+msgid "You can change that behaviour by providing as string here to symbolise an empty string, e.g. \"NULL\". This has the effect, that all empty values submitted will be removed alltogether, and all fields submitted with value \"NULL\" are interpreted as empty value."
+msgstr "Sie können dieses Verhalten änden indem sie ein Symbol (z.B. \"NULL\") als leeren Inhalt definieren. Das bewirkt dann dass leere Felder ganz aus der Eingabe entfernt werden, und nur solche die mit dem Symbol übermittelt wurden werden als \"Löschung\" interpretiert."
+
+#: templates/CRM/I3val/Form/Configuration.tpl
+msgid "Processing Options"
+msgstr "Einstellungen Stapelverarbeitung"
+
+#: templates/CRM/I3val/Form/Configuration.tpl
+msgid "Update Request Options"
+msgstr "Einstellungen Änderungsmeldungen"
+
+#: templates/CRM/I3val/Form/Configuration.tpl
+msgid "Strip Characters"
+msgstr "Zeichen in Eingabewerten abschneiden"
+
+#: templates/CRM/I3val/Form/Configuration.tpl
+msgid "Help"
+msgstr "Hilfe"
+
+#: templates/CRM/I3val/Form/Configuration.tpl
+msgid "Empty Token"
+msgstr "Symbol für \"leer\""
+
+#: templates/CRM/I3val/Form/Desktop.tpl
+msgid "Note:"
+msgstr "Notizen:"
+
+#: templates/CRM/I3val/Handler/AddressUpdate.tpl
+msgid "Click to copy '%1' into the 'apply' column."
+msgstr "Kopiere '%1' in das Übernahmefeld"
+
+#: templates/CRM/I3val/Handler/SddUpdate.tpl
+msgid "This is a <i>cancellation</i> of mandate <a href=\"%2\"><code>%1</code></a>."
+msgstr "Dies eine <i>Stornierung</i> von Mandat <a href=\"%2\"><code>%1</code></a>."
+
+#: resources/*.json
+msgid "Requested Mandate Status"
+msgstr "Erwarteter Mandatsstatus"
+
+#: resources/*.json
+msgid "Reason (original)"
+msgstr "Grund (ursprünglich)"
+
+#: resources/*.json
+msgid "Reason (submitted)"
+msgstr "Grund (übermittelt)"
+
+#: resources/*.json
+msgid "Reason (applied)"
+msgstr "Grund (angewendet)"
 

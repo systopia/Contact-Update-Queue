@@ -81,7 +81,7 @@ msgstr ""
 msgid "Scheduled Date"
 msgstr ""
 
-#: templates/CRM/I3val/Form/Desktop.tpl
+#: templates/CRM/I3val/Form/Desktop.tpl CRM/I3val/Handler/SddUpdate.php
 msgid "Status"
 msgstr ""
 
@@ -1150,4 +1150,140 @@ msgstr ""
 
 #: resources/*.json
 msgid "Preferred Language (applied)"
+msgstr ""
+
+#: CRM/I3val/Form/Configuration.php
+msgid "Session Timeout"
+msgstr ""
+
+#: CRM/I3val/Form/Configuration.php
+msgid "Session Batch Size"
+msgstr ""
+
+#: CRM/I3val/Form/Configuration.php
+msgid "Empty String Token"
+msgstr ""
+
+#: CRM/I3val/Form/Configuration.php
+msgid "Default Action"
+msgstr ""
+
+#: CRM/I3val/Form/Configuration.php
+msgid "Auto"
+msgstr ""
+
+#: CRM/I3val/Form/Configuration.php
+msgid "Create New"
+msgstr ""
+
+#: CRM/I3val/Form/Configuration.php
+msgid "Overwrite"
+msgstr ""
+
+#: CRM/I3val/Form/Configuration.php
+msgid "Do Nothing"
+msgstr ""
+
+#: CRM/I3val/Form/Desktop.php
+msgid "Activity not connected to a contact (any more)!"
+msgstr ""
+
+#: CRM/I3val/Handler/SddUpdate.php
+msgid "Update Reason"
+msgstr ""
+
+#: CRM/I3val/Handler/SddUpdate.php
+msgid "Update Mandate"
+msgstr ""
+
+#: CRM/I3val/Handler/SddUpdate.php
+msgid "Mandate cancelled"
+msgstr ""
+
+#: CRM/I3val/Handler/SddUpdate.php
+msgid "Mandate adjusted: changed amount"
+msgstr ""
+
+#: CRM/I3val/Handler/SddUpdate.php
+msgid "Cancel Reason"
+msgstr ""
+
+#: CRM/I3val/Handler/SddUpdate.php
+msgid "Cancel Mandate"
+msgstr ""
+
+#: templates/CRM/I3val/Form/Configuration.hlp
+msgid ""
+"All the characters listed here will be stripped from the beginning and the "
+"end of each submitted value."
+msgstr ""
+
+#: templates/CRM/I3val/Form/Configuration.hlp
+msgid ""
+"For example, entering a simple whitespace (\"&nbsp;\") here could help if "
+"the data is coming from a user input form."
+msgstr ""
+
+#: templates/CRM/I3val/Form/Configuration.hlp
+msgid ""
+"In I3Val there is a difference between fields that have not been submitted, "
+"and those who are submitted with an empty value. By default the empty value "
+"is interpreted as you wanting to set that field to an empty string."
+msgstr ""
+
+#: templates/CRM/I3val/Form/Configuration.hlp
+msgid ""
+"You can change that behaviour by providing as string here to symbolise an "
+"empty string, e.g. \"NULL\". This has the effect, that all empty values "
+"submitted will be removed alltogether, and all fields submitted with value "
+"\"NULL\" are interpreted as empty value."
+msgstr ""
+
+#: templates/CRM/I3val/Form/Configuration.tpl
+msgid "Processing Options"
+msgstr ""
+
+#: templates/CRM/I3val/Form/Configuration.tpl
+msgid "Update Request Options"
+msgstr ""
+
+#: templates/CRM/I3val/Form/Configuration.tpl
+msgid "Strip Characters"
+msgstr ""
+
+#: templates/CRM/I3val/Form/Configuration.tpl
+msgid "Help"
+msgstr ""
+
+#: templates/CRM/I3val/Form/Configuration.tpl
+msgid "Empty Token"
+msgstr ""
+
+#: templates/CRM/I3val/Form/Desktop.tpl
+msgid "Note:"
+msgstr ""
+
+#: templates/CRM/I3val/Handler/AddressUpdate.tpl
+msgid "Click to copy '%1' into the 'apply' column."
+msgstr ""
+
+#: templates/CRM/I3val/Handler/SddUpdate.tpl
+msgid ""
+"This is a <i>cancellation</i> of mandate <a href=\"%2\"><code>%1</code></a>."
+msgstr ""
+
+#: resources/*.json
+msgid "Requested Mandate Status"
+msgstr ""
+
+#: resources/*.json
+msgid "Reason (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Reason (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Reason (applied)"
 msgstr ""
