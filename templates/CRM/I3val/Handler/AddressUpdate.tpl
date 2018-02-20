@@ -17,9 +17,23 @@
           {capture assign=input_field}{$fieldkey}_applied{/capture}
           {capture assign=checkbox}{$fieldkey}_apply{/capture}
           <td style="vertical-align: middle;">{$fieldlabel}</td>
-          <td style="vertical-align: middle;">{$i3val_address_values.$fieldkey.original}</td>
-          <td style="vertical-align: middle;">{$i3val_address_values.$fieldkey.submitted}</td>
-          <td style="vertical-align: middle;">{$i3val_address_values.$fieldkey.current}</td>
+          <td style="vertical-align: middle;">
+            {if $i3val_address_values.$fieldkey.original}
+              <img class="action-icon address-value-copy" value="{$i3val_address_values.$fieldkey.original}" src="{$config->resourceBase}i/copy.png" alt="{ts 1=$i3val_address_values.$fieldkey.original}Click to copy '%1' into the 'apply' column.{/ts}" title="{ts 1=$i3val_address_values.$fieldkey.original}Click to copy '%1' into the 'apply' column.{/ts}" />
+            {/if}
+            {$i3val_address_values.$fieldkey.original}</td>
+          <td style="vertical-align: middle;">
+            {if $i3val_address_values.$fieldkey.submitted}
+              <img class="action-icon address-value-copy" value="{$i3val_address_values.$fieldkey.submitted}" src="{$config->resourceBase}i/copy.png" alt="{ts 1=$i3val_address_values.$fieldkey.submitted}Click to copy '%1' into the 'apply' column.{/ts}" title="{ts 1=$i3val_address_values.$fieldkey.submitted}Click to copy '%1' into the 'apply' column.{/ts}" />
+            {/if}
+            {$i3val_address_values.$fieldkey.submitted}
+          </td>
+          <td style="vertical-align: middle;">
+            {if $i3val_address_values.$fieldkey.current}
+              <img class="action-icon address-value-copy" value="{$i3val_address_values.$fieldkey.current}" src="{$config->resourceBase}i/copy.png" alt="{ts 1=$i3val_address_values.$fieldkey.current}Click to copy '%1' into the 'apply' column.{/ts}" title="{ts 1=$i3val_address_values.$fieldkey.current}Click to copy '%1' into the 'apply' column.{/ts}" />
+            {/if}
+            {$i3val_address_values.$fieldkey.current}
+          </td>
           <td style="vertical-align: middle;" class="i3val-control">{$form.$input_field.html}</td>
         </tr>
         {/foreach}
@@ -54,6 +68,33 @@
 
 {literal}
 <script type="text/javascript">
+
+// add functionality to copy icons
+cj("img.address-value-copy").click(function() {
+  // find related elements
+  var element = cj(this);
+  var applied = element.closest("tr").find("[name$=_applied]");
+
+  // copy value
+  if (applied.is("input")) {
+    // set target value
+    applied.val(element.attr('value'));
+
+    // make target flash
+    applied.parent().fadeOut(50).fadeIn(50);
+
+  } else if (applied.is("select")) {
+    // set target value
+    applied.val(element.attr('value'));
+
+    // trigger update
+    applied.change();
+
+    // make target flash
+    applied.parent().fadeOut(50).fadeIn(50);
+  }
+});
+
 
 /**
  * make location type only visible when 'new' is selected
