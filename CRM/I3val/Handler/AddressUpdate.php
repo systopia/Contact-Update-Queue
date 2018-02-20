@@ -275,7 +275,9 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
       TRUE,
       array('class' => 'huge crm-select2')
     );
-    $form->setDefaults(array("i3val_address_updates_action" => $default_action));
+    $configuration = CRM_I3val_Configuration::getConfiguration();
+    $form->setDefaults(array(
+      "i3val_address_updates_action" => $configuration->pickDefaultAction($options, $default_action)));
 
     $form->assign('i3val_active_address_fields', $active_fields);
   }

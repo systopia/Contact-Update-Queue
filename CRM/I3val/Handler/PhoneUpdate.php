@@ -249,16 +249,19 @@ class CRM_I3val_Handler_PhoneUpdate extends CRM_I3val_Handler_DetailUpdate {
     }
 
     // add processing options
+    $options = $this->getProcessingOptions($phone_submitted, $existing_phone, 'Phone');
     $form->add(
       'select',
       "i3val_phone_updates_action",
       E::ts("Action"),
-      $this->getProcessingOptions($phone_submitted, $existing_phone, 'Phone'),
+      $options,
       TRUE,
       array('class' => 'huge crm-select2')
     );
-    $form->setDefaults(array("i3val_phone_updates_action" => $default_action));
 
+    $configuration = CRM_I3val_Configuration::getConfiguration();
+    $form->setDefaults(array(
+      "i3val_phone_updates_action" => $configuration->pickDefaultAction($options, $default_action)));
 
     $form->assign('i3val_active_phone_fields', $active_fields);
   }

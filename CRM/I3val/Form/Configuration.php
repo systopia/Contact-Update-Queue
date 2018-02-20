@@ -35,7 +35,7 @@ class CRM_I3val_Form_Configuration extends CRM_Core_Form {
     $this->add(
       'select',
       'session_ttl',
-      E::ts("Timeout"),
+      E::ts("Session Timeout"),
       $this->getTTLOptions(),
       TRUE
     );
@@ -43,7 +43,7 @@ class CRM_I3val_Form_Configuration extends CRM_Core_Form {
     $this->add(
       'select',
       'session_size',
-      E::ts("Batch Size"),
+      E::ts("Session Batch Size"),
       $this->getBatchOptions(),
       TRUE
     );
@@ -74,6 +74,14 @@ class CRM_I3val_Form_Configuration extends CRM_Core_Form {
       'flag_status',
       E::ts("Flaged Request Status"),
       $this->getActivityStatusList(),
+      TRUE
+    );
+
+    $this->add(
+      'select',
+      'default_action',
+      E::ts("Default Action"),
+      $this->getDefaultActionList(),
       TRUE
     );
 
@@ -145,12 +153,13 @@ class CRM_I3val_Form_Configuration extends CRM_Core_Form {
     // read the raw config blob
     $current_config = CRM_I3val_Configuration::getRawConfig();
 
-    $current_config['session_ttl']  = CRM_Utils_Array::value('session_ttl',  $values, CRM_Utils_Array::value('session_ttl',  $current_config));
-    $current_config['session_size'] = CRM_Utils_Array::value('session_size', $values, CRM_Utils_Array::value('session_size', $current_config));
-    $current_config['strip_chars']  = CRM_Utils_Array::value('strip_chars',  $values, CRM_Utils_Array::value('strip_chars',  $current_config));
-    $current_config['empty_token']  = CRM_Utils_Array::value('empty_token',  $values, CRM_Utils_Array::value('empty_token',  $current_config));
-    $current_config['flag_status']  = CRM_Utils_Array::value('flag_status',  $values, CRM_Utils_Array::value('flag_status',  $current_config));
-    $current_config['quickhistory'] = CRM_Utils_Array::value('quickhistory', $values, CRM_Utils_Array::value('quickhistory', $current_config));
+    $current_config['session_ttl']    = CRM_Utils_Array::value('session_ttl',    $values, CRM_Utils_Array::value('session_ttl',    $current_config));
+    $current_config['default_action'] = CRM_Utils_Array::value('default_action', $values, CRM_Utils_Array::value('default_action', $current_config));
+    $current_config['session_size']   = CRM_Utils_Array::value('session_size',   $values, CRM_Utils_Array::value('session_size',   $current_config));
+    $current_config['strip_chars']    = CRM_Utils_Array::value('strip_chars',    $values, CRM_Utils_Array::value('strip_chars',    $current_config));
+    $current_config['empty_token']    = CRM_Utils_Array::value('empty_token',    $values, CRM_Utils_Array::value('empty_token',    $current_config));
+    $current_config['flag_status']    = CRM_Utils_Array::value('flag_status',    $values, CRM_Utils_Array::value('flag_status',    $current_config));
+    $current_config['quickhistory']   = CRM_Utils_Array::value('quickhistory',   $values, CRM_Utils_Array::value('quickhistory',   $current_config));
 
     // extract configurations
     $configurations = array();
@@ -198,6 +207,18 @@ class CRM_I3val_Form_Configuration extends CRM_Core_Form {
       '50' => E::ts("big (50)"),
       '10' => E::ts("small (10)"),
       '1'  => E::ts("single"),
+    );
+  }
+
+  /**
+   * get the list of options as the default action
+   */
+  protected function getDefaultActionList() {
+    return array(
+      'detect'     => E::ts("Auto"),
+      'add'        => E::ts("Create New"),
+      'overwrite'  => E::ts("Overwrite"),
+      'ignore'     => E::ts("Do Nothing"),
     );
   }
 

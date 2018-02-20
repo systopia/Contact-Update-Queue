@@ -181,6 +181,69 @@ class CRM_I3val_Configuration {
   }
 
   /**
+   * Select a default action from the list
+   */
+  public function pickDefaultAction($options, $proposed_default) {
+    $settings_default = $this->getDefaultAction();
+    switch ($settings_default) {
+      default:
+      case 'detect':
+        // simply return default
+        break;
+
+      case 'add':
+        if (substr($proposed_default, 0, 3) == 'add' || $proposed_default == 'share' || $proposed_default == 'new') {
+          return $proposed_default;
+        }
+        foreach ($options as $option => $label) {
+          if (substr($option, 0, 3) == 'add' || $option == 'share' || $option == 'new') {
+            return $option;
+          }
+        }
+        // fallback: simply return default
+        break;
+
+      case 'ignore':
+        if ($proposed_default == 'discard' || $proposed_default == 'duplicate') {
+          return $proposed_default;
+        }
+        foreach ($options as $option => $label) {
+          if ($option == 'discard' || $option == 'duplicate') {
+            return $option;
+          }
+        }
+        // fallback: simply return default
+        break;
+
+      case 'overwrite':
+        if ($proposed_default == 'update') {
+          return $proposed_default;
+        }
+        foreach ($options as $option => $label) {
+          if ($option == 'update') {
+            return $option;
+          }
+        }
+        // fallback: simply return default
+        break;
+    }
+
+    // default
+    return $proposed_default;
+  }
+
+  /**
+   * get the default action
+   */
+  public function getDefaultAction() {
+    if (empty($this->config['default_action'])) {
+      return 'detect';  // default value
+    } else {
+      return $this->config['default_action'];
+    }
+  }
+
+  /**
    * get an array id => label of the relevant activity types
    */
   public function getActivityTypes() {
