@@ -107,15 +107,24 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     }
 
     // render activity form
-    $handlers = $configuration->getHandlersForActivityType($this->activity['activity_type_id']);
-    $handler_templates = array();
-    foreach ($handlers as $handler) {
-      if ($handler->hasData($this->activity)) {
-        $handler->renderActivityData($this->activity, $this);
-        $handler_templates[] = $handler->getTemplate();
+    try {
+      $handlers = $configuration->getHandlersForActivityType($this->activity['activity_type_id']);
+      $handler_templates = array();
+      foreach ($handlers as $handler) {
+        if ($handler->hasData($this->activity)) {
+          $handler->renderActivityData($this->activity, $this);
+          $handler_templates[] = $handler->getTemplate();
+        }
       }
+      $this->assign('handler_templates', $handler_templates);
+    } catch (Exception $e) {
+      // NO CONTACT -> flag and move on.
+      CRM_Core_Session::setStatus(E::ts("Activity [%1] is faulty and has been flagged as problematic.", array(1 => $this->activity_id)), E::ts('Error'), 'error');
+      $session->flagActivity($this->activity_id);
+      $session->markProcessed($this->activity_id);
+      $url = CRM_Utils_System::url("civicrm/i3val/desktop");
+      CRM_Utils_System::redirect($url);
     }
-    $this->assign('handler_templates', $handler_templates);
 
     // add control structures
     $this->add(
