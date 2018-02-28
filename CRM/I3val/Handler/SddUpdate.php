@@ -368,21 +368,22 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
     }
 
     // load mandate and other stuff
+    $activity_update = array();
     $mandate = $this->getMandate($submitted_data);
-    $activity_data['target_id'] = $mandate['contact_id'];
+    $activity_update['target_id'] = $mandate['contact_id'];
     $custom_group_name = $this->getCustomGroupName();
     $requested_status = CRM_Utils_Array::value('status', $submitted_data, '');
 
     // add reason
-    $activity_data["{$custom_group_name}.reason_submitted"] = CRM_Utils_Array::value('sdd_reason', $submitted_data, '');
+    $activity_update["{$custom_group_name}.reason_submitted"] = CRM_Utils_Array::value('sdd_reason', $submitted_data, '');
 
     // SPECIAL CASE: SOMEBODY WANTS TO CANCEL THE MANDATE
     if ($requested_status == 'COMPLETE' || $requested_status == 'INVALID') {
       // somebody just wants to cancel the mandate
       if ($mandate['status'] != $requested_status) {
-        $activity_data['target_id'] = $mandate['contact_id'];
-        $activity_data["{$custom_group_name}.reference"] = $mandate['reference'];
-        $activity_data["{$custom_group_name}.status"] = $requested_status;
+        $activity_update['target_id'] = $mandate['contact_id'];
+        $activity_update["{$custom_group_name}.reference"] = $mandate['reference'];
+        $activity_update["{$custom_group_name}.status"] = $requested_status;
       }
       return;
     }
@@ -439,6 +440,11 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
     if (!empty($mandate_diff)) {
       // there is a difference -> add to activity
       foreach ($mandate_diff as $key => $value) {
+        $activity_data[$key] = $value;
+      }
+
+      // also add the basic IDs
+      foreach ($activity_update as $key => $value) {
         $activity_data[$key] = $value;
       }
 
