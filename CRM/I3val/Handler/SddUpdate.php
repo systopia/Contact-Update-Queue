@@ -381,9 +381,10 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
     if ($requested_status == 'COMPLETE' || $requested_status == 'INVALID') {
       // somebody just wants to cancel the mandate
       if ($mandate['status'] != $requested_status) {
-        $activity_update['target_id'] = $mandate['contact_id'];
-        $activity_update["{$custom_group_name}.reference"] = $mandate['reference'];
-        $activity_update["{$custom_group_name}.status"] = $requested_status;
+        $activity_data["{$custom_group_name}.reason_submitted"] = CRM_Utils_Array::value('sdd_reason', $submitted_data, '');
+        $activity_data['target_id'] = $mandate['contact_id'];
+        $activity_data["{$custom_group_name}.reference"] = $mandate['reference'];
+        $activity_data["{$custom_group_name}.status"] = $requested_status;
       }
       return;
     }
