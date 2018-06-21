@@ -61,11 +61,13 @@ class CRM_I3val_Session {
 
   /**
    * get the current activity_id
+   *
+   * @param $activity_types
    */
-  public function getCurrentActivityID() {
+  public function getCurrentActivityID($activity_types) {
     // lazy initialisation
     if (!$this->isInitialised()) {
-      $this->reset();
+      $this->reset($activity_types);
     }
 
     return $this->get('activity_id');
@@ -126,7 +128,7 @@ class CRM_I3val_Session {
    * 1) clear values
    * 2) fill prev_next_cache with the next couple of items
    */
-  public function reset() {
+  public function reset($activity_types) {
     // error_log("RESET");
     // destroy the user's current session (if any)
     $cache_key = $this->get('cache_key');
@@ -137,12 +139,19 @@ class CRM_I3val_Session {
     // remove outdated cache entries
     $this->purgeCache();
 
+    // sanitise activity types
+    if (empty($activity_types)) {
+      $configuration = CRM_I3val_Configuration::getConfiguration();
+      $activity_types = array_keys($configuration->getActivityTypes());
+    }
+
     // create a new session
     $cache_key = sha1('i3val' . microtime(TRUE) . rand());
     $this->set('cache_key', $cache_key);
     $this->set('start_time', date('YmdHis'));
     $this->set('activity_id', 0);
     $this->set('processed_count', 0);
+    $this->set('activity_types', implode(',', $activity_types));
     $this->set('open_count', $this->calculateOpenActivityCount());
 
     // fill next cache
@@ -220,7 +229,7 @@ class CRM_I3val_Session {
 
     $configuration = CRM_I3val_Configuration::getConfiguration();
     $activity_status_ids = implode(',', $configuration->getLiveActivityStatuses());
-    $activity_type_ids   = implode(',', array_keys($configuration->getActivityTypes()));
+    $activity_type_ids   = $this->get('activity_types');
     if (empty($activity_status_ids) || empty($activity_type_ids)) {
       return NULL;
     }
@@ -304,7 +313,7 @@ class CRM_I3val_Session {
   protected function calculateOpenActivityCount() {
     $configuration = CRM_I3val_Configuration::getConfiguration();
     $activity_status_ids = implode(',', $configuration->getLiveActivityStatuses());
-    $activity_type_ids   = implode(',', array_keys($configuration->getActivityTypes()));
+    $activity_type_ids   = $this->get('activity_types');
     if (empty($activity_status_ids) || empty($activity_type_ids)) {
       return 0;
     }

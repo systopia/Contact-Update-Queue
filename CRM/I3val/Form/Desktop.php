@@ -46,16 +46,35 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
       return;
     }
 
+    // get the subset if requested
+    $requested_types_string = CRM_Utils_Request::retrieve('types',  'String');
+    $selected_types = array_keys($activity_types);
+    if ($requested_types_string) {
+      $requested_types = explode(',', $requested_types_string);
+      $selected_types = array();
+      foreach ($requested_types as $requested_type) {
+        $selected_types[] = (int) $requested_type;
+      }
+
+      // restrict to the configured ones:
+      $selected_types = array_intersect($selected_types, array_keys($activity_types));
+      if (empty($selected_types)) {
+        CRM_Core_Session::setStatus(E::ts("The types requested are not configured."), E::ts('Warning'), 'info');
+        CRM_Utils_System::redirect(CRM_Utils_System::url("civicrm/admin/i3val"));
+        return;
+      }
+    }
+
     $session = CRM_I3val_Session::getSession();
 
     // check for reset
     $reset = CRM_Utils_Request::retrieve('reset',  'Integer');
     if ($reset) {
-      $session->reset();
+      $session->reset($selected_types);
     }
 
     // fetch current activity
-    $this->activity_id = $session->getCurrentActivityID();
+    $this->activity_id = $session->getCurrentActivityID($selected_types);
     CRM_Utils_System::setTitle(E::ts("Processing requested update #%1", array(1 => $this->activity_id)));
 
     // Check if DONE....
