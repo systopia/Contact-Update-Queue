@@ -14,8 +14,8 @@
     <url desc="Support">https://github.com/systopia/be.aivl.i3val</url>
     <url desc="Licensing">http://www.gnu.org/licenses/agpl-3.0.html</url>
   </urls>
-  <releaseDate>2018-02-28</releaseDate>
-  <version>0.3.3</version>
+  <releaseDate>2018-06-21</releaseDate>
+  <version>0.3.4</version>
   <develStage>testing</develStage>
   <compatibility>
     <ver>4.6</ver>
