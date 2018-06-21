@@ -15,6 +15,8 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
+use CRM_I3val_ExtensionUtil as E;
+
 define('GRAB_CHUNK_SIZE', 10);
 
 
@@ -124,12 +126,9 @@ class CRM_I3val_Session {
   }
 
   /**
-   * reset the user session:
-   * 1) clear values
-   * 2) fill prev_next_cache with the next couple of items
+   * Internal session reset function
    */
-  public function reset($activity_types) {
-    // error_log("RESET");
+  protected function _reset() {
     // destroy the user's current session (if any)
     $cache_key = $this->get('cache_key');
     if ($cache_key) {
@@ -139,25 +138,89 @@ class CRM_I3val_Session {
     // remove outdated cache entries
     $this->purgeCache();
 
-    // sanitise activity types
-    if (empty($activity_types)) {
-      $configuration = CRM_I3val_Configuration::getConfiguration();
-      $activity_types = array_keys($configuration->getActivityTypes());
-    }
-
     // create a new session
     $cache_key = sha1('i3val' . microtime(TRUE) . rand());
     $this->set('cache_key', $cache_key);
     $this->set('start_time', date('YmdHis'));
     $this->set('activity_id', 0);
     $this->set('processed_count', 0);
+  }
+
+  /**
+   * reset the user session:
+   * 1) clear values
+   * 2) fill prev_next_cache with the next couple of items
+   */
+  public function reset($activity_types) {
+    // do a generic reset
+    $this->_reset();
+
+    // sanitise activity types
+    if (empty($activity_types)) {
+      $configuration = CRM_I3val_Configuration::getConfiguration();
+      $activity_types = array_keys($configuration->getActivityTypes());
+    }
+
     $this->set('activity_types', implode(',', $activity_types));
     $this->set('open_count', $this->calculateOpenActivityCount());
 
     // fill next cache
     $first_activity_id = $this->getNext();
     $this->set('activity_id', $first_activity_id);
-    // error_log("CURRENT IS $first_activity_id (reset)");
+    $this->set('queue_type', 'regular');
+  }
+
+  /**
+   * Will drop the current session and
+   * create a new session with only the sibling activities to the given one
+   *
+   * @param $activity_id
+   */
+  public function jumpToSiblingQueue($activity_id) {
+    // do a generic reset
+    $this->_reset();
+
+    // now create a session with only those IDs
+    $sibling_activity_ids = self::getSiblingActivityIDs($activity_id);
+    $sibling_activity_count = count($sibling_activity_ids);
+    $this->set('open_count', $sibling_activity_count);
+    $this->set('activity_id', reset($sibling_activity_ids));
+    $this->set('queue_type', 'sibling');
+
+    // make sure those are not in another queue
+    $activity_id_list = implode(',', $sibling_activity_ids);
+    $free_query_sql = "
+    SELECT activity.id AS activity_id
+    FROM civicrm_activity activity
+    LEFT JOIN i3val_session_cache session ON session.activity_id = activity.id
+    WHERE activity.id IN ($activity_id_list)
+      AND session.activity_id IS NULL
+    ORDER BY activity.activity_date_time ASC;";
+    $free_query = CRM_Core_DAO::executeQuery($free_query_sql);
+    $sibling_activity_ids_free = array();
+    while ($free_query->fetch()) {
+      $sibling_activity_ids_free[] = $free_query->activity_id;
+    }
+    $sibling_activity_count_blocked = $sibling_activity_count - count($sibling_activity_ids_free);
+
+    // warn if some of them are blocked by another session
+    if ($sibling_activity_count_blocked) {
+      CRM_Core_Session::setStatus(E::ts("%1 of the scheduled activities for this contact are currently processed by somebody else", array(1 => $sibling_activity_count)),
+          E::ts("Concurrent Processing"),
+          'warning');
+    }
+
+    // build the query: all pending activities that are not already assigned
+    $configuration = CRM_I3val_Configuration::getConfiguration();
+    $cache_key     = $this->getSessionKey();
+    $session_ttl   = $configuration->getSessionTTL();
+    $expires       = date('YmdHis', strtotime("+{$session_ttl}"));
+    foreach ($sibling_activity_ids_free as $activity_id) {
+      CRM_Core_DAO::executeQuery("INSERT INTO i3val_session_cache (session_key, activity_id, expires) VALUES (%1, %2, %3)", array(
+          1 => array($cache_key,   'String'),
+          2 => array($activity_id, 'Integer'),
+          3 => array($expires,     'String')));
+    }
   }
 
   /**
@@ -308,6 +371,26 @@ class CRM_I3val_Session {
   }
 
   /**
+   * Check if this is a sibling queue
+   */
+  public function isSiblingQueue() {
+    $queue_type = $this->get('queue_type');
+    return $queue_type == 'sibling';
+  }
+
+  /**
+   * Get a fresh queue link with the same parameters
+   */
+  public function getContinuationURL() {
+    $activity_types = $this->get('activity_types');
+    if (empty($activity_types)) {
+      return CRM_Utils_System::url("civicrm/i3val/desktop", "reset=1");
+    } else {
+      return CRM_Utils_System::url("civicrm/i3val/desktop", "reset=1&types={$activity_types}");
+    }
+  }
+
+  /**
    * Calculate the pending activity count
    */
   protected function calculateOpenActivityCount() {
@@ -368,5 +451,34 @@ class CRM_I3val_Session {
         'status_id' => $error_status_id
       ));
     }
+  }
+
+  /**
+   * Get a list of all pending request activity IDs that refer to the same contact than the one
+   * referred to by the given activity ID
+   *
+   * @param $activity_id
+   * @return array activity IDs
+   */
+  public static function getSiblingActivityIDs($activity_id) {
+    $sibling_ids = array();
+    $configuration = CRM_I3val_Configuration::getConfiguration();
+    $activity_status_ids = implode(',', $configuration->getLiveActivityStatuses());
+    $activity_types = implode(',', array_keys($configuration->getActivityTypes()));
+    $sql_query = "
+      SELECT DISTINCT(activity.id) AS activity_id
+      FROM civicrm_activity_contact       search
+      LEFT JOIN civicrm_activity_contact related ON related.contact_id = search.contact_id AND related.record_type_id = 3
+      LEFT JOIN civicrm_activity        activity ON activity.id = related.activity_id    
+      WHERE search.record_type_id = 3
+        AND search.activity_id = {$activity_id}
+        AND activity.activity_type_id IN ({$activity_types})
+        AND activity.status_id IN ({$activity_status_ids})
+      ORDER BY activity.activity_date_time ASC;";
+    $query = CRM_Core_DAO::executeQuery($sql_query);
+    while ($query->fetch()) {
+      $sibling_ids[] = $query->activity_id;
+    }
+    return $sibling_ids;
   }
 }
