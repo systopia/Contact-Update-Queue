@@ -287,6 +287,7 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
 
     // update the acvitiy
     $activity_update['status_id'] = 2; // Completed
+    $activity_update['activity_date_time'] = date('YmdHis'); // NOW
     CRM_I3val_CustomData::resolveCustomFields($activity_update);
     CRM_Core_Error::debug_log_message("UPDATE ACTIVITY " . json_encode($activity_update));
     civicrm_api3('Activity', 'create', $activity_update);
