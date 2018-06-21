@@ -287,6 +287,8 @@ class CRM_I3val_Session {
    * Assign another {$max_count} activities to this session
    */
   protected function grabMoreActivities($max_count = 0, $after_timestamp = NULL) {
+    if ($this->isSiblingQueue()) return;
+
     // error_log("GRAB MORE $max_count");
     $after_activity_id = $this->get('activity_id');
 
