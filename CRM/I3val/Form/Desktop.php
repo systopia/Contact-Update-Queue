@@ -70,18 +70,34 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     // check for reset
     $reset = CRM_Utils_Request::retrieve('reset',  'Integer');
     if ($reset) {
-      $session->reset($selected_types);
+      $sibling_request = CRM_Utils_Request::retrieve('sibling_queue',  'String');
+      if ($sibling_request) {
+        $session->jumpToSiblingQueue($sibling_request);
+      } else {
+        $session->reset($selected_types);
+      }
     }
 
     // fetch current activity
     $this->activity_id = $session->getCurrentActivityID($selected_types);
-    CRM_Utils_System::setTitle(E::ts("Processing requested update #%1", array(1 => $this->activity_id)));
+    if ($session->isSiblingQueue()) {
+      CRM_Utils_System::setTitle(E::ts("Processing requested update #%1 [Contact Queue]", array(1 => $this->activity_id)));
+    } else {
+      CRM_Utils_System::setTitle(E::ts("Processing requested update #%1", array(1 => $this->activity_id)));
+    }
 
     // Check if DONE....
     if (!$this->activity_id) {
-      CRM_Core_Session::setStatus(E::ts("No more update requests pending. You're already done!"), E::ts('All done!'), 'info');
-      CRM_Utils_System::redirect(CRM_Utils_System::url("civicrm/dashboard"));
-      return;
+      // still need to check whether this was a sibling queue
+      if ($session->isSiblingQueue()) {
+        // CRM_Core_Session::setStatus(E::ts("All updates for that contact have been processed"), E::ts('Done'), 'info');
+        CRM_Utils_System::redirect($session->getContinuationURL());
+        return;
+      } else {
+        CRM_Core_Session::setStatus(E::ts("No more update requests pending. You're already done!"), E::ts('All done!'), 'info');
+        CRM_Utils_System::redirect(CRM_Utils_System::url("civicrm/dashboard"));
+        return;
+      }
     }
 
     // some bookkeeping
@@ -123,6 +139,25 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
       $this->assign('history', 'NO');
     } else {
       $this->assign('history', $this->getContactHistory($this->activity_id, $history_types));
+    }
+
+    // show 'contact queue' message
+    if (!$session->isSiblingQueue()) {
+      $sibling_activities = CRM_I3val_Session::getSiblingActivityIDs($this->activity_id);
+      if (count($sibling_activities) > 1) {
+        if (count($sibling_activities) > 2) {
+          CRM_Core_Session::setStatus(E::ts("There are %1 other changes scheduled for this contact. Click <strong><a href='%2'>HERE</a></strong> if you want to process those in one batch.",
+              array(1 => count($sibling_activities) - 1,
+                  2 => $url = CRM_Utils_System::url("civicrm/i3val/desktop", "reset=1&sibling_queue={$this->activity_id}"))),
+              E::ts("Related Updates Scheduled!"),
+              'warning');
+        } else {
+          CRM_Core_Session::setStatus(E::ts("There is another change scheduled for this contact. Click <strong><a href='%1'>HERE</a></strong> if you want to process both in one batch.",
+              array(1 => $url = CRM_Utils_System::url("civicrm/i3val/desktop", "reset=1&sibling_queue={$this->activity_id}"))),
+              E::ts("Related Updates Scheduled!"),
+              'warning');
+        }
+      }
     }
 
     // render activity form
