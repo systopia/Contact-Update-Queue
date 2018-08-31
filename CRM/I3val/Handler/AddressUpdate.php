@@ -308,6 +308,10 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
 
       case 'Address':
         $address = civicrm_api3('Address', 'getsingle', array('id' => $submitted_data['id']));
+        // make sure we have the contact id
+        if (empty($submitted_data['contact_id'])) {
+          $submitted_data['contact_id'] = $address['contact_id'];
+        }
         $this->resolveFields($address);
         $this->generateEntityDiffData('Address', $address['id'], $address, $submitted_data, $activity_data);
         $this->addAddressSharingDiffData($address, $submitted_data, $activity_data);
