@@ -51,6 +51,13 @@ class CRM_I3val_Configuration {
   }
 
   /**
+   * How many items should be blocked at once for a session
+   */
+  public function getSessionSize() {
+    return CRM_Utils_Array::value('session_size', $this->config, 10);
+  }
+
+  /**
    * Sanitise input accorting to the configuration
    */
   public function sanitiseInput(&$input) {

@@ -17,8 +17,6 @@
 
 use CRM_I3val_ExtensionUtil as E;
 
-define('GRAB_CHUNK_SIZE', 10);
-
 
 /**
  * This class will store data about this processing session
@@ -111,7 +109,8 @@ class CRM_I3val_Session {
         LIMIT 1");
     if (!$next_activity_id && $grab_more_if_needed) {
       // try to get more
-      $this->grabMoreActivities(GRAB_CHUNK_SIZE, $after_timestamp);
+      $session_size = CRM_I3val_Configuration::getConfiguration()->getSessionSize();
+      $this->grabMoreActivities($session_size, $after_timestamp);
       $next_activity_id = $this->getNext(FALSE, $after_timestamp);
     }
     return $next_activity_id;
