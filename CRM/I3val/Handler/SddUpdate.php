@@ -499,6 +499,9 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
       // no? check if we can MEND THE MANDATE
       if (!$mandate_processed) {
         $mandate_processed = $this->mendCurrentMandate($old_mandate, $update, $activity, $values, $activity_update);
+        if ($mandate_processed) {
+          $activity[self::$group_name . ".reference_replaced"] = $old_mandate['reference'];
+        }
       }
 
       if (!$mandate_processed) {
