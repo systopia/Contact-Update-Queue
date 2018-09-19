@@ -310,10 +310,9 @@ class CRM_I3val_Session {
    */
   protected function grabMoreActivities($max_count = 0, $after_timestamp = NULL) {
     if ($this->isSiblingQueue()) return;
-    self::log("grabMoreActivities");
 
-    // error_log("GRAB MORE $max_count");
     $after_activity_id = $this->get('activity_id');
+    self::log("grabMoreActivities: max: {$max_count}, after: [{$after_activity_id}], earliest: " . ($after_timestamp ? date('Y-m-d H:i:s', $after_timestamp) : 'none'));
 
     $configuration = CRM_I3val_Configuration::getConfiguration();
     $activity_status_ids = implode(',', $configuration->getLiveActivityStatuses());
@@ -363,6 +362,7 @@ class CRM_I3val_Session {
         1 => array($cache_key,            'String'),
         2 => array($entries->activity_id, 'Integer'),
         3 => array($expires,              'String')));
+      //self::log("Grabbed [{$entries->activity_id}]");
     }
     $entries->free();
   }

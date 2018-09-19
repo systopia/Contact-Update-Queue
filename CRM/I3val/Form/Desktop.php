@@ -255,7 +255,7 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
 
       case 'submit':
         // Apply changes
-        $this->applyChanges();
+        $timestamp = $this->applyChanges();
         break;
 
       default:
@@ -288,7 +288,7 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
       'sequential'     => 1,
       'activity_id'    => $activity['id'],
       'record_type_id' => 3,
-      'options.limit'  => 1));
+      'option.limit'   => 1));
     $contact = civicrm_api3('Contact', 'getsingle', array(
       'id'     => $target['contact_id'],
       'return' => 'display_name'));
@@ -317,6 +317,7 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     // extract changes
     $values  = $_REQUEST; // TODO: why doesn't $this->exportValues(); work?
     $objects = array('contact' => $this->contact, 'activity' => $this->activity);
+    $activity_date_time = $this->activity['activity_date_time'];
 
     $configuration = CRM_I3val_Configuration::getConfiguration();
     $errors = array();
@@ -345,6 +346,8 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     CRM_I3val_CustomData::resolveCustomFields($activity_update);
     CRM_I3val_Session::log("UPDATE ACTIVITY " . json_encode($activity_update));
     civicrm_api3('Activity', 'create', $activity_update);
+
+    return $activity_date_time;
   }
 
   /**
