@@ -155,7 +155,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     if (!empty($address_update)) {
       // perform update
       $this->resolveFields($address_update);
-      CRM_Core_Error::debug_log_message("ADDRESS UPDATE: " . json_encode($address_update));
+      CRM_I3val_Session::log("ADDRESS UPDATE: " . json_encode($address_update));
       $result = civicrm_api3('Address', 'create', $address_update);
       $address_update['id'] = $result['id'];
     }
@@ -181,7 +181,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     $address_submitted = $this->getMyValues($activity);
     $address_submitted['contact_id'] = $form->contact['id'];
     $existing_address = $this->getExistingAddress($address_submitted, $default_action);
-    // CRM_Core_Error::debug_log_message("FOUND " . json_encode($existing_address));
+    CRM_I3val_Session::log("FOUND " . json_encode($existing_address));
     $this->resolveFields($existing_address);
     $this->resolveFields($address_submitted);
 

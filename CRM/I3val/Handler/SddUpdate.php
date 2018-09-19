@@ -529,7 +529,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
           }
         }
 
-        // CRM_Core_Error::debug_log_message("CREATE NEW " . json_encode($new_mandate));
+        CRM_I3val_Session::log("CREATE NEW " . json_encode($new_mandate));
         $create_mandate_result = civicrm_api3('SepaMandate', 'createfull', $new_mandate);
         $created_mandate = $this->getMandate($create_mandate_result);
 

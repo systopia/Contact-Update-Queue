@@ -142,7 +142,7 @@ class CRM_I3val_Handler_PhoneUpdate extends CRM_I3val_Handler_DetailUpdate {
     if (!empty($phone_update)) {
       // perform update
       $this->resolveFields($phone_update);
-      CRM_Core_Error::debug_log_message("PHONE UPDATE: " . json_encode($phone_update));
+      CRM_I3val_Session::log("PHONE UPDATE: " . json_encode($phone_update));
       civicrm_api3('Phone', 'create', $phone_update);
     }
 

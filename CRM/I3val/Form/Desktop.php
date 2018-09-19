@@ -260,7 +260,7 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
 
       default:
         CRM_Core_Session::setStatus(E::ts("Unkown action."), E::ts('Error'), 'error');
-        break;
+        return;
     }
 
     // mark received
@@ -343,7 +343,7 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     $activity_update['status_id'] = 2; // Completed
     $activity_update['activity_date_time'] = date('YmdHis'); // NOW
     CRM_I3val_CustomData::resolveCustomFields($activity_update);
-    CRM_Core_Error::debug_log_message("UPDATE ACTIVITY " . json_encode($activity_update));
+    CRM_I3val_Session::log("UPDATE ACTIVITY " . json_encode($activity_update));
     civicrm_api3('Activity', 'create', $activity_update);
   }
 

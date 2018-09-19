@@ -17,6 +17,7 @@
 
 use CRM_I3val_ExtensionUtil as E;
 
+define('I3VAL_DEBUG_LOGGING', FALSE);
 
 /**
  * This class will store data about this processing session
@@ -38,6 +39,22 @@ class CRM_I3val_Session {
     return self::$_singleton;
   }
 
+  /**
+   * Logging function for debugging purposes
+   * Works if I3VAL_DEBUG_LOGGING is TRUE
+   */
+  public static function log($message) {
+    if (I3VAL_DEBUG_LOGGING) {
+      $session = self::getSession();
+      $cache_key = $session->get('cache_key');
+      if ($cache_key) {
+        $cache_key = substr($cache_key, 0, 4);
+      } else {
+        $cache_key = 'NONE';
+      }
+      CRM_Core_Error::debug_log_message("I3Val [{$cache_key}]: {$message}");
+    }
+  }
 
   /**
    * the session status contains of the following
@@ -77,6 +94,7 @@ class CRM_I3val_Session {
    * mark this activity as processed
    */
   public function markProcessed($activity_id, $timestamp = NULL) {
+    self::log("Marking [{$activity_id}] as processed");
     $activity_id = (int) $activity_id;
     // error_log("MARKED PROCESSED: $activity_id");
 
@@ -109,6 +127,7 @@ class CRM_I3val_Session {
         LIMIT 1");
     if (!$next_activity_id && $grab_more_if_needed) {
       // try to get more
+      self::log("No more items in session");
       $session_size = CRM_I3val_Configuration::getConfiguration()->getSessionSize();
       $this->grabMoreActivities($session_size, $after_timestamp);
       $next_activity_id = $this->getNext(FALSE, $after_timestamp);
@@ -120,6 +139,7 @@ class CRM_I3val_Session {
    * free the given activity
    */
   protected function releaseActivityID($activity_id) {
+    self::log("Releasing [{$activity_id}]");
     $activity_id = (int) $activity_id;
     CRM_Core_DAO::singleValueQuery("DELETE FROM i3val_session_cache WHERE activity_id = {$activity_id}");
   }
@@ -128,6 +148,8 @@ class CRM_I3val_Session {
    * Internal session reset function
    */
   protected function _reset() {
+    self::log("Reset requested");
+
     // destroy the user's current session (if any)
     $cache_key = $this->get('cache_key');
     if ($cache_key) {
@@ -176,6 +198,7 @@ class CRM_I3val_Session {
    * @param $activity_id
    */
   public function jumpToSiblingQueue($activity_id) {
+    self::log("Jump to sibling queue");
     // do a generic reset
     $this->_reset();
 
@@ -287,6 +310,7 @@ class CRM_I3val_Session {
    */
   protected function grabMoreActivities($max_count = 0, $after_timestamp = NULL) {
     if ($this->isSiblingQueue()) return;
+    self::log("grabMoreActivities");
 
     // error_log("GRAB MORE $max_count");
     $after_activity_id = $this->get('activity_id');
@@ -347,6 +371,7 @@ class CRM_I3val_Session {
    * will remove all data for the given session
    */
   protected function destroySession($cache_key) {
+    self::log("destroySession");
     CRM_Core_DAO::executeQuery("DELETE FROM i3val_session_cache WHERE session_key = '{$cache_key}'");
   }
 
@@ -354,6 +379,7 @@ class CRM_I3val_Session {
    * simply remove all expired entries from the cache
    */
   protected function purgeCache() {
+    self::log("purgeCache");
     CRM_Core_DAO::executeQuery("DELETE FROM i3val_session_cache WHERE expires < NOW()");
   }
 
@@ -414,7 +440,7 @@ class CRM_I3val_Session {
    * POSTPONE activity
    */
   public function postponeActivity($activity_id, $delay) {
-    CRM_Core_Error::debug_log_message("POSTPONING $activity_id by $delay");
+    self::log("POSTPONING [{$activity_id}] by {$delay}");
     $activity_id = (int) $activity_id;
     if ($activity_id) {
       // get the old activity timestamp
@@ -442,7 +468,7 @@ class CRM_I3val_Session {
    * FLAG activity
    */
   public function flagActivity($activity_id) {
-    CRM_Core_Error::debug_log_message("FLAGGING $activity_id");
+    self::log("FLAGGING [{$activity_id}]");
     $activity_id = (int) $activity_id;
     if ($activity_id) {
       $configuration = CRM_I3val_Configuration::getConfiguration();

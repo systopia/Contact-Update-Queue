@@ -25,7 +25,7 @@ class CRM_I3val_Logic {
    * @param $params   array  the new values
    */
   public static function createEntityUpdateRequest($entity, $params) {
-    CRM_Core_Error::debug_log_message("PROCESS {$entity} update request: " . json_encode($params));
+    CRM_I3val_Session::log("PROCESS {$entity} update request: " . json_encode($params));
     $config = CRM_I3val_Configuration::getConfiguration();
 
     // input sanitation
@@ -65,7 +65,7 @@ class CRM_I3val_Logic {
       $activity_data['activity_type_id'] = $activity_type_id;
 
       // create activity, reload and return
-      CRM_Core_Error::debug_log_message('ACTIVIY ' . json_encode($activity_data));
+      CRM_I3val_Session::log('ACTIVIY ' . json_encode($activity_data));
       CRM_I3val_CustomData::resolveCustomFields($activity_data);
       $activity = civicrm_api3('Activity', 'create', $activity_data);
       return civicrm_api3('Activity', 'getsingle', array('id' => $activity['id']));
