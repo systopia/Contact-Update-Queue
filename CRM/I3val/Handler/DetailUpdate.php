@@ -229,7 +229,7 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
 
     $activity_data['target_id'] = $submitted_data['contact_id'];
 
-    // first: check all main attriutes
+    // first: check all main attributes
     foreach ($main_attributes as $field_name) {
       if (isset($submitted_data[$field_name])) {
         $current_value = CRM_Utils_Array::value($field_name, $original_data, '');

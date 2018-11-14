@@ -73,7 +73,8 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
    *  no record at all is created
    */
   protected function getMainFields() {
-    return array('street_address',
+    return array('location_type',
+                 'street_address',
                  'postal_code',
                  'supplemental_address_1',
                  'supplemental_address_2',
