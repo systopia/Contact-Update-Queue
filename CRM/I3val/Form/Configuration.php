@@ -58,6 +58,12 @@ class CRM_I3val_Form_Configuration extends CRM_Core_Form {
     );
 
     $this->add(
+        'checkbox',
+        'allow_clearing',
+        E::ts("Allow Clearing Fields")
+    );
+
+    $this->add(
       'text',
       'strip_chars',
       E::ts("Input Trim Characters")
@@ -160,6 +166,7 @@ class CRM_I3val_Form_Configuration extends CRM_Core_Form {
     $current_config['empty_token']    = CRM_Utils_Array::value('empty_token',    $values, CRM_Utils_Array::value('empty_token',    $current_config));
     $current_config['flag_status']    = CRM_Utils_Array::value('flag_status',    $values, CRM_Utils_Array::value('flag_status',    $current_config));
     $current_config['quickhistory']   = CRM_Utils_Array::value('quickhistory',   $values, CRM_Utils_Array::value('quickhistory',   $current_config));
+    $current_config['allow_clearing'] = CRM_Utils_Array::value('allow_clearing', $values, FALSE);
 
     // extract configurations
     $configurations = array();

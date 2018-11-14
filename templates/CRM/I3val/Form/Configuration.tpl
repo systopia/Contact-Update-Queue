@@ -51,6 +51,11 @@
 <h3>{ts domain="be.aivl.i3val"}Update Request Options{/ts}</h3>
 <div>
   <div class="crm-section">
+    <div class="label">{$form.allow_clearing.label}&nbsp;<a onclick='CRM.help("{ts domain="be.aivl.i3val"}Clearing Fields{/ts}", {literal}{"id":"id-field-clearing","file":"CRM\/I3val\/Form\/Configuration"}{/literal}); return false;' href="#" title="{ts domain="be.aivl.i3val"}Help{/ts}" class="helpicon">&nbsp;</a></div>
+    <div class="content">{$form.allow_clearing.html}</div>
+    <div class="clear"></div>
+  </div>
+  <div class="crm-section">
     <div class="label">{$form.strip_chars.label}&nbsp;<a onclick='CRM.help("{ts domain="be.aivl.i3val"}Strip Characters{/ts}", {literal}{"id":"id-strip-chars","file":"CRM\/I3val\/Form\/Configuration"}{/literal}); return false;' href="#" title="{ts domain="be.aivl.i3val"}Help{/ts}" class="helpicon">&nbsp;</a></div>
     <div class="content">{$form.strip_chars.html}</div>
     <div class="clear"></div>

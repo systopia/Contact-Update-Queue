@@ -14,6 +14,10 @@
 | written permission from the original author(s).        |
 +-------------------------------------------------------*}
 
+{htxt id='id-field-clearing'}
+  <p>{ts domain="be.aivl.i3val"}If this is enabled, even change requests for empty fields will show up in batch processing. If not, they will be recorded, but now shown as an option.{/ts}</p>
+{/htxt}
+
 {htxt id='id-strip-chars'}
   <p>{ts domain="be.aivl.i3val"}All the characters listed here will be stripped from the beginning and the end of each submitted value.{/ts}</p>
   <p>{ts domain="be.aivl.i3val"}For example, entering a simple whitespace ("&nbsp;") here could help if the data is coming from a user input form.{/ts}</p>

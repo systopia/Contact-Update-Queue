@@ -312,7 +312,7 @@ class CRM_I3val_Session {
     if ($this->isSiblingQueue()) return;
 
     $after_activity_id = $this->get('activity_id');
-    self::log("grabMoreActivities: max: {$max_count}, after: [{$after_activity_id}], earliest: " . ($after_timestamp ? date('Y-m-d H:i:s', $after_timestamp) : 'none'));
+    self::log("grabMoreActivities: max: {$max_count}, after: [{$after_activity_id}], earliest: " . ($after_timestamp ? date('Y-m-d H:i:s', strtotime($after_timestamp)) : 'none'));
 
     $configuration = CRM_I3val_Configuration::getConfiguration();
     $activity_status_ids = implode(',', $configuration->getLiveActivityStatuses());

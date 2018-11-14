@@ -172,6 +172,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
    * Load and assign necessary data to the form
    */
   public function renderActivityData($activity, $form) {
+    $config = CRM_I3val_Configuration::getConfiguration();
     $field2label = $this->getField2Label();
     $prefix = $this->getKey() . '_';
     $values = $this->compileValues(self::$group_name, $field2label, $activity);
@@ -223,8 +224,14 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
 
       } else {
         // if there is no values, omit field
-        if (empty($values[$fieldname]['submitted'])) {
-          continue;
+        if ($config->clearingFieldsAllowed()) {
+          if (empty($values[$fieldname]['submitted']) && empty($values[$fieldname]['original'])) {
+            continue;
+          }
+        } else {
+          if (empty($values[$fieldname]['submitted'])) {
+            continue;
+          }
         }
 
         $active_fields[$form_fieldname] = $fieldlabel;
@@ -255,7 +262,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
           if (!empty($values[$fieldname]['applied'])) {
             $form->setDefaults(array("{$form_fieldname}_applied" => $values[$fieldname]['applied']));
           } else {
-            $form->setDefaults(array("{$form_fieldname}_applied" => $values[$fieldname]['submitted']));
+            $form->setDefaults(array("{$form_fieldname}_applied" => isset($values[$fieldname]['submitted']) ? $values[$fieldname]['submitted'] : ''));
           }
         }
       }

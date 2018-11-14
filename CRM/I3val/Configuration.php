@@ -58,6 +58,14 @@ class CRM_I3val_Configuration {
   }
 
   /**
+   * Should clear/empty fields be offered?
+   */
+  public function clearingFieldsAllowed() {
+    return CRM_Utils_Array::value('allow_clearing', $this->config, FALSE);
+  }
+
+
+  /**
    * Sanitise input accorting to the configuration
    */
   public function sanitiseInput(&$input) {

@@ -147,6 +147,7 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
    * Load and assign necessary data to the form
    */
   public function renderActivityData($activity, $form) {
+    $config = CRM_I3val_Configuration::getConfiguration();
     $field2label = self::getField2Label();
     $values = $this->compileValues(self::$group_name, $field2label, $activity);
     $this->resolvePreferredLanguageToLabel($form->contact);
@@ -166,8 +167,14 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
 
     foreach ($field2label as $fieldname => $fieldlabel) {
       // if there is no values, omit field
-      if (!isset($values[$fieldname]['submitted']) || !strlen($values[$fieldname]['submitted'])) {
-        continue;
+      if ($config->clearingFieldsAllowed()) {
+        if (empty($values[$fieldname]['submitted']) && empty($values[$fieldname]['original'])) {
+          continue;
+        }
+      } else {
+        if (!isset($values[$fieldname]['submitted']) || !strlen($values[$fieldname]['submitted'])) {
+          continue;
+        }
       }
 
       // this field has data:
@@ -229,7 +236,7 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
       if (!empty($values[$fieldname]['applied'])) {
         $form->setDefaults(array("{$fieldname}_applied" => $values[$fieldname]['applied']));
       } else {
-        $form->setDefaults(array("{$fieldname}_applied" => $values[$fieldname]['submitted']));
+        $form->setDefaults(array("{$fieldname}_applied" => isset($values[$fieldname]['submitted']) ? $values[$fieldname]['submitted'] : ''));
       }
 
       // add the apply checkbox
