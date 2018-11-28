@@ -68,6 +68,6 @@ function _civicrm_api3_address_request_update_spec(&$spec) {
     'title'       => 'Parent activity ID',
     'description' => 'The change request should be recorded as a follow-up to the given activity ID',
     'required'    => FALSE,
-    'type'        => CRM_Utils_Type::T_INT,
+    'type'        => CRM_Utils_Type::T_STRING,
   );
 }
