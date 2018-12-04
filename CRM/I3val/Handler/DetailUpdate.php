@@ -221,13 +221,24 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
    * Generic implementation for details.
    *  clients need to pass detail entity, NOT contact
    */
-  public function generateEntityDiffData($entity, $entity_id, $original_data, $submitted_data, &$activity_data) {
+  public function generateEntityDiffData($entity, $entity_id, $original_data, $submitted_data, &$activity_data, $can_process_empty_fields = TRUE) {
     $diff_data         = array();
     $main_attributes   = $this->getMainFields();
     $all_attributes    = $this->getFields();
     $custom_group_name = $this->getCustomGroupName();
 
     $activity_data['target_id'] = $submitted_data['contact_id'];
+
+    // make sure that there is at least one non-empty main field
+    if (!$can_process_empty_fields) {
+      $data_found = FALSE;
+      foreach ($main_attributes as $field_name) {
+        $data_found |= !empty($submitted_data[$field_name]);
+      }
+      if (!$data_found) {
+        return;
+      }
+    }
 
     // first: check all main attributes
     foreach ($main_attributes as $field_name) {

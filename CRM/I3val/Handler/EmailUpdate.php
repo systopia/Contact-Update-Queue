@@ -263,13 +263,13 @@ class CRM_I3val_Handler_EmailUpdate extends CRM_I3val_Handler_DetailUpdate {
       case 'Contact':
         $submitted_data['contact_id'] = $submitted_data['id'];
         $email = $this->getExistingEmail($submitted_data);
-        $this->generateEntityDiffData('Email', $email['id'], $email, $submitted_data, $activity_data);
+        $this->generateEntityDiffData('Email', $email['id'], $email, $submitted_data, $activity_data, FALSE);
         break;
 
       case 'Email':
         $email = civicrm_api3('Email', 'getsingle', array('id' => $submitted_data['id']));
         $this->resolveFields($email);
-        $this->generateEntityDiffData('Email', $email['id'], $email, $submitted_data, $activity_data);
+        $this->generateEntityDiffData('Email', $email['id'], $email, $submitted_data, $activity_data, FALSE);
         break;
 
       default:
@@ -334,7 +334,7 @@ class CRM_I3val_Handler_EmailUpdate extends CRM_I3val_Handler_DetailUpdate {
 
     // third: find by similarity
     $best_matching_email = NULL;
-    $highest_similarity    = 0;
+    $highest_similarity  = -1;
     foreach ($emails as $email) {
       $similarity = $this->getMainFieldSimilarity($email_submitted, $email);
       if ($similarity > $highest_similarity) {
