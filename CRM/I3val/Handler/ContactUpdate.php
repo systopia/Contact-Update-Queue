@@ -212,7 +212,7 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
           'select',
           "{$fieldname}_applied",
           $fieldlabel,
-          $this->getOptionValueList('languages')
+          $this->getOptionValueList('languages', 'label', E::ts("none"))
         );
 
 
@@ -316,13 +316,13 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
 
     switch ($fieldname) {
       case 'gender':
-        return $this->getOptionValueList('gender');
+        return $this->getOptionValueList('gender', 'label', E::ts('none'));
 
       case 'prefix':
-        return $this->getOptionValueList('individual_prefix');
+        return $this->getOptionValueList('individual_prefix', 'label', E::ts('none'));
 
       case 'suffix':
-        return $this->getOptionValueList('individual_suffix');
+        return $this->getOptionValueList('individual_suffix', 'label', E::ts('none'));
 
       default:
         return $this->getOptionValueList($fieldname);

@@ -268,12 +268,22 @@ abstract class CRM_I3val_ActivityHandler {
 
   /**
    * Get a dropdown list of (eligible) option values
+   *
+   * @param $option_group     string option group name or ID
+   * @param $indexed_by       string which field should be used as index/key
+   * @param $empty_option     string if given, an empty option will be added with the provided label
+   *
+   * @return array list
    */
-  protected function getOptionValueList($option_group, $indexed_by = 'label') {
+  protected function getOptionValueList($option_group, $indexed_by = 'label', $empty_option = NULL) {
     $option_values = $this->getOptionValues($option_group);
     $option_list = array();
     foreach ($option_values as $option_value) {
       $option_list[$option_value[$indexed_by]] = $option_value['label'];
+    }
+
+    if ($empty_option) {
+      $option_list[''] = $empty_option;
     }
     return $option_list;
   }
