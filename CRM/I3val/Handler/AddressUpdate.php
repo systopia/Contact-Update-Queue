@@ -501,9 +501,9 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     }
 
     // second: find by location type
-    if (isset($values['location_type_id'])) {
+    if (isset($address_submitted['location_type_id'])) {
       foreach ($addresss as $address) {
-        if ($values['location_type_id'] == $address['location_type_id']) {
+        if ($address_submitted['location_type_id'] == $address['location_type_id']) {
           $this->resolveFields($address);
           $default_action = 'update';
           return $address;
