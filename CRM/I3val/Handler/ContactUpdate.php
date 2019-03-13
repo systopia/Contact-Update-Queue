@@ -30,6 +30,7 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
     if (self::$field2label === NULL) {
       self::$field2label = array( 'first_name'         => E::ts('First Name'),
                                   'last_name'          => E::ts('Last Name'),
+                                  'formal_title'       => E::ts('Formal Title'),
                                   'organization_name'  => E::ts('Organisation Name'),
                                   'household_name'     => E::ts('Household Name'),
                                   'preferred_language' => E::ts('Preferred Language'),
