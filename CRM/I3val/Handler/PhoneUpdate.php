@@ -286,13 +286,13 @@ class CRM_I3val_Handler_PhoneUpdate extends CRM_I3val_Handler_DetailUpdate {
       case 'Contact':
         $submitted_data['contact_id'] = $submitted_data['id'];
         $phone = $this->getExistingPhone($submitted_data);
-        $this->generateEntityDiffData('Phone', $phone['id'], $phone, $submitted_data, $activity_data);
+        $this->generateEntityDiffData('Phone', $phone['id'], $phone, $submitted_data, $activity_data, FALSE);
         break;
 
       case 'Phone':
         $phone = civicrm_api3('Phone', 'getsingle', array('id' => $submitted_data['id']));
         $this->resolveFields($phone);
-        $this->generateEntityDiffData('Phone', $phone['id'], $phone, $submitted_data, $activity_data);
+        $this->generateEntityDiffData('Phone', $phone['id'], $phone, $submitted_data, $activity_data, FALSE);
         break;
 
       default:
@@ -367,7 +367,7 @@ class CRM_I3val_Handler_PhoneUpdate extends CRM_I3val_Handler_DetailUpdate {
 
     // third: find by similarity
     $best_matching_phone = NULL;
-    $highest_similarity    = 0;
+    $highest_similarity  = -1;
     foreach ($phones as $phone) {
       $similarity = $this->getMainFieldSimilarity($phone_submitted, $phone);
       if ($similarity > $highest_similarity) {
