@@ -8,8 +8,12 @@
   </item>
   <item>
     <path>civicrm/admin/i3val</path>
-    <page_callback>CRM_I3val_Form_Configuration</page_callback>
     <title>I3VAL Configuration</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <desc>Ilja's Initiative for Input Validation (I3Val) setup and configuration.</desc>
+    <page_callback>CRM_I3val_Form_Configuration</page_callback>
+    <access_arguments>administer CiviCRM</access_arguments>
+    <adminGroup>Communications</adminGroup>
+    <icon>admin/small/case_type.png</icon>
+    <weight>400</weight>
   </item>
 </menu>
