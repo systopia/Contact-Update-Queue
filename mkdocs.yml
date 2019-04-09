@@ -4,6 +4,9 @@ theme: material
 
 pages:
 - 'Home': index.md
+- 'Configuration': configuration.md
+- 'Registering change requests': registering-change-requests.md
+- 'Processing change requests': processing-change-requests.md
 
 markdown_extensions:
 - attr_list

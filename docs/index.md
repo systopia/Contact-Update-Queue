@@ -1,1 +1,42 @@
-../README.md
+# I3Val Input Validation (i3val)
+
+## Preface
+
+This extension was created with the working title "Ilja's Initiative for Input
+Validation", and was initially sponsored by *Amnesty International Vlaanderen*,
+thus the unusual name.
+
+Its purpose is to provide convenient tools for validating data input from
+external sources into CiviCRM, such as public event registration or contribution
+forms or APIs from third-party systems, e.g. external payment providers
+synchronising their data using web hooks.
+
+Usually, feeding data into CiviCRM in an unsupervised manner requires either
+full confidence in the data source, so that data can be safely updated or
+created without validation, or data changes to be rejected. Since the CiviCRM
+API does not provide a convenient way to document such rejections, this
+extension tries to act as a mediator between the API and the user by providing
+functionality for processing rejected data changes in a batch processing
+interface.
+
+## Features
+
+The I3Val extension provides a user interface for manually processing data
+changes documented by the API, allowing the user to step through them one by one
+and providing options for approving or finally rejecting the requested changes
+or manually altering the input before saving to the CiviCRM database and closing
+the data change request.
+
+## Technical background
+
+The basic workflow for using this extension is to request updates to CiviCRM
+Core entities *Contact*, *Address*, or others (to be implemented) using the
+appropriate API action. This should happen after some logic has already
+processed the data that can be safely updated, because the I3Val extension only
+documents differing changes as activities, that can be processed with a user
+interface later on.
+
+An example for processing data input is the
+[*Extended Contact Manager* (*XCM*)](https://github.com/systopia/de.systopia.xcm)
+extension, which provides rules for adding, overwriting, or rejecting contact
+data, and provides an option to document differences with the I3Val extension.
