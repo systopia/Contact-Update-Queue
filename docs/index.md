@@ -1,4 +1,4 @@
-# I3Val Input Validation (i3val)
+# I3Val Input Validation
 
 ## Preface
 
