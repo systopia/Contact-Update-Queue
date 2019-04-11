@@ -19,4 +19,12 @@ the I3Val activity that is to be created:
 -   *Parent activity ID* (`i3val_parent_id`)
 
 If there are data differences, an activity will be created, documenting them in
-a structure that allows parsing by the I3Val user interface.
+a structure that allows parsing by the I3Val Desktop.
+
+!!! info
+    Registering change requests through the I3Val API may also be done by other
+    CiviCRM extensions that want to utilize I3Val's functionality for validating
+    their data. Most notably, the
+    [*Extended Contact Manager* (*XCM*)](https://github.com/systopia/de.systopia.xcm)
+    extension provides an option for registering differences of contact data
+    when identifying contacts with a set of parameters.

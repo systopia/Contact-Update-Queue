@@ -1,20 +1,37 @@
 # Configuration
 
 Once installed, the I3Val extension provides a configuration interface
-accessible at *Administration* → *System Settings* → *I3Val Configuration* with
+accessible at *Administration* → *System Settings* → *Configure I3Val* with
 the following configuration options:
 
 ## Processing Options
 
 This section defines options for processing change requests using the I3Val
-batch processing interface.
+Desktop.
+
+![I3Val Configuration form - Processing Options](img/i3val-configuration-processing_options.png "I3Val Configuration form - Processing Options")
 
 ### Quick History
+
+When processing data change requests for a contact, activities of the type(s)
+selected here will be shown in a drop-down area in the I3Val Desktop for
+reference of which changes have been either scheduled, processed or marked
+problematic for the contact.
+
+Reviewing closed activities may be useful for deciding what to do with a change
+request. Also, seeing multiple scheduled change requests for the same contact
+may indicate interferences with the current change request. In this case, an
+information message will appear, informing you about other scheduled change
+requests for the same contact, offering you to process all of them in a new
+batch.
 
 ### Default Action
 
 This option defines the default action to select for a change request. Selecting
-"Automatic" will try to choose the most appropriate action for each entry.
+"Automatic" will try to choose the most appropriate action for each entry. The
+default action will not be applied automatically, it will just be pre-selected
+within the I3Val Desktop processing handler panels, still giving you the
+possibility to change it before applying the change request.
 
 ### Flagged Request Status
 
@@ -33,8 +50,10 @@ This option defines how many change requests will be put together in a batch.
 ## Update Request Options
 
 This section defines options for data stored with change requests when
-processing them using the I3Val batch processing interface. Those are generally
-common validators for providing more sanity of input data automatically.
+processing them using the I3Val Desktop. Those are generally common validators
+for providing more sanity of input data automatically.
+
+![I3Val Configuration form - Update Request Options](img/i3val-configuration-update_request_options.png "I3Val Configuration form - Update Request Options")
 
 ### Input Trim Characters
 
@@ -51,6 +70,19 @@ values. E.g. if empty data is submitted as "None" or "NULL" and those values are
 being set here, the input values will be seen as non-existent and be ignored.
 
 ## Data Configuration
+
+Within this section, an arbitrary number of configuration sets can be defined.
+Those sets define which data changes should be processed. Which configuration
+set is being used is defined by the selected activity type.
+
+!!! example
+    If you want to only process changes in e-mail addresses for a certain data
+    source (e.g. a newsletter subscription form), change request activities
+    should be created with a specific activity type, which should then be
+    configured to only use the *Email Update* handler in the I3Val configuration
+    set. All other changes will not be processed.
+
+![I3Val Configuration form - Data Configuration](img/i3val-configuration-data_configuration.png "I3Val Configuration form - Data Configuration")
 
 ### Activity Type
 
