@@ -89,6 +89,13 @@ set is being used is defined by the selected activity type.
 The activity type is the primary parameter for deciding which I3Val
 configuration to use for processing change requests.
 
+You should select an activity type that is to be solely used for registering
+change requests, since all activities of that type will be taken into account
+when processing the change requests using the I3Val Desktop, and activities of
+that type without any change request information on it are prone to cause errors
+during that process. Therefore, you should create a separate activity type for
+use of recording change requests through I3Val.
+
 ### Handlers
 
 You may define which data handlers should be used to process change requests per
