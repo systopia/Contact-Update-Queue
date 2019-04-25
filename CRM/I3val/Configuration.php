@@ -289,9 +289,22 @@ class CRM_I3val_Configuration {
     // TODO: config?
     $statuses = array(
       1, // Scheduled
-      // TODO Waiting
+      // TODO Waiting?
       );
     return $statuses;
+  }
+
+  /**
+   * Check if the activity is LIVE, i.e. as one of the LIVE statuses
+   *
+   * @param $activity_id int activity ID
+   * @return boolean true if it is live
+   * @see getLiveActivityStatuses
+   */
+  public function isActivityLive($activity_id) {
+    $activity_status_ids = implode(',', $this->getLiveActivityStatuses());
+    $activity_live = CRM_Core_DAO::singleValueQuery("SELECT id FROM civicrm_activity WHERE status_id IN ({$activity_status_ids})");
+    return !empty($activity_live);
   }
 
   /**

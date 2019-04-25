@@ -239,6 +239,11 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     $configuration = CRM_I3val_Configuration::getConfiguration();
     $timestamp = NULL;
 
+    // check, if activity is still LIVE (See I3Val-14)
+    if ($configuration->isActivityLive($this->activity_id)) {
+      $this->command = 'changed';
+    }
+
     switch ($this->command) {
       case 'postpone':
         // Process this later
@@ -256,6 +261,10 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
       case 'submit':
         // Apply changes
         $timestamp = $this->applyChanges();
+        break;
+
+      case 'changed':
+        CRM_Core_Session::setStatus(E::ts("The change request [%1] presented here had already been processed elsewhere.", [1 => $this->activity_id]), E::ts('Skipped'), 'error');
         break;
 
       default:
