@@ -240,7 +240,7 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     $timestamp = NULL;
 
     // check, if activity is still LIVE (See I3Val-14)
-    if ($configuration->isActivityLive($this->activity_id)) {
+    if (!$configuration->isActivityLive($this->activity_id)) {
       $this->command = 'changed';
     }
 

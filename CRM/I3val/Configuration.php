@@ -302,9 +302,14 @@ class CRM_I3val_Configuration {
    * @see getLiveActivityStatuses
    */
   public function isActivityLive($activity_id) {
-    $activity_status_ids = implode(',', $this->getLiveActivityStatuses());
-    $activity_live = CRM_Core_DAO::singleValueQuery("SELECT id FROM civicrm_activity WHERE status_id IN ({$activity_status_ids})");
-    return !empty($activity_live);
+    $activity_id = (int) $activity_id;
+    if ($activity_id) {
+      $activity_status_ids = implode(',', $this->getLiveActivityStatuses());
+      $activity_live = CRM_Core_DAO::singleValueQuery("SELECT id FROM civicrm_activity WHERE id = {$activity_id} AND status_id IN ({$activity_status_ids})");
+      return !empty($activity_live);
+    } else {
+      return FALSE; // no ID? not LIVE!
+    }
   }
 
   /**
