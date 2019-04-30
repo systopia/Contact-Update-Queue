@@ -119,11 +119,14 @@ class CRM_I3val_Session {
   protected function getNext($grab_more_if_needed = TRUE, $after_timestamp = NULL) {
     // error_log("GET NEXT");
     $cache_key = $this->getSessionKey();
+    $live_status_list = implode(',', CRM_I3val_Configuration::getConfiguration()->getLiveActivityStatuses());
     $next_activity_id = CRM_Core_DAO::singleValueQuery("
-        SELECT activity_id
-        FROM i3val_session_cache
-        WHERE session_key = '{$cache_key}'
-        ORDER BY id ASC
+        SELECT cache.activity_id AS activity_id
+        FROM i3val_session_cache cache
+        LEFT JOIN civicrm_activity activity ON activity.id = cache.activity_id
+        WHERE cache.session_key = '{$cache_key}'
+          AND activity.status_id IN ({$live_status_list})
+        ORDER BY cache.id ASC
         LIMIT 1");
     if (!$next_activity_id && $grab_more_if_needed) {
       // try to get more

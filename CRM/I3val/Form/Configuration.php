@@ -187,6 +187,8 @@ class CRM_I3val_Form_Configuration extends CRM_Core_Form {
     // update the custom groups
     CRM_I3val_Configuration::synchroniseCustomFields();
 
+    CRM_Core_Session::setStatus(E::ts("I3Val configuration was updated successfully."), E::ts("Configuration Saved"), 'info');
+
     parent::postProcess();
   }
 
