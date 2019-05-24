@@ -261,6 +261,15 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
       case 'submit':
         // Apply changes
         $timestamp = $this->applyChanges();
+
+        // add to recent items
+        CRM_Utils_Recent::add(
+            $this->contact['display_name'],
+            CRM_Utils_System::url("civicrm/contact/view", "reset=1&cid={$this->contact['id']}"),
+            $this->contact['id'],
+            $this->contact['contact_type'],
+            $this->contact['id'],
+            $this->contact['display_name']);
         break;
 
       case 'changed':
@@ -274,6 +283,7 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
 
     // mark received
     $session->markProcessed($this->activity_id, $timestamp);
+
 
     // go to the next one
     // $next_url = CRM_Utils_System::url("civicrm/i3val/desktop");
