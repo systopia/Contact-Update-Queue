@@ -45,6 +45,7 @@
       <td class="label">{ts domain="be.aivl.i3val"}With Contact{/ts}</td>
       <td class="view-value">
         <span class="crm-frozen-field">
+          {$activity.image}
           <a class="view-contact no-popup" href="{$activity.with_link}" title="View Contact">{$activity.with_name}</a>
           <input value="{$activity.with_id}" name="target_contact_id" type="hidden">
         </span>

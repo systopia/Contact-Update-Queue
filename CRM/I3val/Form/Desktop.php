@@ -314,6 +314,8 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     $activity['with_name'] = $contact['display_name'];
     $activity['with_id']   = $contact['id'];
     $activity['with_link'] = CRM_Utils_System::url("civicrm/contact/view", "reset=1&cid={$contact['id']}");
+    $activity['image'] = CRM_Contact_BAO_Contact_Utils::getImage(empty($this->contact['contact_sub_type']) ? $this->contact['contact_sub'] : $this->contact['contact_sub_type'], FALSE, $this->contact['id']);
+
 
     // load the status
     $activity['status'] = civicrm_api3('OptionValue', 'getvalue', array(
