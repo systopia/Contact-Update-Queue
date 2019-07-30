@@ -63,6 +63,20 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
   }
 
   /**
+   * get a list of location types
+   *
+   * @return array location type id -> location type name
+   */
+  protected function getIndexedLocationTypeList() {
+    $location_types = $this->_getLocationTypes();
+    $location_type_list = array();
+    foreach ($location_types as $location_type_id => $location_type) {
+      $location_type_list[$location_type_id] = $location_type['display_name'];
+    }
+    return $location_type_list;
+  }
+
+  /**
    * get the default location type object
    *
    * @return array location type data
