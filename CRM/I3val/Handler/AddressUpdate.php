@@ -112,6 +112,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
    * @return array with changes to the activity
    */
   public function applyChanges($activity, $values, $objects = array()) {
+    // TODO: REFACTOR!
     $activity_update = array();
     if (!$this->hasData($activity)) {
       // NO DATA, no updates
@@ -192,9 +193,9 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
 //      $form->add('hidden', 'i3val_address_updates_address_id', 0);
 //    }
 //
-//    $this->applyUpdateData($form_values, $values, "{$prefix}%s");
-//    $form->assign('i3val_address_fields', $field2label);
-//    $form->assign('i3val_address_values', $form_values);
+    $this->applyUpdateData($form_values, $values, "{$prefix}%s");
+    $form->assign('i3val_address_fields', $field2label);
+    $form->assign('i3val_address_values', $form_values);
 
     // create input fields and apply checkboxes
     $active_fields = array();
@@ -320,7 +321,8 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
 
     // add processing options
     $addresses = $this->getExistingAddresses($form->contact['id']);
-    $options = $this->getProcessingOptions($values, $addresses, $default_action);
+    $address_submitted = $this->getMyValues($activity);
+    $options = $this->getCustomProcessingOptions($address_submitted, $addresses, $default_action);
 //    $this->adjustAddressSharingOptions($options, $activity);
     $form->add(
       'select',
@@ -585,7 +587,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
   /**
    * get the processing options (caution: different signature)
    */
-  protected function getProcessingOptions($data_submitted, $addresses, &$default_action = NULL) {
+  protected function getCustomProcessingOptions($data_submitted, $addresses, &$default_action = NULL) {
     // this handler has different options than the other detail handlers
     $options = [];
     $location_type_list = $this->getIndexedLocationTypeList();

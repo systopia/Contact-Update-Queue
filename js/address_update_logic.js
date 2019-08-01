@@ -14,40 +14,22 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
+/**
+ * These is the list of all current addresses
+ */
+let i3val_address_all = CRM.vars.i3val_address_update.addresses;
 
+cj(document).ready(function() {
+    /**
+     * Updates the panel based on the selected action
+     */
+    function i3val_address_action_changed() {
+        let action = cj("#i3val_address_updates_action").val();
+        let action_class = action.split(' ')[0];
+        console.log(action_class);
+    }
 
-//
-// var i3val_activity_id = INJECTED_ACTIVITY_ID;
-// var i3val_activity_type_id = INJECTED_ACTIVITY_TYPE_ID;
-// var i3val_panel = INJECTED_PANEL;
-// var i3val_selector = "td[id^=i3val_contact_updates_]";
-//
-//
-// function i3val_tryDoingUpdate() {
-//   var wrapper = cj(i3val_selector);
-//   if (wrapper.length == 1) {
-//     i3val_renderInteractiveTable(wrapper);
-//   }
-// }
-//
-// /**
-//  * transform the standard rendering of our custom group
-//  * a nice table
-//  */
-// function i3val_renderInteractiveTable(wrapperElement) {
-//   // check if has already been transformed
-//   if (wrapperElement.find("table.i3val").length) return;
-//
-//   var body = wrapperElement.find("div.crm-accordion-body");
-//   if (body.length != 1) return;
-//
-//   // create table stucture
-//   body.html(''); // clear out
-//   body.append(i3val_panel['html']);
-// }
-//
-//
-// // UPDATE TRIGGERS
-// cj(document).ready(function() {
-//   i3val_tryDoingUpdate();
-// });
+    // add change listener to action select
+    cj("#i3val_address_updates_action").change(i3val_address_action_changed);
+    i3val_address_action_changed();
+});
