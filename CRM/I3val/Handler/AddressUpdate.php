@@ -179,20 +179,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     $prefix = $this->getKey() . '_';
     $values = $this->compileValues(self::$group_name, $field2label, $activity);
 
-//    // find existing address
-//    $address_submitted = $this->getMyValues($activity);
-//    $address_submitted['contact_id'] = $form->contact['id'];
-//    $existing_address = $this->getMatchingAddressAddress($address_submitted);
-//    $this->resolveFields($existing_address);
-//    $this->resolveFields($address_submitted);
-//
-//    if ($existing_address) {
-//      $form->add('hidden', 'i3val_address_updates_address_id', $existing_address['id']);
-//      $this->addCurrentValues($values, $existing_address);
-//    } else {
-//      $form->add('hidden', 'i3val_address_updates_address_id', 0);
-//    }
-//
+    // add default values
     $this->applyUpdateData($form_values, $values, "{$prefix}%s");
     $form->assign('i3val_address_fields', $field2label);
     $form->assign('i3val_address_values', $form_values);
@@ -236,87 +223,20 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
           );
           break;
       }
-
-      // add primary field
-      $form_fieldname = "{$prefix}_is_primary";
-      $form->add(
-          'select',
-          $form_fieldname,
-          E::ts("Primary?"),
-          ['0' => E::ts("Address"), '1' => E::ts("Primary Address")],
-          FALSE,
-          array('class' => 'crm-select2')
-      );
-
-      // TODO: ADD address sharing (if submitted?)
-
-//      if ($fieldname=='location_type') {
-//        $active_fields[$form_fieldname] = $fieldlabel;
-//
-//        // add the text input
-//        $form->add(
-//            'select',
-//            "{$form_fieldname}_applied",
-//            $fieldlabel,
-//            $this->getLocationTypeList(),
-//            FALSE,
-//            array('class' => 'crm-select2')
-//        );
-//
-//        if (isset($values[$fieldname]['submitted'])) {
-//          $matching_location_type = $this->getMatchingLocationType($values[$fieldname]['submitted']);
-//        } else {
-//          $matching_location_type = $this->getDefaultLocationType();
-//        }
-//        $form->setDefaults(array("{$form_fieldname}_applied" => $matching_location_type['display_name']));
-//
-//      } else {
-//        // if there is no values, omit field
-//        if ($config->clearingFieldsAllowed()) {
-//          if (empty($values[$fieldname]['submitted']) && empty($values[$fieldname]['original'])) {
-//            continue;
-//          }
-//        } else {
-//          if (empty($values[$fieldname]['submitted'])) {
-//            continue;
-//          }
-//        }
-//
-//        $active_fields[$form_fieldname] = $fieldlabel;
-//        if ($fieldname == 'country') {
-//          $form->add(
-//            'select',
-//            "{$form_fieldname}_applied",
-//            $fieldlabel,
-//            $this->getCountryList(),
-//            FALSE,
-//            array('class' => 'crm-select2')
-//          );
-//          if (isset($address_submitted['country'])) {
-//            $form->setDefaults(array("{$form_fieldname}_applied" => $address_submitted['country']));
-//          } else {
-//            $default_country = $this->getDefaultCountryName();
-//            $form->setDefaults(array("{$form_fieldname}_applied" => $default_country));
-//          }
-//
-//        } else {
-//          $form->add(
-//            'text',
-//            "{$form_fieldname}_applied",
-//            $fieldlabel
-//          );
-//
-//          // calculate proposed value
-//          if (!empty($values[$fieldname]['applied'])) {
-//            $form->setDefaults(array("{$form_fieldname}_applied" => $values[$fieldname]['applied']));
-//          } else {
-//            $form->setDefaults(array("{$form_fieldname}_applied" => isset($values[$fieldname]['submitted']) ? $values[$fieldname]['submitted'] : ''));
-//          }
-//        }
-//      }
     }
 
-    // add address sharing options
+    // add primary field
+    $form_fieldname = "{$prefix}_is_primary";
+    $form->add(
+        'select',
+        $form_fieldname,
+        E::ts("Primary?"),
+        ['0' => E::ts("Address"), '1' => E::ts("Primary Address")],
+        FALSE,
+        array('class' => 'crm-select2')
+    );
+
+    // TODO: ADD address sharing (if submitted?)
 //    $this->renderAddressSharingPanel($activity, $form, $address_submitted);
 
     // add processing options
@@ -635,7 +555,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
         }
       } else {
         if ($can_create) {
-          $options["add {$location_type}"] = E::ts("Create %1 Address", [1 => $location_type_name]);
+          $options["add {$location_type_name}"] = E::ts("Create %1 Address", [1 => $location_type_name]);
         }
       }
     }
