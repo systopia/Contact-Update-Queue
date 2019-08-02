@@ -38,6 +38,7 @@
       </tbody>
     </table>
 
+    <!--
     {if $i3val_address_sharing_contact}
     {$form.i3val_address_sharing_contact_id}
     <div class="i3val-suboption">
@@ -50,6 +51,7 @@
       <span class="i3val-suboption-item i3val-suboption-hint" id="i3val_address_sharing_hint">{ts}This address will be updated as well.{/ts}</span>
     </div>
     {/if}
+    -->
 
     <hr/>
 

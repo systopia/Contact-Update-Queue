@@ -82,11 +82,22 @@ cj(document).ready(function() {
 
             // copy to target
             if (field_value !== '' || clear_missing) {
+                // first: take care of drop-down defaults
+                if (field_name == 'country' && field_value == '') {
+                    field_value = CRM.vars.i3val_address_update.default_country;
+                }
+
                 if (field_set === 'applied') {
-                    cj("[name=address_" + field_name + "_applied").val(field_value);
+                    cj("[name=address_" + field_name + "_applied").val(field_value).change();
+
                 } else if (field_set === 'current') {
                     // set value
-                    cj(".i3val-address-current-address_" + field_name + " span").text(field_value);
+                    if (field_name == 'is_primary') {
+                        let yes_no = CRM.vars.i3val_address_update.yes_no[field_value];
+                        cj(".i3val-address-current-address_" + field_name + " span").text(yes_no);
+                    } else {
+                        cj(".i3val-address-current-address_" + field_name + " span").text(field_value);
+                    }
 
                     // enable copy
                     if (field_value !== '') {

@@ -112,7 +112,6 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
    * @return array with changes to the activity
    */
   public function applyChanges($activity, $values, $objects = array()) {
-    // TODO: REFACTOR!
     $activity_update = array();
     if (!$this->hasData($activity)) {
       // NO DATA, no updates
@@ -122,6 +121,8 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     $address_update = array();
     $prefix = $this->getKey() . '_';
     $action = CRM_Utils_Array::value('i3val_address_updates_action', $values, '');
+
+
     switch ($action) {
       case 'add_primary':
         $address_update['is_primary'] = 1;
@@ -197,17 +198,6 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
       $active_fields[$form_fieldname] = $fieldlabel;
 
       switch ($fieldname) {
-//        case 'location_type':
-//          $form->add(
-//              'select',
-//              "{$form_fieldname}_applied",
-//              $fieldlabel,
-//              $this->getLocationTypeList(),
-//              FALSE,
-//              array('class' => 'crm-select2')
-//          );
-//          break;
-
         case 'country':
           $form->add(
               'select',
@@ -230,12 +220,13 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     }
 
     // add primary field
-    $form_fieldname = "{$prefix}_is_primary";
+    $form_fieldname = "{$prefix}is_primary";
+    $active_fields[$form_fieldname] = E::ts("Primary Address");
     $form->add(
         'select',
-        $form_fieldname,
-        E::ts("Primary?"),
-        ['0' => E::ts("Address"), '1' => E::ts("Primary Address")],
+        "{$form_fieldname}_applied",
+        E::ts("Primary Address"),
+        ['0' => E::ts("No"), '1' => E::ts("Yes")],
         FALSE,
         array('class' => 'crm-select2')
     );
@@ -264,11 +255,13 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
 
     // add JS code
     CRM_Core_Resources::singleton()->addVars('i3val_address_update', [
-        'addresses'      => $addresses,
-        'original'       => $this->getMyValues($activity, 'original'),
-        'submitted'      => $address_submitted,
-        'location_types' => array_flip($this->getIndexedLocationTypeList()),
-        'field_names'    => array_keys($field2label),
+        'addresses'       => $addresses,
+        'original'        => $this->getMyValues($activity, 'original'),
+        'submitted'       => $address_submitted,
+        'location_types'  => array_flip($this->getIndexedLocationTypeList()),
+        'field_names'     => array_merge(array_keys($field2label), ['is_primary']),
+        'yes_no'          => ['0' => E::ts("No"), '1' => E::ts("Yes")],
+        'default_country' => CRM_Core_BAO_Country::defaultContactCountryName(),
     ]);
     CRM_Core_Resources::singleton()->addScriptFile('be.aivl.i3val', 'js/address_update_logic.js');
   }
