@@ -120,33 +120,53 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
 
     $address_update = array();
     $prefix = $this->getKey() . '_';
-    $action = CRM_Utils_Array::value('i3val_address_updates_action', $values, '');
+    $action = explode(' ', CRM_Utils_Array::value('i3val_address_updates_action', $values, ''));
 
-
-    switch ($action) {
-      case 'add_primary':
-        $address_update['is_primary'] = 1;
+    switch ($action[0]) {
       case 'add':
-        $activity_update[self::$group_name . ".action"] = E::ts("New address added.");
+        // create a new address (in $address_update, will be executed below)
+        $location_type = $action[1];
         $address_update['contact_id'] = $values['contact_id'];
+        $address_update['location_type'] = $location_type;
         $this->applyUpdateData($address_update, $values, '%s', "{$prefix}%s_applied");
+
+        // update i3val job data
+        $activity_update[self::$group_name . ".action"] = E::ts("New %1 address added.", [1 => $location_type]);
+        $this->applyUpdateData($activity_update, $values, self::$group_name . '.%s_applied', "{$prefix}%s_applied");
+        break;
+
+      case 'replace':
+        // delete old address of this type
+        $location_type = $action[1];
+        $this->deleteAddress($location_type, $values['contact_id']);
+
+        // create a new address (in $address_update, will be executed below)
+        $location_type = $action[1];
+        $address_update['contact_id'] = $values['contact_id'];
+        $address_update['location_type'] = $location_type;
+        $this->applyUpdateData($address_update, $values, '%s', "{$prefix}%s_applied");
+
+        // update i3val job data
+        $activity_update[self::$group_name . ".action"] = E::ts("Replaced %1 address.", [1 => $location_type]);
         $this->applyUpdateData($activity_update, $values, self::$group_name . '.%s_applied', "{$prefix}%s_applied");
         break;
 
       case 'update':
-        $activity_update[self::$group_name . ".action"]= E::ts("Address updated");
-        $address_update['id']         = $values['i3val_address_updates_address_id'];
-        $address_update['contact_id'] = $values['contact_id']; // not necessary, but causes notices in 4.6
-        $this->applyUpdateData($address_update, $values, '%s', "{$prefix}%s_applied");
-        $this->applyUpdateData($activity_update, $values, self::$group_name . '.%s_applied', "{$prefix}%s_applied");
+        // check if to-be-updated address (still) exists
+        $location_type = $action[1];
+        $address = $this->getCurrentAddress($location_type, $values['contact_id']);
+        if ($address) {
+          // update given address (in $address_update, will be executed below)
+          $address_update['id'] = $address['id'];
+          $this->applyUpdateData($address_update, $values, '%s', "{$prefix}%s_applied");
+
+          $this->applyUpdateData($activity_update, $values, self::$group_name . '.%s_applied', "{$prefix}%s_applied");
+          $activity_update[self::$group_name . ".action"] = E::ts("Updated %1 address.", [1 => $location_type]);
+        }
         break;
 
       case 'duplicate':
         $activity_update[self::$group_name . ".action"] = E::ts("Entry already existed.");
-        break;
-
-      case 'share':
-        $activity_update[self::$group_name . ".action"] = E::ts("Address shared");
         break;
 
       default:
@@ -163,8 +183,8 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
       $address_update['id'] = $result['id'];
     }
 
-    // apply address sharing (if there is any)
-    $this->applyAddressSharingChanges($activity, $action, $values, $activity_update, $address_update);
+//    // apply address sharing (if there is any)
+//    $this->applyAddressSharingChanges($activity, $action, $values, $activity_update, $address_update);
 
     return $activity_update;
   }
@@ -307,6 +327,50 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
         break;
     }
   }
+
+  /**
+   * Get the address of the given type from the contact
+   *
+   * @param $location_type string|int location type name or ID
+   * @param $contact_id    int        CiviCRM contact ID
+   *
+   * @return array|null address data or NULL
+   */
+  protected function getCurrentAddress($location_type, $contact_id) {
+    if (empty($contact_id)) {
+      return NULL;
+    }
+
+    $addresses = $this->getExistingAddresses($contact_id);
+
+    // this should work for location type IDs
+    if (isset($addresses[$location_type])) {
+      return $addresses[$location_type];
+    }
+
+    // plan B: find the one with the location type
+    foreach ($addresses as $address) {
+      if ($address['location_type'] == $location_type) {
+        return $address;
+      }
+    }
+
+    return NULL;
+  }
+
+  /**
+   * Will delete the address of the given location type with the contact
+   *
+   * @param $location_type string|int location type name or ID
+   * @param $contact_id    int        CiviCRM contact ID
+   */
+  protected function deleteAddress($location_type, $contact_id) {
+    $address = $this->getCurrentAddress($location_type, $contact_id);
+    if ($address) {
+      civicrm_api3('Address', 'delete', ['id' => $address['id']]);
+    }
+  }
+
 
   /**
    * Get the country ID based on a string
