@@ -187,22 +187,26 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     // create input fields and apply checkboxes
     $active_fields = array();
     foreach ($field2label as $fieldname => $fieldlabel) {
+      if ($fieldname == 'location_type') {
+        // no location type here, will be determined by the selected action
+        continue;
+      }
+
+      // ok, move on:
       $form_fieldname = "{$prefix}{$fieldname}";
       $active_fields[$form_fieldname] = $fieldlabel;
 
-      // LOCATION TYPE is always there...
       switch ($fieldname) {
-        case 'location_type':
-          // add the text input
-          $form->add(
-              'select',
-              "{$form_fieldname}_applied",
-              $fieldlabel,
-              $this->getLocationTypeList(),
-              FALSE,
-              array('class' => 'crm-select2')
-          );
-          break;
+//        case 'location_type':
+//          $form->add(
+//              'select',
+//              "{$form_fieldname}_applied",
+//              $fieldlabel,
+//              $this->getLocationTypeList(),
+//              FALSE,
+//              array('class' => 'crm-select2')
+//          );
+//          break;
 
         case 'country':
           $form->add(
@@ -259,7 +263,13 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     $form->assign('i3val_active_address_fields', $active_fields);
 
     // add JS code
-    CRM_Core_Resources::singleton()->addVars('i3val_address_update', ['addresses' => $addresses]);
+    CRM_Core_Resources::singleton()->addVars('i3val_address_update', [
+        'addresses'      => $addresses,
+        'original'       => $this->getMyValues($activity, 'original'),
+        'submitted'      => $address_submitted,
+        'location_types' => array_flip($this->getIndexedLocationTypeList()),
+        'field_names'    => array_keys($field2label),
+    ]);
     CRM_Core_Resources::singleton()->addScriptFile('be.aivl.i3val', 'js/address_update_logic.js');
   }
 
@@ -520,8 +530,8 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     if ($matching_address) {
       // do this one first
       if ($can_create) {
-        $options["update {$matching_location_type}"] = E::ts("Update %1 Address", [1 => $matching_location_type]);
-        $options["replace {$matching_location_type}"] = E::ts("Replace %1 Address", [1 => $matching_location_type]);
+        $options["update {$matching_location_type}"] = E::ts("Update '%1' Address", [1 => $matching_location_type]);
+        $options["replace {$matching_location_type}"] = E::ts("Replace '%1' Address", [1 => $matching_location_type]);
         if ($this->shouldUpdateAddress($matching_address, $data_submitted)) {
           // if it's similar enough, it might just be an adjustment:
           $default_action = "update {$matching_location_type}";
@@ -531,12 +541,12 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
         }
       } else {
         // we don't have enough data to create a new one, i.e. we _have_ to update
-        $options["update {$matching_location_type}"] = E::ts("Update %1 Address", [1 => $matching_location_type]);
+        $options["update {$matching_location_type}"] = E::ts("Update '%1' Address", [1 => $matching_location_type]);
         $default_action = "update {$matching_location_type}";
       }
     } elseif (!empty($data_submitted['location_type']['submitted'])) {
       $location_type = $data_submitted['location_type']['submitted'];
-      $options["add {$location_type}"] = E::ts("Create %1 Address", [1 => $location_type]);
+      $options["add {$location_type}"] = E::ts("Add New '%1' Address", [1 => $location_type]);
       $default_action = "add {$location_type}";
     }
 
@@ -549,13 +559,13 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
 
       if (isset($addresses[$location_type_id])) {
         // there _is_ an address of this location type:
-        $options["update {$location_type_name}"] = E::ts("Update %1 Address", [1 => $location_type_name]);
+        $options["update {$location_type_name}"] = E::ts("Update '%1' Address", [1 => $location_type_name]);
         if ($can_create) {
-          $options["replace {$location_type_name}"] = E::ts("Replace %1 Address", [1 => $location_type_name]);
+          $options["replace {$location_type_name}"] = E::ts("Replace '%1' Address", [1 => $location_type_name]);
         }
       } else {
         if ($can_create) {
-          $options["add {$location_type_name}"] = E::ts("Create %1 Address", [1 => $location_type_name]);
+          $options["add {$location_type_name}"] = E::ts("Add New '%1' Address", [1 => $location_type_name]);
         }
       }
     }
