@@ -251,8 +251,10 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
         array('class' => 'crm-select2')
     );
 
-    // TODO: ADD address sharing (if submitted?)
-//    $this->renderAddressSharingPanel($activity, $form, $address_submitted);
+    // ADD address sharing data
+    if (CRM_I3val_Configuration::useAddressSharing()) {
+      $this->renderAddressSharingPanel($activity, $form, $address_submitted);
+    }
 
     // add processing options
     $addresses = $this->getExistingAddresses($form->contact['id']);
@@ -699,12 +701,55 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
    ******************************************************/
 
   /**
+   * Add address sharing options if enabled
+   */
+  protected function renderAddressSharingPanel($activity, $form, $address_submitted) {
+    // generate current data list (per location type)
+
+    // generate selection from existing, submitted, relationships
+
+
+    // add sharing JS
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
    * If the shared_with_contact_id is given this function
    *  renders the "address sharing" panel to deal with this
    *
    * @deprecated
    */
-  protected function renderAddressSharingPanel($activity, $form, $address_submitted) {
+  protected function _renderAddressSharingPanel($activity, $form, $address_submitted) {
     $group_name = $this->getCustomGroupName();
     if (!empty($activity["{$group_name}.shared_with_contact_id"])) {
       $shared_with_contact_id = $activity["{$group_name}.shared_with_contact_id"];

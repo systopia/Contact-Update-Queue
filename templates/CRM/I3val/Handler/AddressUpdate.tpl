@@ -38,20 +38,12 @@
       </tbody>
     </table>
 
-    <!--
-    {if $i3val_address_sharing_contact}
-    {$form.i3val_address_sharing_contact_id}
-    <div class="i3val-suboption">
-      <h1><span>{ts domain="be.aivl.i3val"}Share address with{/ts}</span></h1>
-      <span class="i3val-suboption-item">
-        <a href="{$i3val_address_sharing_contact.link}" title="{$i3val_address_sharing_contact.display_name}"><span class="icon crm-icon {$i3val_address_sharing_contact.contact_type}-icon"></span>{$i3val_address_sharing_contact.display_name}</a>
-      </span>
+    <div class="i3val-suboption i3val-address-sharing">
+      <h1><span>{ts domain="be.aivl.i3val"}Share Address{/ts}</span></h1>
+      <span class="i3val-suboption-item i3val-address-sharing-current">BLORP</span>
       <span class="i3val-suboption-item">{$form.i3val_address_sharing_addresses.html}</span>
-      <span class="i3val-suboption-item">{$form.i3val_address_sharing_location_type.html}</span>
-      <span class="i3val-suboption-item i3val-suboption-hint" id="i3val_address_sharing_hint">{ts}This address will be updated as well.{/ts}</span>
+      <span class="i3val-suboption-item i3val-suboption-hint" id="i3val_address_sharing_hint">{ts domain="be.aivl.i3val"}<strong>Caution!</strong> The shared address will be updated as well.{/ts}</span>
     </div>
-    {/if}
-    -->
 
     <hr/>
 

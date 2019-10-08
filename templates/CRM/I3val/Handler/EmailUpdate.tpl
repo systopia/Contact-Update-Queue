@@ -1,4 +1,4 @@
-<div class="crm-accordion-wrapper crm-i3val-email">
+ <div class="crm-accordion-wrapper crm-i3val-email">
   <div class="crm-accordion-header active">{ts domain="be.aivl.i3val"}Email Data{/ts}</div>
   <div class="crm-accordion-body">
     <table>
