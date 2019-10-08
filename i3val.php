@@ -2,7 +2,7 @@
 /*-------------------------------------------------------+
 | Ilja's Input Validation Extension                      |
 | Amnesty International Vlaanderen                       |
-| Copyright (C) 2017 SYSTOPIA                            |
+| Copyright (C) 2019 SYSTOPIA                            |
 | Author: B. Endres (endres@systopia.de)                 |
 | http://www.systopia.de/                                |
 +--------------------------------------------------------+
@@ -16,6 +16,17 @@
 +--------------------------------------------------------*/
 
 require_once 'i3val.civix.php';
+
+use \Symfony\Component\DependencyInjection\ContainerBuilder;
+
+/**
+ * Implements hook_civicrm_container()
+ *
+ * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_container/
+ */
+function i3val_civicrm_container(ContainerBuilder $container) {
+  $container->addCompilerPass(new Civi\I3val\ActionProvider\Action\RequestContactUpdate());
+}
 
 /**
  * Implements hook_civicrm_buildForm()

@@ -23,6 +23,9 @@
     <ver>5.0</ver>
   </compatibility>
   <comments>Funded by Amnesty International Vlaanderen</comments>
+  <classloader>
+    <psr4 prefix="Civi\" path="Civi" />
+  </classloader>
   <civix>
     <namespace>CRM/I3val</namespace>
   </civix>
