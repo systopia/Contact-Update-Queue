@@ -65,15 +65,46 @@ class CRM_I3val_Logic {
       $activity_data['activity_type_id'] = $activity_type_id;
 
       // create activity, reload and return
-      CRM_I3val_Session::log('ACTIVIY ' . json_encode($activity_data));
-      CRM_I3val_CustomData::resolveCustomFields($activity_data);
-      $activity = civicrm_api3('Activity', 'create', $activity_data);
-      return civicrm_api3('Activity', 'getsingle', array('id' => $activity['id']));
+      return self::createActivity($activity_data);
     } else {
       return NULL;
     }
   }
 
+  /**
+   * Create a new activity, along with the custom fields:
+   *
+   * @param $activity_data  array activity data
+   * @return array created activity data
+=   */
+  protected static function createActivity($activity_data) {
+    //CRM_I3val_Session::log('ACTIVIY ' . json_encode($activity_data));
+
+    // first: resolve the (remaining) parameters to the custom_xx notation
+    CRM_I3val_CustomData::resolveCustomFields($activity_data);
+
+    // separate out the parameters
+    $activity_base_data = [];
+    $activity_custom_data = [];
+    foreach ($activity_data as $field_name => $field_value) {
+      if (preg_match("/^custom_[0-9]/", $field_name)) {
+        $activity_custom_data[$field_name] = $field_value;
+      } else {
+        $activity_base_data[$field_name] = $field_value;
+      }
+    }
+
+    // create the activity itself
+    $activity = civicrm_api3('Activity', 'create', $activity_base_data);
+
+    // create the custom data
+    if (!empty($activity_custom_data)) {
+      $activity_custom_data['entity_id'] = $activity['id'];
+      civicrm_api3('CustomValue', 'create', $activity_custom_data);
+    }
+
+    return civicrm_api3('Activity', 'getsingle', ['id' => $activity['id']]);
+  }
 
   /**
    * Add the generic activity parameters, partly derived from the $params
