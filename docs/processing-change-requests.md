@@ -7,7 +7,11 @@ load the I3Val Desktop.
 
 I3Val will, according to the batching options set in the I3Val configuration,
 create a batch of change requests for the current user and show the first item.
-How many items are left in your batch is being shown with a progress bar.
+
+How many items are left to be processed in the system is being shown with a progress bar. 
+Please note that this number is not re-calculated after every request, so 
+it might jump a bit, when new requests are coming in while you work, or when 
+somebody else is processing change requests at the same time.
 
 ## Change request information
 
@@ -18,6 +22,7 @@ Below, you will see the following information:
 *   *Campaign* - (optional) the campaign associated to the change request
 *   *Scheduled Date* - the date the changes were requested
 *   *Status* - the status of the change request activity
+*   *Note* - in case a note (``i3val_note``) was passed when creating the change request
 
 ## Quick Contact History
 
@@ -27,7 +32,10 @@ reference.
 
 ## Data Processing Handlers
 
-Each configured data processing handler will now list the changes it can
+Each handler defines its very own user interface of the to-be-updated values and 
+offers different options for user interaction or confirmation. 
+
+Most of the standard data processing handlers will list the changes they can
 process. For each field requested to be changed, the following values will be
 shown:
 
@@ -55,12 +63,15 @@ existing one.
 By hitting *Apply*, the change request is being confirmed and the changes will
 be written to the contact and/or its details.
 
-### Mark porblematic
+### Mark problematic
 
 When being unsure about what to do with the change request, it can be flagged as
 "problematic", which makes it not appear again in batches and be marked for
 manual investigation by setting the activity status to the one set within the
 I3Val configuration.
+
+Don't forget to set up a process to later pick up on these flagged requests, 
+as they will not re-appear in the queue by themselves.
 
 ### Postpone
 

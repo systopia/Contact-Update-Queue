@@ -38,14 +38,18 @@ possibility to change it before applying the change request.
 This option defines the activity status to set the change request activity to
 when flagging as problematic.
 
-### Session Timeout
+### Session Timeout + Batch Size
 
-This option defines the time until a composed batch of change requests times out
-and the contained change requests can be used within new batches.
+To prevent multiple users from accidentally working on the same change requests, 
+each user is assigned a couple of changes to work on in a "session". This way multiple
+users can be processing change requests, without the risk of conflicts.
 
-### Session Batch Size
+The "Session Timeout" is the time of inactivity that the claimed change requests 
+will remain blocked for any session. After the timeout these change requests will 
+be free to be assigned to other users.  
 
-This option defines how many change requests will be put together in a batch.
+The "Batch Size" defines the amount of change requests block for the user's
+session.
 
 ## Update Request Options
 

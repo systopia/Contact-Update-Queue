@@ -30,7 +30,7 @@ the data change request.
 ## Technical background
 
 The basic workflow for using this extension is to request updates to CiviCRM
-Core entities *Contact*, *Address*, or others (to be implemented) using the
+Core entities *Contact*, *Address*, *Phone*, *Email*, or others (to be implemented) using the
 appropriate API action. This should happen after some logic has already
 processed the data that can be safely updated, because the I3Val extension only
 documents differing changes as activities, that can be processed with a user
