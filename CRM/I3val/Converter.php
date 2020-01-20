@@ -1,0 +1,135 @@
+<?php
+/*-------------------------------------------------------+
+| Ilja's Input Validation Extension                      |
+| Amnesty International Vlaanderen                       |
+| Copyright (C) 2020 SYSTOPIA                            |
+| Author: B. Endres (endres@systopia.de)                 |
+| http://www.systopia.de/                                |
++--------------------------------------------------------+
+| This program is released as free software under the    |
+| Affero GPL license. You can redistribute it and/or     |
+| modify it under the terms of this license which you    |
+| can read by viewing the included agpl.txt or online    |
+| at www.gnu.org/licenses/agpl.html. Removal of this     |
+| copyright header is strictly prohibited without        |
+| written permission from the original author(s).        |
++--------------------------------------------------------*/
+
+use CRM_I3val_ExtensionUtil as E;
+
+/**
+ * Tool to convert old XCM-style change messages to I3Val activities
+ * Class CRM_I3val_Converter
+ */
+class CRM_I3val_Converter {
+
+  protected $success_count = 0;
+  protected $failed_count = 0;
+
+  protected $xcm_mapping = [
+      'Vorname'      => 'i3val_contact_updates.first_name',
+      'Nachname'     => 'i3val_contact_updates.last_name',
+      'Stadt'        => 'i3val_address_updates.city',
+      'Postleitzahl' => 'i3val_address_updates.postal_code',
+      'Land'         => 'i3val_address_updates.country',
+      'Email'        => 'i3val_email_updates.email',
+      'Phone'        => 'i3val_phone_updates.phone',
+  ];
+
+
+  /**
+   * @param $selector          array activity selector for the activities to be converted
+   * @param $activity_type_id  int   target I3Val object (activity_type_id)
+   * @param $params            array additional options
+   */
+  public function convert($selector, $activity_type_id, $params) {
+    // load activities
+    $activities = civicrm_api3('Activity', 'get', $selector);
+
+    foreach ($activities['values'] as $activity) {
+      // build update
+      $activity_update = [
+          'id'               => $activity['id'],
+          'activity_type_id' => $activity_type_id,
+      ];
+
+      // derive parameters
+      $success = $this->extract($activity['details'], $activity_update, $params);
+      if ($success) {
+        // write back activity
+        $this->success_count++;
+        CRM_I3val_CustomData::resolveCustomFields($activity_update);
+        if (empty($params['dry_run'])) {
+          civicrm_api3('Activity', 'create', $activity_update);
+        }
+      } else {
+        $this->failed_count++;
+      }
+    }
+
+    return [$this->success_count, $this->failed_count];
+  }
+
+  /**
+   * Extract the contained changes
+   *
+   * @param string $html
+   * @param array $params
+   * @return array
+   */
+  public function extract (string $data, array &$activity, array $params): boolean {
+    // TODO: switch styles?
+    $attributes = $this->parse_xcm($data);
+
+    // mapping
+    $mapped_values = $this->mapParameters($attributes, $this->xcm_mapping);
+    foreach ($mapped_values as $mapped_key => $mapped_value) {
+      $activity[$mapped_key] = $mapped_value;
+    }
+  }
+
+  /**
+   * Map the parsed parameters to the I3Val custom fields
+   *
+   * @param $attributes array attributes parsed: foreign_key => [old value, new value]
+   * @param $mapping    array know mapping
+   * @return array I3val custom field values
+   * @throws Exception if something can't be mapped
+   */
+  public function mapParameters($attributes, $mapping) {
+    $result = [];
+    foreach ($attributes as $foreign_key => $tuple) {
+      // break if there is an unmapped property
+      if (!isset($mapping[$foreign_key])) {
+        throw new Exception("Foreign Key '{$foreign_key}' unknown");
+      }
+
+      $result["{$mapping[$foreign_key]}_original"]  = $tuple[0];
+      $result["{$mapping[$foreign_key]}_submitted"] = $tuple[1];
+    }
+    return $result;
+  }
+
+  /**
+   * Parse the XCM-style HTML blob
+   *
+   * @param string $html
+   * @return array
+   */
+  public function parse_xcm (string $html): array {
+
+    preg_match_all('/<tr>\s*<td>(.*)<\/td>\s*<td>(.*)<\/td>\s*<td>(.*)<\/td>\s*<\/tr>/m', $html, $matches, PREG_SET_ORDER);
+
+    if ($matches === null) {
+      $matches = [];
+    }
+
+    $result = [];
+    foreach ($matches as $match) {
+      $resultEntry = [$match[2], $match[3]];
+      $result[$match[1]] = $resultEntry;
+    }
+
+    return $result;
+  }
+}
