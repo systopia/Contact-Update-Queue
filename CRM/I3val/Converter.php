@@ -29,7 +29,9 @@ class CRM_I3val_Converter {
   protected $xcm_mapping = [
       'Vorname'      => 'i3val_contact_updates.first_name',
       'Nachname'     => 'i3val_contact_updates.last_name',
+      'gender_id'    => 'i3val_contact_updates.gender',
       'Stadt'        => 'i3val_address_updates.city',
+      'Straße'       => 'i3val_address_updates.street_address',
       'Postleitzahl' => 'i3val_address_updates.postal_code',
       'Land'         => 'i3val_address_updates.country',
       'E-Mail'       => 'i3val_email_updates.email',
@@ -81,7 +83,7 @@ class CRM_I3val_Converter {
    * @return boolean
    * @throws Exception if a parameter couldn't be mapped
    */
-  public function extract (string $data, array &$activity, array $params): boolean {
+  public function extract (string $data, array &$activity, array $params): bool {
     // TODO: switch styles?
     $attributes = $this->parse_xcm($data);
 
@@ -107,6 +109,10 @@ class CRM_I3val_Converter {
     foreach ($attributes as $foreign_key => $tuple) {
       // break if there is an unmapped property
       if (!isset($mapping[$foreign_key])) {
+        // check if it's a custom field
+        if (substr($foreign_key,0 , 7) == 'custom_') {
+          continue;
+        }
         throw new Exception("Foreign Key '{$foreign_key}' unknown");
       }
 
