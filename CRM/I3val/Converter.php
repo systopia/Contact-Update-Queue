@@ -75,9 +75,11 @@ class CRM_I3val_Converter {
   /**
    * Extract the contained changes
    *
-   * @param string $html
+   * @param string $data
+   * @param array $activity
    * @param array $params
-   * @return array
+   * @return boolean
+   * @throws Exception if a parameter couldn't be mapped
    */
   public function extract (string $data, array &$activity, array $params): boolean {
     // TODO: switch styles?
@@ -88,6 +90,8 @@ class CRM_I3val_Converter {
     foreach ($mapped_values as $mapped_key => $mapped_value) {
       $activity[$mapped_key] = $mapped_value;
     }
+
+    return !empty($attributes) && !empty($mapped_values);
   }
 
   /**
