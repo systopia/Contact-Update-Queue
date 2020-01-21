@@ -32,7 +32,7 @@ class CRM_I3val_Converter {
       'Stadt'        => 'i3val_address_updates.city',
       'Postleitzahl' => 'i3val_address_updates.postal_code',
       'Land'         => 'i3val_address_updates.country',
-      'Email'        => 'i3val_email_updates.email',
+      'E-Mail'       => 'i3val_email_updates.email',
       'Phone'        => 'i3val_phone_updates.phone',
   ];
 
@@ -44,6 +44,7 @@ class CRM_I3val_Converter {
    */
   public function convert($selector, $activity_type_id, $params) {
     // load activities
+    $selector['return'] = 'id,details,status_id';
     $activities = civicrm_api3('Activity', 'get', $selector);
 
     foreach ($activities['values'] as $activity) {
@@ -54,7 +55,8 @@ class CRM_I3val_Converter {
       ];
 
       // derive parameters
-      $success = $this->extract($activity['details'], $activity_update, $params);
+      $raw_data = CRM_Utils_Array::value('details', $activity, '');
+      $success = $this->extract($raw_data, $activity_update, $params);
       if ($success) {
         // write back activity
         $this->success_count++;
