@@ -23,24 +23,8 @@ use \Civi\ActionProvider\Action\AbstractAction;
 use \Civi\ActionProvider\Parameter\ParameterBagInterface;
 use \Civi\ActionProvider\Parameter\Specification;
 use \Civi\ActionProvider\Parameter\SpecificationBag;
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class RequestContactUpdate extends AbstractAction implements CompilerPassInterface {
-
-  /**
-   * Register this one action: RequestContactUpdate
-   */
-  public function process(ContainerBuilder $container) {
-    if (!$container->hasDefinition('action_provider')) {
-      return;
-    }
-    $typeFactoryDefinition = $container->getDefinition('action_provider');
-    $typeFactoryDefinition->addMethodCall('addAction', ['RequestContactUpdate', 'Civi\I3val\ActionProvider\Action\RequestContactUpdate', E::ts('Request Contact Update'), [
-        AbstractAction::SINGLE_CONTACT_ACTION_TAG,
-        AbstractAction::DATA_RETRIEVAL_TAG
-    ]]);
-  }
+class RequestContactUpdate extends AbstractAction {
 
   /**
    * Returns the specification of the configuration options for the actual action.

@@ -25,9 +25,7 @@ use \Symfony\Component\DependencyInjection\ContainerBuilder;
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_container/
  */
 function i3val_civicrm_container(ContainerBuilder $container) {
-  if (class_exists("Civi\ActionProvider\Action\AbstractAction")) {
-    $container->addCompilerPass(new Civi\I3val\ActionProvider\Action\RequestContactUpdate());
-  }
+  $container->addCompilerPass(new Civi\I3val\ContainerSpecs());
 }
 
 /**
@@ -36,7 +34,7 @@ function i3val_civicrm_container(ContainerBuilder $container) {
  */
 function i3val_civicrm_buildForm($formName, &$form) {
   if ($formName == 'CRM_Activity_Form_Activity') {
-    // TODO:
+    // TODO: Implement
     // CRM_I3val_Logic::adjustAcitivityView($form->_activityId, $form->_activityTypeId);
   }
 }
