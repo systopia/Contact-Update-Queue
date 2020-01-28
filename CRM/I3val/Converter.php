@@ -116,8 +116,19 @@ class CRM_I3val_Converter {
         throw new Exception("Foreign Key '{$foreign_key}' unknown");
       }
 
-      $result["{$mapping[$foreign_key]}_original"]  = $tuple[0];
-      $result["{$mapping[$foreign_key]}_submitted"] = $tuple[1];
+      // prepare values
+      $original_value  = $tuple[0];
+      $submitted_value = $tuple[1];
+
+      // extract location type
+      $location_type = $this->extractLocationType($submitted_value);
+      if ($location_type) {
+        $prefix = explode('.', $mapping[$foreign_key])[0];
+        $result["{$prefix}.location_type_submitted"] = $location_type;
+      }
+
+      $result["{$mapping[$foreign_key]}_original"]  = $original_value;
+      $result["{$mapping[$foreign_key]}_submitted"] = $submitted_value;
     }
     return $result;
   }
@@ -143,5 +154,35 @@ class CRM_I3val_Converter {
     }
 
     return $result;
+  }
+
+  /**
+   * Extract a location type from the value, if it's attached as ' (location_type)'
+   *
+   * @param $value string the value. if found, the location type will be stripped
+   * @return string|null the location type name if found or null otherwise
+   */
+  public function extractLocationType(&$value) {
+    static $location_type_names = NULL;
+    if ($location_type_names === NULL) {
+      $location_type_names = [];
+      // load location types
+      $query = civicrm_api3('LocationType', 'get', ['option.limit' => 0]);
+      foreach ($query['values'] as $location_type) {
+        $location_type_names[] = $location_type['display_name'];
+      }
+    }
+
+    // now, try to find it in the string
+    foreach ($location_type_names as $location_type_name) {
+      if (preg_match("/ [(]{$location_type_name}[)]$/", $value)) {
+        // we found it!
+        $value = preg_replace("/ [(]{$location_type_name}[)]$/", "", $value);
+        return $location_type_name;
+      }
+    }
+
+    // not found:
+    return NULL;
   }
 }
