@@ -25,7 +25,9 @@ use \Symfony\Component\DependencyInjection\ContainerBuilder;
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_container/
  */
 function i3val_civicrm_container(ContainerBuilder $container) {
-  $container->addCompilerPass(new Civi\I3val\ContainerSpecs());
+  if (class_exists("Civi\I3val\ContainerSpecs")) {
+    $container->addCompilerPass(new Civi\I3val\ContainerSpecs());
+  }
 }
 
 /**
