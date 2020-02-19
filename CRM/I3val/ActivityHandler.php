@@ -198,6 +198,20 @@ abstract class CRM_I3val_ActivityHandler {
     // nothing to do here, please overwrite in subclasses
   }
 
+  /**
+   * Normalise date fields to YYYY-mm-dd in-place
+   * @param $field_name string name of the filed
+   * @param $data       array  data
+   */
+  protected function normaliseDate($field_name, &$data) {
+    if (!empty($data[$field_name])) {
+      $parsed_date = strtotime($data[$field_name]);
+      if ($parsed_date) {
+        $data[$field_name] = date('Y-m-d', $parsed_date);
+      }
+    }
+  }
+
 
   /**
    * extract all of my fields and apply to update
