@@ -414,9 +414,9 @@ class CRM_I3val_Session {
   public function getContinuationURL() {
     $activity_types = $this->get('activity_types');
     if (empty($activity_types)) {
-      return CRM_Utils_System::url("civicrm/i3val/desktop", "reset=1");
+      return CRM_Utils_System::url("civicrm/i3val/desktop", "restart=1&reset=1");
     } else {
-      return CRM_Utils_System::url("civicrm/i3val/desktop", "reset=1&types={$activity_types}");
+      return CRM_Utils_System::url("civicrm/i3val/desktop", "restart=1&reset=1&types={$activity_types}");
     }
   }
 

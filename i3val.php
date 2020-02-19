@@ -25,7 +25,9 @@ use \Symfony\Component\DependencyInjection\ContainerBuilder;
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_container/
  */
 function i3val_civicrm_container(ContainerBuilder $container) {
-  $container->addCompilerPass(new Civi\I3val\ContainerSpecs());
+  if (class_exists("Civi\I3val\ContainerSpecs")) {
+    $container->addCompilerPass(new Civi\I3val\ContainerSpecs());
+  }
 }
 
 /**
@@ -178,7 +180,7 @@ function i3val_civicrm_navigationMenu(&$menu) {
   _i3val_civix_insert_navigation_menu($menu, 'Contacts', array(
     'label'      => ts('Process Pending Update Requests', array('domain' => 'be.aivl.i3val')),
     'name'       => 'i3val_desktop',
-    'url'        => 'civicrm/i3val/desktop?reset=1',
+    'url'        => 'civicrm/i3val/desktop?reset=1&restart=1',
     'permission' => 'edit all contacts',
     'operator'   => 'OR',
     'separator'  => 1,
