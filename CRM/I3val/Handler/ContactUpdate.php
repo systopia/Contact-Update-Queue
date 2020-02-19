@@ -283,18 +283,20 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
       $contact['suffix'] = $contact['individual_suffix'];
     }
 
+    // prepare contact data
     $this->resolveFields($contact);
     $this->resolvePreferredLanguageToLabel($contact);
     $this->normaliseDate('birth_date', $contact);
     $this->normaliseDate('deceased_date', $contact);
 
+    // prepare incoming data
     $this->resolveFields($submitted_data);
     $this->resolvePreferredLanguageToLabel($submitted_data);
     $this->normaliseDate('birth_date', $submitted_data);
     $this->normaliseDate('deceased_date', $submitted_data);
 
+    // run diff
     $raw_diff = $this->createDiff($contact, $submitted_data);
-    // TODO: sort out special cases (e.g. dates)
 
     foreach ($raw_diff as $key => $value) {
       $activity_data[$key] = $value;
