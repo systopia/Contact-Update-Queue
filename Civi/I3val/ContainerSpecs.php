@@ -2,7 +2,7 @@
 /*-------------------------------------------------------+
 | Ilja's Input Validation Extension                      |
 | Amnesty International Vlaanderen                       |
-| Copyright (C) 2017-2019 SYSTOPIA                       |
+| Copyright (C) 2017-2020 SYSTOPIA                       |
 | Author: B. Endres (endres@systopia.de)                 |
 | http://www.systopia.de/                                |
 +--------------------------------------------------------+
@@ -34,7 +34,11 @@ class ContainerSpecs implements CompilerPassInterface {
     $typeFactoryDefinition = $container->getDefinition('action_provider');
     $typeFactoryDefinition->addMethodCall('addAction', ['RequestContactUpdate', 'Civi\I3val\ActionProvider\Action\RequestContactUpdate', E::ts('Request Contact Update'), [
         \Civi\ActionProvider\Action\AbstractAction::SINGLE_CONTACT_ACTION_TAG,
-        \Civi\ActionProvider\Action\AbstractAction::DATA_RETRIEVAL_TAG
+        \Civi\ActionProvider\Action\AbstractAction::DATA_MANIPULATION_TAG
+    ]]);
+    $typeFactoryDefinition->addMethodCall('addAction', ['RequestMandateUpdate', 'Civi\I3val\ActionProvider\Action\RequestMandateUpdate', E::ts('Request CiviSEPA Mandate Update'), [
+        \Civi\ActionProvider\Action\AbstractAction::SINGLE_CONTACT_ACTION_TAG,
+        \Civi\ActionProvider\Action\AbstractAction::DATA_MANIPULATION_TAG
     ]]);
   }
 }
