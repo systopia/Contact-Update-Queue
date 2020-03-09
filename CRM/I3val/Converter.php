@@ -26,17 +26,24 @@ class CRM_I3val_Converter {
   protected $success_count = 0;
   protected $failed_count = 0;
 
-  protected $xcm_mapping = [
-      'Vorname'      => 'i3val_contact_updates.first_name',
-      'Nachname'     => 'i3val_contact_updates.last_name',
-      'gender_id'    => 'i3val_contact_updates.gender',
-      'Stadt'        => 'i3val_address_updates.city',
-      'Straße'       => 'i3val_address_updates.street_address',
-      'Postleitzahl' => 'i3val_address_updates.postal_code',
-      'Land'         => 'i3val_address_updates.country',
-      'E-Mail'       => 'i3val_email_updates.email',
-      'Phone'        => 'i3val_phone_updates.phone',
-  ];
+  /**
+   * Get the mapping of the row header to the corresponding i3val field
+   * @return array mapping
+   */
+  protected function getParameterMapping() {
+    return [
+        ts('First Name')     => 'i3val_contact_updates.first_name',
+        ts('Last Name')      => 'i3val_contact_updates.last_name',
+        'gender_id'               => 'i3val_contact_updates.gender',
+        ts('City')           => 'i3val_address_updates.city',
+        ts('Street Address') => 'i3val_address_updates.street_address',
+        ts('Postal Code')    => 'i3val_address_updates.postal_code',
+        ts('Country')        => 'i3val_address_updates.country',
+        ts('Email')          => 'i3val_email_updates.email',
+        'Phone'                   => 'i3val_phone_updates.phone',
+        'phone_numeric'           => 'i3val_phone_updates.phone',
+    ];
+  }
 
 
   /**
@@ -88,7 +95,7 @@ class CRM_I3val_Converter {
     $attributes = $this->parse_xcm($data);
 
     // mapping
-    $mapped_values = $this->mapParameters($attributes, $this->xcm_mapping);
+    $mapped_values = $this->mapParameters($attributes, $this->getParameterMapping());
     foreach ($mapped_values as $mapped_key => $mapped_value) {
       $activity[$mapped_key] = $mapped_value;
     }
