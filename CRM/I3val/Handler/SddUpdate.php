@@ -38,6 +38,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
                                   'end_date'        => E::ts('End Date'),
                                   'frequency'       => E::ts('Frequency'),
                                   'cycle_day'       => E::ts('Cycle Day'),
+                                  'reason'          => E::ts('Reason'),
                                   'financial_type'  => E::ts('Financial Type'),
                                   'campaign'        => E::ts('Campaign'),
                                   'amount'          => E::ts('Amount'),
@@ -398,7 +399,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
     }
 
     // OK, we have the mandate, look for differences
-    $mandate_diff       = array();
+    $mandate_diff      = array();
     $main_attributes   = $this->getMainFields();
     $all_attributes    = $this->getFields();
     $custom_group_name = $this->getCustomGroupName();
