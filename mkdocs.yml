@@ -1,8 +1,9 @@
 site_name: I3Val Input Validation
 repo_url: https://github.com/systopia/be.aivl.i3val
-theme: material
+theme:
+  name: material
 
-pages:
+nav:
 - 'Home': index.md
 - 'Configuration': configuration.md
 - 'Registering change requests': registering-change-requests.md
