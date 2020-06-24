@@ -120,31 +120,53 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
 
     $address_update = array();
     $prefix = $this->getKey() . '_';
-    $action = CRM_Utils_Array::value('i3val_address_updates_action', $values, '');
-    switch ($action) {
-      case 'add_primary':
-        $address_update['is_primary'] = 1;
+    $action = explode(' ', CRM_Utils_Array::value('i3val_address_updates_action', $values, ''));
+
+    switch ($action[0]) {
       case 'add':
-        $activity_update[self::$group_name . ".action"] = E::ts("New address added.");
+        // create a new address (in $address_update, will be executed below)
+        $location_type = $action[1];
         $address_update['contact_id'] = $values['contact_id'];
+        $address_update['location_type'] = $location_type;
         $this->applyUpdateData($address_update, $values, '%s', "{$prefix}%s_applied");
+
+        // update i3val job data
+        $activity_update[self::$group_name . ".action"] = E::ts("New %1 address added.", [1 => $location_type]);
+        $this->applyUpdateData($activity_update, $values, self::$group_name . '.%s_applied', "{$prefix}%s_applied");
+        break;
+
+      case 'replace':
+        // delete old address of this type
+        $location_type = $action[1];
+        $this->deleteAddress($location_type, $values['contact_id']);
+
+        // create a new address (in $address_update, will be executed below)
+        $location_type = $action[1];
+        $address_update['contact_id'] = $values['contact_id'];
+        $address_update['location_type'] = $location_type;
+        $this->applyUpdateData($address_update, $values, '%s', "{$prefix}%s_applied");
+
+        // update i3val job data
+        $activity_update[self::$group_name . ".action"] = E::ts("Replaced %1 address.", [1 => $location_type]);
         $this->applyUpdateData($activity_update, $values, self::$group_name . '.%s_applied', "{$prefix}%s_applied");
         break;
 
       case 'update':
-        $activity_update[self::$group_name . ".action"]= E::ts("Address updated");
-        $address_update['id']         = $values['i3val_address_updates_address_id'];
-        $address_update['contact_id'] = $values['contact_id']; // not necessary, but causes notices in 4.6
-        $this->applyUpdateData($address_update, $values, '%s', "{$prefix}%s_applied");
-        $this->applyUpdateData($activity_update, $values, self::$group_name . '.%s_applied', "{$prefix}%s_applied");
+        // check if to-be-updated address (still) exists
+        $location_type = $action[1];
+        $address = $this->getCurrentAddress($location_type, $values['contact_id']);
+        if ($address) {
+          // update given address (in $address_update, will be executed below)
+          $address_update['id'] = $address['id'];
+          $this->applyUpdateData($address_update, $values, '%s', "{$prefix}%s_applied");
+
+          $this->applyUpdateData($activity_update, $values, self::$group_name . '.%s_applied', "{$prefix}%s_applied");
+          $activity_update[self::$group_name . ".action"] = E::ts("Updated %1 address.", [1 => $location_type]);
+        }
         break;
 
       case 'duplicate':
         $activity_update[self::$group_name . ".action"] = E::ts("Entry already existed.");
-        break;
-
-      case 'share':
-        $activity_update[self::$group_name . ".action"] = E::ts("Address shared");
         break;
 
       default:
@@ -161,8 +183,8 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
       $address_update['id'] = $result['id'];
     }
 
-    // apply address sharing (if there is any)
-    $this->applyAddressSharingChanges($activity, $action, $values, $activity_update, $address_update);
+//    // apply address sharing (if there is any)
+//    $this->applyAddressSharingChanges($activity, $action, $values, $activity_update, $address_update);
 
     return $activity_update;
   }
@@ -178,22 +200,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     $prefix = $this->getKey() . '_';
     $values = $this->compileValues(self::$group_name, $field2label, $activity);
 
-    // find existing address
-    $default_action  = 'add';
-    $address_submitted = $this->getMyValues($activity);
-    $address_submitted['contact_id'] = $form->contact['id'];
-    $existing_address = $this->getExistingAddress($address_submitted, $default_action);
-    CRM_I3val_Session::log("FOUND " . json_encode($existing_address));
-    $this->resolveFields($existing_address);
-    $this->resolveFields($address_submitted);
-
-    if ($existing_address) {
-      $form->add('hidden', 'i3val_address_updates_address_id', $existing_address['id']);
-      $this->addCurrentValues($values, $existing_address);
-    } else {
-      $form->add('hidden', 'i3val_address_updates_address_id', 0);
-    }
-
+    // add default values
     $this->applyUpdateData($form_values, $values, "{$prefix}%s");
     $form->assign('i3val_address_fields', $field2label);
     $form->assign('i3val_address_values', $form_values);
@@ -201,80 +208,57 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     // create input fields and apply checkboxes
     $active_fields = array();
     foreach ($field2label as $fieldname => $fieldlabel) {
+      if ($fieldname == 'location_type') {
+        // no location type here, will be determined by the selected action
+        continue;
+      }
+
+      // ok, move on:
       $form_fieldname = "{$prefix}{$fieldname}";
+      $active_fields[$form_fieldname] = $fieldlabel;
 
-      // LOCATION TYPE is always there...
-      if ($fieldname=='location_type') {
-        $active_fields[$form_fieldname] = $fieldlabel;
-
-        // add the text input
-        $form->add(
-          'select',
-          "{$form_fieldname}_applied",
-          $fieldlabel,
-          $this->getLocationTypeList(),
-          FALSE,
-          array('class' => 'crm-select2')
-        );
-        if (isset($values[$fieldname]['submitted'])) {
-          $matching_location_type = $this->getMatchingLocationType($values[$fieldname]['submitted']);
-        } else {
-          $matching_location_type = $this->getDefaultLocationType();
-        }
-        $form->setDefaults(array("{$form_fieldname}_applied" => $matching_location_type['display_name']));
-
-      } else {
-        // if there is no values, omit field
-        if ($config->clearingFieldsAllowed()) {
-          if (empty($values[$fieldname]['submitted']) && empty($values[$fieldname]['original'])) {
-            continue;
-          }
-        } else {
-          if (empty($values[$fieldname]['submitted'])) {
-            continue;
-          }
-        }
-
-        $active_fields[$form_fieldname] = $fieldlabel;
-        if ($fieldname == 'country') {
+      switch ($fieldname) {
+        case 'country':
           $form->add(
-            'select',
-            "{$form_fieldname}_applied",
-            $fieldlabel,
-            $this->getCountryList(),
-            FALSE,
-            array('class' => 'crm-select2')
+              'select',
+              "{$form_fieldname}_applied",
+              $fieldlabel,
+              $this->getCountryList(),
+              FALSE,
+              array('class' => 'crm-select2')
           );
-          if (isset($address_submitted['country'])) {
-            $form->setDefaults(array("{$form_fieldname}_applied" => $address_submitted['country']));
-          } else {
-            $default_country = $this->getDefaultCountryName();
-            $form->setDefaults(array("{$form_fieldname}_applied" => $default_country));
-          }
+          break;
 
-        } else {
+        default:
           $form->add(
-            'text',
-            "{$form_fieldname}_applied",
-            $fieldlabel
+              'text',
+              "{$form_fieldname}_applied",
+              $fieldlabel
           );
-
-          // calculate proposed value
-          if (!empty($values[$fieldname]['applied'])) {
-            $form->setDefaults(array("{$form_fieldname}_applied" => $values[$fieldname]['applied']));
-          } else {
-            $form->setDefaults(array("{$form_fieldname}_applied" => isset($values[$fieldname]['submitted']) ? $values[$fieldname]['submitted'] : ''));
-          }
-        }
+          break;
       }
     }
 
-    // add address sharing options
-    $this->renderAddressSharingPanel($activity, $form, $address_submitted);
+    // add primary field
+    $form_fieldname = "{$prefix}is_primary";
+    $active_fields[$form_fieldname] = E::ts("Primary Address");
+    $form->add(
+        'select',
+        "{$form_fieldname}_applied",
+        E::ts("Primary Address"),
+        ['0' => E::ts("No"), '1' => E::ts("Yes")],
+        FALSE,
+        array('class' => 'crm-select2')
+    );
+
+    // TODO: ADD address sharing (if submitted?)
+//    $this->renderAddressSharingPanel($activity, $form, $address_submitted);
 
     // add processing options
-    $options = $this->getProcessingOptions($address_submitted, $existing_address, 'Address');
-    $this->adjustAddressSharingOptions($options, $activity);
+    $addresses = $this->getExistingAddresses($form->contact['id']);
+    $address_submitted = $this->getMyValues($activity);
+    $options = $this->getCustomProcessingOptions($address_submitted, $addresses, $default_action);
+//    $this->adjustAddressSharingOptions($options, $activity);
     $form->add(
       'select',
       "i3val_address_updates_action",
@@ -288,6 +272,18 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
       "i3val_address_updates_action" => $configuration->pickDefaultAction($options, $default_action)));
 
     $form->assign('i3val_active_address_fields', $active_fields);
+
+    // add JS code
+    CRM_Core_Resources::singleton()->addVars('i3val_address_update', [
+        'addresses'       => $addresses,
+        'original'        => $this->getMyValues($activity, 'original'),
+        'submitted'       => $address_submitted,
+        'location_types'  => array_flip($this->getIndexedLocationTypeList()),
+        'field_names'     => array_merge(array_keys($field2label), ['is_primary']),
+        'yes_no'          => ['0' => E::ts("No"), '1' => E::ts("Yes")],
+        'default_country' => CRM_Core_BAO_Country::defaultContactCountryName(),
+    ]);
+    CRM_Core_Resources::singleton()->addScriptFile('be.aivl.i3val', 'js/address_update_logic.js');
   }
 
   /**
@@ -309,7 +305,8 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     switch ($entity) {
       case 'Contact':
         $submitted_data['contact_id'] = $submitted_data['id'];
-        $address = $this->getExistingAddress($submitted_data);
+        $addresses = $this->getExistingAddresses($submitted_data['contact_id']);
+        $address = $this->getMatchingAddress($submitted_data, $addresses);
         $this->generateEntityDiffData('Address', $address['id'], $address, $submitted_data, $activity_data);
         $this->addAddressSharingDiffData($address, $submitted_data, $activity_data);
         break;
@@ -330,6 +327,50 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
         break;
     }
   }
+
+  /**
+   * Get the address of the given type from the contact
+   *
+   * @param $location_type string|int location type name or ID
+   * @param $contact_id    int        CiviCRM contact ID
+   *
+   * @return array|null address data or NULL
+   */
+  protected function getCurrentAddress($location_type, $contact_id) {
+    if (empty($contact_id)) {
+      return NULL;
+    }
+
+    $addresses = $this->getExistingAddresses($contact_id);
+
+    // this should work for location type IDs
+    if (isset($addresses[$location_type])) {
+      return $addresses[$location_type];
+    }
+
+    // plan B: find the one with the location type
+    foreach ($addresses as $address) {
+      if ($address['location_type'] == $location_type) {
+        return $address;
+      }
+    }
+
+    return NULL;
+  }
+
+  /**
+   * Will delete the address of the given location type with the contact
+   *
+   * @param $location_type string|int location type name or ID
+   * @param $contact_id    int        CiviCRM contact ID
+   */
+  protected function deleteAddress($location_type, $contact_id) {
+    $address = $this->getCurrentAddress($location_type, $contact_id);
+    if ($address) {
+      civicrm_api3('Address', 'delete', ['id' => $address['id']]);
+    }
+  }
+
 
   /**
    * Get the country ID based on a string
@@ -464,74 +505,192 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
   }
 
   /**
+   * Get a list of the currently used addresses
+   * @param $contact_id int contact ID
+   *
+   * @return array [location type ID -> address data]
+   * @throws Exception if loading fails or multiple addresses for same location type present
+   */
+  protected function getExistingAddresses($contact_id) {
+    // load all addresses
+    static $addresses = NULL;
+    if ($addresses === NULL) {
+      try {
+        $query = civicrm_api3('Address', 'get', [
+            'contact_id'   => $contact_id,
+            'option.limit' => 0,
+            'option.sort'  => 'is_primary desc',
+            'sequential'   => 1]);
+        $addresses = [];
+
+        // enrich data
+        foreach ($query['values'] as $address) {
+          $this->resolveFields($address);
+          if (isset($addresses[$address['location_type_id']])) {
+            throw new Exception("Contact [{$contact_id}] has multiple addresses for location type '{$address['location_type']}'. Please fix!");
+          } else {
+            $addresses[$address['location_type_id']] = $address;
+          }
+        }
+      } catch (Exception $ex) {
+        throw new Exception("Error while loading addresses for contact [{$contact_id}]: " . $ex->getMessage());
+      }
+    }
+    return $addresses;
+  }
+
+  /**
    * find a matching address based on
    *  address, location_type (and contact_id obviously)
+   *
+   * @param $values    array address fields submitted
+   * @param $addresses array existing addresses
    */
-  protected function getExistingAddress($values, &$default_action = NULL) {
-    $address_submitted = array();
+  protected function getMatchingAddress($values, $addresses) {
+    // extract the submitted data
+    $address_submitted = [];
     $this->applyUpdateData($address_submitted, $values);
-    if (empty($address_submitted) || empty($values['contact_id'])) {
-      // there is no address data...execpt if there is
-      if (!$this->getAddressSharingContactID($values)) {
-        // there's nothing we can do
-        return NULL;
-      }
-    }
-
-    // first, make sure that the location type is resolved
     $this->resolveFields($address_submitted, TRUE);
+    if (empty($address_submitted)) {
+      return NULL;
+    }
 
-    // then: load all addresss
-    $query = civicrm_api3('Address', 'get', array(
-      'contact_id'   => $values['contact_id'],
-      'option.limit' => 0,
-      'option.sort'  => 'is_primary desc',
-      'sequential'   => 1));
-    $addresss = $query['values'];
+    // make sure there is a location type
+    if (empty($address_submitted['location_type_id'])) {
+      $default_location_type = $this->getDefaultLocationType();
+      $address_submitted['location_type_id'] = $default_location_type['id'];
+    }
 
-    // first: find by exact values
-    foreach ($addresss as $address) {
-      if ($this->hasEqualMainFields($address_submitted, $address)) {
-        $this->resolveFields($address);
-        if ($address_submitted['location_type'] == $address['location_type']) {
-          // even the location type is identical
-          if ($this->hasEqualMainFields($address_submitted, $address, TRUE)) {
-            $default_action = 'duplicate';
-          } else {
-            $default_action = 'update';
-          }
+    // now: return the address with the location type
+    $location_type_id = $address_submitted['location_type_id'];
+    if (isset($addresses[$location_type_id])) {
+      return $addresses[$location_type_id];
+    } else {
+      return NULL;
+    }
+  }
+
+
+  /**
+   * get the processing options (caution: different signature)
+   */
+  protected function getCustomProcessingOptions($data_submitted, $addresses, &$default_action = NULL) {
+    // this handler has different options than the other detail handlers
+    $options = [];
+    $location_type_list = $this->getIndexedLocationTypeList();
+    $can_create = $this->canCreateAddressWithData($data_submitted);
+    $location_type = CRM_Utils_Array::value('location_type', $data_submitted);
+
+    // add matching address first
+    $matching_address = $this->getMatchingAddress($data_submitted, $addresses);
+    $matching_location_type = CRM_Utils_Array::value('location_type', $matching_address);
+    if ($matching_address) {
+      // do this one first
+      if ($can_create) {
+        $options["update {$matching_location_type}"] = E::ts("Update '%1' Address", [1 => $matching_location_type]);
+        $options["replace {$matching_location_type}"] = E::ts("Replace '%1' Address", [1 => $matching_location_type]);
+        if ($this->shouldUpdateAddress($matching_address, $data_submitted)) {
+          // if it's similar enough, it might just be an adjustment:
+          $default_action = "update {$matching_location_type}";
         } else {
-          // location type differs
-          $default_action = 'update';
+          // if it's different, it's probably an all new address
+          $default_action = "replace {$matching_location_type}";
         }
-        return $address;
+      } else {
+        // we don't have enough data to create a new one, i.e. we _have_ to update
+        $options["update {$matching_location_type}"] = E::ts("Update '%1' Address", [1 => $matching_location_type]);
+        $default_action = "update {$matching_location_type}";
+      }
+    } elseif (!empty($data_submitted['location_type']['submitted'])) {
+      $location_type = $data_submitted['location_type']['submitted'];
+      $options["add {$location_type}"] = E::ts("Add New '%1' Address", [1 => $location_type]);
+      $default_action = "add {$location_type}";
+    }
+
+    // add all/other address options
+    foreach ($location_type_list as $location_type_id => $location_type_name) {
+      if ($location_type_name == $matching_location_type) {
+        // already added above
+        continue;
+      }
+
+      if (isset($addresses[$location_type_id])) {
+        // there _is_ an address of this location type:
+        $options["update {$location_type_name}"] = E::ts("Update '%1' Address", [1 => $location_type_name]);
+        if ($can_create) {
+          $options["replace {$location_type_name}"] = E::ts("Replace '%1' Address", [1 => $location_type_name]);
+        }
+      } else {
+        if ($can_create) {
+          $options["add {$location_type_name}"] = E::ts("Add New '%1' Address", [1 => $location_type_name]);
+        }
       }
     }
 
-    // second: find by location type
-    if (isset($address_submitted['location_type_id'])) {
-      foreach ($addresss as $address) {
-        if ($address_submitted['location_type_id'] == $address['location_type_id']) {
-          $this->resolveFields($address);
-          $default_action = 'update';
-          return $address;
+    $options['discard']   = E::ts("Discard %1 data (do nothing)", array(1 => 'Address'));
+    $options['duplicate'] = E::ts("%1 already exists (do nothing)", array(1 => 'Address'));
+    return $options;
+  }
+
+  /**
+   * Check if there is address data in the
+   *
+   * @todo: make configurable?
+   */
+  protected function hasAddressData($data) {
+    if (   !empty($data['street_address'])
+        || !empty($data['postal_code'])
+        || !empty($data['city'])) {
+      return TRUE;
+    } else {
+      return FALSE;
+    }
+  }
+
+  /**
+   * Check if there is enough address data to create a new address
+   * @todo: make configurable?
+   */
+  protected function canCreateAddressWithData($data) {
+    if (   !empty($data['street_address'])
+        || !empty($data['postal_code'])
+        || !empty($data['city'])) {
+      return TRUE;
+    } else {
+      return FALSE;
+    }
+  }
+
+
+  /**
+   * Check if this can be considered an update to an existing address, or
+   *  whether it's too different and is properly a new address
+   *
+   * @param $matching_address array address data
+   * @param $data_submitted   array change data
+   *
+   * @return boolean
+   */
+  protected function shouldUpdateAddress($matching_address, $data_submitted) {
+    if ($matching_address) {
+      $fields         = $this->getFields();
+      $similarity     = 1.0;
+      $fields_checked = 0;
+
+      foreach ($fields as $field_name) {
+        $submitted_value = CRM_Utils_Array::value($field_name, $data_submitted);
+        if (!empty($submitted_value)) {
+          $current_value = CRM_Utils_Array::value($field_name, $matching_address, '');
+          similar_text($current_value, $submitted_value, $field_similarity);
+          $similarity *= $field_similarity;
+          $fields_checked += 1;
         }
       }
-    }
 
-    // third: find by similarity
-    $best_matching_address = NULL;
-    $highest_similarity    = 0;
-    foreach ($addresss as $address) {
-      $similarity = $this->getMainFieldSimilarity($address_submitted, $address);
-      if ($similarity >= $highest_similarity) {
-        $highest_similarity = $similarity;
-        $best_matching_address = $address;
-      }
+      return    $fields_checked >= 2
+             && $similarity > 0.7;
     }
-    $this->resolveFields($best_matching_address);
-    $default_action = 'add';
-    return $best_matching_address;
+    return FALSE;
   }
 
 
@@ -542,6 +701,8 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
   /**
    * If the shared_with_contact_id is given this function
    *  renders the "address sharing" panel to deal with this
+   *
+   * @deprecated
    */
   protected function renderAddressSharingPanel($activity, $form, $address_submitted) {
     $group_name = $this->getCustomGroupName();
@@ -605,6 +766,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
    * It will recognise the contact_id in two parameters:
    *  - shared_with_contact_id
    *  - address_master_contact_id
+   *
    */
   protected function getAddressSharingContactID($submitted_data) {
     if (!empty($submitted_data['shared_with_contact_id']) && is_numeric($submitted_data['shared_with_contact_id'])) {
@@ -625,6 +787,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
    * It will recognise the contact_id in two parameters:
    *  - shared_with_contact_id
    *  - address_master_contact_id
+   *
    */
   protected function addAddressSharingDiffData($existing_address, $submitted_data, &$activity_data) {
     $group_name = $this->getCustomGroupName();
@@ -670,7 +833,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
 
       case 'new': // CREATE NEW ADDRESS WITH OTHER CONTACT
         if (empty($address_id)) {
-          // this shoudln't happen...
+          // this shouldn't happen...
           CRM_Core_Session::setStatus(E::ts("Active address not found!", array(1 => $shared_with_contact_id)), E::ts('Error'), 'error');
         } else {
           // load the current address, and use the date to
@@ -792,43 +955,4 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     return $address;
   }
 
-
-  /**
-   * get the processing options (override)
-   */
-  protected function getProcessingOptions($data_submitted, $data_existing, $entity_name) {
-    $options = parent::getProcessingOptions($data_submitted, $data_existing, $entity_name);
-
-    if (!$this->hasAddressData($data_submitted)) {
-      // there is not enough address data to create new addresses
-      if (isset($options['add'])) {
-        unset($options['add']);
-      }
-      if (isset($options['add_primary'])) {
-        unset($options['add_primary']);
-      }
-    }
-
-    // remove "already exists" option if no address exists
-    if (empty($data_existing)) {
-      if (isset($options['duplicate'])) {
-        unset($options['duplicate']);
-      }
-    }
-
-    return $options;
-  }
-
-  /**
-   * Check if there is address data in the
-   */
-  protected function hasAddressData($data) {
-    if (   !empty($data['street_address'])
-        || !empty($data['postal_code'])
-        || !empty($data['city'])) {
-      return TRUE;
-    } else {
-      return FALSE;
-    }
-  }
 }

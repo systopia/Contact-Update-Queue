@@ -5,10 +5,10 @@
       <thead>
         <tr>
           <th></th>
-          <th>{ts domain="be.aivl.i3val"}Original Value{/ts}</th>
-          <th>{ts domain="be.aivl.i3val"}Submitted Value{/ts}</th>
-          <th>{ts domain="be.aivl.i3val"}Current Value{/ts}</th>
-          <th>{ts domain="be.aivl.i3val"}Value to apply{/ts}</th>
+          <th class="i3val-address-original">{ts domain="be.aivl.i3val"}Original Value{/ts}</th>
+          <th class="i3val-address-submitted">{ts domain="be.aivl.i3val"}Submitted Value{/ts}</th>
+          <th class="i3val-address-current">{ts domain="be.aivl.i3val"}Current Value{/ts}</th>
+          <th class="i3val-address-applied">{ts domain="be.aivl.i3val"}Value to apply{/ts}</th>
         </tr>
       </thead>
       <tbody>
@@ -28,11 +28,9 @@
             {/if}
             {$i3val_address_values.$fieldkey.submitted}
           </td>
-          <td style="vertical-align: middle;">
-            {if $i3val_address_values.$fieldkey.current}
-              <img class="action-icon address-value-copy" value="{$i3val_address_values.$fieldkey.current}" src="{$config->resourceBase}i/copy.png" alt="{ts 1=$i3val_address_values.$fieldkey.current}Click to copy '%1' into the 'apply' column.{/ts}" title="{ts 1=$i3val_address_values.$fieldkey.current}Click to copy '%1' into the 'apply' column.{/ts}" />
-            {/if}
-            {$i3val_address_values.$fieldkey.current}
+          <td class="i3val-address-current i3val-address-current-{$fieldkey}" style="vertical-align: middle;">
+            <img style="display: none;" class="action-icon address-value-copy" value="{$i3val_address_values.$fieldkey.current}" src="{$config->resourceBase}i/copy.png" alt="{ts 1=$i3val_address_values.$fieldkey.current}Click to copy '%1' into the 'apply' column.{/ts}" title="{ts 1=$i3val_address_values.$fieldkey.current}Click to copy '%1' into the 'apply' column.{/ts}" />
+            <span>{$i3val_address_values.$fieldkey.current}</span>
           </td>
           <td style="vertical-align: middle;" class="i3val-control">{$form.$input_field.html}</td>
         </tr>
@@ -40,6 +38,7 @@
       </tbody>
     </table>
 
+    <!--
     {if $i3val_address_sharing_contact}
     {$form.i3val_address_sharing_contact_id}
     <div class="i3val-suboption">
@@ -52,6 +51,7 @@
       <span class="i3val-suboption-item i3val-suboption-hint" id="i3val_address_sharing_hint">{ts}This address will be updated as well.{/ts}</span>
     </div>
     {/if}
+    -->
 
     <hr/>
 
@@ -100,7 +100,7 @@ cj("img.address-value-copy").click(function() {
  * make location type only visible when 'new' is selected
  */
 function i3val_address_sharing_update() {
-  var value = cj("[name='i3val_address_sharing_addresses']").val();
+  let value = cj("[name='i3val_address_sharing_addresses']").val();
   if (value == 'new') {
     cj("[name='i3val_address_sharing_location_type']").show(200);
   } else {
