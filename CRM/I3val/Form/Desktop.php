@@ -67,9 +67,9 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
 
     $session = CRM_I3val_Session::getSession();
 
-    // check for reset
-    $reset = CRM_Utils_Request::retrieve('reset',  'Integer');
-    if ($reset) {
+    // check for restart
+    $restart = CRM_Utils_Request::retrieve('restart',  'Integer');
+    if ($restart) {
       $sibling_request = CRM_Utils_Request::retrieve('sibling_queue',  'String');
       if ($sibling_request) {
         $session->jumpToSiblingQueue($sibling_request);
@@ -123,7 +123,7 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
       CRM_Core_Session::setStatus(E::ts("Requested update has been flagged as a problem."), E::ts('Flagged!'), 'info');
       $session->flagActivity($this->activity_id);
       $session->markProcessed($this->activity_id);
-      $url = CRM_Utils_System::url("civicrm/i3val/desktop");
+      $url = CRM_Utils_System::url("civicrm/i3val/desktop?reset=1");
       CRM_Utils_System::redirect($url);
     }
 
@@ -148,12 +148,12 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
         if (count($sibling_activities) > 2) {
           CRM_Core_Session::setStatus(E::ts("There are %1 other changes scheduled for this contact. Click <strong><a href='%2'>HERE</a></strong> if you want to process those in one batch.",
               array(1 => count($sibling_activities) - 1,
-                  2 => $url = CRM_Utils_System::url("civicrm/i3val/desktop", "reset=1&sibling_queue={$this->activity_id}"))),
+                  2 => $url = CRM_Utils_System::url("civicrm/i3val/desktop", "reset=1&restart=1&sibling_queue={$this->activity_id}"))),
               E::ts("Related Updates Scheduled!"),
               'warning');
         } else {
           CRM_Core_Session::setStatus(E::ts("There is another change scheduled for this contact. Click <strong><a href='%1'>HERE</a></strong> if you want to process both in one batch.",
-              array(1 => $url = CRM_Utils_System::url("civicrm/i3val/desktop", "reset=1&sibling_queue={$this->activity_id}"))),
+              array(1 => $url = CRM_Utils_System::url("civicrm/i3val/desktop", "reset=1&restart=1&sibling_queue={$this->activity_id}"))),
               E::ts("Related Updates Scheduled!"),
               'warning');
         }
@@ -176,7 +176,7 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
       CRM_Core_Session::setStatus(E::ts("Activity [%1] is faulty and has been flagged as problematic.", array(1 => $this->activity_id)), E::ts('Error'), 'error');
       $session->flagActivity($this->activity_id);
       $session->markProcessed($this->activity_id);
-      $url = CRM_Utils_System::url("civicrm/i3val/desktop");
+      $url = CRM_Utils_System::url("civicrm/i3val/desktop?reset=1");
       CRM_Utils_System::redirect($url);
     }
 
@@ -284,13 +284,8 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     // mark received
     $session->markProcessed($this->activity_id, $timestamp);
 
-
-    // go to the next one
-    // $next_url = CRM_Utils_System::url("civicrm/i3val/desktop");
-    // CRM_Utils_System::redirect($next_url);
-
     // redirect to schedule reload
-    $url = CRM_Utils_System::url("civicrm/i3val/desktop");
+    $url = CRM_Utils_System::url("civicrm/i3val/desktop?reset=1");
     CRM_Utils_System::redirect($url);
 
     // shouldn't get here:
