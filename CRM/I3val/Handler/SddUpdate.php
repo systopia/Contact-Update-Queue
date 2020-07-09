@@ -573,6 +573,9 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
       }
     }
 
+    // some changes should not prevent mandate updates (see I3VAL-29)
+    unset($changes['reason']);
+
     // now see if there's something we can do
     if (!empty($changes['amount']) && count($changes) == 1) {
       // if only the amount has changed, go ahead:
