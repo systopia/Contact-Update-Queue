@@ -18,9 +18,6 @@
 
 /**
  * Dispatch any request to a service provided by the handlers
- *
- * @param array $spec description of fields supported by this API call
- * @return void
  */
 function civicrm_api3_i3val_service($params) {
   $handler_class = 'CRM_I3val_Handler_' . $params['handler'];

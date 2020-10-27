@@ -201,7 +201,6 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
         );
 
         if (!empty($frequency['submitted'])) {
-          // error_log("FREQ " . json_encode($frequency));
           $form->setDefaults(array("{$form_fieldname}_applied" => $frequency['submitted']));
         } else {
           $form->setDefaults(array("{$form_fieldname}_applied" => $frequency['original']));
@@ -406,7 +405,6 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
 
     $this->resolveFields($submitted_data);
     $this->resolveFields($mandate);
-    // error_log("MANDATE " . json_encode($mandate));
 
     // first: check all main attriutes for differences
     $differing_attributes = array();

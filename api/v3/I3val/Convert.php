@@ -18,9 +18,6 @@
 
 /**
  * Convert old XCM-Style activities into I3Val activities
- *
- * @param array $spec description of fields supported by this API call
- * @return void
  */
 function civicrm_api3_i3val_convert($params) {
   $converter = new CRM_I3val_Converter();

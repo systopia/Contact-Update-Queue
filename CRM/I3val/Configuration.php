@@ -435,7 +435,6 @@ class CRM_I3val_Configuration {
       $handler = new $handler_class();
       $spec_files = $handler->getCustomGroupSpeficationFiles();
       foreach ($spec_files as $spec_file) {
-        // error_log("RUNNING {$spec_file}");
         $customData->syncCustomGroup($spec_file);
       }
     }
@@ -458,7 +457,6 @@ class CRM_I3val_Configuration {
       $custom_group = civicrm_api3('CustomGroup', 'get', array('name' => $group_name));
       if ($custom_group['id']) {
         $custom_group = reset($custom_group['values']);
-        // error_log("SETTING {$group_name} to " . json_encode($activity_type_ids));
         civicrm_api3('CustomGroup', 'create', array(
           'id'                          => $custom_group['id'],
           'title'                       => $custom_group['title'], // prevent PHP notices

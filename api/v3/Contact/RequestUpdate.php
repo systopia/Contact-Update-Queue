@@ -18,9 +18,6 @@
 
 /**
  * Create an activity for manual review of contact updates
- *
- * @param array $spec description of fields supported by this API call
- * @return void
  */
 function civicrm_api3_contact_request_update($params) {
   // first, try to identify the contact
@@ -73,5 +70,11 @@ function _civicrm_api3_contact_request_update_spec(&$spec) {
     'description' => 'The change request should be recorded as a follow-up to the given activity ID',
     'required'    => FALSE,
     'type'        => CRM_Utils_Type::T_STRING,
+  );
+  $spec['activity_type_id'] = array(
+      'title'       => 'Activity Type ID',
+      'description' => 'Allows you to determine the I3Val configuration (attached to the activity type)',
+      'required'    => FALSE,
+      'type'        => CRM_Utils_Type::T_INT,
   );
 }
