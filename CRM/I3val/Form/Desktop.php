@@ -87,17 +87,14 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     }
 
     // Check if DONE....
-    if (!$this->activity_id) {
+    if ($session->isSiblingQueue() && empty($this->activity_id)) {
       // still need to check whether this was a sibling queue
-      if ($session->isSiblingQueue()) {
-        // CRM_Core_Session::setStatus(E::ts("All updates for that contact have been processed"), E::ts('Done'), 'info');
-        CRM_Utils_System::redirect($session->getContinuationURL());
-        return;
-      } else {
-        CRM_Core_Session::setStatus(E::ts("No more update requests pending. You're already done!"), E::ts('All done!'), 'info');
-        CRM_Utils_System::redirect(CRM_Utils_System::url("civicrm/dashboard"));
-        return;
-      }
+      $session->returnFromSiblingQueue();
+      $this->activity_id = $session->getCurrentActivityID($selected_types);
+    }
+    if (empty($this->activity_id)) {
+      CRM_Core_Session::setStatus(E::ts("No more update requests pending. You're already done!"), E::ts('All done!'), 'info');
+      CRM_Utils_System::redirect(CRM_Utils_System::url("civicrm/dashboard"));
     }
 
     // some bookkeeping

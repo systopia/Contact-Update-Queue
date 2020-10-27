@@ -17,7 +17,7 @@
 
 use CRM_I3val_ExtensionUtil as E;
 
-define('I3VAL_DEBUG_LOGGING', FALSE);
+define('I3VAL_DEBUG_LOGGING', TRUE);
 
 /**
  * This class will store data about this processing session
@@ -25,8 +25,24 @@ define('I3VAL_DEBUG_LOGGING', FALSE);
  */
 class CRM_I3val_Session {
 
+  /**
+   * these properties are stored in the user's (browser) session
+   */
+  const SESSION_PROPERTIES = [
+      'cache_key',
+      'start_time',
+      'activity_id',
+      'processed_count',
+      'activity_types',
+      'open_count',
+      'queue_type',
+      'queue_stack'
+  ];
+
+  /** @var CRM_I3val_Session the single session object  */
   protected static $_singleton = NULL;
 
+  /** @var CRM_Core_Session access to the session data */
   protected $user_session = NULL;
 
   /**
@@ -59,10 +75,6 @@ class CRM_I3val_Session {
   /**
    * the session status contains of the following
    *   attributes, stored in the user session
-   * 'start_time'
-   * 'processed_count'
-   * 'open_count'
-   * 'cache_key'
    */
   protected function __construct() {
     $this->user_session = CRM_Core_Session::singleton();
@@ -96,20 +108,17 @@ class CRM_I3val_Session {
   public function markProcessed($activity_id, $timestamp = NULL) {
     self::log("Marking [{$activity_id}] as processed");
     $activity_id = (int) $activity_id;
-    // error_log("MARKED PROCESSED: $activity_id");
 
     // increase processed count
     $processed_count = $this->getProcessedCount();
     $this->set('processed_count', $processed_count + 1);
 
-    // remove from session
-    $session_key = $this->getSessionKey();
-    CRM_Core_DAO::executeQuery("DELETE FROM i3val_session_cache WHERE session_key = '{$session_key}' AND activity_id = {$activity_id}");
+    // remove from session(s)
+    $this->releaseActivityID($activity_id);
 
     // get next
     $next_activity_id = $this->getNext(TRUE, $timestamp);
     $this->set('activity_id', $next_activity_id);
-    // error_log("CURRENT IS $next_activity_id");
   }
 
 
@@ -117,7 +126,6 @@ class CRM_I3val_Session {
    * Get the next activity id from our list
    */
   protected function getNext($grab_more_if_needed = TRUE, $after_timestamp = NULL) {
-    // error_log("GET NEXT");
     $cache_key = $this->getSessionKey();
     $live_status_list = implode(',', CRM_I3val_Configuration::getConfiguration()->getLiveActivityStatuses());
     $next_activity_id = CRM_Core_DAO::singleValueQuery("
@@ -148,14 +156,63 @@ class CRM_I3val_Session {
   }
 
   /**
+   * Stores the parameters of the current queue
+   *  in the session
+   */
+  protected function pushQueueParams() {
+    self::log("Pushing queue parameters");
+    $current_stack = json_decode($this->get('queue_stack'), true);
+    if (empty($current_stack)) {
+      $current_stack = [];
+    }
+
+    // push the current session
+    $session_status = [];
+    foreach (self::SESSION_PROPERTIES as $property) {
+      if ($property != 'queue_stack') {
+        $session_status[$property] = $this->get($property);
+      }
+    }
+    $current_stack[] = $session_status;
+
+    // and write out
+    $this->set('queue_stack', json_encode($current_stack));
+    self::log("Queue stack size is now " . count($current_stack));
+  }
+
+  /**
+   * Restores the last queue parameters
+   */
+  protected function popQueueParams() {
+    $current_stack = json_decode($this->get('queue_stack'), true);
+    if (empty($current_stack)) {
+      self::log("Cannot restore queue parameters, stack is empty");
+      return;
+    }
+    self::log("Restoring queue parameters");
+    $session_status = array_pop($current_stack);
+    foreach ($session_status as $property => $value) {
+      if ($property != 'queue_stack') {
+        $this->set($property, $value);
+      }
+    }
+
+    // update stack
+    $this->set('queue_stack', json_encode($current_stack));
+    self::log("Queue stack size is now " . count($current_stack));
+  }
+
+
+
+  /**
    * Internal session reset function
    */
-  protected function _reset() {
+  protected function _reset($destroy_old_session = true) {
     self::log("Reset requested");
 
     // destroy the user's current session (if any)
     $cache_key = $this->get('cache_key');
-    if ($cache_key) {
+    if ($cache_key && $destroy_old_session) {
       $this->destroySession($cache_key);
     }
 
@@ -202,8 +259,9 @@ class CRM_I3val_Session {
    */
   public function jumpToSiblingQueue($activity_id) {
     self::log("Jump to sibling queue");
+    $this->pushQueueParams();
     // do a generic reset
-    $this->_reset();
+    $this->_reset(false);
 
     // now create a session with only those IDs
     $sibling_activity_ids = self::getSiblingActivityIDs($activity_id);
@@ -214,12 +272,13 @@ class CRM_I3val_Session {
 
     // make sure those are not in another queue
     $activity_id_list = implode(',', $sibling_activity_ids);
+    $my_session_keys = '"' . implode('","', $this->getSessionKeys()) . '"';
     $free_query_sql = "
     SELECT activity.id AS activity_id
     FROM civicrm_activity activity
     LEFT JOIN i3val_session_cache session ON session.activity_id = activity.id
     WHERE activity.id IN ($activity_id_list)
-      AND session.activity_id IS NULL
+      AND (session.activity_id IS NULL OR session.session_key IN ({$my_session_keys}))
     ORDER BY activity.activity_date_time ASC;";
     $free_query = CRM_Core_DAO::executeQuery($free_query_sql);
     $sibling_activity_ids_free = array();
@@ -249,6 +308,22 @@ class CRM_I3val_Session {
   }
 
   /**
+   * Will return to the previous session
+   */
+  public function returnFromSiblingQueue() {
+    $this->popQueueParams();
+
+
+    // make sure that we continue with the next one
+    $continuation_activity_id = $this->getNext();
+    $this->set('activity_id', $continuation_activity_id);
+
+    // and increase processed count by 1 (at least)
+    $old_processed_count = (int) $this->get('processed_count');
+    $this->set('processed_count', $old_processed_count + 1);
+  }
+
+  /**
    * get the cache key
    * WARNING: throws exception if not set (not intialised)
    */
@@ -259,6 +334,26 @@ class CRM_I3val_Session {
     } else {
       throw new Exception("Session not intialised!", 1);
     }
+  }
+
+  /**
+   * Get all session keys, including the ones of the main queue, should this be a subqueue
+   * WARNING: throws exception if not set (not intialised)
+   */
+  public function getSessionKeys() {
+    $keys = [$this->getSessionKey()];
+
+    // get additional keys from the stack
+    $current_stack = json_decode($this->get('queue_stack'), true);
+    if (is_array($current_stack)) {
+      foreach ($current_stack as $session) {
+        if (!empty($session['cache_key'])) {
+          $keys[] = $session['cache_key'];
+        }
+      }
+    }
+
+    return $keys;
   }
 
   /**
@@ -365,7 +460,7 @@ class CRM_I3val_Session {
         1 => array($cache_key,            'String'),
         2 => array($entries->activity_id, 'Integer'),
         3 => array($expires,              'String')));
-      //self::log("Grabbed [{$entries->activity_id}]");
+      self::log("Grabbed [{$entries->activity_id}]");
     }
     $entries->free();
   }
