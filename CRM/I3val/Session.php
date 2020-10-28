@@ -283,7 +283,7 @@ class CRM_I3val_Session {
     $free_query = CRM_Core_DAO::executeQuery($free_query_sql);
     $sibling_activity_ids_free = array();
     while ($free_query->fetch()) {
-      $sibling_activity_ids_free[] = $free_query->activity_id;
+      $sibling_activity_ids_free[] = (int) $free_query->activity_id;
     }
     $sibling_activity_count_blocked = $sibling_activity_count - count($sibling_activity_ids_free);
 
@@ -300,6 +300,9 @@ class CRM_I3val_Session {
     $session_ttl   = $configuration->getSessionTTL();
     $expires       = date('YmdHis', strtotime("+{$session_ttl}"));
     foreach ($sibling_activity_ids_free as $activity_id) {
+      // first: remove from other (e.g. parent) sessions
+      CRM_Core_DAO::executeQuery("DELETE FROM i3val_session_cache WHERE activity_id = {$activity_id}");
+      // then: add to sub queue
       CRM_Core_DAO::executeQuery("INSERT INTO i3val_session_cache (session_key, activity_id, expires) VALUES (%1, %2, %3)", array(
           1 => array($cache_key,   'String'),
           2 => array($activity_id, 'Integer'),
@@ -311,10 +314,11 @@ class CRM_I3val_Session {
    * Will return to the previous session
    */
   public function returnFromSiblingQueue() {
+    // restore the old parameters
     $this->popQueueParams();
 
-
     // make sure that we continue with the next one
+    $this->set('activity_id', null); // this one is probably not valid any more
     $continuation_activity_id = $this->getNext();
     $this->set('activity_id', $continuation_activity_id);
 
