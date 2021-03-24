@@ -79,8 +79,6 @@ function i3val_sdd_iban_validation() {
         // set BIC
         if ('bic' in result) {
           cj("input[name=sdd_bic_applied]").val(result.bic);
-        } else {
-          cj("input[name=sdd_bic_applied]").val('');
         }
 
         // set ERror
