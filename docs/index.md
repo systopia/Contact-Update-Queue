@@ -27,10 +27,18 @@ and providing options for approving or finally rejecting the requested changes
 or manually altering the input before saving to the CiviCRM database and closing
 the data change request.
 
+You can have as many different change request configurations as you want, by
+attaching any amount of handlers to an activity type. You can then also decide
+to process only a subset by using a link like this:
+```
+https://{mydomain}/civicrm/i3val/desktop?reset=1&restart=1&types=123,124
+```
+The parameter ``types`` here refers to the configurations, i.e. the activity type IDs.
+
 ## Technical background
 
 The basic workflow for using this extension is to request updates to CiviCRM
-Core entities *Contact*, *Address*, *Phone*, *Email*, or others (to be implemented) using the
+Core entities *Contact*, *Address*, *Phone*, *Email*, *SepaMandate* or others (to be implemented) using the
 appropriate API action. This should happen after some logic has already
 processed the data that can be safely updated, because the I3Val extension only
 documents differing changes as activities, that can be processed with a user

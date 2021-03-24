@@ -132,7 +132,7 @@ var progress        = {$progress};
 {literal}
 cj(function() {
   cj("#progressbar").progressbar({value: progress * 100, disable: true});
-  cj("div.progress-label").text((processed_count + 1 ) + " / " + (processed_count + pending_count));
+  cj("div.progress-label").text((processed_count + 1 ) + " / ~" + (processed_count + pending_count));
 });
 {/literal}
 </script>
