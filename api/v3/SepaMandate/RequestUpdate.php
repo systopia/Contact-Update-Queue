@@ -43,40 +43,46 @@ function civicrm_api3_sepa_mandate_request_update($params) {
  * @return void
  */
 function _civicrm_api3_sepa_mandate_request_update_spec(&$spec) {
-  $spec['id'] = array(
+  $spec['id'] = [
     'title'       => 'Mandate ID',
     'description' => 'References an existing mandate',
     'required'    => FALSE,
     'type'        => CRM_Utils_Type::T_INT,
-  );
-  $spec['reference'] = array(
+  ];
+  $spec['reference'] = [
     'title'       => 'Mandate Reference',
     'description' => 'If reference exists, this is recorded as an update',
     'required'    => FALSE,
     'type'        => CRM_Utils_Type::T_STRING,
-  );
-  $spec['i3val_note'] = array(
+  ];
+  $spec['sdd_reference_new'] = [
+      'title'       => 'New Mandate Reference',
+      'description' => 'Reference for the new mandate, should one be created.',
+      'required'    => FALSE,
+      'type'        => CRM_Utils_Type::T_STRING,
+  ];
+  $spec['i3val_note'] = [
     'title'       => 'Request note',
     'description' => 'Add a note for the reviewer',
     'required'    => FALSE,
     'type'        => CRM_Utils_Type::T_STRING,
-  );
-  $spec['i3val_schedule_date'] = array(
+  ];
+  $spec['i3val_schedule_date'] = [
     'title'       => 'Schedule date',
     'description' => 'The date this change should be applied. Default is asap.',
     'required'    => FALSE,
     'type'        => CRM_Utils_Type::T_STRING,
-  );
-  $spec['i3val_parent_id'] = array(
+  ];
+  $spec['i3val_parent_id'] = [
     'title'       => 'Parent activity ID',
     'description' => 'The change request should be recorded as a follow-up to the given activity ID',
     'required'    => FALSE,
     'type'        => CRM_Utils_Type::T_STRING,
-  );
-  $spec['activity_type_id'] = array(
+  ];
+  $spec['activity_type_id'] = [
       'title'       => 'Activity Type ID',
       'description' => 'Allows you to determine the I3Val configuration (attached to the activity type)',
       'required'    => FALSE,
       'type'        => CRM_Utils_Type::T_INT,
-  );
+  ];
 }
