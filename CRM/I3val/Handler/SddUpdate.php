@@ -41,7 +41,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
                                   'reason'          => E::ts('Reason'),
                                   'financial_type'  => E::ts('Financial Type'),
                                   'campaign'        => E::ts('Campaign'),
-                                  'amount'          => E::ts('Amount'),
+                                  'amount'          => E::ts('Amount (Installment)'),
                                 );
     }
     return self::$field2label;
@@ -520,7 +520,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
 
         // adjust reference
         if (!empty($activity[self::$group_name . ".reference_replaced"])) {
-          $new_mandate['reference'] = $activity[self::$group_name . ".reference_replaced"];
+          $new_mandate['reference'] = $this->uniqueMandateReference($activity[self::$group_name . ".reference_replaced"]);
         }
 
         // copy other fields
@@ -559,20 +559,26 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
   /**
    * Try to adjust the existing mandate
    *
-   * @return TRUE if it worked
+   * @return boolean
+   *   TRUE if it worked
    */
   public function mendCurrentMandate($old_mandate, $update, $activity, $values, &$activity_update) {
+    // check whether changes are allowed
+    $mandate_modifications_allowed = Civi::settings()->get('allow_mandate_modification');
+    if (empty($mandate_modifications_allowed)) {
+      // mandate modifications are not allowed
+      return false;
+    }
+
     // check which values have really changed
     $changes = array();
     unset($update['frequency']); // this should be resolved anyway
+    unset($update['reason']);    // some changes should not prevent mandate updates (see I3VAL-29)
     foreach ($update as $key => $value) {
       if ($value != $old_mandate[$key]) {
         $changes[$key] = $value;
       }
     }
-
-    // some changes should not prevent mandate updates (see I3VAL-29)
-    unset($changes['reason']);
 
     // now see if there's something we can do
     if (!empty($changes['amount']) && count($changes) == 1) {
@@ -584,6 +590,13 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
         return TRUE;
       }
     }
+
+    // todo: add more modifying options here.
+
+
+
+    // if we get here, modification is not possible
+    return false;
   }
 
   /**
@@ -640,6 +653,31 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
     $form->setDefaults(array("i3val_sdd_updates_action" => 1));
   }
 
+  /**
+   * Make sure that the given mandate reference is unique, i.e. not already in use.
+   *
+   * @param string $mandate_reference
+   *   the desired mandate reference
+   *
+   * @return string
+   *   an unused mandate reference. either the input value, or the input-value with a suffix.
+   */
+  protected function uniqueMandateReference($mandate_reference) {
+    if (empty($mandate_reference)) {
+      // fallback if we get an empty mandate reference (shouldn't happen)
+      $mandate_reference = 'SDD-I3VAL';
+    }
+    $requested_mandate_reference = $mandate_reference;
+    $query = "SELECT id FROM civicrm_sdd_mandate WHERE reference = %1";
+    $counter = 1;
+    while (CRM_Core_DAO::singleValueQuery($query, [1 => [$mandate_reference, 'String']])) {
+      // getting here means, the current mandate_reference is already in use
+      $mandate_reference = "{$requested_mandate_reference}-{$counter}";
+      $counter++;
+    }
+
+    return $mandate_reference;
+  }
 
   /**
    * IBAN lookup service
