@@ -19,19 +19,19 @@
           <td style="vertical-align: middle;">{$fieldlabel}</td>
           <td style="vertical-align: middle;">
             {if $i3val_email_values.$fieldkey.original}
-              <img class="action-icon phone-value-copy" value="{$i3val_email_values.$fieldkey.original}" src="{$config->resourceBase}i/copy.png" alt="{ts 1=$i3val_email_values.$fieldkey.original}Click to copy '%1' into the 'apply' column.{/ts}" title="{ts 1=$i3val_email_values.$fieldkey.original}Click to copy '%1' into the 'apply' column.{/ts}" />
+              <img class="action-icon phone-value-copy" value="{$i3val_email_values.$fieldkey.original}" src="{$i3val_icon_copy}" alt="{ts 1=$i3val_email_values.$fieldkey.original}Click to copy '%1' into the 'apply' column.{/ts}" title="{ts 1=$i3val_email_values.$fieldkey.original}Click to copy '%1' into the 'apply' column.{/ts}" />
             {/if}
             {$i3val_email_values.$fieldkey.original}
           </td>
           <td style="vertical-align: middle;">
             {if $i3val_email_values.$fieldkey.submitted}
-              <img class="action-icon phone-value-copy" value="{$i3val_email_values.$fieldkey.submitted}" src="{$config->resourceBase}i/copy.png" alt="{ts 1=$i3val_email_values.$fieldkey.submitted}Click to copy '%1' into the 'apply' column.{/ts}" title="{ts 1=$i3val_email_values.$fieldkey.submitted}Click to copy '%1' into the 'apply' column.{/ts}" />
+              <img class="action-icon phone-value-copy" value="{$i3val_email_values.$fieldkey.submitted}" src="{$i3val_icon_copy}" alt="{ts 1=$i3val_email_values.$fieldkey.submitted}Click to copy '%1' into the 'apply' column.{/ts}" title="{ts 1=$i3val_email_values.$fieldkey.submitted}Click to copy '%1' into the 'apply' column.{/ts}" />
             {/if}
             {$i3val_email_values.$fieldkey.submitted}
           </td>
           <td style="vertical-align: middle;">
             {if $i3val_email_values.$fieldkey.current}
-              <img class="action-icon phone-value-copy" value="{$i3val_email_values.$fieldkey.current}" src="{$config->resourceBase}i/copy.png" alt="{ts 1=$i3val_email_values.$fieldkey.current}Click to copy '%1' into the 'apply' column.{/ts}" title="{ts 1=$i3val_email_values.$fieldkey.current}Click to copy '%1' into the 'apply' column.{/ts}" />
+              <img class="action-icon phone-value-copy" value="{$i3val_email_values.$fieldkey.current}" src="{$i3val_icon_copy}" alt="{ts 1=$i3val_email_values.$fieldkey.current}Click to copy '%1' into the 'apply' column.{/ts}" title="{ts 1=$i3val_email_values.$fieldkey.current}Click to copy '%1' into the 'apply' column.{/ts}" />
             {/if}
             {$i3val_email_values.$fieldkey.current}
           </td>
