@@ -159,6 +159,9 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
       }
     }
 
+    // add resources
+    $this->assign('i3val_icon_copy', E::url('resources/copy.png'));
+
     // render activity form
     try {
       $handlers = $configuration->getHandlersForActivityType($this->activity['activity_type_id']);
