@@ -496,7 +496,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
    * Get a list of (eligible) countries
    */
   protected function getCountryList() {
-    $country_list = array();
+    $country_list = ['' => E::ts('none')];
     $countries = CRM_Core_PseudoConstant::country();
     foreach ($countries as $country_id => $country_name) {
       $country_list[$country_name] = $country_name;
