@@ -44,7 +44,7 @@ class RequestMandateUpdate extends AbstractAction {
     // specify config
     return new SpecificationBag([
         new Specification('activity_type_id', 'Integer', E::ts('Default Activity Type'), false, null, null, $configuration->getActivityTypes(), false),
-        new Specification('i3val_note', 'String', E::ts('Note'), false, null, null, $activity_types, false),
+        new Specification('i3val_note', 'String', E::ts('Note')),
         new Specification('status', 'String', E::ts('Requested Status'), false, null, null, $requested_status, false),
     ]);
   }
@@ -81,6 +81,7 @@ class RequestMandateUpdate extends AbstractAction {
     $specs[] = new Specification('end_date', 'Date', E::ts('End Date'), false, null, null, null, false);
 
     // add collection fields
+    // note that frequency expects the number of collections per year! So monhtly would be 12, quarterly 4 etc.
     $specs[] = new Specification('frequency', 'Integer', E::ts('Frequency'), false, null, null, null, false);
     $specs[] = new Specification('cycle_day', 'Integer', E::ts('Cycle Day'), false, null, null, null, false);
     $specs[] = new Specification('financial_type', 'String', E::ts('Financial Type'), false, null, null, null, false);

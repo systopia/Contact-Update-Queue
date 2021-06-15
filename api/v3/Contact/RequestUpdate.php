@@ -20,11 +20,7 @@
  * Create an activity for manual review of contact updates
  */
 function civicrm_api3_contact_request_update($params) {
-  // first, try to identify the contact
-  $contact_id = (int) $params['id'];
-
   try {
-    // $activity = CRM_I3val_Logic::createContactUpdateRequest($contact_id, $params);
     $activity = CRM_I3val_Logic::createEntityUpdateRequest('Contact', $params);
     if ($activity) {
       return civicrm_api3_create_success($activity);

@@ -20,8 +20,6 @@
  * Create an activity for manual review of contact updates
  */
 function civicrm_api3_sepa_mandate_request_update($params) {
-  // first, try to identify the contact
-
   try {
     $activity = CRM_I3val_Logic::createEntityUpdateRequest('SepaMandate', $params);
     if ($activity) {
