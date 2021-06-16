@@ -85,8 +85,13 @@ class RequestContactUpdate extends AbstractAction {
         $params[$field_name] = $this->configuration->getParameter($field_name);
       }
     }
+    // copy contact_id if set
+    $contactId = $parameters->getParameter('contact_id');
+    if ($contactId) {
+      $params['id'] = $contactId;
+    }
 
     // execute
-    $result = \civicrm_api3('Contact', 'request_update', $params);
+    \civicrm_api3('Contact', 'request_update', $params);
   }
 }
