@@ -58,7 +58,10 @@ class RequestMandateUpdate extends AbstractAction {
     $specs = [];
     // add metadata
     $specs[] = new Specification('activity_type_id', 'Integer', E::ts('Activity Type'), false, null, null, null, false);
-    $specs[] = new Specification('id', 'Integer', E::ts('Contact ID'), false, null, null, null, false);
+    // this parameter was originally named id but the text was contact ID. It is renamed to contact_id as that is
+    // also what the action allows the user to specify. If the mandate ID is actually required it should be a new
+    // parameter named mandate_id
+    $specs[] = new Specification('contact_id', 'Integer', E::ts('Contact ID'), false, null, null, null, false);
     $specs[] = new Specification('i3val_note', 'String', E::ts('Note'), false, null, null, null, false);
     $specs[] = new Specification('i3val_schedule_date', 'String', E::ts('Requested Change Date'), false, null, null, null, false);
     $specs[] = new Specification('i3val_parent_id', 'Integer', E::ts('Linked Activity ID'), false, null, null, null, false);
@@ -112,6 +115,10 @@ class RequestMandateUpdate extends AbstractAction {
       }
     }
     // fix contact_id if required (sepa mandate will treat id as id of the mandate!)
+    // hackish fix because after clearing caches and deleting everything from the templates_c folder the
+    // parameter id kept recurring. This hack will fix this, and only cause problems if the id is
+    // actually used on purpose meaning the mandate id. But then a new parameter called mandate_id should
+    // be introduced
     if (!isset($params['contact_id']) && isset($params['id'])) {
       $params['contact_id'] = $params['id'];
       unset($params['id']);
