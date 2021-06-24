@@ -86,8 +86,7 @@ class RequestContactUpdate extends AbstractAction {
    * 	 The parameters this action can send back
    * @return void
    */
-  protected function doAction(ParameterBagInterface $parameters, ParameterBagInterface $output)
-  {
+  protected function doAction(ParameterBagInterface $parameters, ParameterBagInterface $output) {
     $params = $parameters->toArray();
     // override if necessary
     foreach (['activity_type_id', 'i3val_note', 'i3val_schedule_date', 'i3val_parent_id'] as $field_name) {
