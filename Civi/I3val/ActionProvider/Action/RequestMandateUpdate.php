@@ -56,30 +56,25 @@ class RequestMandateUpdate extends AbstractAction {
    */
   public function getParameterSpecification() {
     $specs = [];
-
     // add metadata
     $specs[] = new Specification('activity_type_id', 'Integer', E::ts('Activity Type'), false, null, null, null, false);
-    $specs[] = new Specification('id', 'Integer', E::ts('Contact ID'), false, null, null, null, false);
+    $specs[] = new Specification('contact_id', 'Integer', E::ts('Contact ID'), false, null, null, null, false);
     $specs[] = new Specification('i3val_note', 'String', E::ts('Note'), false, null, null, null, false);
     $specs[] = new Specification('i3val_schedule_date', 'String', E::ts('Requested Change Date'), false, null, null, null, false);
     $specs[] = new Specification('i3val_parent_id', 'Integer', E::ts('Linked Activity ID'), false, null, null, null, false);
     $specs[] = new Specification('source', 'String', E::ts('Source'), false, null, null, null, false);
     $specs[] = new Specification('sdd_reason', 'String', E::ts('Cancel Reason'), false, null, null, null, false);
-
     // add mandate identifier
     $specs[] = new Specification('reference', 'String', E::ts('Mandate Reference'), true, null, null, null, false);
-
     // basic fields
     $specs[] = new Specification('status', 'String', E::ts('Status'), false, null, null, null, false);
     $specs[] = new Specification('iban', 'String', E::ts('IBAN'), false, null, null, null, false);
     $specs[] = new Specification('bic', 'String', E::ts('BIC'), false, null, null, null, false);
-
     // add date fields
     $specs[] = new Specification('date', 'Date', E::ts('Signature Date'), false, null, null, null, false);
     $specs[] = new Specification('validation_date', 'Date', E::ts('Validation Date'), false, null, null, null, false);
     $specs[] = new Specification('start_date', 'Date', E::ts('Start Date'), false, null, null, null, false);
     $specs[] = new Specification('end_date', 'Date', E::ts('End Date'), false, null, null, null, false);
-
     // add collection fields
     // note that frequency expects the number of collections per year! So monhtly would be 12, quarterly 4 etc.
     $specs[] = new Specification('frequency', 'Integer', E::ts('Frequency'), false, null, null, null, false);
@@ -87,7 +82,6 @@ class RequestMandateUpdate extends AbstractAction {
     $specs[] = new Specification('financial_type', 'String', E::ts('Financial Type'), false, null, null, null, false);
     $specs[] = new Specification('campaign', 'String', E::ts('Campaign'), false, null, null, null, false);
     $specs[] = new Specification('amount', 'Float', E::ts('Amount'), false, null, null, null, false);
-
     return new SpecificationBag($specs);
   }
 
@@ -111,14 +105,17 @@ class RequestMandateUpdate extends AbstractAction {
    */
   protected function doAction(ParameterBagInterface $parameters, ParameterBagInterface $output) {
     $params = $parameters->toArray();
-
     // override if necessary
     foreach (['activity_type_id', 'i3val_note', 'status'] as $field_name) {
       if (empty($params[$field_name])) {
         $params[$field_name] = $this->configuration->getParameter($field_name);
       }
     }
-
+    // fix contact_id if required (sepa mandate will treat id as id of the mandate!)
+    if (!isset($params['contact_id']) && isset($params['id'])) {
+      $params['contact_id'] = $params['id'];
+      unset($params['id']);
+    }
     // execute
     $result = \civicrm_api3('SepaMandate', 'request_update', $params);
     if (is_array($result['values'])) {
