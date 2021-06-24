@@ -92,6 +92,15 @@ class RequestMandateUpdate extends AbstractAction {
   }
 
   /**
+   * @return SpecificationBag
+   */
+  public function getOutputSpecification() {
+    return new SpecificationBag([
+      new Specification("result", "String", E::ts("Result Request"), FALSE),
+    ]);
+  }
+
+  /**
    * Run the action
    *
    * @param ParameterBagInterface $parameters
@@ -112,5 +121,10 @@ class RequestMandateUpdate extends AbstractAction {
 
     // execute
     $result = \civicrm_api3('SepaMandate', 'request_update', $params);
+    if (is_array($result['values'])) {
+      $output->setParameter('result', json_encode($result['values']));
+    } else {
+      $output->setParameter('result', $result['values']);
+    }
   }
 }

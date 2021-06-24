@@ -69,6 +69,15 @@ class RequestContactUpdate extends AbstractAction {
   }
 
   /**
+   * @return SpecificationBag
+   */
+  public function getOutputSpecification() {
+    return new SpecificationBag([
+      new Specification("result", "String", E::ts("Result Request"), FALSE),
+    ]);
+  }
+
+  /**
    * Run the action
    *
    * @param ParameterBagInterface $parameters
@@ -77,7 +86,8 @@ class RequestContactUpdate extends AbstractAction {
    * 	 The parameters this action can send back
    * @return void
    */
-  protected function doAction(ParameterBagInterface $parameters, ParameterBagInterface $output) {
+  protected function doAction(ParameterBagInterface $parameters, ParameterBagInterface $output)
+  {
     $params = $parameters->toArray();
     // override if necessary
     foreach (['activity_type_id', 'i3val_note', 'i3val_schedule_date', 'i3val_parent_id'] as $field_name) {
@@ -92,6 +102,11 @@ class RequestContactUpdate extends AbstractAction {
     }
 
     // execute
-    \civicrm_api3('Contact', 'request_update', $params);
+    $result = \civicrm_api3('Contact', 'request_update', $params);
+    if (is_array($result['values'])) {
+      $output->setParameter('result', json_encode($result['values']));
+    } else {
+      $output->setParameter('result', $result['values']);
+    }
   }
 }
