@@ -270,15 +270,18 @@ class CRM_I3val_Configuration {
     }
 
     // TODO: cache labels?
-    $labels = civicrm_api3('OptionValue', 'get', array(
-      'option_group_id' => 'activity_type',
-      'value'           => array('IN' => array_keys($activity_types)),
-      'return'          => 'value,label',
-      'option.limit'    => 0
-    ));
-    foreach ($labels['values'] as $option_value) {
-      $activity_types[$option_value['value']] = $option_value['label'];
+    if (!empty($activity_types)) {
+      $labels = civicrm_api3('OptionValue', 'get', array(
+          'option_group_id' => 'activity_type',
+          'value'           => array('IN' => array_keys($activity_types)),
+          'return'          => 'value,label',
+          'option.limit'    => 0
+      ));
+      foreach ($labels['values'] as $option_value) {
+        $activity_types[$option_value['value']] = $option_value['label'];
+      }
     }
+
     return $activity_types;
   }
 
