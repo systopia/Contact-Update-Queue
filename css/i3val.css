@@ -32,6 +32,12 @@ div.i3val-suboption {
   margin: 10px;
 }
 
+.i3val-note {
+  clear: left;
+  padding: 10px;
+  font-size: 15px;
+}
+
 .i3val-suboption-hint {
   text-align: center;
   font-size: 10px;
