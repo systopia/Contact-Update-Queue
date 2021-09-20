@@ -5,169 +5,22 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: be.aivl.i3val\n"
-"POT-Creation-Date: 2017-11-20 19:24+0100\n"
+"POT-Creation-Date: 2021-09-20 17:12+0200\n"
 "Language-Team: CiviCRM Translators <civicrm-translators@lists.civicrm.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: i3val.php
-msgid "Process Pending Update Requests"
+#: CRM/I3val/Configuration.php
+msgid "10 minutes"
 msgstr ""
 
-#: i3val.php
-msgid "Configure I3Val"
+#: CRM/I3val/Configuration.php CRM/I3val/Form/Configuration.php
+msgid "1 hour"
 msgstr ""
 
-#: templates/CRM/Activity/I3valPanel.tpl
-msgid "Field"
-msgstr ""
-
-#: templates/CRM/Activity/I3valPanel.tpl
-#: templates/CRM/I3val/Handler/AddressUpdate.tpl
-#: templates/CRM/I3val/Handler/ContactUpdate.tpl
-#: templates/CRM/I3val/Handler/EmailUpdate.tpl
-#: templates/CRM/I3val/Handler/PhoneUpdate.tpl
-#: templates/CRM/I3val/Handler/SddUpdate.tpl
-msgid "Original Value"
-msgstr ""
-
-#: templates/CRM/Activity/I3valPanel.tpl
-#: templates/CRM/I3val/Handler/AddressUpdate.tpl
-#: templates/CRM/I3val/Handler/ContactUpdate.tpl
-#: templates/CRM/I3val/Handler/EmailUpdate.tpl
-#: templates/CRM/I3val/Handler/PhoneUpdate.tpl
-#: templates/CRM/I3val/Handler/SddUpdate.tpl
-msgid "Submitted Value"
-msgstr ""
-
-#: templates/CRM/Activity/I3valPanel.tpl
-msgid "Applied Value"
-msgstr ""
-
-#: templates/CRM/I3val/Form/Configuration.tpl
-msgid "General Options"
-msgstr ""
-
-#: templates/CRM/I3val/Form/Configuration.tpl
-msgid "Processing Session Options"
-msgstr ""
-
-#: templates/CRM/I3val/Form/Configuration.tpl
-msgid "Data Configuration"
-msgstr ""
-
-#: templates/CRM/I3val/Form/Configuration.tpl
-msgid "Configuration %1"
-msgstr ""
-
-#: templates/CRM/I3val/Form/Desktop.tpl
-msgid "With Contact"
-msgstr ""
-
-#: templates/CRM/I3val/Form/Desktop.tpl
-msgid "Subject"
-msgstr ""
-
-#: templates/CRM/I3val/Form/Desktop.tpl CRM/I3val/Handler/SddUpdate.php
-msgid "Campaign"
-msgstr ""
-
-#: templates/CRM/I3val/Form/Desktop.tpl
-msgid "None"
-msgstr ""
-
-#: templates/CRM/I3val/Form/Desktop.tpl
-msgid "Scheduled Date"
-msgstr ""
-
-#: templates/CRM/I3val/Form/Desktop.tpl CRM/I3val/Handler/SddUpdate.php
-msgid "Status"
-msgstr ""
-
-#: templates/CRM/I3val/Form/Desktop.tpl
-msgid "Note"
-msgstr ""
-
-#: templates/CRM/I3val/Form/Desktop.tpl
-msgid "Quick Contact History"
-msgstr ""
-
-#: templates/CRM/I3val/Form/Desktop.tpl
-msgid "Type"
-msgstr ""
-
-#: templates/CRM/I3val/Form/Desktop.tpl
-msgid "Added by"
-msgstr ""
-
-#: templates/CRM/I3val/Form/Desktop.tpl
-msgid "Date"
-msgstr ""
-
-#: templates/CRM/I3val/Handler/AddressUpdate.tpl
-msgid "Address Data"
-msgstr ""
-
-#: templates/CRM/I3val/Handler/AddressUpdate.tpl
-#: templates/CRM/I3val/Handler/ContactUpdate.tpl
-#: templates/CRM/I3val/Handler/EmailUpdate.tpl
-#: templates/CRM/I3val/Handler/PhoneUpdate.tpl
-#: templates/CRM/I3val/Handler/SddUpdate.tpl
-msgid "Current Value"
-msgstr ""
-
-#: templates/CRM/I3val/Handler/AddressUpdate.tpl
-#: templates/CRM/I3val/Handler/ContactUpdate.tpl
-#: templates/CRM/I3val/Handler/EmailUpdate.tpl
-#: templates/CRM/I3val/Handler/PhoneUpdate.tpl
-#: templates/CRM/I3val/Handler/SddUpdate.tpl
-msgid "Value to apply"
-msgstr ""
-
-#: templates/CRM/I3val/Handler/ContactUpdate.tpl
-msgid "Contact Base Data"
-msgstr ""
-
-#: templates/CRM/I3val/Handler/ContactUpdate.tpl
-msgid "Apply?"
-msgstr ""
-
-#: templates/CRM/I3val/Handler/EmailUpdate.tpl
-msgid "Email Data"
-msgstr ""
-
-#: templates/CRM/I3val/Handler/PhoneUpdate.tpl
-msgid "Phone Data"
-msgstr ""
-
-#: templates/CRM/I3val/Handler/SddUpdate.tpl
-msgid "SEPA Direct Debit Update"
-msgstr ""
-
-#: templates/CRM/I3val/Handler/SddUpdate.tpl
-msgid "This is an amendmend for mandate <a href=\"%2\"><code>%1</code></a>."
-msgstr ""
-
-#: resources/test.php CRM/I3val/Handler/AddressUpdate.php CRM/I3val/Logic.php
-#: resources/*.json
-msgid "Address Update"
-msgstr ""
-
-#: resources/test.php CRM/I3val/Handler/ContactUpdate.php resources/*.json
-msgid "Contact Update"
-msgstr ""
-
-#: resources/test.php CRM/I3val/Handler/EmailUpdate.php resources/*.json
-msgid "Email Update"
-msgstr ""
-
-#: resources/test.php CRM/I3val/Handler/PhoneUpdate.php resources/*.json
-msgid "Phone Update"
-msgstr ""
-
-#: resources/test.php resources/*.json
-msgid "SEPA DD Update"
+#: CRM/I3val/Configuration.php
+msgid "3 hours"
 msgstr ""
 
 #: CRM/I3val/Configuration.php CRM/I3val/Form/Configuration.php
@@ -190,12 +43,48 @@ msgstr ""
 msgid "1 month"
 msgstr ""
 
-#: CRM/I3val/Form/Configuration.php
-msgid "Timeout"
+#: CRM/I3val/Converter.php CRM/I3val/Handler/ContactUpdate.php
+msgid "First Name"
+msgstr ""
+
+#: CRM/I3val/Converter.php CRM/I3val/Handler/ContactUpdate.php
+msgid "Last Name"
+msgstr ""
+
+#: CRM/I3val/Converter.php CRM/I3val/Handler/AddressUpdate.php
+msgid "City"
+msgstr ""
+
+#: CRM/I3val/Converter.php CRM/I3val/Handler/AddressUpdate.php
+msgid "Street Address"
+msgstr ""
+
+#: CRM/I3val/Converter.php CRM/I3val/Handler/AddressUpdate.php
+msgid "Postal Code"
+msgstr ""
+
+#: CRM/I3val/Converter.php CRM/I3val/Handler/AddressUpdate.php
+msgid "Country"
+msgstr ""
+
+#: CRM/I3val/Converter.php CRM/I3val/Handler/EmailUpdate.php
+msgid "Email"
 msgstr ""
 
 #: CRM/I3val/Form/Configuration.php
-msgid "Batch Size"
+msgid "Session Timeout"
+msgstr ""
+
+#: CRM/I3val/Form/Configuration.php
+msgid "Session Batch Size"
+msgstr ""
+
+#: CRM/I3val/Form/Configuration.php
+msgid "Quick History"
+msgstr ""
+
+#: CRM/I3val/Form/Configuration.php
+msgid "Allow Clearing Fields"
 msgstr ""
 
 #: CRM/I3val/Form/Configuration.php
@@ -203,10 +92,20 @@ msgid "Input Trim Characters"
 msgstr ""
 
 #: CRM/I3val/Form/Configuration.php
+msgid "Empty String Token"
+msgstr ""
+
+#: CRM/I3val/Form/Configuration.php
 msgid "Flaged Request Status"
 msgstr ""
 
 #: CRM/I3val/Form/Configuration.php
+msgid "Default Action"
+msgstr ""
+
+#: CRM/I3val/Form/Configuration.php
+#: Civi/I3val/ActionProvider/Action/RequestContactUpdate.php
+#: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
 msgid "Activity Type"
 msgstr ""
 
@@ -218,8 +117,12 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: CRM/I3val/Form/Configuration.php CRM/I3val/Configuration.php
-msgid "1 hour"
+#: CRM/I3val/Form/Configuration.php
+msgid "I3Val configuration was updated successfully."
+msgstr ""
+
+#: CRM/I3val/Form/Configuration.php
+msgid "Configuration Saved"
 msgstr ""
 
 #: CRM/I3val/Form/Configuration.php
@@ -251,11 +154,35 @@ msgid "single"
 msgstr ""
 
 #: CRM/I3val/Form/Configuration.php
+msgid "Auto"
+msgstr ""
+
+#: CRM/I3val/Form/Configuration.php
+msgid "Create New"
+msgstr ""
+
+#: CRM/I3val/Form/Configuration.php
+msgid "Overwrite"
+msgstr ""
+
+#: CRM/I3val/Form/Configuration.php
+msgid "Do Nothing"
+msgstr ""
+
+#: CRM/I3val/Form/Configuration.php
 msgid "-disabled-"
 msgstr ""
 
 #: CRM/I3val/Form/Desktop.php
-msgid "Processing requested update #%1"
+msgid "Please configure I3Val first."
+msgstr ""
+
+#: CRM/I3val/Form/Desktop.php CRM/I3val/Handler/AddressUpdate.php
+msgid "Warning"
+msgstr ""
+
+#: CRM/I3val/Form/Desktop.php
+msgid "The types requested are not configured."
 msgstr ""
 
 #: CRM/I3val/Form/Desktop.php
@@ -267,11 +194,47 @@ msgid "All done!"
 msgstr ""
 
 #: CRM/I3val/Form/Desktop.php
-msgid "Activity not connected to a contact!"
+msgid "Processing requested update #%1 [Contact Queue]"
+msgstr ""
+
+#: CRM/I3val/Form/Desktop.php
+msgid "Processing requested update #%1"
+msgstr ""
+
+#: CRM/I3val/Form/Desktop.php
+msgid "Activity not connected to a contact (any more)!"
 msgstr ""
 
 #: CRM/I3val/Form/Desktop.php CRM/I3val/Handler/AddressUpdate.php
 msgid "Error"
+msgstr ""
+
+#: CRM/I3val/Form/Desktop.php
+msgid "Requested update has been flagged as a problem."
+msgstr ""
+
+#: CRM/I3val/Form/Desktop.php
+msgid "Flagged!"
+msgstr ""
+
+#: CRM/I3val/Form/Desktop.php
+msgid ""
+"There are %1 other changes scheduled for this contact. Click <strong><a "
+"href='%2'>HERE</a></strong> if you want to process those in one batch."
+msgstr ""
+
+#: CRM/I3val/Form/Desktop.php
+msgid "Related Updates Scheduled!"
+msgstr ""
+
+#: CRM/I3val/Form/Desktop.php
+msgid ""
+"There is another change scheduled for this contact. Click <strong><a "
+"href='%1'>HERE</a></strong> if you want to process both in one batch."
+msgstr ""
+
+#: CRM/I3val/Form/Desktop.php
+msgid "Activity [%1] is faulty and has been flagged as problematic."
 msgstr ""
 
 #: CRM/I3val/Form/Desktop.php
@@ -299,23 +262,16 @@ msgid "Postponed!"
 msgstr ""
 
 #: CRM/I3val/Form/Desktop.php
-msgid "Requested update has been flagged as a problem."
+msgid ""
+"The change request [%1] presented here had already been processed elsewhere."
 msgstr ""
 
 #: CRM/I3val/Form/Desktop.php
-msgid "Flagged!"
+msgid "Skipped"
 msgstr ""
 
 #: CRM/I3val/Form/Desktop.php
 msgid "Unkown action."
-msgstr ""
-
-#: CRM/I3val/Handler/AddressUpdate.php
-msgid "Street Address"
-msgstr ""
-
-#: CRM/I3val/Handler/AddressUpdate.php
-msgid "Postal Code"
 msgstr ""
 
 #: CRM/I3val/Handler/AddressUpdate.php
@@ -326,25 +282,25 @@ msgstr ""
 msgid "Supplemental Address 2"
 msgstr ""
 
-#: CRM/I3val/Handler/AddressUpdate.php
-msgid "City"
-msgstr ""
-
-#: CRM/I3val/Handler/AddressUpdate.php
-msgid "Country"
-msgstr ""
-
 #: CRM/I3val/Handler/AddressUpdate.php CRM/I3val/Handler/EmailUpdate.php
 #: CRM/I3val/Handler/PhoneUpdate.php
 msgid "Location Type"
 msgstr ""
 
-#: CRM/I3val/Handler/AddressUpdate.php
-msgid "New address added."
+#: CRM/I3val/Handler/AddressUpdate.php resources/*.json
+msgid "Address Update"
 msgstr ""
 
 #: CRM/I3val/Handler/AddressUpdate.php
-msgid "Address updated"
+msgid "New %1 address added."
+msgstr ""
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Replaced %1 address."
+msgstr ""
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Updated %1 address."
 msgstr ""
 
 #: CRM/I3val/Handler/AddressUpdate.php CRM/I3val/Handler/EmailUpdate.php
@@ -357,17 +313,121 @@ msgstr ""
 msgid "Data discarded."
 msgstr ""
 
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Primary Address"
+msgstr ""
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "No"
+msgstr ""
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Yes"
+msgstr ""
+
 #: CRM/I3val/Handler/AddressUpdate.php CRM/I3val/Handler/EmailUpdate.php
 #: CRM/I3val/Handler/PhoneUpdate.php CRM/I3val/Handler/SddUpdate.php
 msgid "Action"
 msgstr ""
 
-#: CRM/I3val/Handler/ContactUpdate.php
-msgid "First Name"
+#: CRM/I3val/Handler/AddressUpdate.php CRM/I3val/Handler/ContactUpdate.php
+msgid "none"
+msgstr ""
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Update '%1' Address"
+msgstr ""
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Replace '%1' Address"
+msgstr ""
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Add New '%1' Address"
+msgstr ""
+
+#: CRM/I3val/Handler/AddressUpdate.php CRM/I3val/Handler/DetailUpdate.php
+msgid "Discard %1 data (do nothing)"
+msgstr ""
+
+#: CRM/I3val/Handler/AddressUpdate.php CRM/I3val/Handler/DetailUpdate.php
+msgid "%1 already exists (do nothing)"
+msgstr ""
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Referenced shared address contact [%1] could not be found."
+msgstr ""
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "new address"
+msgstr ""
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "don't share"
+msgstr ""
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Share with"
+msgstr ""
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Share"
+msgstr ""
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Address not shared"
+msgstr ""
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Active address not found!"
+msgstr ""
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Address shared"
+msgstr ""
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Selected address not found!"
+msgstr ""
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid ""
+"You selected an address to share, but to discard the address. As a result, "
+"NO sharing was applied."
+msgstr ""
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Not shared!"
+msgstr ""
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Something went wrong, cannot find the sharing address."
+msgstr ""
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Share selected address"
+msgstr ""
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "The address is currently shared with %1."
+msgstr ""
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid " and "
+msgstr ""
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "The address is requested to be shared with %1."
+msgstr ""
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid ""
+"The address is currently shared with %1, but is requested to be shared with "
+"%2."
 msgstr ""
 
 #: CRM/I3val/Handler/ContactUpdate.php
-msgid "Last Name"
+msgid "Formal Title"
 msgstr ""
 
 #: CRM/I3val/Handler/ContactUpdate.php
@@ -376,6 +436,14 @@ msgstr ""
 
 #: CRM/I3val/Handler/ContactUpdate.php
 msgid "Household Name"
+msgstr ""
+
+#: CRM/I3val/Handler/ContactUpdate.php
+msgid "Preferred Language"
+msgstr ""
+
+#: CRM/I3val/Handler/ContactUpdate.php
+msgid "Job Title"
 msgstr ""
 
 #: CRM/I3val/Handler/ContactUpdate.php
@@ -426,6 +494,10 @@ msgstr ""
 msgid "Deceased Date"
 msgstr ""
 
+#: CRM/I3val/Handler/ContactUpdate.php resources/*.json
+msgid "Contact Update"
+msgstr ""
+
 #: CRM/I3val/Handler/DetailUpdate.php
 msgid "Add new %1"
 msgstr ""
@@ -438,16 +510,8 @@ msgstr ""
 msgid "Overwrite existing %1"
 msgstr ""
 
-#: CRM/I3val/Handler/DetailUpdate.php
-msgid "Discard %1 data (do nothing)"
-msgstr ""
-
-#: CRM/I3val/Handler/DetailUpdate.php
-msgid "%1 already exists (do nothing)"
-msgstr ""
-
-#: CRM/I3val/Handler/EmailUpdate.php
-msgid "Email"
+#: CRM/I3val/Handler/EmailUpdate.php resources/*.json
+msgid "Email Update"
 msgstr ""
 
 #: CRM/I3val/Handler/EmailUpdate.php
@@ -466,6 +530,10 @@ msgstr ""
 msgid "Phone Type"
 msgstr ""
 
+#: CRM/I3val/Handler/PhoneUpdate.php resources/*.json
+msgid "Phone Update"
+msgstr ""
+
 #: CRM/I3val/Handler/PhoneUpdate.php
 msgid "New phone added."
 msgstr ""
@@ -474,52 +542,73 @@ msgstr ""
 msgid "Phone updated"
 msgstr ""
 
-#: CRM/I3val/Handler/SddUpdate.php resources/*.json
+#: CRM/I3val/Handler/SddUpdate.php
+#: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php resources/*.json
 msgid "Mandate Reference"
 msgstr ""
 
 #: CRM/I3val/Handler/SddUpdate.php
+#: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
 msgid "Source"
 msgstr ""
 
 #: CRM/I3val/Handler/SddUpdate.php
+#: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
 msgid "IBAN"
 msgstr ""
 
 #: CRM/I3val/Handler/SddUpdate.php
+#: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
 msgid "BIC"
 msgstr ""
 
 #: CRM/I3val/Handler/SddUpdate.php
+#: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
 msgid "Signature Date"
 msgstr ""
 
 #: CRM/I3val/Handler/SddUpdate.php
+#: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
 msgid "Validation Date"
 msgstr ""
 
 #: CRM/I3val/Handler/SddUpdate.php
+#: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
 msgid "Start Date"
 msgstr ""
 
 #: CRM/I3val/Handler/SddUpdate.php
+#: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
 msgid "End Date"
 msgstr ""
 
 #: CRM/I3val/Handler/SddUpdate.php
+#: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
 msgid "Frequency"
 msgstr ""
 
 #: CRM/I3val/Handler/SddUpdate.php
+#: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
 msgid "Cycle Day"
 msgstr ""
 
 #: CRM/I3val/Handler/SddUpdate.php
+msgid "Reason"
+msgstr ""
+
+#: CRM/I3val/Handler/SddUpdate.php
+#: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
 msgid "Financial Type"
 msgstr ""
 
 #: CRM/I3val/Handler/SddUpdate.php
-msgid "Amount"
+#: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
+#: templates/CRM/I3val/Form/Desktop.tpl
+msgid "Campaign"
+msgstr ""
+
+#: CRM/I3val/Handler/SddUpdate.php
+msgid "Amount (Installment)"
 msgstr ""
 
 #: CRM/I3val/Handler/SddUpdate.php
@@ -527,7 +616,7 @@ msgid "CiviSEPA Mandate Update"
 msgstr ""
 
 #: CRM/I3val/Handler/SddUpdate.php
-msgid "Created replacement mandate."
+msgid "Update Reason"
 msgstr ""
 
 #: CRM/I3val/Handler/SddUpdate.php
@@ -535,7 +624,7 @@ msgid "Don't apply"
 msgstr ""
 
 #: CRM/I3val/Handler/SddUpdate.php
-msgid "Create replacement mandate"
+msgid "Update Mandate"
 msgstr ""
 
 #: CRM/I3val/Handler/SddUpdate.php
@@ -562,12 +651,321 @@ msgstr ""
 msgid "monthly"
 msgstr ""
 
-#: CRM/I3val/Handler/SddUpdate.php CRM/I3val/Logic.php
+#: CRM/I3val/Handler/SddUpdate.php
 msgid "every %1 months"
+msgstr ""
+
+#: CRM/I3val/Handler/SddUpdate.php
+msgid "Mandate cancelled"
+msgstr ""
+
+#: CRM/I3val/Handler/SddUpdate.php
+msgid "Created replacement mandate."
+msgstr ""
+
+#: CRM/I3val/Handler/SddUpdate.php
+msgid "Mandate adjusted: changed amount"
+msgstr ""
+
+#: CRM/I3val/Handler/SddUpdate.php
+#: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
+#: templates/CRM/I3val/Form/Desktop.tpl
+msgid "Status"
+msgstr ""
+
+#: CRM/I3val/Handler/SddUpdate.php
+#: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Cancel Reason"
+msgstr ""
+
+#: CRM/I3val/Handler/SddUpdate.php
+msgid "Cancel Mandate"
 msgstr ""
 
 #: CRM/I3val/Logic.php
 msgid "%1 Update Request"
+msgstr ""
+
+#: CRM/I3val/Session.php
+msgid ""
+"%1 of the scheduled activities for this contact are currently processed by "
+"somebody else"
+msgstr ""
+
+#: CRM/I3val/Session.php
+msgid "Concurrent Processing"
+msgstr ""
+
+#: CRM/I3val/Upgrader/Base.php
+msgid "Upgrade %1 to revision %2"
+msgstr ""
+
+#: Civi/I3val/ActionProvider/Action/RequestContactUpdate.php
+#: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Default Activity Type"
+msgstr ""
+
+#: Civi/I3val/ActionProvider/Action/RequestContactUpdate.php
+#: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Contact ID"
+msgstr ""
+
+#: Civi/I3val/ActionProvider/Action/RequestContactUpdate.php
+#: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Note"
+msgstr ""
+
+#: Civi/I3val/ActionProvider/Action/RequestContactUpdate.php
+#: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Requested Change Date"
+msgstr ""
+
+#: Civi/I3val/ActionProvider/Action/RequestContactUpdate.php
+#: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Linked Activity ID"
+msgstr ""
+
+#: Civi/I3val/ActionProvider/Action/RequestContactUpdate.php
+#: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Result Request"
+msgstr ""
+
+#: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
+msgid "No Status Change"
+msgstr ""
+
+#: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Terminate Mandate (COMPLETE)"
+msgstr ""
+
+#: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Mark Mandate as Invalid (INVALID)"
+msgstr ""
+
+#: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Requested Status"
+msgstr ""
+
+#: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Amount"
+msgstr ""
+
+#: Civi/I3val/ContainerSpecs.php
+msgid "Request Contact Update"
+msgstr ""
+
+#: Civi/I3val/ContainerSpecs.php
+msgid "Request CiviSEPA Mandate Update"
+msgstr ""
+
+#: i3val.php
+msgid "Process Pending Update Requests"
+msgstr ""
+
+#: i3val.php
+msgid "Configure I3Val"
+msgstr ""
+
+#: templates/CRM/Activity/I3valPanel.tpl
+msgid "Field"
+msgstr ""
+
+#: templates/CRM/Activity/I3valPanel.tpl
+#: templates/CRM/I3val/Handler/AddressUpdate.tpl
+#: templates/CRM/I3val/Handler/ContactUpdate.tpl
+#: templates/CRM/I3val/Handler/EmailUpdate.tpl
+#: templates/CRM/I3val/Handler/PhoneUpdate.tpl
+#: templates/CRM/I3val/Handler/SddUpdate.tpl
+msgid "Original Value"
+msgstr ""
+
+#: templates/CRM/Activity/I3valPanel.tpl
+#: templates/CRM/I3val/Handler/AddressUpdate.tpl
+#: templates/CRM/I3val/Handler/ContactUpdate.tpl
+#: templates/CRM/I3val/Handler/EmailUpdate.tpl
+#: templates/CRM/I3val/Handler/PhoneUpdate.tpl
+#: templates/CRM/I3val/Handler/SddUpdate.tpl
+msgid "Submitted Value"
+msgstr ""
+
+#: templates/CRM/Activity/I3valPanel.tpl
+msgid "Applied Value"
+msgstr ""
+
+#: templates/CRM/I3val/Form/Configuration.hlp
+msgid ""
+"If this is enabled, even change requests for empty fields will show up in "
+"batch processing. If not, they will be recorded, but now shown as an option."
+msgstr ""
+
+#: templates/CRM/I3val/Form/Configuration.hlp
+msgid ""
+"All the characters listed here will be stripped from the beginning and the "
+"end of each submitted value."
+msgstr ""
+
+#: templates/CRM/I3val/Form/Configuration.hlp
+msgid ""
+"For example, entering a simple whitespace (\"&nbsp;\") here could help if "
+"the data is coming from a user input form."
+msgstr ""
+
+#: templates/CRM/I3val/Form/Configuration.hlp
+msgid ""
+"In I3Val there is a difference between fields that have not been submitted, "
+"and those who are submitted with an empty value. By default the empty value "
+"is interpreted as you wanting to set that field to an empty string."
+msgstr ""
+
+#: templates/CRM/I3val/Form/Configuration.hlp
+msgid ""
+"You can change that behaviour by providing as string here to symbolise an "
+"empty string, e.g. \"NULL\". This has the effect, that all empty values "
+"submitted will be removed alltogether, and all fields submitted with value "
+"\"NULL\" are interpreted as empty value."
+msgstr ""
+
+#: templates/CRM/I3val/Form/Configuration.tpl
+msgid "Processing Options"
+msgstr ""
+
+#: templates/CRM/I3val/Form/Configuration.tpl
+msgid "Update Request Options"
+msgstr ""
+
+#: templates/CRM/I3val/Form/Configuration.tpl
+msgid "Clearing Fields"
+msgstr ""
+
+#: templates/CRM/I3val/Form/Configuration.tpl
+msgid "Help"
+msgstr ""
+
+#: templates/CRM/I3val/Form/Configuration.tpl
+msgid "Strip Characters"
+msgstr ""
+
+#: templates/CRM/I3val/Form/Configuration.tpl
+msgid "Empty Token"
+msgstr ""
+
+#: templates/CRM/I3val/Form/Configuration.tpl
+msgid "Data Configuration"
+msgstr ""
+
+#: templates/CRM/I3val/Form/Configuration.tpl
+msgid "Configuration %1"
+msgstr ""
+
+#: templates/CRM/I3val/Form/Desktop.tpl
+msgid "With Contact"
+msgstr ""
+
+#: templates/CRM/I3val/Form/Desktop.tpl
+msgid "Subject"
+msgstr ""
+
+#: templates/CRM/I3val/Form/Desktop.tpl
+msgid "None"
+msgstr ""
+
+#: templates/CRM/I3val/Form/Desktop.tpl
+msgid "Scheduled Date"
+msgstr ""
+
+#: templates/CRM/I3val/Form/Desktop.tpl
+msgid "Quick Contact History"
+msgstr ""
+
+#: templates/CRM/I3val/Form/Desktop.tpl
+msgid "Type"
+msgstr ""
+
+#: templates/CRM/I3val/Form/Desktop.tpl
+msgid "Added by"
+msgstr ""
+
+#: templates/CRM/I3val/Form/Desktop.tpl
+msgid "Date"
+msgstr ""
+
+#: templates/CRM/I3val/Form/Desktop.tpl
+msgid "Note:"
+msgstr ""
+
+#: templates/CRM/I3val/Handler/AddressUpdate.tpl
+msgid "Address Data"
+msgstr ""
+
+#: templates/CRM/I3val/Handler/AddressUpdate.tpl
+#: templates/CRM/I3val/Handler/ContactUpdate.tpl
+#: templates/CRM/I3val/Handler/EmailUpdate.tpl
+#: templates/CRM/I3val/Handler/PhoneUpdate.tpl
+#: templates/CRM/I3val/Handler/SddUpdate.tpl
+msgid "Current Value"
+msgstr ""
+
+#: templates/CRM/I3val/Handler/AddressUpdate.tpl
+#: templates/CRM/I3val/Handler/ContactUpdate.tpl
+#: templates/CRM/I3val/Handler/EmailUpdate.tpl
+#: templates/CRM/I3val/Handler/PhoneUpdate.tpl
+#: templates/CRM/I3val/Handler/SddUpdate.tpl
+msgid "Value to apply"
+msgstr ""
+
+#: templates/CRM/I3val/Handler/AddressUpdate.tpl
+#: templates/CRM/I3val/Handler/EmailUpdate.tpl
+#: templates/CRM/I3val/Handler/PhoneUpdate.tpl
+msgid "Click to copy '%1' into the 'apply' column."
+msgstr ""
+
+#: templates/CRM/I3val/Handler/AddressUpdate.tpl
+msgid "<b>Note:</b>"
+msgstr ""
+
+#: templates/CRM/I3val/Handler/AddressUpdate.tpl
+msgid "You might have to manually adjust the resulting address(es)."
+msgstr ""
+
+#: templates/CRM/I3val/Handler/AddressUpdate.tpl
+msgid "Share address with"
+msgstr ""
+
+#: templates/CRM/I3val/Handler/AddressUpdate.tpl
+msgid "This address will be updated as well."
+msgstr ""
+
+#: templates/CRM/I3val/Handler/ContactUpdate.tpl
+msgid "Contact Base Data"
+msgstr ""
+
+#: templates/CRM/I3val/Handler/ContactUpdate.tpl
+msgid "Apply?"
+msgstr ""
+
+#: templates/CRM/I3val/Handler/EmailUpdate.tpl
+msgid "Email Data"
+msgstr ""
+
+#: templates/CRM/I3val/Handler/PhoneUpdate.tpl
+msgid "Phone Data"
+msgstr ""
+
+#: templates/CRM/I3val/Handler/SddUpdate.tpl
+msgid "SEPA Direct Debit Update"
+msgstr ""
+
+#: templates/CRM/I3val/Handler/SddUpdate.tpl
+msgid ""
+"This is a <i>cancellation</i> of mandate <a href=\"%2\"><code>%1</code></a>."
+msgstr ""
+
+#: templates/CRM/I3val/Handler/SddUpdate.tpl
+msgid "This is an amendmend for mandate <a href=\"%2\"><code>%1</code></a>."
+msgstr ""
+
+#: resources/*.json
+msgid "SEPA DD Update"
 msgstr ""
 
 #: resources/*.json
@@ -655,6 +1053,10 @@ msgid "Location Type (applied)"
 msgstr ""
 
 #: resources/*.json
+msgid "Shared with Contact ID"
+msgstr ""
+
+#: resources/*.json
 msgid "Applied Action"
 msgstr ""
 
@@ -680,6 +1082,18 @@ msgstr ""
 
 #: resources/*.json
 msgid "Last Name (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Formal Title (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Formal Title (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Formal Title (applied)"
 msgstr ""
 
 #: resources/*.json
@@ -740,6 +1154,42 @@ msgstr ""
 
 #: resources/*.json
 msgid "Organisation Name (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Household Name (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Household Name (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Household Name (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Job Title (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Job Title (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Job Title (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Preferred Language (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Preferred Language (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Preferred Language (applied)"
 msgstr ""
 
 #: resources/*.json
@@ -872,6 +1322,10 @@ msgstr ""
 
 #: resources/*.json
 msgid "Phone (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Requested Mandate Status"
 msgstr ""
 
 #: resources/*.json
@@ -1019,264 +1473,6 @@ msgid "End Date (applied)"
 msgstr ""
 
 #: resources/*.json
-msgid "Replacement Mandate Reference"
-msgstr ""
-
-#: CRM/I3val/Form/Configuration.php
-msgid "Quick History"
-msgstr ""
-
-#: CRM/I3val/Form/Desktop.php
-msgid "Please configure I3Val first."
-msgstr ""
-
-#: CRM/I3val/Form/Desktop.php CRM/I3val/Handler/AddressUpdate.php
-msgid "Warning"
-msgstr ""
-
-#: CRM/I3val/Configuration.php
-msgid "10 minutes"
-msgstr ""
-
-#: CRM/I3val/Configuration.php
-msgid "3 hours"
-msgstr ""
-
-#: CRM/I3val/Handler/AddressUpdate.php
-msgid "Address shared"
-msgstr ""
-
-#: CRM/I3val/Handler/AddressUpdate.php
-msgid "Referenced shared address contact [%1] could not be found."
-msgstr ""
-
-#: CRM/I3val/Handler/AddressUpdate.php
-msgid "new address"
-msgstr ""
-
-#: CRM/I3val/Handler/AddressUpdate.php
-msgid "don't share"
-msgstr ""
-
-#: CRM/I3val/Handler/AddressUpdate.php
-msgid "Share with"
-msgstr ""
-
-#: CRM/I3val/Handler/AddressUpdate.php
-msgid "Share"
-msgstr ""
-
-#: CRM/I3val/Handler/AddressUpdate.php
-msgid "Address not shared"
-msgstr ""
-
-#: CRM/I3val/Handler/AddressUpdate.php
-msgid "Active address not found!"
-msgstr ""
-
-#: CRM/I3val/Handler/AddressUpdate.php
-msgid "Selected address not found!"
-msgstr ""
-
-#: CRM/I3val/Handler/AddressUpdate.php
-msgid ""
-"You selected an address to share, but to discard the address. As a result, "
-"NO sharing was applied."
-msgstr ""
-
-#: CRM/I3val/Handler/AddressUpdate.php
-msgid "Not shared!"
-msgstr ""
-
-#: CRM/I3val/Handler/AddressUpdate.php
-msgid "Something went wrong, cannot find the sharing address."
-msgstr ""
-
-#: CRM/I3val/Handler/AddressUpdate.php
-msgid "Share selected address"
-msgstr ""
-
-#: CRM/I3val/Handler/ContactUpdate.php
-msgid "Preferred Language"
-msgstr ""
-
-#: CRM/I3val/Handler/ContactUpdate.php
-msgid "Job Title"
-msgstr ""
-
-#: templates/CRM/I3val/Handler/AddressUpdate.tpl
-msgid "Share address with"
-msgstr ""
-
-#: templates/CRM/I3val/Handler/AddressUpdate.tpl
-msgid "This address will be updated as well."
-msgstr ""
-
-#: resources/*.json
-msgid "Shared with Contact ID"
-msgstr ""
-
-#: resources/*.json
-msgid "Household Name (original)"
-msgstr ""
-
-#: resources/*.json
-msgid "Household Name (submitted)"
-msgstr ""
-
-#: resources/*.json
-msgid "Household Name (applied)"
-msgstr ""
-
-#: resources/*.json
-msgid "Job Title (original)"
-msgstr ""
-
-#: resources/*.json
-msgid "Job Title (submitted)"
-msgstr ""
-
-#: resources/*.json
-msgid "Job Title (applied)"
-msgstr ""
-
-#: resources/*.json
-msgid "Preferred Language (original)"
-msgstr ""
-
-#: resources/*.json
-msgid "Preferred Language (submitted)"
-msgstr ""
-
-#: resources/*.json
-msgid "Preferred Language (applied)"
-msgstr ""
-
-#: CRM/I3val/Form/Configuration.php
-msgid "Session Timeout"
-msgstr ""
-
-#: CRM/I3val/Form/Configuration.php
-msgid "Session Batch Size"
-msgstr ""
-
-#: CRM/I3val/Form/Configuration.php
-msgid "Empty String Token"
-msgstr ""
-
-#: CRM/I3val/Form/Configuration.php
-msgid "Default Action"
-msgstr ""
-
-#: CRM/I3val/Form/Configuration.php
-msgid "Auto"
-msgstr ""
-
-#: CRM/I3val/Form/Configuration.php
-msgid "Create New"
-msgstr ""
-
-#: CRM/I3val/Form/Configuration.php
-msgid "Overwrite"
-msgstr ""
-
-#: CRM/I3val/Form/Configuration.php
-msgid "Do Nothing"
-msgstr ""
-
-#: CRM/I3val/Form/Desktop.php
-msgid "Activity not connected to a contact (any more)!"
-msgstr ""
-
-#: CRM/I3val/Handler/SddUpdate.php
-msgid "Update Reason"
-msgstr ""
-
-#: CRM/I3val/Handler/SddUpdate.php
-msgid "Update Mandate"
-msgstr ""
-
-#: CRM/I3val/Handler/SddUpdate.php
-msgid "Mandate cancelled"
-msgstr ""
-
-#: CRM/I3val/Handler/SddUpdate.php
-msgid "Mandate adjusted: changed amount"
-msgstr ""
-
-#: CRM/I3val/Handler/SddUpdate.php
-msgid "Cancel Reason"
-msgstr ""
-
-#: CRM/I3val/Handler/SddUpdate.php
-msgid "Cancel Mandate"
-msgstr ""
-
-#: templates/CRM/I3val/Form/Configuration.hlp
-msgid ""
-"All the characters listed here will be stripped from the beginning and the "
-"end of each submitted value."
-msgstr ""
-
-#: templates/CRM/I3val/Form/Configuration.hlp
-msgid ""
-"For example, entering a simple whitespace (\"&nbsp;\") here could help if "
-"the data is coming from a user input form."
-msgstr ""
-
-#: templates/CRM/I3val/Form/Configuration.hlp
-msgid ""
-"In I3Val there is a difference between fields that have not been submitted, "
-"and those who are submitted with an empty value. By default the empty value "
-"is interpreted as you wanting to set that field to an empty string."
-msgstr ""
-
-#: templates/CRM/I3val/Form/Configuration.hlp
-msgid ""
-"You can change that behaviour by providing as string here to symbolise an "
-"empty string, e.g. \"NULL\". This has the effect, that all empty values "
-"submitted will be removed alltogether, and all fields submitted with value "
-"\"NULL\" are interpreted as empty value."
-msgstr ""
-
-#: templates/CRM/I3val/Form/Configuration.tpl
-msgid "Processing Options"
-msgstr ""
-
-#: templates/CRM/I3val/Form/Configuration.tpl
-msgid "Update Request Options"
-msgstr ""
-
-#: templates/CRM/I3val/Form/Configuration.tpl
-msgid "Strip Characters"
-msgstr ""
-
-#: templates/CRM/I3val/Form/Configuration.tpl
-msgid "Help"
-msgstr ""
-
-#: templates/CRM/I3val/Form/Configuration.tpl
-msgid "Empty Token"
-msgstr ""
-
-#: templates/CRM/I3val/Form/Desktop.tpl
-msgid "Note:"
-msgstr ""
-
-#: templates/CRM/I3val/Handler/AddressUpdate.tpl
-msgid "Click to copy '%1' into the 'apply' column."
-msgstr ""
-
-#: templates/CRM/I3val/Handler/SddUpdate.tpl
-msgid ""
-"This is a <i>cancellation</i> of mandate <a href=\"%2\"><code>%1</code></a>."
-msgstr ""
-
-#: resources/*.json
-msgid "Requested Mandate Status"
-msgstr ""
-
-#: resources/*.json
 msgid "Reason (original)"
 msgstr ""
 
@@ -1286,4 +1482,8 @@ msgstr ""
 
 #: resources/*.json
 msgid "Reason (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Replacement Mandate Reference"
 msgstr ""
