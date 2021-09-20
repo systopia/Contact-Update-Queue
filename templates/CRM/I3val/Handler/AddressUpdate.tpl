@@ -38,6 +38,12 @@
       </tbody>
     </table>
 
+    <!-- mitigation for missing address sharing, see https://github.com/systopia/be.aivl.i3val/issues/42 -->
+    {if $i3val_address_sharing_mitigation}
+      <hr/>
+      <div class="i3val-note">{ts domain="be.aivl.i3val"}<b>Note:</b>{/ts} {$i3val_address_sharing_mitigation} {ts domain="be.aivl.i3val"}You might have to manually adjust the resulting address(es).{/ts}</div>
+    {/if}
+
     <!--
     {if $i3val_address_sharing_contact}
     {$form.i3val_address_sharing_contact_id}

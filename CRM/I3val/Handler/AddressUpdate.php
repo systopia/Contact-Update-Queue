@@ -258,6 +258,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     $addresses = $this->getExistingAddresses($form->contact['id']);
     $address_submitted = $this->getMyValues($activity);
     $options = $this->getCustomProcessingOptions($address_submitted, $addresses, $default_action);
+
 //    $this->adjustAddressSharingOptions($options, $activity);
     $form->add(
       'select',
@@ -284,6 +285,9 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
         'default_country' => CRM_Core_BAO_Country::defaultContactCountryName(),
     ]);
     CRM_Core_Resources::singleton()->addScriptFile('be.aivl.i3val', 'js/address_update_logic.js');
+
+    // add missing address sharing mitigation (see https://github.com/systopia/be.aivl.i3val/issues/42)
+    $form->assign('i3val_address_sharing_mitigation', $this->getAddressSharingNote($address_submitted, $addresses, $activity));
   }
 
   /**
@@ -955,4 +959,93 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     return $address;
   }
 
+  /**
+   * Generate a human-readable not on contacts involved in address sharing
+   * @see https://github.com/systopia/be.aivl.i3val/issues/42
+   */
+  protected function getAddressSharingNote($submitted_data, $addresses, $activity)
+  {
+    $note = '';
+    $currently_shared_with_contact_ids = [];
+
+    // get "should be shared with" contact
+    $requested_sharing_contact_id = $this->getAddressSharingContactID($activity);
+
+    // GET currently shared with contact IDs
+    // first: get current addresses
+    $master_address_ids = [];
+    foreach ($addresses as $address) {
+      if (!empty($address['master_id'])) {
+        $master_address_ids[] = (int) $address['master_id'];
+      }
+    }
+    // then: get master contact IDs
+    if ($master_address_ids) {
+      $master_address_query = civicrm_api3('Address', 'get', [
+          'option.limit' => 0,
+          'id' => ['IN' => $master_address_ids],
+          'return' => 'contact_id'
+      ]);
+      foreach ($master_address_query['values'] as $master_address) {
+        $currently_shared_with_contact_ids[] = (int) $master_address['contact_id'];
+      }
+      $currently_shared_with_contact_ids = array_unique($currently_shared_with_contact_ids);
+    }
+
+
+    // now: tell the user:
+    if (empty($requested_sharing_contact_id) && !empty($currently_shared_with_contact_ids)) {
+      $contact_labels = [];
+      foreach ($currently_shared_with_contact_ids as $currently_shared_with_contact_id) {
+        $contact_labels[] = $this->renderHTMLContact($currently_shared_with_contact_id);
+      }
+      $note = E::ts("The address is currently shared with %1.",
+                    [1 => implode(E::ts(' and '), $contact_labels)]);
+
+    } else if (!empty($requested_sharing_contact_id) && empty($currently_shared_with_contact_ids)) {
+      $contact_label = $this->renderHTMLContact($requested_sharing_contact_id);
+      $note = E::ts("The address is requested to be shared with %1.", [1 => $contact_label]);
+
+    } else if (!empty($requested_sharing_contact_id) && !empty($currently_shared_with_contact_ids)) {
+      // check if it's the same one
+      if (count($currently_shared_with_contact_ids) > 1
+          || !in_array($requested_sharing_contact_id, $currently_shared_with_contact_ids)) {
+        // render requested contact
+        $contact_label = $this->renderHTMLContact($requested_sharing_contact_id);
+
+        // render requested contacts
+        $contact_labels = [];
+        foreach ($currently_shared_with_contact_ids as $currently_shared_with_contact_id) {
+          $contact_labels[] = $this->renderHTMLContact($currently_shared_with_contact_id);
+        }
+
+        // put it all together
+        $note = E::ts("The address is currently shared with %1, but is requested to be shared with %2.", [
+            1 => implode(E::ts(' and '), $contact_labels),
+            2 => $contact_label]);
+      }
+    }
+    return $note;
+  }
+
+  /**
+   * Render a given contact as a string with link and [contact_id]
+   * @param $contact_id integer
+   *   contact ID
+   * @return string HTML contact
+   */
+  protected function renderHTMLContact($contact_id)
+  {
+    static $rendered_contact = [];
+    if (!isset($rendered_contact[$contact_id])) {
+      $contact = civicrm_api3('Contact', 'getsingle', [
+        'id' => $contact_id,
+        'return' => 'display_name,contact_type,contact_subtype'
+      ]);
+      $url = CRM_Utils_System::url("civicrm/contact/view", 'reset=1&cid=' . $contact['id']);
+      $rendered_contact[$contact_id] = "<a target=\"_blank\" href=\"{$url}\">{$contact['display_name']}&nbsp;[{$contact_id}]</a>";
+    }
+    return $rendered_contact[$contact_id];
+  }
 }
+
