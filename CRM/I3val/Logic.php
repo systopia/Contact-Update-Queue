@@ -21,7 +21,7 @@ class CRM_I3val_Logic {
   /**
    * Create an I3Val Update Request Activity with the given data
    *
-   * @param $entity   int    the contact to be updated
+   * @param $entity   string the entity to be updated
    * @param $params   array  the new values
    */
   public static function createEntityUpdateRequest($entity, $params) {
