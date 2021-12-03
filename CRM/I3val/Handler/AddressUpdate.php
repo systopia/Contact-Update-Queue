@@ -517,28 +517,25 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
    */
   protected function getExistingAddresses($contact_id) {
     // load all addresses
-    static $addresses = NULL;
-    if ($addresses === NULL) {
-      try {
-        $query = civicrm_api3('Address', 'get', [
-            'contact_id'   => $contact_id,
-            'option.limit' => 0,
-            'option.sort'  => 'is_primary desc',
-            'sequential'   => 1]);
-        $addresses = [];
+    $addresses = [];
+    try {
+      $query = civicrm_api3('Address', 'get', [
+          'contact_id'   => $contact_id,
+          'option.limit' => 0,
+          'option.sort'  => 'is_primary desc',
+          'sequential'   => 1]);
 
-        // enrich data
-        foreach ($query['values'] as $address) {
-          $this->resolveFields($address);
-          if (isset($addresses[$address['location_type_id']])) {
-            throw new Exception("Contact [{$contact_id}] has multiple addresses for location type '{$address['location_type']}'. Please fix!");
-          } else {
-            $addresses[$address['location_type_id']] = $address;
-          }
+      // enrich data
+      foreach ($query['values'] as $address) {
+        $this->resolveFields($address);
+        if (isset($addresses[$address['location_type_id']])) {
+          throw new Exception("Contact [{$contact_id}] has multiple addresses for location type '{$address['location_type']}'. Please fix!");
+        } else {
+          $addresses[$address['location_type_id']] = $address;
         }
-      } catch (Exception $ex) {
-        throw new Exception("Error while loading addresses for contact [{$contact_id}]: " . $ex->getMessage());
       }
+    } catch (Exception $ex) {
+      throw new Exception("Error while loading addresses for contact [{$contact_id}]: " . $ex->getMessage());
     }
     return $addresses;
   }
