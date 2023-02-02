@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS i3val_session_cache;
+DROP TABLE IF EXISTS contactupdatequeue_session_cache;

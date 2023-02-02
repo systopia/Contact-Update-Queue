@@ -1,0 +1,1489 @@
+# Copyright CiviCRM LLC (c) 2004-2015
+# This file is distributed under the same license as the CiviCRM package.
+# If you contribute heavily to a translation and deem your work copyrightable,
+# make sure you license it to CiviCRM LLC under Academic Free License 3.0.
+msgid ""
+msgstr ""
+"Project-Id-Version: contactupdatequeue\n"
+"POT-Creation-Date: 2021-09-20 17:12+0200\n"
+"Language-Team: CiviCRM Translators <civicrm-translators@lists.civicrm.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: CRM/Contactupdatequeue/Configuration.php
+msgid "10 minutes"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Configuration.php CRM/Contactupdatequeue/Form/Configuration.php
+msgid "1 hour"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Configuration.php
+msgid "3 hours"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Configuration.php CRM/Contactupdatequeue/Form/Configuration.php
+msgid "1 day"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Configuration.php
+msgid "2 days"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Configuration.php
+msgid "1 week"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Configuration.php
+msgid "2 weeks"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Configuration.php
+msgid "1 month"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Converter.php CRM/Contactupdatequeue/Handler/ContactUpdate.php
+msgid "First Name"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Converter.php CRM/Contactupdatequeue/Handler/ContactUpdate.php
+msgid "Last Name"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Converter.php CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "City"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Converter.php CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "Street Address"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Converter.php CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "Postal Code"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Converter.php CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "Country"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Converter.php CRM/Contactupdatequeue/Handler/EmailUpdate.php
+msgid "Email"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Configuration.php
+msgid "Session Timeout"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Configuration.php
+msgid "Session Batch Size"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Configuration.php
+msgid "Quick History"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Configuration.php
+msgid "Allow Clearing Fields"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Configuration.php
+msgid "Input Trim Characters"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Configuration.php
+msgid "Empty String Token"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Configuration.php
+msgid "Flagged Request Status"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Configuration.php
+msgid "Default Action"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Configuration.php
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestContactUpdate.php
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Activity Type"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Configuration.php
+msgid "Handlers"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Configuration.php
+msgid "Save"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Configuration.php
+msgid "Contactupdatequeue configuration was updated successfully."
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Configuration.php
+msgid "Configuration Saved"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Configuration.php
+msgid "2 hours"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Configuration.php
+msgid "4 hours"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Configuration.php
+msgid "8 hours"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Configuration.php
+msgid "regular (25"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Configuration.php
+msgid "big (50)"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Configuration.php
+msgid "small (10)"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Configuration.php
+msgid "single"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Configuration.php
+msgid "Auto"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Configuration.php
+msgid "Create New"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Configuration.php
+msgid "Overwrite"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Configuration.php
+msgid "Do Nothing"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Configuration.php
+msgid "-disabled-"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Desktop.php
+msgid "Please configure Contactupdatequeue first."
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Desktop.php CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "Warning"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Desktop.php
+msgid "The types requested are not configured."
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Desktop.php
+msgid "No more update requests pending. You're already done!"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Desktop.php
+msgid "All done!"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Desktop.php
+msgid "Processing requested update #%1 [Contact Queue]"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Desktop.php
+msgid "Processing requested update #%1"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Desktop.php
+msgid "Activity not connected to a contact (any more)!"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Desktop.php CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "Error"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Desktop.php
+msgid "Requested update has been flagged as a problem."
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Desktop.php
+msgid "Flagged!"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Desktop.php
+msgid ""
+"There are %1 other changes scheduled for this contact. Click <strong><a "
+"href='%2'>HERE</a></strong> if you want to process those in one batch."
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Desktop.php
+msgid "Related Updates Scheduled!"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Desktop.php
+msgid ""
+"There is another change scheduled for this contact. Click <strong><a "
+"href='%1'>HERE</a></strong> if you want to process both in one batch."
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Desktop.php
+msgid "Activity [%1] is faulty and has been flagged as problematic."
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Desktop.php
+msgid "postpone"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Desktop.php
+msgid "Apply"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Desktop.php
+msgid "Flag Problem"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Desktop.php
+msgid "Postpone for:"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Desktop.php
+msgid "Requested update has been marked to be reviewed again later"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Desktop.php
+msgid "Postponed!"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Desktop.php
+msgid ""
+"The change request [%1] presented here had already been processed elsewhere."
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Desktop.php
+msgid "Skipped"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Form/Desktop.php
+msgid "Unkown action."
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "Supplemental Address 1"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "Supplemental Address 2"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php CRM/Contactupdatequeue/Handler/EmailUpdate.php
+#: CRM/Contactupdatequeue/Handler/PhoneUpdate.php
+msgid "Location Type"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php resources/*.json
+msgid "Address Update"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "New %1 address added."
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "Replaced %1 address."
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "Updated %1 address."
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php CRM/Contactupdatequeue/Handler/EmailUpdate.php
+#: CRM/Contactupdatequeue/Handler/PhoneUpdate.php
+msgid "Entry already existed."
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php CRM/Contactupdatequeue/Handler/EmailUpdate.php
+#: CRM/Contactupdatequeue/Handler/PhoneUpdate.php CRM/Contactupdatequeue/Handler/SddUpdate.php
+msgid "Data discarded."
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "Primary Address"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "No"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "Yes"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php CRM/Contactupdatequeue/Handler/EmailUpdate.php
+#: CRM/Contactupdatequeue/Handler/PhoneUpdate.php CRM/Contactupdatequeue/Handler/SddUpdate.php
+msgid "Action"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php CRM/Contactupdatequeue/Handler/ContactUpdate.php
+msgid "none"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "Update '%1' Address"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "Replace '%1' Address"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "Add New '%1' Address"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php CRM/Contactupdatequeue/Handler/DetailUpdate.php
+msgid "Discard %1 data (do nothing)"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php CRM/Contactupdatequeue/Handler/DetailUpdate.php
+msgid "%1 already exists (do nothing)"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "Referenced shared address contact [%1] could not be found."
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "new address"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "don't share"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "Share with"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "Share"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "Address not shared"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "Active address not found!"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "Address shared"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "Selected address not found!"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid ""
+"You selected an address to share, but to discard the address. As a result, "
+"NO sharing was applied."
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "Not shared!"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "Something went wrong, cannot find the sharing address."
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "Share selected address"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "The address is currently shared with %1."
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid " and "
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid "The address is requested to be shared with %1."
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/AddressUpdate.php
+msgid ""
+"The address is currently shared with %1, but is requested to be shared with "
+"%2."
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/ContactUpdate.php
+msgid "Formal Title"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/ContactUpdate.php
+msgid "Organisation Name"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/ContactUpdate.php
+msgid "Household Name"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/ContactUpdate.php
+msgid "Preferred Language"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/ContactUpdate.php
+msgid "Job Title"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/ContactUpdate.php
+msgid "Prefix"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/ContactUpdate.php
+msgid "Suffix"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/ContactUpdate.php
+msgid "Gender"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/ContactUpdate.php
+msgid "Birth Date"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/ContactUpdate.php
+msgid "Do not Email"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/ContactUpdate.php
+msgid "Do not Phone"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/ContactUpdate.php
+msgid "Do not Mail"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/ContactUpdate.php
+msgid "Do not SMS"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/ContactUpdate.php
+msgid "Do not trade"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/ContactUpdate.php
+msgid "Opt-Out"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/ContactUpdate.php
+msgid "Deceased"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/ContactUpdate.php
+msgid "Deceased Date"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/ContactUpdate.php resources/*.json
+msgid "Contact Update"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/DetailUpdate.php
+msgid "Add new %1"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/DetailUpdate.php
+msgid "Add new %1 as primary"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/DetailUpdate.php
+msgid "Overwrite existing %1"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/EmailUpdate.php resources/*.json
+msgid "Email Update"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/EmailUpdate.php
+msgid "New email added."
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/EmailUpdate.php
+msgid "Email updated"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/PhoneUpdate.php
+msgid "Phone"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/PhoneUpdate.php
+msgid "Phone Type"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/PhoneUpdate.php resources/*.json
+msgid "Phone Update"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/PhoneUpdate.php
+msgid "New phone added."
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/PhoneUpdate.php
+msgid "Phone updated"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestMandateUpdate.php resources/*.json
+msgid "Mandate Reference"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Source"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestMandateUpdate.php
+msgid "IBAN"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestMandateUpdate.php
+msgid "BIC"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Signature Date"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Validation Date"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Start Date"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestMandateUpdate.php
+msgid "End Date"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Frequency"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Cycle Day"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+msgid "Reason"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Financial Type"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestMandateUpdate.php
+#: templates/CRM/Contactupdatequeue/Form/Desktop.tpl
+msgid "Campaign"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+msgid "Amount (Installment)"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+msgid "CiviSEPA Mandate Update"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+msgid "Update Reason"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+msgid "Don't apply"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+msgid "Update Mandate"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+msgid "annually"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+msgid "semi-annually"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+msgid "trimestral"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+msgid "quarterly"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+msgid "bi-monthly"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+msgid "monthly"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+msgid "every %1 months"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+msgid "Mandate cancelled"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+msgid "Created replacement mandate."
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+msgid "Mandate adjusted: changed amount"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestMandateUpdate.php
+#: templates/CRM/Contactupdatequeue/Form/Desktop.tpl
+msgid "Status"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Cancel Reason"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Handler/SddUpdate.php
+msgid "Cancel Mandate"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Logic.php
+msgid "%1 Update Request"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Session.php
+msgid ""
+"%1 of the scheduled activities for this contact are currently processed by "
+"somebody else"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Session.php
+msgid "Concurrent Processing"
+msgstr ""
+
+#: CRM/Contactupdatequeue/Upgrader/Base.php
+msgid "Upgrade %1 to revision %2"
+msgstr ""
+
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestContactUpdate.php
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Default Activity Type"
+msgstr ""
+
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestContactUpdate.php
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Contact ID"
+msgstr ""
+
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestContactUpdate.php
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Note"
+msgstr ""
+
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestContactUpdate.php
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Requested Change Date"
+msgstr ""
+
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestContactUpdate.php
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Linked Activity ID"
+msgstr ""
+
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestContactUpdate.php
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Result Request"
+msgstr ""
+
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestMandateUpdate.php
+msgid "No Status Change"
+msgstr ""
+
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Terminate Mandate (COMPLETE)"
+msgstr ""
+
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Mark Mandate as Invalid (INVALID)"
+msgstr ""
+
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Requested Status"
+msgstr ""
+
+#: Civi/Contactupdatequeue/ActionProvider/Action/RequestMandateUpdate.php
+msgid "Amount"
+msgstr ""
+
+#: Civi/Contactupdatequeue/ContainerSpecs.php
+msgid "Request Contact Update"
+msgstr ""
+
+#: Civi/Contactupdatequeue/ContainerSpecs.php
+msgid "Request CiviSEPA Mandate Update"
+msgstr ""
+
+#: Contactupdatequeue.php
+msgid "Process Pending Update Requests"
+msgstr ""
+
+#: Contactupdatequeue.php
+msgid "Configure Contactupdatequeue"
+msgstr ""
+
+#: templates/CRM/Activity/ContactupdatequeuePanel.tpl
+msgid "Field"
+msgstr ""
+
+#: templates/CRM/Activity/ContactupdatequeuePanel.tpl
+#: templates/CRM/Contactupdatequeue/Handler/AddressUpdate.tpl
+#: templates/CRM/Contactupdatequeue/Handler/ContactUpdate.tpl
+#: templates/CRM/Contactupdatequeue/Handler/EmailUpdate.tpl
+#: templates/CRM/Contactupdatequeue/Handler/PhoneUpdate.tpl
+#: templates/CRM/Contactupdatequeue/Handler/SddUpdate.tpl
+msgid "Original Value"
+msgstr ""
+
+#: templates/CRM/Activity/ContactupdatequeuePanel.tpl
+#: templates/CRM/Contactupdatequeue/Handler/AddressUpdate.tpl
+#: templates/CRM/Contactupdatequeue/Handler/ContactUpdate.tpl
+#: templates/CRM/Contactupdatequeue/Handler/EmailUpdate.tpl
+#: templates/CRM/Contactupdatequeue/Handler/PhoneUpdate.tpl
+#: templates/CRM/Contactupdatequeue/Handler/SddUpdate.tpl
+msgid "Submitted Value"
+msgstr ""
+
+#: templates/CRM/Activity/ContactupdatequeuePanel.tpl
+msgid "Applied Value"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Form/Configuration.hlp
+msgid ""
+"If this is enabled, even change requests for empty fields will show up in "
+"batch processing. If not, they will be recorded, but now shown as an option."
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Form/Configuration.hlp
+msgid ""
+"All the characters listed here will be stripped from the beginning and the "
+"end of each submitted value."
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Form/Configuration.hlp
+msgid ""
+"For example, entering a simple whitespace (\"&nbsp;\") here could help if "
+"the data is coming from a user input form."
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Form/Configuration.hlp
+msgid ""
+"In Contactupdatequeue there is a difference between fields that have not been submitted, "
+"and those who are submitted with an empty value. By default the empty value "
+"is interpreted as you wanting to set that field to an empty string."
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Form/Configuration.hlp
+msgid ""
+"You can change that behaviour by providing as string here to symbolise an "
+"empty string, e.g. \"NULL\". This has the effect, that all empty values "
+"submitted will be removed alltogether, and all fields submitted with value "
+"\"NULL\" are interpreted as empty value."
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Form/Configuration.tpl
+msgid "Processing Options"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Form/Configuration.tpl
+msgid "Update Request Options"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Form/Configuration.tpl
+msgid "Clearing Fields"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Form/Configuration.tpl
+msgid "Help"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Form/Configuration.tpl
+msgid "Strip Characters"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Form/Configuration.tpl
+msgid "Empty Token"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Form/Configuration.tpl
+msgid "Data Configuration"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Form/Configuration.tpl
+msgid "Configuration %1"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Form/Desktop.tpl
+msgid "With Contact"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Form/Desktop.tpl
+msgid "Subject"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Form/Desktop.tpl
+msgid "None"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Form/Desktop.tpl
+msgid "Scheduled Date"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Form/Desktop.tpl
+msgid "Quick Contact History"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Form/Desktop.tpl
+msgid "Type"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Form/Desktop.tpl
+msgid "Added by"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Form/Desktop.tpl
+msgid "Date"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Form/Desktop.tpl
+msgid "Note:"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Handler/AddressUpdate.tpl
+msgid "Address Data"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Handler/AddressUpdate.tpl
+#: templates/CRM/Contactupdatequeue/Handler/ContactUpdate.tpl
+#: templates/CRM/Contactupdatequeue/Handler/EmailUpdate.tpl
+#: templates/CRM/Contactupdatequeue/Handler/PhoneUpdate.tpl
+#: templates/CRM/Contactupdatequeue/Handler/SddUpdate.tpl
+msgid "Current Value"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Handler/AddressUpdate.tpl
+#: templates/CRM/Contactupdatequeue/Handler/ContactUpdate.tpl
+#: templates/CRM/Contactupdatequeue/Handler/EmailUpdate.tpl
+#: templates/CRM/Contactupdatequeue/Handler/PhoneUpdate.tpl
+#: templates/CRM/Contactupdatequeue/Handler/SddUpdate.tpl
+msgid "Value to apply"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Handler/AddressUpdate.tpl
+#: templates/CRM/Contactupdatequeue/Handler/EmailUpdate.tpl
+#: templates/CRM/Contactupdatequeue/Handler/PhoneUpdate.tpl
+msgid "Click to copy '%1' into the 'apply' column."
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Handler/AddressUpdate.tpl
+msgid "<b>Note:</b>"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Handler/AddressUpdate.tpl
+msgid "You might have to manually adjust the resulting address(es)."
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Handler/AddressUpdate.tpl
+msgid "Share address with"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Handler/AddressUpdate.tpl
+msgid "This address will be updated as well."
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Handler/ContactUpdate.tpl
+msgid "Contact Base Data"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Handler/ContactUpdate.tpl
+msgid "Apply?"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Handler/EmailUpdate.tpl
+msgid "Email Data"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Handler/PhoneUpdate.tpl
+msgid "Phone Data"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Handler/SddUpdate.tpl
+msgid "SEPA Direct Debit Update"
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Handler/SddUpdate.tpl
+msgid ""
+"This is a <i>cancellation</i> of mandate <a href=\"%2\"><code>%1</code></a>."
+msgstr ""
+
+#: templates/CRM/Contactupdatequeue/Handler/SddUpdate.tpl
+msgid "This is an amendmend for mandate <a href=\"%2\"><code>%1</code></a>."
+msgstr ""
+
+#: resources/*.json
+msgid "SEPA DD Update"
+msgstr ""
+
+#: resources/*.json
+msgid "Street Address (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Street Address (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Street Address (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Supplemental Address (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Supplemental Address (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Supplemental Address (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Supplemental Address 2 (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Supplemental Address 2 (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Supplemental Address 2 (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Postal Code (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Postal Code (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Postal Code (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "City (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "City (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "City (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Country (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Country (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Country (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Location Type (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Location Type (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Location Type (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Shared with Contact ID"
+msgstr ""
+
+#: resources/*.json
+msgid "Applied Action"
+msgstr ""
+
+#: resources/*.json
+msgid "First Name (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "First Name (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "First Name (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Last Name (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Last Name (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Last Name (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Formal Title (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Formal Title (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Formal Title (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Prefix (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Prefix (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Prefix (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Suffix (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Suffix (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Suffix (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Gender (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Gender (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Gender (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Birth Date (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Birth Date (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Birth Date (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Organisation Name (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Organisation Name (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Organisation Name (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Household Name (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Household Name (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Household Name (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Job Title (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Job Title (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Job Title (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Preferred Language (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Preferred Language (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Preferred Language (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Do Not Email (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Do Not Email (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Do Not Email (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Do Not Phone (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Do Not Phone (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Do Not Phone (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Do Not Mail (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Do Not Mail (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Do Not Mail (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Do Not SMS (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Do Not SMS (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Do Not SMS (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Do Not Trade (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Do Not Trade (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Do Not Trade (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Opt-Out (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Opt-Out (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Opt-Out (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Contact Deceased (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Contact Deceased (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Contact Deceased (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Deceased Date (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Deceased Date (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Deceased Date (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Email (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Email (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Email (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Phone (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Phone (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Phone Type (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Phone Type (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Phone Type (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Phone (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Requested Mandate Status"
+msgstr ""
+
+#: resources/*.json
+msgid "Amount (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Amount (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Amount (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "source (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "source (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "source (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "IBAN (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "IBAN (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "IBAN (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "BIC (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "BIC (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "BIC (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Financial Type (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Financial Type (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Financial Type (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Campaign (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Campaign (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Campaign (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Frequency (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Frequency (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Frequency (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Cycle Day (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Cycle Day (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Cycle Day (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Signature Date (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Signature Date (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Signature Date (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Validation Date (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Validation Date (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Validation Date (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Start Date (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Start Date (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Start Date (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "End Date (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "End Date (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "End Date (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Reason (original)"
+msgstr ""
+
+#: resources/*.json
+msgid "Reason (submitted)"
+msgstr ""
+
+#: resources/*.json
+msgid "Reason (applied)"
+msgstr ""
+
+#: resources/*.json
+msgid "Replacement Mandate Reference"
+msgstr ""

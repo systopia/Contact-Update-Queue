@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
 <extension key="be.aivl.i3val" type="module">
-  <file>i3val</file>
-  <name>I3Val Input Validation</name>
-  <description>Ilja's Initiative for Input Validation</description>
+  <file>contactupdatequeue</file>
+  <name>Contact Update Queue</name>
+  <description>Extension puts Contact Update Requests in a Queue to be Processed</description>
   <license>AGPL-3.0</license>
   <maintainer>
     <author>SYSTOPIA</author>
     <email>endres@systopia.de</email>
   </maintainer>
   <urls>
-    <url desc="Main Extension Page">https://github.com/systopia/be.aivl.i3val</url>
+    <url desc="Main Extension Page">https://github.com/systopia/Contact-Update-Queue</url>
     <url desc="Documentation">https://docs.civicrm.org/i3val/en/latest</url>
-    <url desc="Support">https://github.com/systopia/be.aivl.i3val</url>
+    <url desc="Support">https://github.com/systopia/Contact-Update-Queue</url>
     <url desc="Licensing">http://www.gnu.org/licenses/agpl-3.0.html</url>
-  </urls> 
+  </urls>
   <releaseDate></releaseDate>
   <version>0.5-dev</version>
   <develStage>dev</develStage>
@@ -25,6 +25,6 @@
     <psr4 prefix="Civi\" path="Civi" />
   </classloader>
   <civix>
-    <namespace>CRM/I3val</namespace>
+    <namespace>CRM/Contactupdatequeue</namespace>
   </civix>
 </extension>

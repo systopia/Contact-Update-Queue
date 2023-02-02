@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<menu>
+  <item>
+    <path>civicrm/contactupdatequeue/desktop</path>
+    <page_callback>CRM_Contactupdatequeue_Form_Desktop</page_callback>
+    <title>Contact Update Queue Desktop</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/admin/contactupdatequeue</path>
+    <title>Contact Update Queue Configuration</title>
+    <desc>Contact Update Queue setup and configuration.</desc>
+    <page_callback>CRM_Contactupdatequeue_Form_Configuration</page_callback>
+    <access_arguments>administer CiviCRM</access_arguments>
+    <adminGroup>Communications</adminGroup>
+    <icon>admin/small/case_type.png</icon>
+    <weight>400</weight>
+  </item>
+</menu>

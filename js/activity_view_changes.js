@@ -1,6 +1,6 @@
 /*-------------------------------------------------------+
-| Ilja's Input Validation Extension                      |
-| Amnesty International Vlaanderen                       |
+| Contact Update Queue Extension                         |
+| Funded by Amnesty International Vlaanderen             |
 | Copyright (C) 2017 SYSTOPIA                            |
 | Author: B. Endres (endres@systopia.de)                 |
 | http://www.systopia.de/                                |
@@ -14,16 +14,16 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-var i3val_activity_id = INJECTED_ACTIVITY_ID;
-var i3val_activity_type_id = INJECTED_ACTIVITY_TYPE_ID;
-var i3val_panel = INJECTED_PANEL;
-var i3val_selector = "td[id^=i3val_contact_updates_]";
+var contactupdatequeue_activity_id = INJECTED_ACTIVITY_ID;
+var contactupdatequeue_activity_type_id = INJECTED_ACTIVITY_TYPE_ID;
+var contactupdatequeue_panel = INJECTED_PANEL;
+var contactupdatequeue_selector = "td[id^=contactupdatequeue_contact_updates_]";
 
 
-function i3val_tryDoingUpdate() {
-  var wrapper = cj(i3val_selector);
+function contactupdatequeue_tryDoingUpdate() {
+  var wrapper = cj(contactupdatequeue_selector);
   if (wrapper.length == 1) {
-    i3val_renderInteractiveTable(wrapper);
+    contactupdatequeue_renderInteractiveTable(wrapper);
   }
 }
 
@@ -31,20 +31,20 @@ function i3val_tryDoingUpdate() {
  * transform the standard rendering of our custom group
  * a nice table
  */
-function i3val_renderInteractiveTable(wrapperElement) {
+function contactupdatequeue_renderInteractiveTable(wrapperElement) {
   // check if has already been transformed
-  if (wrapperElement.find("table.i3val").length) return;
+  if (wrapperElement.find("table.contactupdatequeue").length) return;
 
   var body = wrapperElement.find("div.crm-accordion-body");
   if (body.length != 1) return;
 
   // create table stucture
   body.html(''); // clear out
-  body.append(i3val_panel['html']);
+  body.append(contactupdatequeue_panel['html']);
 }
 
 
 // UPDATE TRIGGERS
 cj(document).ready(function() {
-  i3val_tryDoingUpdate();
+  contactupdatequeue_tryDoingUpdate();
 });

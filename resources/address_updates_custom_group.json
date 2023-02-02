@@ -1,14 +1,14 @@
 {
   "_lookup": ["name"],
   "_translate": ["title"],
-  "name": "i3val_address_updates",
+  "name": "contactupdatequeue_address_updates",
   "title": "Address Update",
   "extends": "Activity",
   "style": "Inline",
   "collapse_display": "1",
   "is_active": "1",
   "is_multiple": "0",
-  "table_name": "civicrm_value_i3val_address_updates",
+  "table_name": "civicrm_value_contactupdatequeue_address_updates",
   "collapse_adv_display": "1",
   "is_reserved": "0",
   "_fields": [

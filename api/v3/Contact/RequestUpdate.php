@@ -1,7 +1,7 @@
 <?php
 /*-------------------------------------------------------+
-| Ilja's Input Validation Extension                      |
-| Amnesty International Vlaanderen                       |
+| Contact Update Queue Extension                         |
+| Funded by Amnesty International Vlaanderen             |
 | Copyright (C) 2017 SYSTOPIA                            |
 | Author: B. Endres (endres@systopia.de)                 |
 | http://www.systopia.de/                                |
@@ -21,7 +21,7 @@
  */
 function civicrm_api3_contact_request_update($params) {
   try {
-    $activity = CRM_I3val_Logic::createEntityUpdateRequest('Contact', $params);
+    $activity = CRM_Contactupdatequeue_Logic::createEntityUpdateRequest('Contact', $params);
     if ($activity) {
       return civicrm_api3_create_success($activity);
     } else {
@@ -49,19 +49,19 @@ function _civicrm_api3_contact_request_update_spec(&$spec) {
     'required'    => TRUE,
     'type'        => CRM_Utils_Type::T_INT,
   );
-  $spec['i3val_note'] = array(
+  $spec['contactupdatequeue_note'] = array(
     'title'       => 'Request note',
     'description' => 'Add a note for the reviewer',
     'required'    => FALSE,
     'type'        => CRM_Utils_Type::T_STRING,
   );
-  $spec['i3val_schedule_date'] = array(
+  $spec['contactupdatequeue_schedule_date'] = array(
     'title'       => 'Schedule date',
     'description' => 'The date this change should be applied. Default is asap.',
     'required'    => FALSE,
     'type'        => CRM_Utils_Type::T_STRING,
   );
-  $spec['i3val_parent_id'] = array(
+  $spec['contactupdatequeue_parent_id'] = array(
     'title'       => 'Parent activity ID',
     'description' => 'The change request should be recorded as a follow-up to the given activity ID',
     'required'    => FALSE,
@@ -69,7 +69,7 @@ function _civicrm_api3_contact_request_update_spec(&$spec) {
   );
   $spec['activity_type_id'] = array(
       'title'       => 'Activity Type ID',
-      'description' => 'Allows you to determine the I3Val configuration (attached to the activity type)',
+      'description' => 'Allows you to determine the Contact Update Queue configuration (attached to the activity type)',
       'required'    => FALSE,
       'type'        => CRM_Utils_Type::T_INT,
   );

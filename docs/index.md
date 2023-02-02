@@ -4,7 +4,7 @@
 
 This extension was created with the working title "Ilja's Initiative for Input
 Validation", and was initially sponsored by *Amnesty International Vlaanderen*,
-thus the unusual name.
+thus the unusual original name. When it was adopted by Vluchtelingenwerk Vlaanderen too the name was changed to Contact Update Queue.
 
 Its purpose is to provide convenient tools for validating data input from
 external sources into CiviCRM, such as public event registration or contribution
