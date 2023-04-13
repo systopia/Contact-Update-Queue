@@ -20,7 +20,7 @@ use CRM_I3val_ExtensionUtil as E;
 /**
  * Collection of upgrade steps.
  */
-class CRM_I3val_Upgrader extends CRM_I3val_Upgrader_Base {
+class CRM_I3val_Upgrader extends CRM_Extension_Upgrader_Base {
 
   /**
    * Make sure the new 'formal_title' field is there
