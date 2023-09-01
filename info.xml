@@ -20,6 +20,9 @@
   <compatibility>
     <ver>5.38</ver>
   </compatibility>
+  <requires>
+    <ext>legacycode</ext>
+  </requires>
   <comments>Funded by Amnesty International Vlaanderen</comments>
   <classloader>
     <psr4 prefix="Civi\" path="Civi"/>
