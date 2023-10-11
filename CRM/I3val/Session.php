@@ -68,7 +68,7 @@ class CRM_I3val_Session {
       } else {
         $cache_key = 'NONE';
       }
-      CRM_Core_Error::debug_log_message("I3Val [{$cache_key}]: {$message}");
+        Civi::log()->debug("I3Val [{$cache_key}]: {$message}");
     }
   }
 
