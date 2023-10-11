@@ -836,7 +836,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
       case 'new': // CREATE NEW ADDRESS WITH OTHER CONTACT
         if (empty($address_id)) {
           // this shouldn't happen...
-          CRM_Core_Session::setStatus(E::ts("Active address not found!", array(1 => $shared_with_contact_id)), E::ts('Error'), 'error');
+          CRM_Core_Session::setStatus(E::ts("Active address not found! Other contact id:", array(1 => $other_contact_id)), E::ts('Error'), 'error');
         } else {
           // load the current address, and use the date to
           //   create a new address with the other contact
@@ -865,7 +865,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
         $shared_address_id = $values['i3val_address_sharing_addresses'];
         if (!is_numeric($shared_address_id)) {
           // this shoudln't happen...
-          CRM_Core_Session::setStatus(E::ts("Selected address not found!", array(1 => $shared_with_contact_id)), E::ts('Error'), 'error');
+          CRM_Core_Session::setStatus(E::ts("Selected address not found! Other contact id:", array(1 => $other_contact_id)), E::ts('Error'), 'error');
           break;
         }
         if ($action == 'share') {
