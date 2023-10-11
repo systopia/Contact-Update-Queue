@@ -25,6 +25,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
 
   public static $group_name = 'i3val_address_updates';
   public static $field2label = NULL;
+  private static $_countryCode2Id;
 
   public function getField2Label() {
     if (self::$field2label === NULL) {
