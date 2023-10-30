@@ -83,7 +83,7 @@ class CRM_I3val_Logic {
    */
   protected static function addActivityParams($params, &$activity_data, $contact_id = NULL) {
     $activity_data['activity_date_time'] = date('YmdHis'); // NOW
-    $activity_data['status_id'] = CRM_Core_OptionGroup::getValue('activity_status', 'Scheduled', 'name');
+    $activity_data['status_id'] = CRM_I3val_CustomData::getOptionValue('activity_status', 'Scheduled', 'name');
 
     if (!empty($params['activity_id'])) {
       $activity_data['parent_id'] = $params['activity_id'];

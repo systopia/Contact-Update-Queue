@@ -27,6 +27,7 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
   public $command     = NULL;
   public $activity_id = NULL;
   public $contact     = NULL;
+  private $activity   = NULL;
 
   /**
    * build the form.

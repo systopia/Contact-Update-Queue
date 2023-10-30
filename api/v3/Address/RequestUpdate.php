@@ -25,7 +25,7 @@ function civicrm_api3_address_request_update($params) {
     if ($activity) {
       return civicrm_api3_create_success($activity);
     } else {
-      //CRM_Core_Error::debug_log_message("No relevant changes detected: " . json_encode($params));
+      //Civi::log()->debug("No relevant changes detected: " . json_encode($params));
       return civicrm_api3_create_success("No relevant changes detected.");
     }
 
