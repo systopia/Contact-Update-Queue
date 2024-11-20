@@ -659,23 +659,22 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
    * @param string $mandate_reference
    *   the desired mandate reference
    *
+   * @param string $suffix
+   *   suffix to append, default is 'U' for upgrade/update
+   *
    * @return string
    *   an unused mandate reference. either the input value, or the input-value with a suffix.
    */
-  protected function uniqueMandateReference($mandate_reference) {
+  protected function uniqueMandateReference($mandate_reference, $suffix = 'U') {
     if (empty($mandate_reference)) {
       // fallback if we get an empty mandate reference (shouldn't happen)
-      $mandate_reference = 'SDD-I3VAL';
-    }
-    $requested_mandate_reference = $mandate_reference;
-    $query = "SELECT id FROM civicrm_sdd_mandate WHERE reference = %1";
-    $counter = 1;
-    while (CRM_Core_DAO::singleValueQuery($query, [1 => [$mandate_reference, 'String']])) {
-      // getting here means, the current mandate_reference is already in use
-      $mandate_reference = "{$requested_mandate_reference}-{$counter}";
-      $counter++;
+      $mandate_reference = 'SDD-I3VAL-' . random_int(10000, 99999);
     }
 
+    // append 'U's until we hit an unused reference
+    //  remark: this seems clunky, but it's trickier than it looks :)
+    do {$mandate_reference .= 'U';}
+    while (CRM_Core_DAO::singleValueQuery("SELECT id FROM civicrm_sdd_mandate WHERE reference = '{$mandate_reference}'"));
     return $mandate_reference;
   }
 
