@@ -564,7 +564,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
    */
   public function mendCurrentMandate($old_mandate, $update, $activity, $values, &$activity_update) {
     // check whether changes are allowed
-    $mandate_modifications_allowed = Civi::settings()->get('allow_mandate_modification');
+    $mandate_modifications_allowed = CRM_I3val_Configuration::getConfiguration()->allowMandateModification();
     if (empty($mandate_modifications_allowed)) {
       // mandate modifications are not allowed
       return false;

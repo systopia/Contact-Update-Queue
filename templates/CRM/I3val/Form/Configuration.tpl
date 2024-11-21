@@ -48,10 +48,12 @@
   </div>
 
   <div class="crm-section">
-    <div class="label">{$form.allow_mandate_modification.label}&nbsp;<a onclick='CRM.help("{ts domain="be.aivl.i3val"}Strip Characters{/ts}", {literal}{"id":"id-allow-mandate-modification","file":"CRM\/I3val\/Form\/Configuration"}{/literal}); return false;' href="#" title="{ts domain="be.aivl.i3val"}Help{/ts}" class="helpicon">&nbsp;</a></div>
+    <div class="label">{$form.allow_mandate_modification.label}&nbsp;<a onclick='CRM.help("{ts domain="be.aivl.i3val"}Mandate Modifications{/ts}", {literal}{"id":"id-allow-mandate-modification","file":"CRM\/I3val\/Form\/Configuration"}{/literal}); return false;' href="#" title="{ts domain="be.aivl.i3val"}Help{/ts}" class="helpicon">&nbsp;</a></div>
     <div class="content">{$form.allow_mandate_modification.html}</div>
     <div class="clear"></div>
   </div>
+
+  <div></div>
 </div>
 
 <h3>{ts domain="be.aivl.i3val"}Update Request Options{/ts}</h3>

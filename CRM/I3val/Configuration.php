@@ -57,6 +57,15 @@ class CRM_I3val_Configuration {
     return CRM_Utils_Array::value('session_size', $this->config, 10);
   }
 
+
+  /**
+   * Is the modification of existing mandates allowed, or should there
+   *   always be a new mandate?
+   */
+  public function allowMandateModification() {
+    return CRM_Utils_Array::value('allow_mandate_modification', $this->config, false);
+  }
+
   /**
    * Should clear/empty fields be offered?
    */
