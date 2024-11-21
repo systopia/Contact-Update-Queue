@@ -23,8 +23,13 @@
   <p>{ts domain="be.aivl.i3val"}For example, entering a simple whitespace ("&nbsp;") here could help if the data is coming from a user input form.{/ts}</p>
 {/htxt}
 
-
 {htxt id='id-empty-token'}
   <p>{ts domain="be.aivl.i3val"}In I3Val there is a difference between fields that have not been submitted, and those who are submitted with an empty value. By default the empty value is interpreted as you wanting to set that field to an empty string.{/ts}</p>
   <p>{ts domain="be.aivl.i3val"}You can change that behaviour by providing as string here to symbolise an empty string, e.g. "NULL". This has the effect, that all empty values submitted will be removed alltogether, and all fields submitted with value "NULL" are interpreted as empty value.{/ts}</p>
 {/htxt}
+
+{htxt id='id-allow-mandate-modification'}
+  <p>{ts domain="be.aivl.i3val"}This option allows you to adjust mandates instead of always creating a new one - which is the default.{/ts}</p>
+  <p>{ts domain="be.aivl.i3val"}Please note that this is only possible for certain types of changes, e.g. the amount.{/ts}</p>
+{/htxt}
+

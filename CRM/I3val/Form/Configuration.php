@@ -64,6 +64,12 @@ class CRM_I3val_Form_Configuration extends CRM_Core_Form {
     );
 
     $this->add(
+        'checkbox',
+        'allow_mandate_modification',
+        E::ts("Allow SEPA Mandate modifications")
+    );
+
+    $this->add(
       'text',
       'strip_chars',
       E::ts("Input Trim Characters")
@@ -167,6 +173,8 @@ class CRM_I3val_Form_Configuration extends CRM_Core_Form {
     $current_config['flag_status']    = CRM_Utils_Array::value('flag_status',    $values, CRM_Utils_Array::value('flag_status',    $current_config));
     $current_config['quickhistory']   = CRM_Utils_Array::value('quickhistory',   $values, CRM_Utils_Array::value('quickhistory',   $current_config));
     $current_config['allow_clearing'] = CRM_Utils_Array::value('allow_clearing', $values, FALSE);
+    $current_config['allow_mandate_modification']
+                                      = CRM_Utils_Array::value('allow_mandate_modification', $values, FALSE);
 
     // extract configurations
     $configurations = array();
@@ -187,7 +195,7 @@ class CRM_I3val_Form_Configuration extends CRM_Core_Form {
     // update the custom groups
     CRM_I3val_Configuration::synchroniseCustomFields();
 
-    CRM_Core_Session::setStatus(E::ts("I3Val configuration was updated successfully."), E::ts("Configuration Saved"), 'info');
+    CRM_Core_Session::setStatus(E::ts("Contact-Update-Queue (I3Val) configuration was updated successfully."), E::ts("Configuration Saved"), 'info');
 
     parent::postProcess();
   }
