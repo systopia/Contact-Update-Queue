@@ -30,6 +30,10 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
   public function getField2Label() {
     if (self::$field2label === NULL) {
       self::$field2label = array( 'street_address'         => E::ts('Street Address'),
+                                  'street_name'            => E::ts('Street Name'),
+                                  'street_number'          => E::ts('Street Number'),
+                                  'street_number_suffix'   => E::ts('Street Number Suffix'),
+                                  'street_unit'            => E::ts('Street Unit'),
                                   'postal_code'            => E::ts('Postal Code'),
                                   'supplemental_address_1' => E::ts('Supplemental Address 1'),
                                   'supplemental_address_2' => E::ts('Supplemental Address 2'),
@@ -76,6 +80,10 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
   protected function getMainFields() {
     return array('location_type',
                  'street_address',
+                 'street_name',
+                 'street_number',
+                 'street_number_suffix',
+                 'street_unit',
                  'postal_code',
                  'supplemental_address_1',
                  'supplemental_address_2',
