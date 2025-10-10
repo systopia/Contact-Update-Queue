@@ -35,4 +35,18 @@ class CRM_I3val_Upgrader extends CRM_Extension_Upgrader_Base {
     CRM_I3val_Configuration::synchroniseCustomFields();
     return TRUE;
   }
+
+  /**
+   * make sure the new 'street_name', 'street_number', 'street_number_suffix', 'street_unit' fields are there
+   *
+   * @see https://github.com/systopia/be.aivl.i3val/issues/6
+   * @return TRUE on success
+   * @throws Exception
+   */
+  public function upgrade_0502() {
+    $this->ctx->log->info('Applying update upgrade_0502');
+    // make sure the new 'street_name', 'street_number', 'street_number_suffix', 'street_unit' fields are there (see I3VAL-6)
+    CRM_I3val_Configuration::synchroniseCustomFields();
+    return TRUE;
+  }
 }
