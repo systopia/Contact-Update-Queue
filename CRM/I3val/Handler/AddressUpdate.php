@@ -589,11 +589,11 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     $options = [];
     $location_type_list = $this->getIndexedLocationTypeList();
     $can_create = $this->canCreateAddressWithData($data_submitted);
-    $location_type = CRM_Utils_Array::value('location_type', $data_submitted);
+    $location_type = $data_submitted['location_type'] ?? NULL;
 
     // add matching address first
     $matching_address = $this->getMatchingAddress($data_submitted, $addresses);
-    $matching_location_type = CRM_Utils_Array::value('location_type', $matching_address);
+    $matching_location_type = $matching_address['location_type'] ?? NULL;
     if ($matching_address) {
       // do this one first
       if ($can_create) {
@@ -688,7 +688,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
       $fields_checked = 0;
 
       foreach ($fields as $field_name) {
-        $submitted_value = CRM_Utils_Array::value($field_name, $data_submitted);
+        $submitted_value = $data_submitted[$field_name] ?? NULL;
         if (!empty($submitted_value)) {
           $current_value = CRM_Utils_Array::value($field_name, $matching_address, '');
           similar_text($current_value, $submitted_value, $field_similarity);
@@ -804,7 +804,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     $shared_with_contact_id = $this->getAddressSharingContactID($submitted_data);
     if ($shared_with_contact_id) {
       // if address share is requested, check if it's already there
-      $master_id = CRM_Utils_Array::value('master_id', $existing_address);
+      $master_id = $existing_address['master_id'] ?? NULL;
       if ($master_id) {
         $master_address = civicrm_api3('Address', 'getsingle', array(
           'id'     => $master_id,
@@ -831,7 +831,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
 
     // get some variables
     $contact_id = $values['contact_id'];
-    $address_id = CRM_Utils_Array::value('id', $address_update);
+    $address_id = $address_update['id'] ?? NULL;
     $group_name = $this->getCustomGroupName();
     $other_contact_id = $values['i3val_address_sharing_contact_id'];
 

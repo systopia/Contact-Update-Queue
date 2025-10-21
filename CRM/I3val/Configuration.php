@@ -76,7 +76,7 @@ class CRM_I3val_Configuration {
       }
     }
 
-    $empty_token = CRM_Utils_Array::value('empty_token', $this->config);
+    $empty_token = $this->config['empty_token'] ?? NULL;
     if ($empty_token) {
       // if the empty token is set, all '' fields will be removed,
       foreach (array_keys($input) as $key) {
