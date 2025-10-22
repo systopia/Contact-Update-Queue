@@ -35,6 +35,7 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
                                   'household_name'     => E::ts('Household Name'),
                                   'preferred_language' => E::ts('Preferred Language'),
                                   'job_title'          => E::ts('Job Title'),
+                                  'employer'           => E::ts('Current Employer'),
                                   'prefix'             => E::ts('Prefix'),
                                   'suffix'             => E::ts('Suffix'),
                                   'gender'             => E::ts('Gender'),
@@ -136,6 +137,7 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
       $contact_update['id'] = $contact['id'];
       $this->resolveFields($contact_update);
       $this->resolvePreferredLanguageToLabel($contact_update, FALSE);
+
       CRM_I3val_Session::log("UPDATE contact " . json_encode($contact_update));
       civicrm_api3('Contact', 'create', $contact_update);
     }
@@ -161,6 +163,9 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
     if (isset($values['suffix']) && !empty($form->contact['individual_suffix'])) {
       $values['suffix']['current'] = $form->contact['individual_suffix'];
     }
+    if (isset($values['employer']) && !empty($form->contact['current_employer'])) {
+      $values['employer']['current'] = $form->contact['current_employer'];
+    }
 
     // create input fields and apply checkboxes
     $active_fields = array();
@@ -183,12 +188,25 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
 
       // generate input field
       if (in_array($fieldname, array('prefix', 'suffix', 'gender'))) {
-        // add the text input
+        // add the select input
         $form->add(
           'select',
           "{$fieldname}_applied",
           $fieldlabel,
           $this->getOptionList($fieldname)
+        );
+
+      } elseif ($fieldname == 'employer') {
+        $submitted_employer = $values[$fieldname]['submitted'] ?? '';
+
+        // add the select input
+        $form->add(
+          'select',
+          "{$fieldname}_applied",
+          $fieldlabel,
+          $this->getOrganizationsList($submitted_employer),
+          FALSE,
+          ['class' => 'crm-select2']
         );
 
       } elseif ($fieldname == 'birth_date' || $fieldname == 'deceased_date') {
@@ -234,7 +252,14 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
         );
       }
 
-      if (!empty($values[$fieldname]['applied'])) {
+      if ($fieldname == 'employer' && !empty($values[$fieldname]['submitted'])) {
+        $chosen_employer = $values[$fieldname]['applied'] ?? $values[$fieldname]['submitted'];
+        $contact = $this->getContactReference($chosen_employer);
+
+        $default_employer = $contact['id'] ?? '';
+        $form->setDefaults(array("{$fieldname}_applied" => $default_employer));
+      }
+      elseif (!empty($values[$fieldname]['applied'])) {
         $form->setDefaults(array("{$fieldname}_applied" => $values[$fieldname]['applied']));
       } else {
         $form->setDefaults(array("{$fieldname}_applied" => isset($values[$fieldname]['submitted']) ? $values[$fieldname]['submitted'] : ''));
@@ -312,6 +337,7 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
     $this->resolveOptionValueField($data, 'gender', 'gender', 'gender_id');
     $this->resolveOptionValueField($data, 'individual_prefix', 'prefix', 'prefix_id');
     $this->resolveOptionValueField($data, 'individual_suffix', 'suffix', 'suffix_id');
+    $this->resolveContactReferenceField($data, 'employer', 'employer_id');
   }
 
 
@@ -334,6 +360,41 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
       default:
         return $this->getOptionValueList($fieldname);
     }
+  }
+
+  protected function getOrganizationsList($chosen_organization) {
+    // Launch a hook for custom parameters to be added
+    $filter_params = [];
+
+    // Invoke a hook to allow other extensions to modify the parameters / filters
+    CRM_Utils_Hook::singleton()->invoke(
+      ['filter_params'],
+      $filter_params, $null, $null, $null, $null, $null,
+      'I3val_alter_organizationfilter');
+
+     // Grab organizations
+     $select_list = [];
+     try {
+       $contacts = \Civi\Api4\Contact::get(FALSE)
+         ->addSelect('id','display_name')
+         ->addWhere('contact_type', '=', 'Organization');
+        foreach ($filter_params as $id => $field) {
+          if (!empty($field['field']) && !empty($field['condition']) && !empty($field['value'])) {
+            $contacts->addWhere($field['field'], $field['condition'], $field['value']);
+          }
+        }
+        $contacts = $contacts->execute();
+
+        // Build select
+        foreach ($contacts as $id => $contact) {
+          $select_list[$contact['id']] = $contact['display_name'];
+        }
+     } catch (Exception $e) {
+       Civi::log()->warning('I3Val: Error occurred in retrieving Organizations with custom params : '.var_export($custom_params,true). ' error : '.$e->getMessage());
+       CRM_Core_Session::setStatus(E::ts("There was an issue obtaining the full list of Organizations"));
+     }
+
+     return $select_list;
   }
 
   /**

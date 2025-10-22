@@ -322,9 +322,9 @@ class CRM_I3val_Handler_EmailUpdate extends CRM_I3val_Handler_DetailUpdate {
     }
 
     // second: find by location type
-    if (isset($values['location_type_id'])) {
+    if (isset($email_submitted['location_type_id'])) {
       foreach ($emails as $email) {
-        if ($values['location_type_id'] == $email['location_type_id']) {
+        if ($email_submitted['location_type_id'] == $email['location_type_id']) {
           $this->resolveFields($email);
           $default_action = 'update';
           return $email;
