@@ -36,6 +36,7 @@ class CRM_I3val_Converter {
         ts('Last Name')      => 'i3val_contact_updates.last_name',
         'organization_name'       => 'i3val_contact_updates.organization_name',
         'gender_id'               => 'i3val_contact_updates.gender',
+        'employer_id'             => 'i3val_contact_updates.employer',
         ts('City')           => 'i3val_address_updates.city',
         ts('Street Address') => 'i3val_address_updates.street_address',
         ts('Postal Code')    => 'i3val_address_updates.postal_code',
