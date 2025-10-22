@@ -171,11 +171,11 @@ class CRM_I3val_Form_Configuration extends CRM_Core_Form {
     // extract configurations
     $configurations = array();
     for ($i=1; $i <= MAX_CONFIG_COUNT; $i++) {
-      $activity_type_id = CRM_Utils_Array::value("activity_type_id_{$i}", $values);
+      $activity_type_id = $values["activity_type_id_{$i}"] ?? NULL;
       if ($activity_type_id) {
         $configurations[] = array(
           'activity_type_id' => $activity_type_id,
-          'handlers'         => CRM_Utils_Array::value("handler_classes_{$i}", $values, array())
+          'handlers'         => $values["handler_classes_{$i}"] ?? [],
         );
       }
     }
