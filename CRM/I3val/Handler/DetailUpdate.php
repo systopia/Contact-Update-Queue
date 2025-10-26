@@ -210,7 +210,7 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
     }
 
     if ($similarity_count) {
-      return ((double) $similarity_sum / (double) $similarity_count);
+      return ((float) $similarity_sum / (float) $similarity_count);
     } else {
       return 0;
     }
