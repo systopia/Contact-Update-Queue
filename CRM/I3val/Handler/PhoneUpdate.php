@@ -357,7 +357,7 @@ class CRM_I3val_Handler_PhoneUpdate extends CRM_I3val_Handler_DetailUpdate {
     // second: find by location type
     if (isset($values['location_type_id'])) {
       foreach ($phones as $phone) {
-        if ($values['location_type_id'] == $phone['location_type_id']) {
+        if ($phone_submitted['location_type_id'] == $phone['location_type_id']) {
           $this->resolveFields($phone);
           $default_action = 'update';
           return $phone;
