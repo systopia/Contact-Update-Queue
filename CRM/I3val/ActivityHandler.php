@@ -370,4 +370,44 @@ abstract class CRM_I3val_ActivityHandler {
     }
     return self::$_option_values[$option_group];
   }
+
+  /**
+   * Propegate Contact Reference data based on a Contact Reference Display Name
+   */
+  protected function resolveContactReferenceField(&$data, $fieldname, $id_fieldname) {
+    if (!empty($data[$fieldname])) {
+      $contact = $this->getContactReference($data[$fieldname]);
+
+       if (!empty($contact)) {
+         $data[$id_fieldname] = $contact['id'];
+         $data[$fieldname] = $contact['display_name'];
+       }
+    }
+  }
+
+  /**
+   * Retrieve contact details for a passed Contact ID or Display Name
+   */
+  protected function getContactReference($contact_value) {
+    $contact = [];
+
+    try {
+      $contact = \Civi\Api4\Contact::get(FALSE)
+        ->addSelect('id', 'display_name');
+      if (is_numeric($contact_value)) {
+        $contact->addWhere('id', '=', $contact_value);
+      }
+      else {
+        $contact->addWhere('display_name', '=', $contact_value);
+      }
+      $contact = $contact->execute()
+        ->first();
+
+    } catch (Exception $e) {
+      Civi::log()->warning('I3val: Contact retrieve contact information for '.var_export($data[$fieldname],true).' with '.$e->getMessage());
+    }
+
+    return $contact;
+  }
+
 }
