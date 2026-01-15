@@ -15,6 +15,8 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 namespace Civi\I3val;
 
 use CRM_I3val_ExtensionUtil as E;
@@ -32,13 +34,30 @@ class ContainerSpecs implements CompilerPassInterface {
       return;
     }
     $typeFactoryDefinition = $container->getDefinition('action_provider');
-    $typeFactoryDefinition->addMethodCall('addAction', ['RequestContactUpdate', 'Civi\I3val\ActionProvider\Action\RequestContactUpdate', E::ts('Request Contact Update'), [
-        \Civi\ActionProvider\Action\AbstractAction::SINGLE_CONTACT_ACTION_TAG,
-        \Civi\ActionProvider\Action\AbstractAction::DATA_MANIPULATION_TAG
-    ]]);
-    $typeFactoryDefinition->addMethodCall('addAction', ['RequestMandateUpdate', 'Civi\I3val\ActionProvider\Action\RequestMandateUpdate', E::ts('Request CiviSEPA Mandate Update'), [
-        \Civi\ActionProvider\Action\AbstractAction::SINGLE_CONTACT_ACTION_TAG,
-        \Civi\ActionProvider\Action\AbstractAction::DATA_MANIPULATION_TAG
-    ]]);
+    $typeFactoryDefinition->addMethodCall(
+      'addAction',
+      [
+        'RequestContactUpdate',
+        'Civi\I3val\ActionProvider\Action\RequestContactUpdate',
+        E::ts('Request Contact Update'),
+        [
+          \Civi\ActionProvider\Action\AbstractAction::SINGLE_CONTACT_ACTION_TAG,
+          \Civi\ActionProvider\Action\AbstractAction::DATA_MANIPULATION_TAG,
+        ],
+      ]
+    );
+    $typeFactoryDefinition->addMethodCall(
+      'addAction',
+      [
+        'RequestMandateUpdate',
+        'Civi\I3val\ActionProvider\Action\RequestMandateUpdate',
+        E::ts('Request CiviSEPA Mandate Update'),
+        [
+          \Civi\ActionProvider\Action\AbstractAction::SINGLE_CONTACT_ACTION_TAG,
+          \Civi\ActionProvider\Action\AbstractAction::DATA_MANIPULATION_TAG,
+        ],
+      ]
+    );
   }
+
 }

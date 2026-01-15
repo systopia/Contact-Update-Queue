@@ -15,20 +15,22 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 namespace Civi\I3val\ActionProvider\Action;
 
 use CRM_I3val_ExtensionUtil as E;
 
-use \Civi\ActionProvider\Action\AbstractAction;
-use \Civi\ActionProvider\Parameter\ParameterBagInterface;
-use \Civi\ActionProvider\Parameter\Specification;
-use \Civi\ActionProvider\Parameter\SpecificationBag;
+use Civi\ActionProvider\Action\AbstractAction;
+use Civi\ActionProvider\Parameter\ParameterBagInterface;
+use Civi\ActionProvider\Parameter\Specification;
+use Civi\ActionProvider\Parameter\SpecificationBag;
 
 class RequestMandateUpdate extends AbstractAction {
 
   /**
    * Returns the specification of the configuration options for the actual action.
-   * @return SpecificationBag specs
+   * @return \Civi\ActionProvider\Parameter\SpecificationBag specs
    */
   public function getConfigurationSpecification() {
     // get the current configuration
@@ -36,74 +38,87 @@ class RequestMandateUpdate extends AbstractAction {
 
     // allowed status requests
     $requested_status = [
-        ''         => E::ts("No Status Change"),
-        'COMPLETE' => E::ts("Terminate Mandate (COMPLETE)"),
-        'INVALID'  => E::ts("Mark Mandate as Invalid (INVALID)"),
+      ''         => E::ts('No Status Change'),
+      'COMPLETE' => E::ts('Terminate Mandate (COMPLETE)'),
+      'INVALID'  => E::ts('Mark Mandate as Invalid (INVALID)'),
     ];
 
     // specify config
     return new SpecificationBag([
-        new Specification('activity_type_id', 'Integer', E::ts('Default Activity Type'), false, null, null, $configuration->getActivityTypes(), false),
-        new Specification('i3val_note', 'String', E::ts('Note')),
-        new Specification('status', 'String', E::ts('Requested Status'), false, null, null, $requested_status, false),
+      new Specification(
+        'activity_type_id',
+        'Integer',
+        E::ts('Default Activity Type'),
+        FALSE,
+        NULL,
+        NULL,
+        $configuration->getActivityTypes(),
+        FALSE
+      ),
+      new Specification('i3val_note', 'String', E::ts('Note')),
+      new Specification('status', 'String', E::ts('Requested Status'), FALSE, NULL, NULL, $requested_status, FALSE),
     ]);
   }
 
   /**
    * Returns the specification of the parameters of the actual action.
    *
-   * @return SpecificationBag specs
+   * @return \Civi\ActionProvider\Parameter\SpecificationBag specs
    */
   public function getParameterSpecification() {
     $specs = [];
     // add metadata
-    $specs[] = new Specification('activity_type_id', 'Integer', E::ts('Activity Type'), false, null, null, null, false);
+    $specs[] = new Specification('activity_type_id', 'Integer', E::ts('Activity Type'), FALSE, NULL, NULL, NULL, FALSE);
     // this parameter was originally named id but the text was contact ID. It is renamed to contact_id as that is
     // also what the action allows the user to specify. If the mandate ID is actually required it should be a new
     // parameter named mandate_id
-    $specs[] = new Specification('contact_id', 'Integer', E::ts('Contact ID'), false, null, null, null, false);
-    $specs[] = new Specification('i3val_note', 'String', E::ts('Note'), false, null, null, null, false);
-    $specs[] = new Specification('i3val_schedule_date', 'String', E::ts('Requested Change Date'), false, null, null, null, false);
-    $specs[] = new Specification('i3val_parent_id', 'Integer', E::ts('Linked Activity ID'), false, null, null, null, false);
-    $specs[] = new Specification('source', 'String', E::ts('Source'), false, null, null, null, false);
-    $specs[] = new Specification('sdd_reason', 'String', E::ts('Cancel Reason'), false, null, null, null, false);
+    $specs[] = new Specification('contact_id', 'Integer', E::ts('Contact ID'), FALSE, NULL, NULL, NULL, FALSE);
+    $specs[] = new Specification('i3val_note', 'String', E::ts('Note'), FALSE, NULL, NULL, NULL, FALSE);
+    $specs[] = new Specification(
+      'i3val_schedule_date', 'String', E::ts('Requested Change Date'), FALSE, NULL, NULL, NULL, FALSE
+    );
+    $specs[] = new Specification(
+      'i3val_parent_id', 'Integer', E::ts('Linked Activity ID'), FALSE, NULL, NULL, NULL, FALSE
+    );
+    $specs[] = new Specification('source', 'String', E::ts('Source'), FALSE, NULL, NULL, NULL, FALSE);
+    $specs[] = new Specification('sdd_reason', 'String', E::ts('Cancel Reason'), FALSE, NULL, NULL, NULL, FALSE);
     // add mandate identifier
-    $specs[] = new Specification('reference', 'String', E::ts('Mandate Reference'), true, null, null, null, false);
+    $specs[] = new Specification('reference', 'String', E::ts('Mandate Reference'), TRUE, NULL, NULL, NULL, FALSE);
     // basic fields
-    $specs[] = new Specification('status', 'String', E::ts('Status'), false, null, null, null, false);
-    $specs[] = new Specification('iban', 'String', E::ts('IBAN'), false, null, null, null, false);
-    $specs[] = new Specification('bic', 'String', E::ts('BIC'), false, null, null, null, false);
+    $specs[] = new Specification('status', 'String', E::ts('Status'), FALSE, NULL, NULL, NULL, FALSE);
+    $specs[] = new Specification('iban', 'String', E::ts('IBAN'), FALSE, NULL, NULL, NULL, FALSE);
+    $specs[] = new Specification('bic', 'String', E::ts('BIC'), FALSE, NULL, NULL, NULL, FALSE);
     // add date fields
-    $specs[] = new Specification('date', 'Date', E::ts('Signature Date'), false, null, null, null, false);
-    $specs[] = new Specification('validation_date', 'Date', E::ts('Validation Date'), false, null, null, null, false);
-    $specs[] = new Specification('start_date', 'Date', E::ts('Start Date'), false, null, null, null, false);
-    $specs[] = new Specification('end_date', 'Date', E::ts('End Date'), false, null, null, null, false);
+    $specs[] = new Specification('date', 'Date', E::ts('Signature Date'), FALSE, NULL, NULL, NULL, FALSE);
+    $specs[] = new Specification('validation_date', 'Date', E::ts('Validation Date'), FALSE, NULL, NULL, NULL, FALSE);
+    $specs[] = new Specification('start_date', 'Date', E::ts('Start Date'), FALSE, NULL, NULL, NULL, FALSE);
+    $specs[] = new Specification('end_date', 'Date', E::ts('End Date'), FALSE, NULL, NULL, NULL, FALSE);
     // add collection fields
     // note that frequency expects the number of collections per year! So monhtly would be 12, quarterly 4 etc.
-    $specs[] = new Specification('frequency', 'Integer', E::ts('Frequency'), false, null, null, null, false);
-    $specs[] = new Specification('cycle_day', 'Integer', E::ts('Cycle Day'), false, null, null, null, false);
-    $specs[] = new Specification('financial_type', 'String', E::ts('Financial Type'), false, null, null, null, false);
-    $specs[] = new Specification('campaign', 'String', E::ts('Campaign'), false, null, null, null, false);
-    $specs[] = new Specification('amount', 'Float', E::ts('Amount'), false, null, null, null, false);
+    $specs[] = new Specification('frequency', 'Integer', E::ts('Frequency'), FALSE, NULL, NULL, NULL, FALSE);
+    $specs[] = new Specification('cycle_day', 'Integer', E::ts('Cycle Day'), FALSE, NULL, NULL, NULL, FALSE);
+    $specs[] = new Specification('financial_type', 'String', E::ts('Financial Type'), FALSE, NULL, NULL, NULL, FALSE);
+    $specs[] = new Specification('campaign', 'String', E::ts('Campaign'), FALSE, NULL, NULL, NULL, FALSE);
+    $specs[] = new Specification('amount', 'Float', E::ts('Amount'), FALSE, NULL, NULL, NULL, FALSE);
     return new SpecificationBag($specs);
   }
 
   /**
-   * @return SpecificationBag
+   * @return \Civi\ActionProvider\Parameter\SpecificationBag
    */
   public function getOutputSpecification() {
     return new SpecificationBag([
-      new Specification("result", "String", E::ts("Result Request"), FALSE),
+      new Specification('result', 'String', E::ts('Result Request'), FALSE),
     ]);
   }
 
   /**
    * Run the action
    *
-   * @param ParameterBagInterface $parameters
+   * @param \Civi\ActionProvider\Parameter\ParameterBagInterface $parameters
    *   The parameters to this action.
-   * @param ParameterBagInterface $output
-   * 	 The parameters this action can send back
+   * @param \Civi\ActionProvider\Parameter\ParameterBagInterface $output
+   *      The parameters this action can send back
    * @return void
    */
   protected function doAction(ParameterBagInterface $parameters, ParameterBagInterface $output) {
@@ -127,8 +142,10 @@ class RequestMandateUpdate extends AbstractAction {
     $result = \civicrm_api3('SepaMandate', 'request_update', $params);
     if (is_array($result['values'])) {
       $output->setParameter('result', json_encode($result['values']));
-    } else {
+    }
+    else {
       $output->setParameter('result', $result['values']);
     }
   }
+
 }

@@ -1,0 +1,3634 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Cannot access offset ''values'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 5
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
+			identifier: notEqual.notAllowed
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 2
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:addCurrentValues\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:addCurrentValues\(\) has parameter \$data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:addCurrentValues\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:applyChanges\(\) has parameter \$activity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:applyChanges\(\) has parameter \$objects with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:applyChanges\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:applyChanges\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:applyUpdateData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:applyUpdateData\(\) has parameter \$source_format with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:applyUpdateData\(\) has parameter \$target_format with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:applyUpdateData\(\) has parameter \$update with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:applyUpdateData\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:compileValues\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:compileValues\(\) has parameter \$activity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:compileValues\(\) has parameter \$fields with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:compileValues\(\) has parameter \$group_name with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:createDiff\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:createDiff\(\) has parameter \$original_data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:createDiff\(\) has parameter \$submitted_data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:generateDiffData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:generateDiffData\(\) has parameter \$activity_data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:generateDiffData\(\) has parameter \$entity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:generateDiffData\(\) has parameter \$submitted_data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getCustomGroupName\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getCustomGroupSpeficationFiles\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getDefaultOptionValue\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getDefaultOptionValue\(\) has parameter \$option_group with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getDefaultOptionValueLabel\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getDefaultOptionValueLabel\(\) has parameter \$option_group with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getField2Label\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getKey\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getMatchingOptionValue\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getMatchingOptionValue\(\) has parameter \$indexed_by with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getMatchingOptionValue\(\) has parameter \$label with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getMatchingOptionValue\(\) has parameter \$option_group with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getMatchingOptionValue\(\) has parameter \$return_best_match with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getMyChanges\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getMyChanges\(\) has parameter \$changes with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getMyValues\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getMyValues\(\) has parameter \$activity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getMyValues\(\) has parameter \$type with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getName\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getOptionValueList\(\) has parameter \$empty_option with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getOptionValueList\(\) has parameter \$indexed_by with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getOptionValueList\(\) has parameter \$option_group with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getOptionValueList\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getOptionValues\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getOptionValues\(\) has parameter \$indexed_by with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getOptionValues\(\) has parameter \$option_group with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:getTemplate\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:handlesEntities\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:hasData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:hasData\(\) has parameter \$activity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:normaliseDate\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:normaliseDate\(\) has parameter \$data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:normaliseDate\(\) has parameter \$field_name with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:renderActivityData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:renderActivityData\(\) has parameter \$activity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:renderActivityData\(\) has parameter \$form with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:resolveFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:resolveFields\(\) has parameter \$add_default with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:resolveFields\(\) has parameter \$data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:resolveOptionValueField\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:resolveOptionValueField\(\) has parameter \$data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:resolveOptionValueField\(\) has parameter \$fieldname with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:resolveOptionValueField\(\) has parameter \$id_fieldname with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:resolveOptionValueField\(\) has parameter \$option_group with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:resolveOptionValueField\(\) has parameter \$value_field with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:verifyChanges\(\) has parameter \$activity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:verifyChanges\(\) has parameter \$objects with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:verifyChanges\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Method CRM_I3val_ActivityHandler\:\:verifyChanges\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Property CRM_I3val_ActivityHandler\:\:\$_option_values type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Property CRM_I3val_ActivityHandler\:\:\$columns type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/ActivityHandler.php
+
+		-
+			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Cannot access offset ''id'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Cannot access offset ''values'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 5
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 15
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:clearingFieldsAllowed\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:getActivityTypes\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:getAssignee\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:getConfiguration\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:getCurrentUserID\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:getCurrentUserID\(\) has parameter \$fallback_id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:getDefaultAction\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:getDefaultActivityTypeForEntity\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:getDefaultActivityTypeForEntity\(\) has parameter \$entity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:getEligibleActivityTypes\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:getErrorStatusID\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:getFallbackUserID\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:getFallbackUserID\(\) has parameter \$fallback_id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:getHandlersForActivityType\(\) has parameter \$activity_type_id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:getHandlersForEntity\(\) has parameter \$entity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:getLiveActivityStatuses\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:getPostponeOptions\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:getQuickHistoryTypes\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:getRawConfig\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:getSessionSize\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:getSessionTTL\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:isActivityLive\(\) has parameter \$activity_id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:pickDefaultAction\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:pickDefaultAction\(\) has parameter \$options with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:pickDefaultAction\(\) has parameter \$proposed_default with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:sanitiseInput\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:sanitiseInput\(\) has parameter \$input with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:setRawConfig\(\) has parameter \$config with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Configuration\:\:synchroniseCustomFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, string\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Property CRM_I3val_Configuration\:\:\$config type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/Configuration.php
+
+		-
+			message: '#^Cannot access offset ''values'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: CRM/I3val/Converter.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 3
+			path: CRM/I3val/Converter.php
+
+		-
+			message: '#^Do not throw the \\Exception base class\.$#'
+			count: 1
+			path: CRM/I3val/Converter.php
+
+		-
+			message: '#^Identical\: Possible insane comparison between null and list\<array\{string, string, string, string\}\>\.$#'
+			identifier: voku.Identical
+			count: 1
+			path: CRM/I3val/Converter.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: CRM/I3val/Converter.php
+
+		-
+			message: '#^Method CRM_I3val_Converter\:\:convert\(\) has parameter \$activity_type_id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Converter.php
+
+		-
+			message: '#^Method CRM_I3val_Converter\:\:convert\(\) has parameter \$params with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Converter.php
+
+		-
+			message: '#^Method CRM_I3val_Converter\:\:convert\(\) has parameter \$selector with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Converter.php
+
+		-
+			message: '#^Method CRM_I3val_Converter\:\:extract\(\) has parameter \$activity with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/Converter.php
+
+		-
+			message: '#^Method CRM_I3val_Converter\:\:extract\(\) has parameter \$params with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/Converter.php
+
+		-
+			message: '#^Method CRM_I3val_Converter\:\:extractLocationType\(\) has parameter \$value with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Converter.php
+
+		-
+			message: '#^Method CRM_I3val_Converter\:\:getParameterMapping\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/Converter.php
+
+		-
+			message: '#^Method CRM_I3val_Converter\:\:mapParameters\(\) has parameter \$attributes with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Converter.php
+
+		-
+			message: '#^Method CRM_I3val_Converter\:\:mapParameters\(\) has parameter \$mapping with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Converter.php
+
+		-
+			message: '#^Method CRM_I3val_Converter\:\:mapParameters\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/Converter.php
+
+		-
+			message: '#^Method CRM_I3val_Converter\:\:parse_xcm\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/Converter.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int\|false given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/I3val/Converter.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string\|null given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/I3val/Converter.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between list\<array\{string, string, string, string\}\> and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: CRM/I3val/Converter.php
+
+		-
+			message: '#^Cannot access offset ''values'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: CRM/I3val/Form/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Form_Configuration\:\:buildQuickForm\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Form/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Form_Configuration\:\:getActivityStatusList\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Form/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Form_Configuration\:\:getActivityTypes\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Form/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Form_Configuration\:\:getBatchOptions\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Form/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Form_Configuration\:\:getDefaultActionList\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Form/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Form_Configuration\:\:getHandlerClasses\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Form/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Form_Configuration\:\:getTTLOptions\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Form/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Form_Configuration\:\:postProcess\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Form/Configuration.php
+
+		-
+			message: '#^Method CRM_I3val_Form_Configuration\:\:setDefaultValues\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/Form/Configuration.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int\|false given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/I3val/Form/Configuration.php
+
+		-
+			message: '#^Parameter \#1 \$objectOrClass of class ReflectionClass constructor expects class\-string\<T of object\>\|T of object, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/I3val/Form/Configuration.php
+
+		-
+			message: '#^Property CRM_I3val_Form_Configuration\:\:\$_activityTypes has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/I3val/Form/Configuration.php
+
+		-
+			message: '#^Property CRM_I3val_Form_Configuration\:\:\$_class2label has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/I3val/Form/Configuration.php
+
+		-
+			message: '#^Cannot access offset ''contact_id'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/I3val/Form/Desktop.php
+
+		-
+			message: '#^Cannot access offset ''display_name'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/I3val/Form/Desktop.php
+
+		-
+			message: '#^Cannot access offset ''id'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: CRM/I3val/Form/Desktop.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 10
+			path: CRM/I3val/Form/Desktop.php
+
+		-
+			message: '#^In method "CRM_I3val_Form_Desktop\:\:applyChanges", you should not use the \$_REQUEST superglobal\. You should instead rely on your framework that provides you with a "request" object \(for instance a PSR\-7 RequestInterface or a Symfony Request\)\. More info\: http\://bit\.ly/nosuperglobals$#'
+			count: 1
+			path: CRM/I3val/Form/Desktop.php
+
+		-
+			message: '#^Method CRM_I3val_Form_Desktop\:\:applyChanges\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Form/Desktop.php
+
+		-
+			message: '#^Method CRM_I3val_Form_Desktop\:\:buildQuickForm\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Form/Desktop.php
+
+		-
+			message: '#^Method CRM_I3val_Form_Desktop\:\:getContactHistory\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Form/Desktop.php
+
+		-
+			message: '#^Method CRM_I3val_Form_Desktop\:\:getContactHistory\(\) has parameter \$activity_id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Form/Desktop.php
+
+		-
+			message: '#^Method CRM_I3val_Form_Desktop\:\:getContactHistory\(\) has parameter \$activity_types with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Form/Desktop.php
+
+		-
+			message: '#^Method CRM_I3val_Form_Desktop\:\:handle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Form/Desktop.php
+
+		-
+			message: '#^Method CRM_I3val_Form_Desktop\:\:handle\(\) has parameter \$command with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Form/Desktop.php
+
+		-
+			message: '#^Method CRM_I3val_Form_Desktop\:\:postProcess\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Form/Desktop.php
+
+		-
+			message: '#^Method CRM_I3val_Form_Desktop\:\:renderActivity\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Form/Desktop.php
+
+		-
+			message: '#^Method CRM_I3val_Form_Desktop\:\:renderActivity\(\) has parameter \$activity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Form/Desktop.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, mixed given\.$#'
+			identifier: if.condNotBoolean
+			count: 3
+			path: CRM/I3val/Form/Desktop.php
+
+		-
+			message: '#^Parameter \#1 \$data of static method CRM_I3val_CustomData\:\:labelCustomFields\(\) expects array\<int\|string, mixed\>, array\|int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/I3val/Form/Desktop.php
+
+		-
+			message: '#^Parameter \#2 \$string of function explode expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/I3val/Form/Desktop.php
+
+		-
+			message: '#^Property CRM_I3val_Form_Desktop\:\:\$activity has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/I3val/Form/Desktop.php
+
+		-
+			message: '#^Property CRM_I3val_Form_Desktop\:\:\$activity_id has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/I3val/Form/Desktop.php
+
+		-
+			message: '#^Property CRM_I3val_Form_Desktop\:\:\$command has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/I3val/Form/Desktop.php
+
+		-
+			message: '#^Property CRM_I3val_Form_Desktop\:\:\$contact has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/I3val/Form/Desktop.php
+
+		-
+			message: '#^Argument of an invalid type array\|null supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 3
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Cannot access offset ''contact_id'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Cannot access offset ''display_name'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Cannot access offset ''id'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 4
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Cannot access offset ''values'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 33
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Do not throw the \\Exception base class\.$#'
+			count: 2
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^If_\: Use a function e\.g\. `count\(\$foo\) \> 0` instead of `\$foo`\.$#'
+			identifier: voku.If
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 8
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:addAddressSharingDiffData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:addAddressSharingDiffData\(\) has parameter \$activity_data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:addAddressSharingDiffData\(\) has parameter \$existing_address with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:addAddressSharingDiffData\(\) has parameter \$submitted_data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:adjustAddressSharingOptions\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:adjustAddressSharingOptions\(\) has parameter \$activity_data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:adjustAddressSharingOptions\(\) has parameter \$options with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:applyAddressSharingChanges\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:applyAddressSharingChanges\(\) has parameter \$action with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:applyAddressSharingChanges\(\) has parameter \$activity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:applyAddressSharingChanges\(\) has parameter \$activity_update with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:applyAddressSharingChanges\(\) has parameter \$address_update with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:applyAddressSharingChanges\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:applyChanges\(\) has parameter \$activity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:applyChanges\(\) has parameter \$objects with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:applyChanges\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:applyChanges\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:canCreateAddressWithData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:canCreateAddressWithData\(\) has parameter \$data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:deleteAddress\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:deleteAddress\(\) has parameter \$contact_id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:deleteAddress\(\) has parameter \$location_type with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:generateDiffData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:generateDiffData\(\) has parameter \$activity_data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:generateDiffData\(\) has parameter \$entity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:generateDiffData\(\) has parameter \$submitted_data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getAddressSharingContactID\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getAddressSharingContactID\(\) has parameter \$submitted_data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getAddressSharingNote\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getAddressSharingNote\(\) has parameter \$activity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getAddressSharingNote\(\) has parameter \$addresses with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getAddressSharingNote\(\) has parameter \$submitted_data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getCountryID\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getCountryID\(\) has parameter \$country with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getCountryIDbyCode\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getCountryIDbyCode\(\) has parameter \$code with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getCountryList\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getCurrentAddress\(\) has parameter \$contact_id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getCurrentAddress\(\) has parameter \$location_type with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getCurrentAddress\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getCustomGroupName\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getCustomGroupSpeficationFiles\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getCustomProcessingOptions\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getCustomProcessingOptions\(\) has parameter \$addresses with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getCustomProcessingOptions\(\) has parameter \$data_submitted with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getCustomProcessingOptions\(\) has parameter \$default_action with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getDefaultCountryID\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getDefaultCountryName\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getExistingAddresses\(\) has parameter \$contact_id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getExistingAddresses\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getField2Label\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getKey\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getMainFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getMatchingAddress\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getMatchingAddress\(\) has parameter \$addresses with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getMatchingAddress\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getName\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getStrippedAddressData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getStrippedAddressData\(\) has parameter \$address_id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:getTemplate\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:handlesEntities\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:hasAddressData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:hasAddressData\(\) has parameter \$data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:renderActivityData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:renderActivityData\(\) has parameter \$activity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:renderActivityData\(\) has parameter \$form with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:renderAddressSharingPanel\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:renderAddressSharingPanel\(\) has parameter \$activity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:renderAddressSharingPanel\(\) has parameter \$address_submitted with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:renderAddressSharingPanel\(\) has parameter \$form with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:renderHTMLContact\(\) has parameter \$contact_id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:resolveFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:resolveFields\(\) has parameter \$add_default with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:resolveFields\(\) has parameter \$data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:shouldUpdateAddress\(\) has parameter \$data_submitted with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:shouldUpdateAddress\(\) has parameter \$matching_address with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:verifyChanges\(\) has parameter \$activity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:verifyChanges\(\) has parameter \$objects with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:verifyChanges\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_AddressUpdate\:\:verifyChanges\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Offset mixed might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 3
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, array\|null given\.$#'
+			identifier: if.condNotBoolean
+			count: 2
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, list\<int\> given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Parameter \#1 \$addressId of static method CRM_Core_BAO_Address\:\:processSharedAddress\(\) expects int, float\|int\<min, \-1\>\|int\<1, max\>\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Possibly invalid array key type float\|int\<min, \-1\>\|int\<1, max\>\|string\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Property CRM_I3val_Handler_AddressUpdate\:\:\$_countryCode2Id has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Property CRM_I3val_Handler_AddressUpdate\:\:\$field2label has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Property CRM_I3val_Handler_AddressUpdate\:\:\$group_name has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/I3val/Handler/AddressUpdate.php
+
+		-
+			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Cannot access offset ''id'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 9
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Do not throw the \\Exception base class\.$#'
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
+			identifier: notEqual.notAllowed
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 5
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:applyChanges\(\) has parameter \$activity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:applyChanges\(\) has parameter \$objects with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:applyChanges\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:applyChanges\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:generateDiffData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:generateDiffData\(\) has parameter \$activity_data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:generateDiffData\(\) has parameter \$entity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:generateDiffData\(\) has parameter \$submitted_data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:getCustomGroupName\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:getCustomGroupSpeficationFiles\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:getField2Label\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:getFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:getKey\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:getName\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:getOptionList\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:getOptionList\(\) has parameter \$fieldname with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:getTemplate\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:handlesEntities\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:renderActivityData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:renderActivityData\(\) has parameter \$activity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:renderActivityData\(\) has parameter \$form with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:resolveFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:resolveFields\(\) has parameter \$add_default with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:resolveFields\(\) has parameter \$data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:resolvePreferredLanguageToLabel\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:resolvePreferredLanguageToLabel\(\) has parameter \$data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:resolvePreferredLanguageToLabel\(\) has parameter \$to_label with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:verifyChanges\(\) has parameter \$activity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:verifyChanges\(\) has parameter \$objects with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:verifyChanges\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_ContactUpdate\:\:verifyChanges\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, int\<0, max\> given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 2
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, int\|false given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int\|false given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Property CRM_I3val_Handler_ContactUpdate\:\:\$field2label has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Property CRM_I3val_Handler_ContactUpdate\:\:\$group_name has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/I3val/Handler/ContactUpdate.php
+
+		-
+			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Cannot access offset ''values'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 6
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
+			identifier: notEqual.notAllowed
+			count: 3
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 3
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:_getLocationTypes\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:generateEntityDiffData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:generateEntityDiffData\(\) has parameter \$activity_data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:generateEntityDiffData\(\) has parameter \$can_process_empty_fields with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:generateEntityDiffData\(\) has parameter \$entity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:generateEntityDiffData\(\) has parameter \$entity_id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:generateEntityDiffData\(\) has parameter \$original_data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:generateEntityDiffData\(\) has parameter \$submitted_data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:getDefaultLocationType\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:getIndexedLocationTypeList\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:getLocationTypeByID\(\) has parameter \$location_type_id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:getLocationTypeList\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:getMainFieldSimilarity\(\) has parameter \$entity1 with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:getMainFieldSimilarity\(\) has parameter \$entity2 with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:getMainFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:getMatchingLocationType\(\) has parameter \$location_type_name with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:getMatchingLocationType\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:getProcessingOptions\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:getProcessingOptions\(\) has parameter \$data_existing with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:getProcessingOptions\(\) has parameter \$data_submitted with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:getProcessingOptions\(\) has parameter \$entity_name with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:hasEqualMainFields\(\) has parameter \$entity1 with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:hasEqualMainFields\(\) has parameter \$entity2 with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:hasEqualMainFields\(\) has parameter \$identical with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:resolveFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:resolveFields\(\) has parameter \$add_default with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:resolveFields\(\) has parameter \$data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:resolveLocationType\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:resolveLocationType\(\) has parameter \$add_default with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_DetailUpdate\:\:resolveLocationType\(\) has parameter \$data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, int\|false given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, array\<string, mixed\>\|null given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int\<0, max\> given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Property CRM_I3val_Handler_DetailUpdate\:\:\$_location_types has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/I3val/Handler/DetailUpdate.php
+
+		-
+			message: '#^Cannot access offset ''values'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 5
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 3
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_EmailUpdate\:\:applyChanges\(\) has parameter \$activity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_EmailUpdate\:\:applyChanges\(\) has parameter \$objects with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_EmailUpdate\:\:applyChanges\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_EmailUpdate\:\:applyChanges\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_EmailUpdate\:\:generateDiffData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_EmailUpdate\:\:generateDiffData\(\) has parameter \$activity_data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_EmailUpdate\:\:generateDiffData\(\) has parameter \$entity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_EmailUpdate\:\:generateDiffData\(\) has parameter \$submitted_data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_EmailUpdate\:\:getCustomGroupName\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_EmailUpdate\:\:getCustomGroupSpeficationFiles\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_EmailUpdate\:\:getExistingEmail\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_EmailUpdate\:\:getExistingEmail\(\) has parameter \$default_action with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_EmailUpdate\:\:getExistingEmail\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_EmailUpdate\:\:getField2Label\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_EmailUpdate\:\:getFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_EmailUpdate\:\:getKey\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_EmailUpdate\:\:getMainFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_EmailUpdate\:\:getName\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_EmailUpdate\:\:getTemplate\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_EmailUpdate\:\:handlesEntities\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_EmailUpdate\:\:renderActivityData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_EmailUpdate\:\:renderActivityData\(\) has parameter \$activity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_EmailUpdate\:\:renderActivityData\(\) has parameter \$form with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_EmailUpdate\:\:verifyChanges\(\) has parameter \$activity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_EmailUpdate\:\:verifyChanges\(\) has parameter \$objects with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_EmailUpdate\:\:verifyChanges\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_EmailUpdate\:\:verifyChanges\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Property CRM_I3val_Handler_EmailUpdate\:\:\$field2label has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Property CRM_I3val_Handler_EmailUpdate\:\:\$group_name has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/I3val/Handler/EmailUpdate.php
+
+		-
+			message: '#^Cannot access offset ''values'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 5
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 4
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:applyChanges\(\) has parameter \$activity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:applyChanges\(\) has parameter \$objects with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:applyChanges\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:applyChanges\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:generateDiffData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:generateDiffData\(\) has parameter \$activity_data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:generateDiffData\(\) has parameter \$entity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:generateDiffData\(\) has parameter \$submitted_data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:getCustomGroupName\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:getCustomGroupSpeficationFiles\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:getExistingPhone\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:getExistingPhone\(\) has parameter \$default_action with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:getExistingPhone\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:getField2Label\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:getFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:getKey\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:getMainFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:getName\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:getTemplate\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:handlesEntities\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:renderActivityData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:renderActivityData\(\) has parameter \$activity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:renderActivityData\(\) has parameter \$form with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:resolveFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:resolveFields\(\) has parameter \$add_default with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:resolveFields\(\) has parameter \$data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:verifyChanges\(\) has parameter \$activity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:verifyChanges\(\) has parameter \$objects with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:verifyChanges\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_PhoneUpdate\:\:verifyChanges\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Property CRM_I3val_Handler_PhoneUpdate\:\:\$field2label has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '#^Property CRM_I3val_Handler_PhoneUpdate\:\:\$group_name has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/I3val/Handler/PhoneUpdate.php
+
+		-
+			message: '''
+				#^Call to deprecated method adjustAmount\(\) of class CRM_Sepa_BAO_SEPAMandate\:
+				in favour of modifyMandate$#
+			'''
+			identifier: staticMethod.deprecated
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 4
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Cannot access offset ''entity_id'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Cannot access offset ''entity_table'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 18
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Do not throw the \\Exception base class\.$#'
+			count: 5
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Implicit array creation is not allowed \- variable \$active_fields does not exist\.$#'
+			identifier: variable.implicitArray
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Implicit array creation is not allowed \- variable \$field2label does not exist\.$#'
+			identifier: variable.implicitArray
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Implicit array creation is not allowed \- variable \$form_values does not exist\.$#'
+			identifier: variable.implicitArray
+			count: 2
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
+			identifier: notEqual.notAllowed
+			count: 5
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 15
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:applyChanges\(\) has parameter \$activity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:applyChanges\(\) has parameter \$objects with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:applyChanges\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:applyChanges\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:generateDiffData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:generateDiffData\(\) has parameter \$activity_data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:generateDiffData\(\) has parameter \$entity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:generateDiffData\(\) has parameter \$submitted_data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:getCustomGroupName\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:getCustomGroupSpeficationFiles\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:getField2Label\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:getFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:getFrequencyLabel\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:getFrequencyLabel\(\) has parameter \$frequency with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:getFrequencyList\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:getFrequencyList\(\) has parameter \$label_only with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:getKey\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:getMainFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:getMandate\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:getMandate\(\) has parameter \$params with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:getName\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:getTemplate\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:handlesEntities\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:mendCurrentMandate\(\) has parameter \$activity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:mendCurrentMandate\(\) has parameter \$activity_update with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:mendCurrentMandate\(\) has parameter \$old_mandate with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:mendCurrentMandate\(\) has parameter \$update with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:mendCurrentMandate\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:renderActivityData\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:renderActivityData\(\) has parameter \$activity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:renderActivityData\(\) has parameter \$form with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:renderCancelMandate\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:renderCancelMandate\(\) has parameter \$activity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:renderCancelMandate\(\) has parameter \$existing_mandate with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:renderCancelMandate\(\) has parameter \$form with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:resolveFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:resolveFields\(\) has parameter \$add_default with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:resolveFields\(\) has parameter \$data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:service_checkIBAN\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:service_checkIBAN\(\) has parameter \$params with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:verifyChanges\(\) has parameter \$activity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:verifyChanges\(\) has parameter \$objects with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:verifyChanges\(\) has parameter \$values with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Method CRM_I3val_Handler_SddUpdate\:\:verifyChanges\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, null given\.$#'
+			identifier: if.condNotBoolean
+			count: 2
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string\|false given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Parameter \#1 \$values of function civicrm_api3_create_success expects array\|int, null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Parameter \#1 \.\.\.\$arrays of function array_merge expects array, array\|int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Parameter \#2 \.\.\.\$arrays of function array_merge expects array, array\|int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Property CRM_I3val_Handler_SddUpdate\:\:\$field2label has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Property CRM_I3val_Handler_SddUpdate\:\:\$group_name has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: CRM/I3val/Handler/SddUpdate.php
+
+		-
+			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: CRM/I3val/Logic.php
+
+		-
+			message: '#^Cannot access offset ''id'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/I3val/Logic.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 8
+			path: CRM/I3val/Logic.php
+
+		-
+			message: '#^Empty array passed to foreach\.$#'
+			identifier: foreach.emptyArray
+			count: 1
+			path: CRM/I3val/Logic.php
+
+		-
+			message: '#^If condition is always false\.$#'
+			identifier: if.alwaysFalse
+			count: 1
+			path: CRM/I3val/Logic.php
+
+		-
+			message: '#^Method CRM_I3val_Logic\:\:addActivityParams\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Logic.php
+
+		-
+			message: '#^Method CRM_I3val_Logic\:\:addActivityParams\(\) has parameter \$activity_data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Logic.php
+
+		-
+			message: '#^Method CRM_I3val_Logic\:\:addActivityParams\(\) has parameter \$contact_id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Logic.php
+
+		-
+			message: '#^Method CRM_I3val_Logic\:\:addActivityParams\(\) has parameter \$params with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Logic.php
+
+		-
+			message: '#^Method CRM_I3val_Logic\:\:adjustAcitivityView\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Logic.php
+
+		-
+			message: '#^Method CRM_I3val_Logic\:\:adjustAcitivityView\(\) has parameter \$activity_id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Logic.php
+
+		-
+			message: '#^Method CRM_I3val_Logic\:\:adjustAcitivityView\(\) has parameter \$activity_type_id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Logic.php
+
+		-
+			message: '#^Method CRM_I3val_Logic\:\:createEntityUpdateRequest\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Logic.php
+
+		-
+			message: '#^Method CRM_I3val_Logic\:\:createEntityUpdateRequest\(\) has parameter \$entity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Logic.php
+
+		-
+			message: '#^Method CRM_I3val_Logic\:\:createEntityUpdateRequest\(\) has parameter \$params with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Logic.php
+
+		-
+			message: '#^Offset ''id'' might not exist on array\<string, mixed\>\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 4
+			path: CRM/I3val/Logic.php
+
+		-
+			message: '#^Parameter \#2 \$replace of function str_replace expects array\<string\>\|string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/I3val/Logic.php
+
+		-
+			message: '#^Parameter \#3 \$subject of function str_replace expects array\<string\>\|string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/I3val/Logic.php
+
+		-
+			message: '#^Part \$applied_data_field\[''id''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: CRM/I3val/Logic.php
+
+		-
+			message: '#^Part \$original_data_field\[''id''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 2
+			path: CRM/I3val/Logic.php
+
+		-
+			message: '#^Part \$submitted_data_field\[''id''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: CRM/I3val/Logic.php
+
+		-
+			message: '#^Undefined variable\: \$fields$#'
+			identifier: variable.undefined
+			count: 1
+			path: CRM/I3val/Logic.php
+
+		-
+			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Cannot access an offset on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Cannot access offset ''activity_date_time'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Cannot access offset ''cache_key'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 9
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Do not throw the \\Exception base class\.$#'
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Foreach overwrites \$activity_id with its value variable\.$#'
+			identifier: foreach.valueOverwrite
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Identical\: Possible insane comparison between null and CRM_I3val_Session\.$#'
+			identifier: voku.Identical
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
+			identifier: notEqual.notAllowed
+			count: 3
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:_reset\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:_reset\(\) has parameter \$destroy_old_session with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:calculateOpenActivityCount\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:destroySession\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:destroySession\(\) has parameter \$cache_key with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:flagActivity\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:flagActivity\(\) has parameter \$activity_id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:get\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:get\(\) has parameter \$name with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:getContinuationURL\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:getCurrentActivityID\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:getCurrentActivityID\(\) has parameter \$activity_types with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:getNext\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:getNext\(\) has parameter \$after_timestamp with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:getNext\(\) has parameter \$grab_more_if_needed with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:getOpenActivityCount\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:getPendingCount\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:getProcessedCount\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:getProgress\(\) has parameter \$including_current with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:getSession\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:getSessionKey\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:getSessionKeys\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:getSiblingActivityIDs\(\) has parameter \$activity_id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:getSiblingActivityIDs\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:grabMoreActivities\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:grabMoreActivities\(\) has parameter \$after_timestamp with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:grabMoreActivities\(\) has parameter \$max_count with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:isInitialised\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:isSiblingQueue\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:jumpToSiblingQueue\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:jumpToSiblingQueue\(\) has parameter \$activity_id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:log\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:log\(\) has parameter \$message with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:markProcessed\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:markProcessed\(\) has parameter \$activity_id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:markProcessed\(\) has parameter \$timestamp with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:popQueueParams\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:postponeActivity\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:postponeActivity\(\) has parameter \$activity_id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:postponeActivity\(\) has parameter \$delay with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:purgeCache\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:pushQueueParams\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:releaseActivityID\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:releaseActivityID\(\) has parameter \$activity_id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:reset\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:reset\(\) has parameter \$activity_types with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:returnFromSiblingQueue\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:set\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:set\(\) has parameter \$name with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Method CRM_I3val_Session\:\:set\(\) has parameter \$value with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, string\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Only booleans are allowed in an elseif condition, int given\.$#'
+			identifier: elseif.condNotBoolean
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int given\.$#'
+			identifier: if.condNotBoolean
+			count: 4
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Parameter \#1 \$array of function array_pop expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Parameter \#1 \$value of function count expects array\|Countable, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Parameter \#2 \$timestamp of function date expects int\|null, int\|false given\.$#'
+			identifier: argument.type
+			count: 3
+			path: CRM/I3val/Session.php
+
+		-
+			message: '#^Cannot access offset ''values'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Civi/I3val/ActionProvider/Action/RequestContactUpdate.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: Civi/I3val/ActionProvider/Action/RequestContactUpdate.php
+
+		-
+			message: '#^Cannot access offset ''values'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
+
+		-
+			message: '#^Method Civi\\I3val\\ContainerSpecs\:\:process\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/I3val/ContainerSpecs.php
+
+		-
+			message: '#^Function _civicrm_api3_address_request_update_spec\(\) has parameter \$spec with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: api/v3/Address/RequestUpdate.php
+
+		-
+			message: '#^Function civicrm_api3_address_request_update\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: api/v3/Address/RequestUpdate.php
+
+		-
+			message: '#^Function civicrm_api3_address_request_update\(\) has parameter \$params with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: api/v3/Address/RequestUpdate.php
+
+		-
+			message: '#^Parameter \#1 \$values of function civicrm_api3_create_success expects array\|int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: api/v3/Address/RequestUpdate.php
+
+		-
+			message: '#^Function _civicrm_api3_contact_request_update_spec\(\) has parameter \$spec with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: api/v3/Contact/RequestUpdate.php
+
+		-
+			message: '#^Function civicrm_api3_contact_request_update\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: api/v3/Contact/RequestUpdate.php
+
+		-
+			message: '#^Function civicrm_api3_contact_request_update\(\) has parameter \$params with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: api/v3/Contact/RequestUpdate.php
+
+		-
+			message: '#^Parameter \#1 \$values of function civicrm_api3_create_success expects array\|int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: api/v3/Contact/RequestUpdate.php
+
+		-
+			message: '#^Function _civicrm_api3_i3val_convert_spec\(\) has parameter \$spec with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: api/v3/I3val/Convert.php
+
+		-
+			message: '#^Function civicrm_api3_i3val_convert\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: api/v3/I3val/Convert.php
+
+		-
+			message: '#^Function civicrm_api3_i3val_convert\(\) has parameter \$params with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: api/v3/I3val/Convert.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: api/v3/I3val/Convert.php
+
+		-
+			message: '#^Parameter \#1 \$values of function civicrm_api3_create_success expects array\|int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: api/v3/I3val/Convert.php
+
+		-
+			message: '#^Function _civicrm_api3_i3val_service_spec\(\) has parameter \$spec with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: api/v3/I3val/Service.php
+
+		-
+			message: '#^Function civicrm_api3_i3val_service\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: api/v3/I3val/Service.php
+
+		-
+			message: '#^Function civicrm_api3_i3val_service\(\) has parameter \$params with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: api/v3/I3val/Service.php
+
+		-
+			message: '#^Function _civicrm_api3_sepa_mandate_request_update_spec\(\) has parameter \$spec with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: api/v3/SepaMandate/RequestUpdate.php
+
+		-
+			message: '#^Function civicrm_api3_sepa_mandate_request_update\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: api/v3/SepaMandate/RequestUpdate.php
+
+		-
+			message: '#^Function civicrm_api3_sepa_mandate_request_update\(\) has parameter \$params with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: api/v3/SepaMandate/RequestUpdate.php
+
+		-
+			message: '#^Parameter \#1 \$values of function civicrm_api3_create_success expects array\|int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: api/v3/SepaMandate/RequestUpdate.php
+
+		-
+			message: '#^Function i3val_civicrm_buildForm\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: i3val.php
+
+		-
+			message: '#^Function i3val_civicrm_buildForm\(\) has parameter \$form with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: i3val.php
+
+		-
+			message: '#^Function i3val_civicrm_buildForm\(\) has parameter \$formName with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: i3val.php
+
+		-
+			message: '#^Function i3val_civicrm_config\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: i3val.php
+
+		-
+			message: '#^Function i3val_civicrm_config\(\) has parameter \$config with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: i3val.php
+
+		-
+			message: '#^Function i3val_civicrm_container\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: i3val.php
+
+		-
+			message: '#^Function i3val_civicrm_disable\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: i3val.php
+
+		-
+			message: '#^Function i3val_civicrm_enable\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: i3val.php
+
+		-
+			message: '#^Function i3val_civicrm_install\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: i3val.php
+
+		-
+			message: '#^Function i3val_civicrm_navigationMenu\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: i3val.php
+
+		-
+			message: '#^Function i3val_civicrm_navigationMenu\(\) has parameter \$menu with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: i3val.php

@@ -15,21 +15,23 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 namespace Civi\I3val\ActionProvider\Action;
 
 use CRM_I3val_ExtensionUtil as E;
 
-use \Civi\ActionProvider\Action\AbstractAction;
-use \Civi\ActionProvider\Parameter\ParameterBagInterface;
-use \Civi\ActionProvider\Parameter\Specification;
-use \Civi\ActionProvider\Parameter\SpecificationBag;
+use Civi\ActionProvider\Action\AbstractAction;
+use Civi\ActionProvider\Parameter\ParameterBagInterface;
+use Civi\ActionProvider\Parameter\Specification;
+use Civi\ActionProvider\Parameter\SpecificationBag;
 
 class RequestContactUpdate extends AbstractAction {
 
   /**
    * Returns the specification of the configuration options for the actual action.
    *
-   * @return SpecificationBag specs
+   * @return \Civi\ActionProvider\Parameter\SpecificationBag specs
    */
   public function getConfigurationSpecification() {
     // get the current configuration
@@ -37,31 +39,44 @@ class RequestContactUpdate extends AbstractAction {
 
     // specify config
     return new SpecificationBag([
-        new Specification('activity_type_id', 'Integer', E::ts('Default Activity Type'), false, null, null, $configuration->getActivityTypes(), false),
+      new Specification(
+        'activity_type_id',
+        'Integer',
+        E::ts('Default Activity Type'),
+        FALSE,
+        NULL,
+        NULL,
+        $configuration->getActivityTypes(),
+        FALSE
+      ),
     ]);
   }
 
   /**
    * Returns the specification of the parameters of the actual action.
    *
-   * @return SpecificationBag specs
+   * @return \Civi\ActionProvider\Parameter\SpecificationBag specs
    */
   public function getParameterSpecification() {
     $specs = [];
-    $specs[] = new Specification('activity_type_id', 'Integer', E::ts('Activity Type'), false, null, null, null, false);
-    $specs[] = new Specification('id', 'Integer', E::ts('Contact ID'), false, null, null, null, false);
-    $specs[] = new Specification('i3val_note', 'String', E::ts('Note'), false, null, null, null, false);
-    $specs[] = new Specification('i3val_schedule_date', 'String', E::ts('Requested Change Date'), false, null, null, null, false);
-    $specs[] = new Specification('i3val_parent_id', 'Integer', E::ts('Linked Activity ID'), false, null, null, null, false);
+    $specs[] = new Specification('activity_type_id', 'Integer', E::ts('Activity Type'), FALSE, NULL, NULL, NULL, FALSE);
+    $specs[] = new Specification('id', 'Integer', E::ts('Contact ID'), FALSE, NULL, NULL, NULL, FALSE);
+    $specs[] = new Specification('i3val_note', 'String', E::ts('Note'), FALSE, NULL, NULL, NULL, FALSE);
+    $specs[] = new Specification(
+      'i3val_schedule_date', 'String', E::ts('Requested Change Date'), FALSE, NULL, NULL, NULL, FALSE
+    );
+    $specs[] = new Specification(
+      'i3val_parent_id', 'Integer', E::ts('Linked Activity ID'), FALSE, NULL, NULL, NULL, FALSE
+    );
 
     // calculate handler input fields
     $config = \CRM_I3val_Configuration::getConfiguration();
     $handlers = $config->getHandlersForEntity('Contact');
     foreach ($handlers as $handler) {
-      /** @var $handler \CRM_I3val_ActivityHandler */
-      $fields =  $handler->getField2Label();
+      /** @var \CRM_I3val_ActivityHandler $handler */
+      $fields = $handler->getField2Label();
       foreach ($fields as $field_name => $field_label) {
-        $specs[] = new Specification($field_name, 'String', $field_label, false, null, null, null, false);
+        $specs[] = new Specification($field_name, 'String', $field_label, FALSE, NULL, NULL, NULL, FALSE);
       }
     }
 
@@ -69,21 +84,21 @@ class RequestContactUpdate extends AbstractAction {
   }
 
   /**
-   * @return SpecificationBag
+   * @return \Civi\ActionProvider\Parameter\SpecificationBag
    */
   public function getOutputSpecification() {
     return new SpecificationBag([
-      new Specification("result", "String", E::ts("Result Request"), FALSE),
+      new Specification('result', 'String', E::ts('Result Request'), FALSE),
     ]);
   }
 
   /**
    * Run the action
    *
-   * @param ParameterBagInterface $parameters
+   * @param \Civi\ActionProvider\Parameter\ParameterBagInterface $parameters
    *   The parameters to this action.
-   * @param ParameterBagInterface $output
-   * 	 The parameters this action can send back
+   * @param \Civi\ActionProvider\Parameter\ParameterBagInterface $output
+   *      The parameters this action can send back
    * @return void
    */
   protected function doAction(ParameterBagInterface $parameters, ParameterBagInterface $output) {
@@ -104,8 +119,10 @@ class RequestContactUpdate extends AbstractAction {
     $result = \civicrm_api3('Contact', 'request_update', $params);
     if (is_array($result['values'])) {
       $output->setParameter('result', json_encode($result['values']));
-    } else {
+    }
+    else {
       $output->setParameter('result', $result['values']);
     }
   }
+
 }

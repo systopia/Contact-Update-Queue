@@ -15,6 +15,7 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
 
 /**
  * Create an activity for manual review of contact updates
@@ -24,15 +25,17 @@ function civicrm_api3_sepa_mandate_request_update($params) {
     $activity = CRM_I3val_Logic::createEntityUpdateRequest('SepaMandate', $params);
     if ($activity) {
       return civicrm_api3_create_success($activity);
-    } else {
-      return civicrm_api3_create_success("No relevant changes detected.");
+    }
+    else {
+      return civicrm_api3_create_success('No relevant changes detected.');
     }
 
-  } catch (Exception $e) {
+  }
+  catch (Exception $e) {
+    // @ignoreException
     return civicrm_api3_create_error($e->getMessage());
   }
 }
-
 
 /**
  * Create an activity for manual review of contact updates
@@ -54,10 +57,10 @@ function _civicrm_api3_sepa_mandate_request_update_spec(&$spec) {
     'type'        => CRM_Utils_Type::T_STRING,
   ];
   $spec['sdd_reference_new'] = [
-      'title'       => 'New Mandate Reference',
-      'description' => 'Reference for the new mandate, should one be created.',
-      'required'    => FALSE,
-      'type'        => CRM_Utils_Type::T_STRING,
+    'title'       => 'New Mandate Reference',
+    'description' => 'Reference for the new mandate, should one be created.',
+    'required'    => FALSE,
+    'type'        => CRM_Utils_Type::T_STRING,
   ];
   $spec['i3val_note'] = [
     'title'       => 'Request note',
@@ -78,9 +81,9 @@ function _civicrm_api3_sepa_mandate_request_update_spec(&$spec) {
     'type'        => CRM_Utils_Type::T_STRING,
   ];
   $spec['activity_type_id'] = [
-      'title'       => 'Activity Type ID',
-      'description' => 'Allows you to determine the I3Val configuration (attached to the activity type)',
-      'required'    => FALSE,
-      'type'        => CRM_Utils_Type::T_INT,
+    'title'       => 'Activity Type ID',
+    'description' => 'Allows you to determine the I3Val configuration (attached to the activity type)',
+    'required'    => FALSE,
+    'type'        => CRM_Utils_Type::T_INT,
   ];
 }

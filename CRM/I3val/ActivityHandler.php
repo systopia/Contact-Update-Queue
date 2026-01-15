@@ -15,82 +15,86 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 /**
  * this class will handle performing the changes
  *  that are passed on from the API call
+ *
+ * phpcs:disable Generic.NamingConventions.AbstractClassNamePrefix.Missing
  */
 abstract class CRM_I3val_ActivityHandler {
+// phpcs:enable
+  /**
+   * cache for option values */
+  protected static array $_option_values = [];
 
-  /** cache for option values */
-  protected static $_option_values = array();
-
-  public static $columns = array('original', 'submitted', 'applied');
+  public static array $columns = ['original', 'submitted', 'applied'];
 
   /**
    * get the main key/identifier for this handler
    */
-  public abstract function getKey();
+  abstract public function getKey();
 
   /**
    * get a human readable name for this handler
    */
-  public abstract function getName();
+  abstract public function getName();
 
   /**
    * returns a list of CiviCRM entities this handler can process
    */
-  public abstract function handlesEntities();
+  abstract public function handlesEntities();
 
   /**
    * get the list of fields
    */
-  public abstract function getFields();
+  abstract public function getFields();
 
   /**
    * get the list of fields along with the
    */
-  public abstract function getField2Label();
+  abstract public function getField2Label();
 
   /**
    * Verify whether the changes make sense
    *
    * @return array $key -> error message
    */
-  public abstract function verifyChanges($activity, $values, $objects = array());
+  abstract public function verifyChanges($activity, $values, $objects = []);
 
   /**
    * Get the JSON specification file defining the custom group used for this data
    */
-  public abstract function getCustomGroupSpeficationFiles();
+  abstract public function getCustomGroupSpeficationFiles();
 
   /**
    * Get the custom group name
    */
-  public abstract function getCustomGroupName();
+  abstract public function getCustomGroupName();
 
   /**
    * Apply the changes
    *
    * @return array with changes to the activity
    */
-  public abstract function applyChanges($activity, $values, $objects = array());
+  abstract public function applyChanges($activity, $values, $objects = []);
 
   /**
    * Load and assign necessary data to the form
    */
-  public abstract function renderActivityData($activity, $form);
+  abstract public function renderActivityData($activity, $form);
 
   /**
    * Get the path of the template rendering the form
    */
-  public abstract function getTemplate();
+  abstract public function getTemplate();
 
   /**
    * Calculate the data to be created and add it to the $activity_data Activity.create params
    * @todo refactor: drop $entity_id, $entity_data
    */
-  public abstract function generateDiffData($entity, $submitted_data, &$activity_data);
-
+  abstract public function generateDiffData($entity, $submitted_data, &$activity_data);
 
   /**
    * Check if this activity has data, i.e. should this panel even be rendered?
@@ -108,7 +112,6 @@ abstract class CRM_I3val_ActivityHandler {
     return FALSE;
   }
 
-
   /**
    * Generate the orginal/submitted data for the given fields
    *
@@ -116,13 +119,13 @@ abstract class CRM_I3val_ActivityHandler {
    * @param $submitted_data array the data as it's been submitted
    */
   protected function createDiff($original_data, $submitted_data) {
-    $diff_data = array();
+    $diff_data = [];
     $field_names = $this->getFields();
     $custom_group_name = $this->getCustomGroupName();
     foreach ($field_names as $field_name) {
       if (isset($submitted_data[$field_name])) {
         // an update was submitted
-        $original_value = CRM_Utils_Array::value($field_name, $original_data, '');
+        $original_value = $original_data[$field_name] ?? '';
         if ($submitted_data[$field_name] != $original_value) {
           $diff_data["{$custom_group_name}.{$field_name}_submitted"] = $submitted_data[$field_name];
           $diff_data["{$custom_group_name}.{$field_name}_original"]  = $original_value;
@@ -136,7 +139,7 @@ abstract class CRM_I3val_ActivityHandler {
    * Extract the values of a certain type ('original', 'submitted', 'applied')
    */
   protected function getMyValues($activity, $type = 'submitted') {
-    $data       = array();
+    $data       = [];
     $group_name = $this->getCustomGroupName();
     $fields     = $this->getFields();
     foreach ($fields as $fieldname) {
@@ -153,7 +156,7 @@ abstract class CRM_I3val_ActivityHandler {
    * with the templates
    */
   protected function compileValues($group_name, $fields, $activity) {
-    $data = array();
+    $data = [];
     foreach ($fields as $fieldname => $field_label) {
       foreach (self::$columns as $column) {
         $key = "{$group_name}.{$fieldname}_{$column}";
@@ -181,7 +184,7 @@ abstract class CRM_I3val_ActivityHandler {
    */
   protected function getMyChanges($changes) {
     $fields = $this->getFields();
-    $my_changes = array();
+    $my_changes = [];
 
     foreach ($changes as $fieldname => $value) {
       if (in_array($fieldname, $fields)) {
@@ -212,7 +215,6 @@ abstract class CRM_I3val_ActivityHandler {
     }
   }
 
-
   /**
    * extract all of my fields and apply to update
    */
@@ -228,8 +230,8 @@ abstract class CRM_I3val_ActivityHandler {
   }
 
   /******************************************************
-   **                OPTION VALUE TOOLS                **
-   ******************************************************/
+   * *                OPTION VALUE TOOLS                **
+   */
 
   /**
    * resolve the entityID <--> entity
@@ -240,15 +242,18 @@ abstract class CRM_I3val_ActivityHandler {
       if ($option_value) {
         $data[$id_fieldname] = $option_value[$value_field];
         $data[$fieldname]    = $option_value['label'];
-      } else {
+      }
+      else {
         unset($data[$id_fieldname]);
       }
-    } elseif (!empty($data[$fieldname])) {
+    }
+    elseif (!empty($data[$fieldname])) {
       $option_value = $this->getMatchingOptionValue($option_group, $data[$fieldname]);
       if ($option_value) {
         $data[$id_fieldname] = $option_value[$value_field];
         $data[$fieldname]    = $option_value['label'];
-      } else {
+      }
+      else {
         unset($data[$id_fieldname]);
         unset($data[$fieldname]);
       }
@@ -275,7 +280,8 @@ abstract class CRM_I3val_ActivityHandler {
     $default_value = $this->getDefaultOptionValue($option_group);
     if ($default_value) {
       return $default_value['label'];
-    } else {
+    }
+    else {
       return NULL;
     }
   }
@@ -291,7 +297,7 @@ abstract class CRM_I3val_ActivityHandler {
    */
   protected function getOptionValueList($option_group, $indexed_by = 'label', $empty_option = NULL) {
     $option_values = $this->getOptionValues($option_group);
-    $option_list = array();
+    $option_list = [];
     foreach ($option_values as $option_value) {
       $option_list[$option_value[$indexed_by]] = $option_value['label'];
     }
@@ -302,7 +308,6 @@ abstract class CRM_I3val_ActivityHandler {
     return $option_list;
   }
 
-
   /**
    * Get the matching option value based on a label string
    */
@@ -312,12 +317,13 @@ abstract class CRM_I3val_ActivityHandler {
     if (empty($label)) {
       return NULL;
 
-    } elseif (is_numeric($label)) {
+    }
+    elseif (is_numeric($label)) {
       if (isset($option_values[$label])) {
         return $option_values[$label];
       }
-
-    } else {
+    }
+    else {
       // try to find it as a name match
       foreach ($option_values as $option_value) {
         if (strtolower($label) == strtolower($option_value['label'])) {
@@ -326,7 +332,7 @@ abstract class CRM_I3val_ActivityHandler {
       }
 
       // if this didn't help, try by similarity
-      if ($$return_best_match) {
+      if ($return_best_match) {
         $max_similarity = 0.0;
         $best_match     = NULL;
 
@@ -344,8 +350,6 @@ abstract class CRM_I3val_ActivityHandler {
     return NULL;
   }
 
-
-
   /**
    * Get all option values for the given group
    *
@@ -355,14 +359,15 @@ abstract class CRM_I3val_ActivityHandler {
    */
   protected function getOptionValues($option_group, $indexed_by = 'value') {
     if (!isset(self::$_option_values[$option_group])) {
-      $option_values = array();
-      $query = civicrm_api3('OptionValue', 'get', array(
+      $option_values = [];
+      $query = civicrm_api3('OptionValue', 'get', [
         'option_group_id' => $option_group,
         'sequential'      => 1,
         'option.limit'    => 0,
         'is_active'       => 1,
         'option.sort'     => 'weight ASC',
-        'return'          => "id,name,label,is_active,is_default,{$indexed_by}"));
+        'return'          => "id,name,label,is_active,is_default,{$indexed_by}",
+      ]);
       foreach ($query['values'] as $option_value) {
         $option_values[$option_value[$indexed_by]] = $option_value;
       }
@@ -370,4 +375,5 @@ abstract class CRM_I3val_ActivityHandler {
     }
     return self::$_option_values[$option_group];
   }
+
 }
