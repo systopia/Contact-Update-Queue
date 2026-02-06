@@ -15,16 +15,21 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 use CRM_I3val_ExtensionUtil as E;
 
 /**
  * abstract class providing infrastructure for
  *  contact detail updates (email,address,phone)
+ *
+ * phpcs:disable Generic.NamingConventions.AbstractClassNamePrefix.Missing
  */
 abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler {
-
-  /** location type cache */
-  static $_location_types = NULL;
+// phpcs:enable
+  /**
+   * location type cache */
+  private static $_location_types = NULL;
 
   /**
    * Get the main attributes. If these are not present,
@@ -37,16 +42,16 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
    */
   protected function getProcessingOptions($data_submitted, $data_existing, $entity_name) {
 
-    $options = array();
-    $options['add']         = E::ts("Add new %1", array(1 => $entity_name));
-    $options['add_primary'] = E::ts("Add new %1 as primary", array(1 => $entity_name));
+    $options = [];
+    $options['add']         = E::ts('Add new %1', [1 => $entity_name]);
+    $options['add_primary'] = E::ts('Add new %1 as primary', [1 => $entity_name]);
 
     if ($data_existing) {
-      $options['update'] = E::ts("Overwrite existing %1", array(1 => $entity_name));
+      $options['update'] = E::ts('Overwrite existing %1', [1 => $entity_name]);
     }
 
-    $options['discard']   = E::ts("Discard %1 data (do nothing)", array(1 => $entity_name));
-    $options['duplicate'] = E::ts("%1 already exists (do nothing)", array(1 => $entity_name));
+    $options['discard']   = E::ts('Discard %1 data (do nothing)', [1 => $entity_name]);
+    $options['duplicate'] = E::ts('%1 already exists (do nothing)', [1 => $entity_name]);
     return $options;
   }
 
@@ -55,7 +60,7 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
    */
   protected function getLocationTypeList() {
     $location_types = $this->_getLocationTypes();
-    $location_type_list = array();
+    $location_type_list = [];
     foreach ($location_types as $location_type) {
       $location_type_list[$location_type['display_name']] = $location_type['display_name'];
     }
@@ -69,7 +74,7 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
    */
   protected function getIndexedLocationTypeList() {
     $location_types = $this->_getLocationTypes();
-    $location_type_list = array();
+    $location_type_list = [];
     foreach ($location_types as $location_type_id => $location_type) {
       $location_type_list[$location_type_id] = $location_type['display_name'];
     }
@@ -101,9 +106,10 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
     $location_types = $this->_getLocationTypes();
     $location_type_name = strtolower(trim($location_type_name));
     foreach ($location_types as $location_type) {
-      if (   $location_type_name == strtolower($location_type['name'])
-          || $location_type_name == strtolower($location_type['display_name']) )
+      if ($location_type_name == strtolower($location_type['name'])
+          || $location_type_name == strtolower($location_type['display_name'])) {
         return $location_type;
+      }
     }
 
     // location type not found
@@ -113,9 +119,9 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
   /**
    * find a matching location type for the given name
    *
-   * @return array location type data
+   * @return array<string, mixed>|null location type data
    */
-  protected function getLocationTypeByID($location_type_id) {
+  protected function getLocationTypeByID($location_type_id): ?array {
     $location_types = $this->_getLocationTypes();
     foreach ($location_types as $location_type) {
       if ($location_type['id'] == $location_type_id) {
@@ -146,15 +152,18 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
         $location_type = $this->getLocationTypeByID($data['location_type_id']);
         if ($location_type) {
           $data['location_type'] = $location_type['display_name'];
-        } else {
+        }
+        else {
           unset($data['location_type_id']);
         }
-      } else {
+      }
+      else {
         $location_type = $this->getMatchingLocationType($data['location_type_id']);
         $data['location_type_id'] = $location_type['id'];
         $data['location_type']    = $location_type['display_name'];
       }
-    } elseif (!empty($data['location_type'])) {
+    }
+    elseif (!empty($data['location_type'])) {
       $location_type = $this->getMatchingLocationType($data['location_type']);
       $data['location_type_id'] = $location_type['id'];
       $data['location_type']    = $location_type['display_name'];
@@ -171,13 +180,13 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
   /**
    * compare all main fields of the two entities
    *
-   * @return TRUE if equal
+   * @return bool TRUE if equal
    */
-  protected function hasEqualMainFields($entity1, $entity2, $identical = FALSE) {
+  protected function hasEqualMainFields($entity1, $entity2, $identical = FALSE): bool {
     $main_fields = $this->getMainFields();
     foreach ($main_fields as $field_name) {
-      $entity1_value = CRM_Utils_Array::value($field_name, $entity1, '');
-      $entity2_value = CRM_Utils_Array::value($field_name, $entity2, '');
+      $entity1_value = $entity1[$field_name] ?? '';
+      $entity2_value = $entity2[$field_name] ?? '';
       if (!$identical) {
         $entity1_value = strtolower(trim($entity1_value));
         $entity2_value = strtolower(trim($entity2_value));
@@ -193,16 +202,16 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
    * Compare all main fields of the two entities
    *  using similar_text()
    *
-   * @return TRUE if equal
+   * @return float
    */
-  protected function getMainFieldSimilarity($entity1, $entity2) {
+  protected function getMainFieldSimilarity($entity1, $entity2): float {
     $similarity_sum   = 0.0;
     $similarity_count = 0;
 
     $main_fields = $this->getMainFields();
     foreach ($main_fields as $field_name) {
-      $entity1_value = CRM_Utils_Array::value($field_name, $entity1, '');
-      $entity2_value = CRM_Utils_Array::value($field_name, $entity2, '');
+      $entity1_value = $entity1[$field_name] ?? '';
+      $entity2_value = $entity2[$field_name] ?? '';
       // TODO: exclude empty strings similiarty?
       similar_text($entity1_value, $entity2_value, $similarity);
       $similarity_sum   += $similarity;
@@ -210,9 +219,10 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
     }
 
     if ($similarity_count) {
-      return ((float) $similarity_sum / (float) $similarity_count);
-    } else {
-      return 0;
+      return $similarity_sum / (float) $similarity_count;
+    }
+    else {
+      return 0.0;
     }
   }
 
@@ -221,11 +231,11 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
    */
   private function _getLocationTypes() {
     if (self::$_location_types === NULL) {
-      $query = civicrm_api3('LocationType', 'get', array(
+      $query = civicrm_api3('LocationType', 'get', [
         'is_active'    => 1,
         'option.limit' => 0,
         'sequential'   => 0,
-      ));
+      ]);
       self::$_location_types = $query['values'];
     }
     return self::$_location_types;
@@ -234,9 +244,19 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
   /**
    * Generic implementation for details.
    *  clients need to pass detail entity, NOT contact
+   *
+   * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
    */
-  public function generateEntityDiffData($entity, $entity_id, $original_data, $submitted_data, &$activity_data, $can_process_empty_fields = TRUE) {
-    $diff_data         = array();
+  public function generateEntityDiffData(
+    $entity,
+    $entity_id,
+    $original_data,
+    $submitted_data,
+    &$activity_data,
+    $can_process_empty_fields = TRUE
+  ) {
+  // phpcs:enable
+    $diff_data         = [];
     $main_attributes   = $this->getMainFields();
     $all_attributes    = $this->getFields();
     $custom_group_name = $this->getCustomGroupName();
@@ -257,7 +277,7 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
     // first: check all main attributes
     foreach ($main_attributes as $field_name) {
       if (isset($submitted_data[$field_name])) {
-        $current_value = CRM_Utils_Array::value($field_name, $original_data, '');
+        $current_value = $original_data[$field_name] ?? '';
         if ($submitted_data[$field_name] != $current_value) {
           // an update was submitted
           $diff_data["{$custom_group_name}.{$field_name}_submitted"] = $submitted_data[$field_name];
@@ -271,7 +291,7 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
       foreach ($all_attributes as $field_name) {
         if (isset($submitted_data[$field_name])) {
           // an update was submitted
-          $original_value = CRM_Utils_Array::value($field_name, $original_data, '');
+          $original_value = $original_data[$field_name] ?? '';
           if (in_array($field_name, $main_attributes) || ($submitted_data[$field_name] != $original_value)) {
             $activity_data["{$custom_group_name}.{$field_name}_submitted"] = $submitted_data[$field_name];
             $activity_data["{$custom_group_name}.{$field_name}_original"]  = $original_value;
@@ -280,4 +300,5 @@ abstract class CRM_I3val_Handler_DetailUpdate extends CRM_I3val_ActivityHandler 
       }
     }
   }
+
 }

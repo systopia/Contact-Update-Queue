@@ -15,6 +15,8 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 use CRM_I3val_ExtensionUtil as E;
 
 /**
@@ -29,17 +31,19 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
 
   public function getField2Label() {
     if (self::$field2label === NULL) {
-      self::$field2label = array( 'street_address'         => E::ts('Street Address'),
-                                  'street_name'            => E::ts('Street Name'),
-                                  'street_number'          => E::ts('Street Number'),
-                                  'street_number_suffix'   => E::ts('Street Number Suffix'),
-                                  'street_unit'            => E::ts('Street Unit'),
-                                  'postal_code'            => E::ts('Postal Code'),
-                                  'supplemental_address_1' => E::ts('Supplemental Address 1'),
-                                  'supplemental_address_2' => E::ts('Supplemental Address 2'),
-                                  'city'                   => E::ts('City'),
-                                  'country'                => E::ts('Country'),
-                                  'location_type'          => E::ts('Location Type'));
+      self::$field2label = [
+        'street_address'         => E::ts('Street Address'),
+        'street_name'            => E::ts('Street Name'),
+        'street_number'          => E::ts('Street Number'),
+        'street_number_suffix'   => E::ts('Street Number Suffix'),
+        'street_unit'            => E::ts('Street Unit'),
+        'postal_code'            => E::ts('Postal Code'),
+        'supplemental_address_1' => E::ts('Supplemental Address 1'),
+        'supplemental_address_2' => E::ts('Supplemental Address 2'),
+        'city'                   => E::ts('City'),
+        'country'                => E::ts('Country'),
+        'location_type'          => E::ts('Location Type'),
+      ];
     }
     return self::$field2label;
   }
@@ -48,14 +52,14 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
    * get a human readable name for this handler
    */
   public function getName() {
-    return E::ts("Address Update");
+    return E::ts('Address Update');
   }
 
   /**
    * returns a list of CiviCRM entities this handler can process
    */
   public function handlesEntities() {
-    return array('Contact', 'Address');
+    return ['Contact', 'Address'];
   }
 
   /**
@@ -78,24 +82,25 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
    *  no record at all is created
    */
   protected function getMainFields() {
-    return array('location_type',
-                 'street_address',
-                 'street_name',
-                 'street_number',
-                 'street_number_suffix',
-                 'street_unit',
-                 'postal_code',
-                 'supplemental_address_1',
-                 'supplemental_address_2',
-                 'city',
-                 'country');
+    return ['location_type',
+      'street_address',
+      'street_name',
+      'street_number',
+      'street_number_suffix',
+      'street_unit',
+      'postal_code',
+      'supplemental_address_1',
+      'supplemental_address_2',
+      'city',
+      'country',
+    ];
   }
 
   /**
    * Get the JSON specification file defining the custom group used for this data
    */
   public function getCustomGroupSpeficationFiles() {
-    return array(__DIR__ . '/../../../resources/address_updates_custom_group.json');
+    return [__DIR__ . '/../../../resources/address_updates_custom_group.json'];
   }
 
   /**
@@ -110,26 +115,29 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
    *
    * @return array $key -> error message
    */
-  public function verifyChanges($activity, $values, $objects = array()) {
+  public function verifyChanges($activity, $values, $objects = []) {
     // TODO: check?
-    return array();
+    return [];
   }
 
   /**
    * Apply the changes
    *
    * @return array with changes to the activity
+   *
+   * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
    */
-  public function applyChanges($activity, $values, $objects = array()) {
-    $activity_update = array();
+  public function applyChanges($activity, $values, $objects = []) {
+  // phpcs:enable
+    $activity_update = [];
     if (!$this->hasData($activity)) {
       // NO DATA, no updates
       return $activity_update;
     }
 
-    $address_update = array();
+    $address_update = [];
     $prefix = $this->getKey() . '_';
-    $action = explode(' ', CRM_Utils_Array::value('i3val_address_updates_action', $values, ''));
+    $action = explode(' ', $values['i3val_address_updates_action'] ?? '');
 
     switch ($action[0]) {
       case 'add':
@@ -140,7 +148,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
         $this->applyUpdateData($address_update, $values, '%s', "{$prefix}%s_applied");
 
         // update i3val job data
-        $activity_update[self::$group_name . ".action"] = E::ts("New %1 address added.", [1 => $location_type]);
+        $activity_update[self::$group_name . '.action'] = E::ts('New %1 address added.', [1 => $location_type]);
         $this->applyUpdateData($activity_update, $values, self::$group_name . '.%s_applied', "{$prefix}%s_applied");
         break;
 
@@ -156,7 +164,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
         $this->applyUpdateData($address_update, $values, '%s', "{$prefix}%s_applied");
 
         // update i3val job data
-        $activity_update[self::$group_name . ".action"] = E::ts("Replaced %1 address.", [1 => $location_type]);
+        $activity_update[self::$group_name . '.action'] = E::ts('Replaced %1 address.', [1 => $location_type]);
         $this->applyUpdateData($activity_update, $values, self::$group_name . '.%s_applied', "{$prefix}%s_applied");
         break;
 
@@ -170,35 +178,35 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
           $this->applyUpdateData($address_update, $values, '%s', "{$prefix}%s_applied");
 
           $this->applyUpdateData($activity_update, $values, self::$group_name . '.%s_applied', "{$prefix}%s_applied");
-          $activity_update[self::$group_name . ".action"] = E::ts("Updated %1 address.", [1 => $location_type]);
+          $activity_update[self::$group_name . '.action'] = E::ts('Updated %1 address.', [1 => $location_type]);
         }
         break;
 
       case 'duplicate':
-        $activity_update[self::$group_name . ".action"] = E::ts("Entry already existed.");
+        $activity_update[self::$group_name . '.action'] = E::ts('Entry already existed.');
         break;
 
       default:
       case 'discard':
-        $activity_update[self::$group_name . ".action"] = E::ts("Data discarded.");
+        $activity_update[self::$group_name . '.action'] = E::ts('Data discarded.');
         break;
     }
 
     if (!empty($address_update)) {
       // perform update
       $this->resolveFields($address_update);
-      CRM_I3val_Session::log("ADDRESS UPDATE: " . json_encode($address_update));
+      CRM_I3val_Session::log('ADDRESS UPDATE: ' . json_encode($address_update));
       $result = civicrm_api3('Address', 'create', $address_update);
       $address_update['id'] = $result['id'];
     }
 
-//    // apply address sharing (if there is any)
-//    $this->applyAddressSharingChanges($activity, $action, $values, $activity_update, $address_update);
+    // phpcs:disable Squiz.PHP.CommentedOutCode.Found
+    //    // apply address sharing (if there is any)
+    //    $this->applyAddressSharingChanges($activity, $action, $values, $activity_update, $address_update);
+    // phpcs:enable
 
     return $activity_update;
   }
-
-
 
   /**
    * Load and assign necessary data to the form
@@ -215,7 +223,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     $form->assign('i3val_address_values', $form_values);
 
     // create input fields and apply checkboxes
-    $active_fields = array();
+    $active_fields = [];
     foreach ($field2label as $fieldname => $fieldlabel) {
       if ($fieldname == 'location_type') {
         // no location type here, will be determined by the selected action
@@ -234,7 +242,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
               $fieldlabel,
               $this->getCountryList(),
               FALSE,
-              array('class' => 'crm-select2')
+              ['class' => 'crm-select2']
           );
           break;
 
@@ -250,53 +258,61 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
 
     // add primary field
     $form_fieldname = "{$prefix}is_primary";
-    $active_fields[$form_fieldname] = E::ts("Primary Address");
+    $active_fields[$form_fieldname] = E::ts('Primary Address');
     $form->add(
         'select',
         "{$form_fieldname}_applied",
-        E::ts("Primary Address"),
-        ['0' => E::ts("No"), '1' => E::ts("Yes")],
+        E::ts('Primary Address'),
+        ['0' => E::ts('No'), '1' => E::ts('Yes')],
         FALSE,
-        array('class' => 'crm-select2')
+        ['class' => 'crm-select2']
     );
 
+    // phpcs:disable Squiz.PHP.CommentedOutCode.Found
     // TODO: ADD address sharing (if submitted?)
-//    $this->renderAddressSharingPanel($activity, $form, $address_submitted);
+    //    $this->renderAddressSharingPanel($activity, $form, $address_submitted);
+    // phpcs:enable
 
     // add processing options
     $addresses = $this->getExistingAddresses($form->contact['id']);
     $address_submitted = $this->getMyValues($activity);
     $options = $this->getCustomProcessingOptions($address_submitted, $addresses, $default_action);
 
-//    $this->adjustAddressSharingOptions($options, $activity);
+    // phpcs:disable Squiz.PHP.CommentedOutCode.Found
+    //    $this->adjustAddressSharingOptions($options, $activity);
+    // phpcs:enable
     $form->add(
       'select',
-      "i3val_address_updates_action",
-      E::ts("Action"),
+      'i3val_address_updates_action',
+      E::ts('Action'),
       $options,
       TRUE,
-      array('class' => 'huge crm-select2')
+      ['class' => 'huge crm-select2']
     );
     $configuration = CRM_I3val_Configuration::getConfiguration();
-    $form->setDefaults(array(
-      "i3val_address_updates_action" => $configuration->pickDefaultAction($options, $default_action)));
+    $form->setDefaults([
+      'i3val_address_updates_action' => $configuration->pickDefaultAction($options, $default_action),
+    ]);
 
     $form->assign('i3val_active_address_fields', $active_fields);
 
     // add JS code
     CRM_Core_Resources::singleton()->addVars('i3val_address_update', [
-        'addresses'       => $addresses,
-        'original'        => $this->getMyValues($activity, 'original'),
-        'submitted'       => $address_submitted,
-        'location_types'  => array_flip($this->getIndexedLocationTypeList()),
-        'field_names'     => array_merge(array_keys($field2label), ['is_primary']),
-        'yes_no'          => ['0' => E::ts("No"), '1' => E::ts("Yes")],
-        'default_country' => CRM_Core_BAO_Country::defaultContactCountryName(),
+      'addresses'       => $addresses,
+      'original'        => $this->getMyValues($activity, 'original'),
+      'submitted'       => $address_submitted,
+      'location_types'  => array_flip($this->getIndexedLocationTypeList()),
+      'field_names'     => array_merge(array_keys($field2label), ['is_primary']),
+      'yes_no'          => ['0' => E::ts('No'), '1' => E::ts('Yes')],
+      'default_country' => CRM_Core_BAO_Country::defaultContactCountryName(),
     ]);
     CRM_Core_Resources::singleton()->addScriptFile('be.aivl.i3val', 'js/address_update_logic.js');
 
     // add missing address sharing mitigation (see https://github.com/systopia/be.aivl.i3val/issues/42)
-    $form->assign('i3val_address_sharing_mitigation', $this->getAddressSharingNote($address_submitted, $addresses, $activity));
+    $form->assign(
+      'i3val_address_sharing_mitigation',
+      $this->getAddressSharingNote($address_submitted, $addresses, $activity)
+    );
   }
 
   /**
@@ -306,14 +322,14 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     return 'CRM/I3val/Handler/AddressUpdate.tpl';
   }
 
-
   /**
    * Calculate the data to be created and add it to the $activity_data Activity.create params
    * @todo specify
    */
   public function generateDiffData($entity, $submitted_data, &$activity_data) {
     // make sure the location type is resolved
-    parent::resolveFields($submitted_data); // don't resolve country
+    // don't resolve country
+    parent::resolveFields($submitted_data);
 
     switch ($entity) {
       case 'Contact':
@@ -325,7 +341,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
         break;
 
       case 'Address':
-        $address = civicrm_api3('Address', 'getsingle', array('id' => $submitted_data['id']));
+        $address = civicrm_api3('Address', 'getsingle', ['id' => $submitted_data['id']]);
         // make sure we have the contact id
         if (empty($submitted_data['contact_id'])) {
           $submitted_data['contact_id'] = $address['contact_id'];
@@ -384,7 +400,6 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     }
   }
 
-
   /**
    * Get the country ID based on a string
    */
@@ -394,24 +409,28 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     if (empty($country)) {
       return NULL;
 
-    } elseif (is_numeric($country)) {
+    }
+    elseif (is_numeric($country)) {
       if (isset($countryId2Name[$country])) {
         return $country;
-      } else {
+      }
+      else {
         // invalid ID
         return NULL;
       }
 
-    } elseif (strlen($country) == 2) {
+    }
+    elseif (strlen($country) == 2) {
       // two characters? maybe it's an iso code
       $country_id = $this->getCountryIDbyCode($country);
       if (!empty($country_id)) {
         return $country_id;
       }
 
-    } else {
+    }
+    else {
       // try to find it as a name match
-      foreach ($countryId2Name as $country_id=> $country_name) {
+      foreach ($countryId2Name as $country_id => $country_name) {
         if (strtolower($country) == strtolower($country_name)) {
           return $country_id;
         }
@@ -421,7 +440,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
       $max_similarity = 0.0;
       $best_match     = NULL;
 
-      foreach ($countryId2Name as $country_id=> $country_name) {
+      foreach ($countryId2Name as $country_id => $country_name) {
         similar_text($country, $country_name, $similarity);
         if ($similarity > $max_similarity) {
           $max_similarity = $similarity;
@@ -444,15 +463,18 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
       // cache hit
       return self::$_countryCode2Id[$country_code];
 
-    } else {
+    }
+    else {
       // we have to do the lookup
-      $lookup = civicrm_api3('Country', 'get', array(
+      $lookup = civicrm_api3('Country', 'get', [
         'iso_code'     => $country_code,
         'option.limit' => 0,
-        'return'       => 'id'));
+        'return'       => 'id',
+      ]);
       if (empty($lookup['id'])) {
         self::$_countryCode2Id[$country_code] = 0;
-      } else {
+      }
+      else {
         self::$_countryCode2Id[$country_code] = $lookup['id'];
       }
       return self::$_countryCode2Id[$country_code];
@@ -473,16 +495,19 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
       if ($country_id) {
         $data['country_id'] = $country_id;
         $data['country']    = $countryId2Name[$country_id];
-      } else {
+      }
+      else {
         unset($data['country_id']);
       }
 
-    } elseif (!empty($data['country'])) {
+    }
+    elseif (!empty($data['country'])) {
       $country_id = $this->getCountryID($data['country']);
       if ($country_id) {
         $data['country_id'] = $country_id;
         $data['country']    = $countryId2Name[$country_id];
-      } else {
+      }
+      else {
         unset($data['country']);
       }
     }
@@ -529,22 +554,30 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     $addresses = [];
     try {
       $query = civicrm_api3('Address', 'get', [
-          'contact_id'   => $contact_id,
-          'option.limit' => 0,
-          'option.sort'  => 'is_primary desc',
-          'sequential'   => 1]);
+        'contact_id'   => $contact_id,
+        'option.limit' => 0,
+        'option.sort'  => 'is_primary desc',
+        'sequential'   => 1,
+      ]);
 
       // enrich data
       foreach ($query['values'] as $address) {
         $this->resolveFields($address);
         if (isset($addresses[$address['location_type_id']])) {
-          throw new Exception("Contact [{$contact_id}] has multiple addresses for location type '{$address['location_type']}'. Please fix!");
-        } else {
+          throw new Exception(
+            'Contact [' . $contact_id . '] has multiple addresses for location type "'
+            . $address['location_type'] . '". Please fix!'
+          );
+        }
+        else {
           $addresses[$address['location_type_id']] = $address;
         }
       }
-    } catch (Exception $ex) {
-      throw new Exception("Error while loading addresses for contact [{$contact_id}]: " . $ex->getMessage());
+    }
+    catch (Exception $ex) {
+      throw new Exception(
+        "Error while loading addresses for contact [{$contact_id}]: " . $ex->getMessage(), $ex->getCode(), $ex
+      );
     }
     return $addresses;
   }
@@ -575,16 +608,19 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     $location_type_id = $address_submitted['location_type_id'];
     if (isset($addresses[$location_type_id])) {
       return $addresses[$location_type_id];
-    } else {
+    }
+    else {
       return NULL;
     }
   }
 
-
   /**
    * get the processing options (caution: different signature)
+   *
+   * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
    */
   protected function getCustomProcessingOptions($data_submitted, $addresses, &$default_action = NULL) {
+  // phpcs:enable
     // this handler has different options than the other detail handlers
     $options = [];
     $location_type_list = $this->getIndexedLocationTypeList();
@@ -602,16 +638,19 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
         if ($this->shouldUpdateAddress($matching_address, $data_submitted)) {
           // if it's similar enough, it might just be an adjustment:
           $default_action = "update {$matching_location_type}";
-        } else {
+        }
+        else {
           // if it's different, it's probably an all new address
           $default_action = "replace {$matching_location_type}";
         }
-      } else {
+      }
+      else {
         // we don't have enough data to create a new one, i.e. we _have_ to update
         $options["update {$matching_location_type}"] = E::ts("Update '%1' Address", [1 => $matching_location_type]);
         $default_action = "update {$matching_location_type}";
       }
-    } elseif (!empty($data_submitted['location_type']['submitted'])) {
+    }
+    elseif (!empty($data_submitted['location_type']['submitted'])) {
       $location_type = $data_submitted['location_type']['submitted'];
       $options["add {$location_type}"] = E::ts("Add New '%1' Address", [1 => $location_type]);
       $default_action = "add {$location_type}";
@@ -630,15 +669,16 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
         if ($can_create) {
           $options["replace {$location_type_name}"] = E::ts("Replace '%1' Address", [1 => $location_type_name]);
         }
-      } else {
+      }
+      else {
         if ($can_create) {
           $options["add {$location_type_name}"] = E::ts("Add New '%1' Address", [1 => $location_type_name]);
         }
       }
     }
 
-    $options['discard']   = E::ts("Discard %1 data (do nothing)", array(1 => 'Address'));
-    $options['duplicate'] = E::ts("%1 already exists (do nothing)", array(1 => 'Address'));
+    $options['discard']   = E::ts('Discard %1 data (do nothing)', [1 => 'Address']);
+    $options['duplicate'] = E::ts('%1 already exists (do nothing)', [1 => 'Address']);
     return $options;
   }
 
@@ -648,11 +688,12 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
    * @todo: make configurable?
    */
   protected function hasAddressData($data) {
-    if (   !empty($data['street_address'])
+    if (!empty($data['street_address'])
         || !empty($data['postal_code'])
         || !empty($data['city'])) {
       return TRUE;
-    } else {
+    }
+    else {
       return FALSE;
     }
   }
@@ -662,15 +703,15 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
    * @todo: make configurable?
    */
   protected function canCreateAddressWithData($data) {
-    if (   !empty($data['street_address'])
+    if (!empty($data['street_address'])
         || !empty($data['postal_code'])
         || !empty($data['city'])) {
       return TRUE;
-    } else {
+    }
+    else {
       return FALSE;
     }
   }
-
 
   /**
    * Check if this can be considered an update to an existing address, or
@@ -690,23 +731,22 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
       foreach ($fields as $field_name) {
         $submitted_value = $data_submitted[$field_name] ?? NULL;
         if (!empty($submitted_value)) {
-          $current_value = CRM_Utils_Array::value($field_name, $matching_address, '');
-          similar_text($current_value, $submitted_value, $field_similarity);
+          $current_value = $matching_address[$field_name] ?? '';
+          similar_text((string) $current_value, (string) $submitted_value, $field_similarity);
           $similarity *= $field_similarity;
           $fields_checked += 1;
         }
       }
 
-      return    $fields_checked >= 2
+      return $fields_checked >= 2
              && $similarity > 0.7;
     }
     return FALSE;
   }
 
-
   /******************************************************
-   **               Address Sharing                    **
-   ******************************************************/
+   * *               Address Sharing                    **
+   */
 
   /**
    * If the shared_with_contact_id is given this function
@@ -718,30 +758,35 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     $group_name = $this->getCustomGroupName();
     if (!empty($activity["{$group_name}.shared_with_contact_id"])) {
       $shared_with_contact_id = $activity["{$group_name}.shared_with_contact_id"];
-      $other_contacts = civicrm_api3('Contact', 'get', array(
+      $other_contacts = civicrm_api3('Contact', 'get', [
         'id'     => $shared_with_contact_id,
-        'return' => 'is_deleted,display_name,contact_type,id'));
+        'return' => 'is_deleted,display_name,contact_type,id',
+      ]);
       if (empty($other_contacts['values'][$shared_with_contact_id])) {
-        CRM_Core_Session::setStatus(E::ts("Referenced shared address contact [%1] could not be found.", array(1 => $shared_with_contact_id)), E::ts('Warning'), 'info');
+        CRM_Core_Session::setStatus(
+          E::ts('Referenced shared address contact [%1] could not be found.', [1 => $shared_with_contact_id]),
+          E::ts('Warning'),
+          'info'
+        );
         return;
       }
       $other_contact = $other_contacts['values'][$shared_with_contact_id];
-      $other_contact['link'] = CRM_Utils_System::url("civicrm/contact/view", "reset=1&cid={$other_contact['id']}");
+      $other_contact['link'] = CRM_Utils_System::url('civicrm/contact/view', "reset=1&cid={$other_contact['id']}");
 
       // pull other addresses and add a display name
-      $other_address_options = array();
-      $other_addresses = civicrm_api3('Address', 'get', array(
+      $other_address_options = [];
+      $other_addresses = civicrm_api3('Address', 'get', [
         'contact_id'   => $shared_with_contact_id,
         'option.limit' => 0,
-        'sequential'   => 1
-      ))['values'];
+        'sequential'   => 1,
+      ])['values'];
       foreach ($other_addresses as $addr) {
         $this->resolveFields($addr);
         $other_address_options[$addr['id']] =
           "({$addr['location_type']}) {$addr['street_address']}, {$addr['postal_code']} {$addr['city']}";
       }
       if ($this->hasAddressData($address_submitted)) {
-        $other_address_options['new'] = E::ts("new address");
+        $other_address_options['new'] = E::ts('new address');
       }
       $other_address_options['none'] = E::ts("don't share");
 
@@ -749,20 +794,20 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
       $form->add(
         'select',
         'i3val_address_sharing_addresses',
-        E::ts("Share with"),
+        E::ts('Share with'),
         $other_address_options,
         FALSE,
-        array('class' => 'crm-select2 huge')
+        ['class' => 'crm-select2 huge']
       );
 
       // create location type dropdown
       $form->add(
         'select',
         'i3val_address_sharing_location_type',
-        E::ts("Share"),
+        E::ts('Share'),
         $this->getLocationTypeList(),
         FALSE,
-        array('class' => 'crm-select2')
+        ['class' => 'crm-select2']
       );
 
       // assign stuff
@@ -782,11 +827,15 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     if (!empty($submitted_data['shared_with_contact_id']) && is_numeric($submitted_data['shared_with_contact_id'])) {
       return $submitted_data['shared_with_contact_id'];
     }
-    if (!empty($submitted_data['address_master_contact_id']) && is_numeric($submitted_data['address_master_contact_id'])) {
+    if (!empty($submitted_data['address_master_contact_id'])
+      && is_numeric($submitted_data['address_master_contact_id'])
+    ) {
       return $submitted_data['address_master_contact_id'];
     }
     $activity_shared_attribute = $this->getCustomGroupName() . '.shared_with_contact_id';
-    if (!empty($submitted_data[$activity_shared_attribute]) && is_numeric($submitted_data[$activity_shared_attribute])) {
+    if (!empty($submitted_data[$activity_shared_attribute])
+      && is_numeric($submitted_data[$activity_shared_attribute])
+    ) {
       return $submitted_data[$activity_shared_attribute];
     }
     return NULL;
@@ -806,9 +855,10 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
       // if address share is requested, check if it's already there
       $master_id = $existing_address['master_id'] ?? NULL;
       if ($master_id) {
-        $master_address = civicrm_api3('Address', 'getsingle', array(
+        $master_address = civicrm_api3('Address', 'getsingle', [
           'id'     => $master_id,
-          'return' => 'contact_id'));
+          'return' => 'contact_id',
+        ]);
         if ($master_address['contact_id'] == $shared_with_contact_id) {
           // the address is already shared with this contact -> do nothing
           return;
@@ -822,8 +872,11 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
 
   /**
    * apply address sharing (if there is any)
+   *
+   * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
    */
   protected function applyAddressSharingChanges($activity, $action, $values, &$activity_update, $address_update) {
+  // phpcs:enable
     if (empty($values['i3val_address_sharing_addresses'])) {
       // nothing to do here...
       return;
@@ -837,43 +890,58 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
 
     // ok, let's see what the user wants:
     switch ($values['i3val_address_sharing_addresses']) {
-      case 'none': // DON'T SHARE
-        $activity_update["{$group_name}.action"] .= ' | ' . E::ts("Address not shared");
+      // DON'T SHARE
+      case 'none':
+        $activity_update["{$group_name}.action"] .= ' | ' . E::ts('Address not shared');
         break;
 
-      case 'new': // CREATE NEW ADDRESS WITH OTHER CONTACT
+      // CREATE NEW ADDRESS WITH OTHER CONTACT
+      case 'new':
         if (empty($address_id)) {
           // this shouldn't happen...
-          CRM_Core_Session::setStatus(E::ts("Active address not found! Other contact id:", array(1 => $other_contact_id)), E::ts('Error'), 'error');
-        } else {
+          CRM_Core_Session::setStatus(
+            E::ts('Active address not found! Other contact id:', [1 => $other_contact_id]),
+            E::ts('Error'),
+            'error'
+          );
+        }
+        else {
           // load the current address, and use the date to
           //   create a new address with the other contact
           $address = $this->getStrippedAddressData($address_id);
           $address['contact_id']    = $other_contact_id;
-          $address['master_id']     = ''; // reset old sharing (if exists)
+          // reset old sharing (if exists)
+          $address['master_id']     = '';
           $address['location_type'] = $values['i3val_address_sharing_location_type'];
           $this->resolveFields($address);
           $new_address = civicrm_api3('Address', 'create', $address);
 
           // now, set the the master_id of the old (contact) address to the newly created one
-          civicrm_api3('Address', 'create', array(
+          civicrm_api3('Address', 'create', [
             'id'         => $address_id,
-            'contact_id' => $contact_id, // API crashes if not provided
-            'master_id'  => $new_address['id']));
+          // API crashes if not provided
+            'contact_id' => $contact_id,
+            'master_id'  => $new_address['id'],
+          ]);
 
           // not to forget: call the function to sync shared address
           CRM_Core_BAO_Address::processSharedAddress($new_address['id'], $address);
 
           // finally: share the good news
-          $activity_update["{$group_name}.action"] .= ' | ' . E::ts("Address shared");
+          $activity_update["{$group_name}.action"] .= ' | ' . E::ts('Address shared');
         }
         break;
 
-      default: // SHARE WITH EXISTING ADDRESS
+      // SHARE WITH EXISTING ADDRESS
+      default:
         $shared_address_id = $values['i3val_address_sharing_addresses'];
         if (!is_numeric($shared_address_id)) {
           // this shoudln't happen...
-          CRM_Core_Session::setStatus(E::ts("Selected address not found! Other contact id:", array(1 => $other_contact_id)), E::ts('Error'), 'error');
+          CRM_Core_Session::setStatus(
+            E::ts('Selected address not found! Other contact id:', [1 => $other_contact_id]),
+            E::ts('Error'),
+            'error'
+          );
           break;
         }
         if ($action == 'share') {
@@ -886,7 +954,8 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
           $this->resolveFields($address);
           $new_address = civicrm_api3('Address', 'create', $address);
 
-        } else {
+        }
+        else {
           // this means that our address ($address_id) has been
           //  created/updated but should also be shared:
 
@@ -894,17 +963,31 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
           if (!is_numeric($address_id)) {
             // this shoudln't happen...
             if ($action == 'discard') {
-              CRM_Core_Session::setStatus(E::ts("You selected an address to share, but to discard the address. As a result, NO sharing was applied."), E::ts('Not shared!'), 'warn');
-            } else {
-              CRM_Core_Session::setStatus(E::ts("Something went wrong, cannot find the sharing address."), E::ts('Error'), 'error');
+              CRM_Core_Session::setStatus(
+                E::ts(
+                  'You selected an address to share, but to discard the address. As a result, NO sharing was applied.'
+                ),
+                E::ts('Not shared!'),
+                'warn'
+              );
+            }
+            else {
+              CRM_Core_Session::setStatus(
+                E::ts('Something went wrong, cannot find the sharing address.'),
+                E::ts('Error'),
+                'error'
+              );
             }
             break;
-          } else {
+          }
+          else {
             // now, set the new address as master_id
-            civicrm_api3('Address', 'create', array(
+            civicrm_api3('Address', 'create', [
               'id'         => $address_id,
-              'contact_id' => $values['contact_id'], // API crashes if not provided
-              'master_id'  => $shared_address_id));
+            // API crashes if not provided
+              'contact_id' => $values['contact_id'],
+              'master_id'  => $shared_address_id,
+            ]);
           }
 
           // but also, apply the same update to the master address
@@ -918,11 +1001,12 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
         }
 
         // not to forget: call the function to sync shared address
-        $shared_address = civicrm_api3('Address', 'getsingle', array('id' => $shared_address_id));
+        /** @var array<string, mixed> $shared_address */
+        $shared_address = civicrm_api3('Address', 'getsingle', ['id' => $shared_address_id]);
         CRM_Core_BAO_Address::processSharedAddress($shared_address_id, $shared_address);
 
         // finally: share the good news
-        $activity_update["{$group_name}.action"] .= ' | ' . E::ts("Address shared");
+        $activity_update["{$group_name}.action"] .= ' | ' . E::ts('Address shared');
         break;
     }
   }
@@ -942,11 +1026,11 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
 
     // if no address can be created (lack of data), but
     //   there is an address sharing link add an option to share it
-    if (!isset($options['add']) && $shared_with_contact_id) {
+    if (!isset($options['add'])) {
       // check if that contact has addresses
-      $address_count = civicrm_api3('Address', 'getcount', array('contact_id' => $shared_with_contact_id));
+      $address_count = civicrm_api3('Address', 'getcount', ['contact_id' => $shared_with_contact_id]);
       if ($address_count > 0) {
-        $options['share'] = E::ts("Share selected address");
+        $options['share'] = E::ts('Share selected address');
       }
     }
   }
@@ -955,7 +1039,7 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
    * Get an address and strip the instance related data
    */
   protected function getStrippedAddressData($address_id) {
-    $address = civicrm_api3('Address', 'getsingle', array('id' => $address_id));
+    $address = civicrm_api3('Address', 'getsingle', ['id' => $address_id]);
     unset($address['id']);
     unset($address['is_primary']);
     unset($address['is_billing']);
@@ -968,9 +1052,11 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
   /**
    * Generate a human-readable not on contacts involved in address sharing
    * @see https://github.com/systopia/be.aivl.i3val/issues/42
+   *
+   * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
    */
-  protected function getAddressSharingNote($submitted_data, $addresses, $activity)
-  {
+  protected function getAddressSharingNote($submitted_data, $addresses, $activity) {
+  // phpcs:enable
     $note = '';
     $currently_shared_with_contact_ids = [];
 
@@ -988,9 +1074,9 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
     // then: get master contact IDs
     if ($master_address_ids) {
       $master_address_query = civicrm_api3('Address', 'get', [
-          'option.limit' => 0,
-          'id' => ['IN' => $master_address_ids],
-          'return' => 'contact_id'
+        'option.limit' => 0,
+        'id' => ['IN' => $master_address_ids],
+        'return' => 'contact_id',
       ]);
       foreach ($master_address_query['values'] as $master_address) {
         $currently_shared_with_contact_ids[] = (int) $master_address['contact_id'];
@@ -998,21 +1084,22 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
       $currently_shared_with_contact_ids = array_unique($currently_shared_with_contact_ids);
     }
 
-
     // now: tell the user:
     if (empty($requested_sharing_contact_id) && !empty($currently_shared_with_contact_ids)) {
       $contact_labels = [];
       foreach ($currently_shared_with_contact_ids as $currently_shared_with_contact_id) {
         $contact_labels[] = $this->renderHTMLContact($currently_shared_with_contact_id);
       }
-      $note = E::ts("The address is currently shared with %1.",
+      $note = E::ts('The address is currently shared with %1.',
                     [1 => implode(E::ts(' and '), $contact_labels)]);
 
-    } else if (!empty($requested_sharing_contact_id) && empty($currently_shared_with_contact_ids)) {
+    }
+    elseif (!empty($requested_sharing_contact_id) && empty($currently_shared_with_contact_ids)) {
       $contact_label = $this->renderHTMLContact($requested_sharing_contact_id);
-      $note = E::ts("The address is requested to be shared with %1.", [1 => $contact_label]);
+      $note = E::ts('The address is requested to be shared with %1.', [1 => $contact_label]);
 
-    } else if (!empty($requested_sharing_contact_id) && !empty($currently_shared_with_contact_ids)) {
+    }
+    elseif (!empty($requested_sharing_contact_id) && !empty($currently_shared_with_contact_ids)) {
       // check if it's the same one
       if (count($currently_shared_with_contact_ids) > 1
           || !in_array($requested_sharing_contact_id, $currently_shared_with_contact_ids)) {
@@ -1026,9 +1113,10 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
         }
 
         // put it all together
-        $note = E::ts("The address is currently shared with %1, but is requested to be shared with %2.", [
-            1 => implode(E::ts(' and '), $contact_labels),
-            2 => $contact_label]);
+        $note = E::ts('The address is currently shared with %1, but is requested to be shared with %2.', [
+          1 => implode(E::ts(' and '), $contact_labels),
+          2 => $contact_label,
+        ]);
       }
     }
     return $note;
@@ -1040,18 +1128,23 @@ class CRM_I3val_Handler_AddressUpdate extends CRM_I3val_Handler_DetailUpdate {
    *   contact ID
    * @return string HTML contact
    */
-  protected function renderHTMLContact($contact_id)
-  {
+  protected function renderHTMLContact($contact_id) {
     static $rendered_contact = [];
     if (!isset($rendered_contact[$contact_id])) {
       $contact = civicrm_api3('Contact', 'getsingle', [
         'id' => $contact_id,
-        'return' => 'display_name,contact_type,contact_subtype'
+        'return' => 'display_name,contact_type,contact_subtype',
       ]);
-      $url = CRM_Utils_System::url("civicrm/contact/view", 'reset=1&cid=' . $contact['id']);
-      $rendered_contact[$contact_id] = "<a target=\"_blank\" href=\"{$url}\">{$contact['display_name']}&nbsp;[{$contact_id}]</a>";
+      $url = CRM_Utils_System::url('civicrm/contact/view', 'reset=1&cid=' . $contact['id']);
+      $rendered_contact[$contact_id] =
+        sprintf(
+          '<a target="_blank" href="%s">%s&nbsp;[%s]</a>',
+          $url,
+          $contact['display_name'],
+          $contact_id
+        );
     }
     return $rendered_contact[$contact_id];
   }
-}
 
+}

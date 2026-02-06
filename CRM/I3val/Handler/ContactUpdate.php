@@ -15,6 +15,8 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 use CRM_I3val_ExtensionUtil as E;
 
 /**
@@ -28,26 +30,27 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
 
   public function getField2Label() {
     if (self::$field2label === NULL) {
-      self::$field2label = array( 'first_name'         => E::ts('First Name'),
-                                  'last_name'          => E::ts('Last Name'),
-                                  'formal_title'       => E::ts('Formal Title'),
-                                  'organization_name'  => E::ts('Organisation Name'),
-                                  'household_name'     => E::ts('Household Name'),
-                                  'preferred_language' => E::ts('Preferred Language'),
-                                  'job_title'          => E::ts('Job Title'),
-                                  'prefix'             => E::ts('Prefix'),
-                                  'suffix'             => E::ts('Suffix'),
-                                  'gender'             => E::ts('Gender'),
-                                  'birth_date'         => E::ts('Birth Date'),
-                                  'do_not_email'       => E::ts('Do not Email'),
-                                  'do_not_phone'       => E::ts('Do not Phone'),
-                                  'do_not_mail'        => E::ts('Do not Mail'),
-                                  'do_not_sms'         => E::ts('Do not SMS'),
-                                  'do_not_trade'       => E::ts('Do not trade'),
-                                  'is_opt_out'         => E::ts('Opt-Out'),
-                                  'is_deceased'        => E::ts('Deceased'),
-                                  'deceased_date'      => E::ts('Deceased Date'),
-                                );
+      self::$field2label = [
+        'first_name'         => E::ts('First Name'),
+        'last_name'          => E::ts('Last Name'),
+        'formal_title'       => E::ts('Formal Title'),
+        'organization_name'  => E::ts('Organisation Name'),
+        'household_name'     => E::ts('Household Name'),
+        'preferred_language' => E::ts('Preferred Language'),
+        'job_title'          => E::ts('Job Title'),
+        'prefix'             => E::ts('Prefix'),
+        'suffix'             => E::ts('Suffix'),
+        'gender'             => E::ts('Gender'),
+        'birth_date'         => E::ts('Birth Date'),
+        'do_not_email'       => E::ts('Do not Email'),
+        'do_not_phone'       => E::ts('Do not Phone'),
+        'do_not_mail'        => E::ts('Do not Mail'),
+        'do_not_sms'         => E::ts('Do not SMS'),
+        'do_not_trade'       => E::ts('Do not trade'),
+        'is_opt_out'         => E::ts('Opt-Out'),
+        'is_deceased'        => E::ts('Deceased'),
+        'deceased_date'      => E::ts('Deceased Date'),
+      ];
     }
     return self::$field2label;
   }
@@ -63,14 +66,14 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
    * get a human readable name for this handler
    */
   public function getName() {
-    return E::ts("Contact Update");
+    return E::ts('Contact Update');
   }
 
   /**
    * returns a list of CiviCRM entities this handler can process
    */
   public function handlesEntities() {
-    return array('Contact');
+    return ['Contact'];
   }
 
   /**
@@ -85,7 +88,7 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
    * Get the JSON specification file defining the custom group used for this data
    */
   public function getCustomGroupSpeficationFiles() {
-    return array(__DIR__ . '/../../../resources/contact_updates_custom_group.json');
+    return [__DIR__ . '/../../../resources/contact_updates_custom_group.json'];
   }
 
   /**
@@ -100,9 +103,9 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
    *
    * @return array $key -> error message
    */
-  public function verifyChanges($activity, $values, $objects = array()) {
+  public function verifyChanges($activity, $values, $objects = []) {
     // TODO: check?
-    return array();
+    return [];
   }
 
   /**
@@ -110,17 +113,17 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
    *
    * @return array with changes to the activity
    */
-  public function applyChanges($activity, $values, $objects = array()) {
+  public function applyChanges($activity, $values, $objects = []) {
     $contact = $objects['contact'];
-    $activity_update = array();
+    $activity_update = [];
     if (!$this->hasData($activity)) {
       // NO DATA, no updates
       return $activity_update;
     }
 
     // calculate generic update
-    $contact_update = array();
-    $this->applyUpdateData($contact_update, $values, '%s', "%s_applied");
+    $contact_update = [];
+    $this->applyUpdateData($contact_update, $values, '%s', '%s_applied');
 
     // remove the ones that are not flagged as 'apply'
     foreach (array_keys($contact_update) as $key) {
@@ -136,18 +139,20 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
       $contact_update['id'] = $contact['id'];
       $this->resolveFields($contact_update);
       $this->resolvePreferredLanguageToLabel($contact_update, FALSE);
-      CRM_I3val_Session::log("UPDATE contact " . json_encode($contact_update));
+      CRM_I3val_Session::log('UPDATE contact ' . json_encode($contact_update));
       civicrm_api3('Contact', 'create', $contact_update);
     }
 
     return $activity_update;
   }
 
-
   /**
    * Load and assign necessary data to the form
+   *
+   * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
    */
   public function renderActivityData($activity, $form) {
+  // phpcs:enable
     $config = CRM_I3val_Configuration::getConfiguration();
     $field2label = self::getField2Label();
     $values = $this->compileValues(self::$group_name, $field2label, $activity);
@@ -163,8 +168,9 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
     }
 
     // create input fields and apply checkboxes
-    $active_fields = array();
-    $checkbox_fields = array(); // these will be displayed as checkboxes rather than strings
+    $active_fields = [];
+    // these will be displayed as checkboxes rather than strings
+    $checkbox_fields = [];
 
     foreach ($field2label as $fieldname => $fieldlabel) {
       // if there is no values, omit field
@@ -172,7 +178,8 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
         if (empty($values[$fieldname]['submitted']) && empty($values[$fieldname]['original'])) {
           continue;
         }
-      } else {
+      }
+      else {
         if (!isset($values[$fieldname]['submitted']) || !strlen($values[$fieldname]['submitted'])) {
           continue;
         }
@@ -182,7 +189,7 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
       $active_fields[$fieldname] = $fieldlabel;
 
       // generate input field
-      if (in_array($fieldname, array('prefix', 'suffix', 'gender'))) {
+      if (in_array($fieldname, ['prefix', 'suffix', 'gender'])) {
         // add the text input
         $form->add(
           'select',
@@ -191,13 +198,14 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
           $this->getOptionList($fieldname)
         );
 
-      } elseif ($fieldname == 'birth_date' || $fieldname == 'deceased_date') {
+      }
+      elseif ($fieldname == 'birth_date' || $fieldname == 'deceased_date') {
         $form->addDate(
           "{$fieldname}_applied",
           $fieldlabel,
           FALSE,
-          array('formatType' => 'activityDate')
-        );
+          ['formatType' => 'activityDate']
+              );
 
         // format date (drop time)
         if (isset($values[$fieldname]['submitted'])) {
@@ -207,37 +215,41 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
           $values[$fieldname]['original'] = substr($values[$fieldname]['original'], 0, 10);
         }
 
-      } elseif ($fieldname == 'preferred_language') {
+      }
+      elseif ($fieldname == 'preferred_language') {
         $form->add(
           'select',
           "{$fieldname}_applied",
           $fieldlabel,
-          $this->getOptionValueList('languages', 'label', E::ts("none"))
-        );
+          $this->getOptionValueList('languages', 'label', E::ts('none'))
+              );
 
-
-
-      } elseif (substr($fieldname, 0, 3) == 'do_' || substr($fieldname, 0, 3) == 'is_') {
+      }
+      elseif (substr($fieldname, 0, 3) == 'do_' || substr($fieldname, 0, 3) == 'is_') {
         $checkbox_fields[$fieldname] = 1;
         $form->add(
           'checkbox',
           "{$fieldname}_applied",
           $fieldlabel
-        );
+              );
 
-      } else {
+      }
+      else {
         // add the text input
         $form->add(
           'text',
           "{$fieldname}_applied",
           $fieldlabel
-        );
+              );
       }
 
       if (!empty($values[$fieldname]['applied'])) {
-        $form->setDefaults(array("{$fieldname}_applied" => $values[$fieldname]['applied']));
-      } else {
-        $form->setDefaults(array("{$fieldname}_applied" => isset($values[$fieldname]['submitted']) ? $values[$fieldname]['submitted'] : ''));
+        $form->setDefaults(["{$fieldname}_applied" => $values[$fieldname]['applied']]);
+      }
+      else {
+        $form->setDefaults(
+          ["{$fieldname}_applied" => $values[$fieldname]['submitted'] ?? '']
+        );
       }
 
       // add the apply checkbox
@@ -246,7 +258,7 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
         "{$fieldname}_apply",
         $fieldlabel
       );
-      $form->setDefaults(array("{$fieldname}_apply" => 1));
+      $form->setDefaults(["{$fieldname}_apply" => 1]);
     }
 
     $form->assign('i3val_contact_fields', $field2label);
@@ -268,11 +280,11 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
    */
   public function generateDiffData($entity, $submitted_data, &$activity_data) {
     if ($entity != 'Contact') {
-      throw new Exception("Can only process Contact entity");
+      throw new Exception('Can only process Contact entity');
     }
 
     // load contact
-    $contact = civicrm_api3('Contact', 'getsingle', array('id' => $submitted_data['id']));
+    $contact = civicrm_api3('Contact', 'getsingle', ['id' => $submitted_data['id']]);
     $activity_data['target_id'] = $contact['id'];
 
     // resolve prefix/suffix
@@ -314,7 +326,6 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
     $this->resolveOptionValueField($data, 'individual_suffix', 'suffix', 'suffix_id');
   }
 
-
   /**
    * Get dropdown lists
    */
@@ -346,20 +357,22 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
     if (!empty($data['preferred_language'])) {
       if ($to_label) {
         // we want to make sure that the label is used...
-        if (preg_match("#^[a-z]{2}_[A-Z]{2}$#", $data['preferred_language'])) {
+        if (preg_match('#^[a-z]{2}_[A-Z]{2}$#', $data['preferred_language'])) {
           // ... but it is the key -> find the right label
           $languages = $this->getOptionValues('languages', 'name');
           if (isset($languages[$data['preferred_language']])) {
             $data['preferred_language'] = $languages[$data['preferred_language']]['label'];
-          } else {
+          }
+          else {
             // not found
             unset($data['preferred_language']);
           }
         }
 
-      } else {
+      }
+      else {
         // we want to make sure that the key is there...
-        if (!preg_match("#^[a-z]{2}_[A-Z]{2}$#", $data['preferred_language'])) {
+        if (!preg_match('#^[a-z]{2}_[A-Z]{2}$#', $data['preferred_language'])) {
           // ...but it seems like it isn't -> find best match
           $option_value = $this->getMatchingOptionValue('languages', $data['preferred_language'], TRUE, 'name');
           $data['preferred_language'] = $option_value['name'];
@@ -367,4 +380,5 @@ class CRM_I3val_Handler_ContactUpdate extends CRM_I3val_ActivityHandler {
       }
     }
   }
+
 }

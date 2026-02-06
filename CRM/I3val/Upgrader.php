@@ -15,6 +15,8 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 use CRM_I3val_ExtensionUtil as E;
 
 /**
@@ -45,8 +47,10 @@ class CRM_I3val_Upgrader extends CRM_Extension_Upgrader_Base {
    */
   public function upgrade_0502() {
     $this->ctx->log->info('Applying update upgrade_0502');
-    // make sure the new 'street_name', 'street_number', 'street_number_suffix', 'street_unit' fields are there (see I3VAL-6)
+    // make sure the new 'street_name', 'street_number', 'street_number_suffix',
+    // 'street_unit' fields are there (see I3VAL-6)
     CRM_I3val_Configuration::synchroniseCustomFields();
     return TRUE;
   }
+
 }

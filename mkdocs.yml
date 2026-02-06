@@ -1,5 +1,8 @@
 site_name: I3Val Input Validation
-repo_url: https://github.com/systopia/be.aivl.i3val
+site_description: Ilja's Initiative for Input Validation
+site_author: SYSTOPIA
+repo_url: https://github.com/systopia/Contact-Update-Queue
+
 theme:
   name: material
 
@@ -10,14 +13,18 @@ nav:
 - 'Processing change requests': processing-change-requests.md
 
 markdown_extensions:
-- attr_list
-- admonition
-- def_list
-- codehilite
-- toc:
-    permalink: true
-- pymdownx.superfences
-- pymdownx.inlinehilite
-- pymdownx.tilde
-- pymdownx.betterem
-- pymdownx.mark
+  - attr_list
+  - admonition
+  - def_list
+  - codehilite
+  - toc:
+      permalink: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.tilde
+  - pymdownx.betterem
+  - pymdownx.mark
+
+plugins:
+  - search:
+      lang: en

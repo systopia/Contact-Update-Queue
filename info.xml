@@ -6,7 +6,7 @@
   <license>AGPL-3.0</license>
   <maintainer>
     <author>SYSTOPIA</author>
-    <email>endres@systopia.de</email>
+    <email>info@systopia.de</email>
   </maintainer>
   <urls>
     <url desc="Main Extension Page">https://github.com/systopia/Contact-Update-Queue</url>
@@ -18,7 +18,7 @@
   <version>0.6.1-dev</version>
   <develStage>dev</develStage>
   <compatibility>
-    <ver>5.65</ver>
+    <ver>5.76</ver>
   </compatibility>
   <comments>Funded by Amnesty International Vlaanderen</comments>
   <classloader>

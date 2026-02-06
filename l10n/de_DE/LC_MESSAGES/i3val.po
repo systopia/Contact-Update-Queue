@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: be.aivl.i3val\n"
-"POT-Creation-Date: 2021-09-20 17:12+0200\n"
+"POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: Bjoern Endres <Bjoern.Endres@didonai.com>\n"
 "Language-Team: SYSTOPIA <info@systopia.de>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: CRM/I3val/Configuration.php
 msgid "10 minutes"
@@ -90,7 +90,7 @@ msgstr "Aktivitätsverlauf"
 
 #: CRM/I3val/Form/Configuration.php
 msgid "Allow Clearing Fields"
-msgstr ""
+msgstr "Leeren von Feldern erlauben"
 
 #: CRM/I3val/Form/Configuration.php
 msgid "Input Trim Characters"
@@ -188,7 +188,7 @@ msgstr "Warnung"
 
 #: CRM/I3val/Form/Desktop.php
 msgid "The types requested are not configured."
-msgstr ""
+msgstr "Die angeforderten Typen sind nicht registriert."
 
 #: CRM/I3val/Form/Desktop.php
 msgid "No more update requests pending. You're already done!"
@@ -233,7 +233,7 @@ msgstr ""
 
 #: CRM/I3val/Form/Desktop.php
 msgid "Related Updates Scheduled!"
-msgstr "Zugehörige Änderungsmeldungen in der Queue."
+msgstr "Zugehörige Änderungsmeldungen in der Queue!"
 
 #: CRM/I3val/Form/Desktop.php
 msgid ""
@@ -283,7 +283,23 @@ msgstr "Übersprungen"
 
 #: CRM/I3val/Form/Desktop.php
 msgid "Unkown action."
-msgstr "Unbekannte Aktion"
+msgstr "Unbekannte Aktion."
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Street Name"
+msgstr "Straßenname"
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Street Number"
+msgstr "Hausnummer"
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Street Number Suffix"
+msgstr "Hausnummer Zusatz"
+
+#: CRM/I3val/Handler/AddressUpdate.php
+msgid "Street Unit"
+msgstr "Straßeneinheit"
 
 #: CRM/I3val/Handler/AddressUpdate.php
 msgid "Supplemental Address 1"
@@ -391,16 +407,16 @@ msgid "Address not shared"
 msgstr "Adresse nicht geteilt"
 
 #: CRM/I3val/Handler/AddressUpdate.php
-msgid "Active address not found!"
-msgstr "Aktive Adresse nicht gefunden"
+msgid "Active address not found! Other contact id:"
+msgstr "Aktive Adresse nicht gefunden! Andere Kontakt-ID:"
 
 #: CRM/I3val/Handler/AddressUpdate.php
 msgid "Address shared"
 msgstr "Adresse geteilt"
 
 #: CRM/I3val/Handler/AddressUpdate.php
-msgid "Selected address not found!"
-msgstr "Gewählte Adresse nicht gefunden!"
+msgid "Selected address not found! Other contact id:"
+msgstr "Gewählte Adresse nicht gefunden! Andere Kontakt-ID:"
 
 #: CRM/I3val/Handler/AddressUpdate.php
 msgid ""
@@ -716,10 +732,6 @@ msgstr ""
 msgid "Concurrent Processing"
 msgstr "Parallele Verarbeitung"
 
-#: CRM/I3val/Upgrader/Base.php
-msgid "Upgrade %1 to revision %2"
-msgstr ""
-
 #: Civi/I3val/ActionProvider/Action/RequestContactUpdate.php
 #: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
 msgid "Default Activity Type"
@@ -748,7 +760,7 @@ msgstr "Verknüpfte Aktivitäts-ID"
 #: Civi/I3val/ActionProvider/Action/RequestContactUpdate.php
 #: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
 msgid "Result Request"
-msgstr ""
+msgstr "Ergebnisanfrage"
 
 #: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
 msgid "No Status Change"
@@ -945,13 +957,13 @@ msgstr "Momentaner Wert"
 #: templates/CRM/I3val/Handler/PhoneUpdate.tpl
 #: templates/CRM/I3val/Handler/SddUpdate.tpl
 msgid "Value to apply"
-msgstr "anzuwendender Wert"
+msgstr "Anzuwendender Wert"
 
 #: templates/CRM/I3val/Handler/AddressUpdate.tpl
 #: templates/CRM/I3val/Handler/EmailUpdate.tpl
 #: templates/CRM/I3val/Handler/PhoneUpdate.tpl
 msgid "Click to copy '%1' into the 'apply' column."
-msgstr "Kopiere '%1' in das Übernahmefeld"
+msgstr "Kopiere '%1' in das Übernahmefeld."
 
 #: templates/CRM/I3val/Handler/AddressUpdate.tpl
 msgid "<b>Note:</b>"
@@ -1014,6 +1026,54 @@ msgstr "Straße (übermittelt)"
 #: resources/*.json
 msgid "Street Address (applied)"
 msgstr "Straße (angewendet)"
+
+#: resources/*.json
+msgid "Street Name (original)"
+msgstr "Straße (ursprünglich)"
+
+#: resources/*.json
+msgid "Street Name (submitted)"
+msgstr "Straße (übermittelt)"
+
+#: resources/*.json
+msgid "Street Name (applied)"
+msgstr "Straße (angewendet)"
+
+#: resources/*.json
+msgid "Street Number (original)"
+msgstr "Hausnummer (ursprünglich)"
+
+#: resources/*.json
+msgid "Street Number (submitted)"
+msgstr "Hausnummer (übermittelt)"
+
+#: resources/*.json
+msgid "Street Number (applied)"
+msgstr "Hausnummer (angewendet)"
+
+#: resources/*.json
+msgid "Street Number Suffix (original)"
+msgstr "Hausnummer Zusatz (ursprünglich)"
+
+#: resources/*.json
+msgid "Street Number Suffix (submitted)"
+msgstr "Hausnummer Zusatz (übermittelt)"
+
+#: resources/*.json
+msgid "Street Number Suffix (applied)"
+msgstr "Hausnummer Zusatz (angewendet)"
+
+#: resources/*.json
+msgid "Street Unit (original)"
+msgstr "Straßeneinheit (ursprünglich)"
+
+#: resources/*.json
+msgid "Street Unit (submitted)"
+msgstr "Straßeneinheit (übermittelt)"
+
+#: resources/*.json
+msgid "Street Unit (applied)"
+msgstr "Straßeneinheit (angewendet)"
 
 #: resources/*.json
 msgid "Supplemental Address (original)"
@@ -1229,7 +1289,7 @@ msgstr "Bevorzugte Sprache (angewendet)"
 
 #: resources/*.json
 msgid "Do Not Email (original)"
-msgstr "Keine E-Mails senden "
+msgstr "Keine E-Mails senden"
 
 #: resources/*.json
 msgid "Do Not Email (submitted)"

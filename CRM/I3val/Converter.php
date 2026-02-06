@@ -15,6 +15,8 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 use CRM_I3val_ExtensionUtil as E;
 
 /**
@@ -23,36 +25,37 @@ use CRM_I3val_ExtensionUtil as E;
  */
 class CRM_I3val_Converter {
 
-  protected $success_count = 0;
-  protected $failed_count = 0;
+  protected int $success_count = 0;
+  protected int $failed_count = 0;
 
   /**
    * Get the mapping of the row header to the corresponding i3val field
    * @return array mapping
    */
-  protected function getParameterMapping() {
+  protected function getParameterMapping(): array {
     return [
-        ts('First Name')     => 'i3val_contact_updates.first_name',
-        ts('Last Name')      => 'i3val_contact_updates.last_name',
-        'organization_name'       => 'i3val_contact_updates.organization_name',
-        'gender_id'               => 'i3val_contact_updates.gender',
-        ts('City')           => 'i3val_address_updates.city',
-        ts('Street Address') => 'i3val_address_updates.street_address',
-        ts('Postal Code')    => 'i3val_address_updates.postal_code',
-        ts('Country')        => 'i3val_address_updates.country',
-        ts('Email')          => 'i3val_email_updates.email',
-        'Phone'                   => 'i3val_phone_updates.phone',
-        'phone_numeric'           => 'i3val_phone_updates.phone',
+      ts('First Name')     => 'i3val_contact_updates.first_name',
+      ts('Last Name')      => 'i3val_contact_updates.last_name',
+      'organization_name'       => 'i3val_contact_updates.organization_name',
+      'gender_id'               => 'i3val_contact_updates.gender',
+      ts('City')           => 'i3val_address_updates.city',
+      ts('Street Address') => 'i3val_address_updates.street_address',
+      ts('Postal Code')    => 'i3val_address_updates.postal_code',
+      ts('Country')        => 'i3val_address_updates.country',
+      ts('Email')          => 'i3val_email_updates.email',
+      'Phone'                   => 'i3val_phone_updates.phone',
+      'phone_numeric'           => 'i3val_phone_updates.phone',
     ];
   }
-
 
   /**
    * @param $selector          array activity selector for the activities to be converted
    * @param $activity_type_id  int   target I3Val object (activity_type_id)
    * @param $params            array additional options
+   *
+   * @return array{int, int}
    */
-  public function convert($selector, $activity_type_id, $params) {
+  public function convert($selector, $activity_type_id, $params): array {
     // load activities
     $selector['return'] = 'id,details,status_id';
     $activities = civicrm_api3('Activity', 'get', $selector);
@@ -60,12 +63,12 @@ class CRM_I3val_Converter {
     foreach ($activities['values'] as $activity) {
       // build update
       $activity_update = [
-          'id'               => $activity['id'],
-          'activity_type_id' => $activity_type_id,
+        'id'               => $activity['id'],
+        'activity_type_id' => $activity_type_id,
       ];
 
       // derive parameters
-      $raw_data = CRM_Utils_Array::value('details', $activity, '');
+      $raw_data = $activity['details'] ?? '';
       $success = $this->extract($raw_data, $activity_update, $params);
       if ($success) {
         // write back activity
@@ -74,7 +77,8 @@ class CRM_I3val_Converter {
         if (empty($params['dry_run'])) {
           civicrm_api3('Activity', 'create', $activity_update);
         }
-      } else {
+      }
+      else {
         $this->failed_count++;
       }
     }
@@ -118,7 +122,7 @@ class CRM_I3val_Converter {
       // break if there is an unmapped property
       if (!isset($mapping[$foreign_key])) {
         // check if it's a custom field
-        if (substr($foreign_key,0 , 7) == 'custom_') {
+        if (substr($foreign_key, 0, 7) == 'custom_') {
           continue;
         }
         throw new Exception("Foreign Key '{$foreign_key}' unknown");
@@ -149,9 +153,14 @@ class CRM_I3val_Converter {
    */
   public function parse_xcm (string $html): array {
 
-    preg_match_all('/<tr>\s*<td>(.*)<\/td>\s*<td>(.*)<\/td>\s*<td>(.*)<\/td>\s*<\/tr>/m', $html, $matches, PREG_SET_ORDER);
+    preg_match_all(
+      '/<tr>\s*<td>(.*)<\/td>\s*<td>(.*)<\/td>\s*<td>(.*)<\/td>\s*<\/tr>/m',
+      $html,
+      $matches,
+      PREG_SET_ORDER
+    );
 
-    if ($matches === null) {
+    if ($matches === NULL) {
       $matches = [];
     }
 
@@ -185,7 +194,7 @@ class CRM_I3val_Converter {
     foreach ($location_type_names as $location_type_name) {
       if (preg_match("/ [(]{$location_type_name}[)]$/", $value)) {
         // we found it!
-        $value = preg_replace("/ [(]{$location_type_name}[)]$/", "", $value);
+        $value = preg_replace("/ [(]{$location_type_name}[)]$/", '', $value);
         return $location_type_name;
       }
     }
@@ -193,4 +202,5 @@ class CRM_I3val_Converter {
     // not found:
     return NULL;
   }
+
 }

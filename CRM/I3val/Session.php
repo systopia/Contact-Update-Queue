@@ -15,9 +15,13 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 use CRM_I3val_ExtensionUtil as E;
 
-define('I3VAL_DEBUG_LOGGING', TRUE);
+if (!defined('I3VAL_DEBUG_LOGGING')) {
+  define('I3VAL_DEBUG_LOGGING', TRUE);
+}
 
 /**
  * This class will store data about this processing session
@@ -28,21 +32,23 @@ class CRM_I3val_Session {
   /**
    * these properties are stored in the user's (browser) session
    */
-  const SESSION_PROPERTIES = [
-      'cache_key',
-      'start_time',
-      'activity_id',
-      'processed_count',
-      'activity_types',
-      'open_count',
-      'queue_type',
-      'queue_stack'
+  private const SESSION_PROPERTIES = [
+    'cache_key',
+    'start_time',
+    'activity_id',
+    'processed_count',
+    'activity_types',
+    'open_count',
+    'queue_type',
+    'queue_stack',
   ];
 
-  /** @var CRM_I3val_Session the single session object  */
+  /**
+   * @var CRM_I3val_Session the single session object  */
   protected static $_singleton = NULL;
 
-  /** @var CRM_Core_Session access to the session data */
+  /**
+   * @var CRM_Core_Session access to the session data */
   protected $user_session = NULL;
 
   /**
@@ -65,10 +71,11 @@ class CRM_I3val_Session {
       $cache_key = $session->get('cache_key');
       if ($cache_key) {
         $cache_key = substr($cache_key, 0, 4);
-      } else {
+      }
+      else {
         $cache_key = 'NONE';
       }
-        Civi::log()->debug("I3Val [{$cache_key}]: {$message}");
+      Civi::log()->debug("I3Val [{$cache_key}]: {$message}");
     }
   }
 
@@ -121,7 +128,6 @@ class CRM_I3val_Session {
     $this->set('activity_id', $next_activity_id);
   }
 
-
   /**
    * Get the next activity id from our list
    */
@@ -138,7 +144,7 @@ class CRM_I3val_Session {
         LIMIT 1");
     if (!$next_activity_id && $grab_more_if_needed) {
       // try to get more
-      self::log("No more items in session");
+      self::log('No more items in session');
       $session_size = CRM_I3val_Configuration::getConfiguration()->getSessionSize();
       $this->grabMoreActivities($session_size, $after_timestamp);
       $next_activity_id = $this->getNext(FALSE, $after_timestamp);
@@ -160,8 +166,8 @@ class CRM_I3val_Session {
    *  in the session
    */
   protected function pushQueueParams() {
-    self::log("Pushing queue parameters");
-    $current_stack = json_decode($this->get('queue_stack'), true);
+    self::log('Pushing queue parameters');
+    $current_stack = json_decode($this->get('queue_stack'), TRUE);
     if (empty($current_stack)) {
       $current_stack = [];
     }
@@ -177,19 +183,19 @@ class CRM_I3val_Session {
 
     // and write out
     $this->set('queue_stack', json_encode($current_stack));
-    self::log("Queue stack size is now " . count($current_stack));
+    self::log('Queue stack size is now ' . count($current_stack));
   }
 
   /**
    * Restores the last queue parameters
    */
   protected function popQueueParams() {
-    $current_stack = json_decode($this->get('queue_stack'), true);
+    $current_stack = json_decode($this->get('queue_stack'), TRUE);
     if (empty($current_stack)) {
-      self::log("Cannot restore queue parameters, stack is empty");
+      self::log('Cannot restore queue parameters, stack is empty');
       return;
     }
-    self::log("Restoring queue parameters");
+    self::log('Restoring queue parameters');
     $session_status = array_pop($current_stack);
     foreach ($session_status as $property => $value) {
       if ($property != 'queue_stack') {
@@ -199,16 +205,14 @@ class CRM_I3val_Session {
 
     // update stack
     $this->set('queue_stack', json_encode($current_stack));
-    self::log("Queue stack size is now " . count($current_stack));
+    self::log('Queue stack size is now ' . count($current_stack));
   }
-
-
 
   /**
    * Internal session reset function
    */
-  protected function _reset($destroy_old_session = true) {
-    self::log("Reset requested");
+  protected function _reset($destroy_old_session = TRUE) {
+    self::log('Reset requested');
 
     // destroy the user's current session (if any)
     $cache_key = $this->get('cache_key');
@@ -258,10 +262,10 @@ class CRM_I3val_Session {
    * @param $activity_id
    */
   public function jumpToSiblingQueue($activity_id) {
-    self::log("Jump to sibling queue");
+    self::log('Jump to sibling queue');
     $this->pushQueueParams();
     // do a generic reset
-    $this->_reset(false);
+    $this->_reset(FALSE);
 
     // now create a session with only those IDs
     $sibling_activity_ids = self::getSiblingActivityIDs($activity_id);
@@ -280,8 +284,9 @@ class CRM_I3val_Session {
     WHERE activity.id IN ($activity_id_list)
       AND (session.activity_id IS NULL OR session.session_key IN ({$my_session_keys}))
     ORDER BY activity.activity_date_time ASC;";
+    /** @var CRM_Core_DAO $free_query */
     $free_query = CRM_Core_DAO::executeQuery($free_query_sql);
-    $sibling_activity_ids_free = array();
+    $sibling_activity_ids_free = [];
     while ($free_query->fetch()) {
       $sibling_activity_ids_free[] = (int) $free_query->activity_id;
     }
@@ -289,9 +294,14 @@ class CRM_I3val_Session {
 
     // warn if some of them are blocked by another session
     if ($sibling_activity_count_blocked) {
-      CRM_Core_Session::setStatus(E::ts("%1 of the scheduled activities for this contact are currently processed by somebody else", array(1 => $sibling_activity_count)),
-          E::ts("Concurrent Processing"),
-          'warning');
+      CRM_Core_Session::setStatus(
+        E::ts(
+          '%1 of the scheduled activities for this contact are currently processed by somebody else',
+          [1 => $sibling_activity_count]
+        ),
+        E::ts('Concurrent Processing'),
+        'warning'
+      );
     }
 
     // build the query: all pending activities that are not already assigned
@@ -303,10 +313,14 @@ class CRM_I3val_Session {
       // first: remove from other (e.g. parent) sessions
       CRM_Core_DAO::executeQuery("DELETE FROM i3val_session_cache WHERE activity_id = {$activity_id}");
       // then: add to sub queue
-      CRM_Core_DAO::executeQuery("INSERT INTO i3val_session_cache (session_key, activity_id, expires) VALUES (%1, %2, %3)", array(
-          1 => array($cache_key,   'String'),
-          2 => array($activity_id, 'Integer'),
-          3 => array($expires,     'String')));
+      CRM_Core_DAO::executeQuery(
+        'INSERT INTO i3val_session_cache (session_key, activity_id, expires) VALUES (%1, %2, %3)',
+        [
+          1 => [$cache_key, 'String'],
+          2 => [$activity_id, 'Integer'],
+          3 => [$expires, 'String'],
+        ]
+      );
     }
   }
 
@@ -318,7 +332,8 @@ class CRM_I3val_Session {
     $this->popQueueParams();
 
     // make sure that we continue with the next one
-    $this->set('activity_id', null); // this one is probably not valid any more
+    // this one is probably not valid any more
+    $this->set('activity_id', NULL);
     $continuation_activity_id = $this->getNext();
     $this->set('activity_id', $continuation_activity_id);
 
@@ -335,8 +350,9 @@ class CRM_I3val_Session {
     $cache_key = $this->get('cache_key');
     if ($cache_key) {
       return $cache_key;
-    } else {
-      throw new Exception("Session not intialised!", 1);
+    }
+    else {
+      throw new Exception('Session not intialised!', 1);
     }
   }
 
@@ -348,7 +364,7 @@ class CRM_I3val_Session {
     $keys = [$this->getSessionKey()];
 
     // get additional keys from the stack
-    $current_stack = json_decode($this->get('queue_stack'), true);
+    $current_stack = json_decode($this->get('queue_stack'), TRUE);
     if (is_array($current_stack)) {
       foreach ($current_stack as $session) {
         if (!empty($session['cache_key'])) {
@@ -380,7 +396,8 @@ class CRM_I3val_Session {
       }
       $progress = (float) $processed_count / (float) $open_count;
       return min(1.0, $progress);
-    } else {
+    }
+    else {
       // open_count is 0
       return 1.0;
     }
@@ -411,10 +428,13 @@ class CRM_I3val_Session {
    * Assign another {$max_count} activities to this session
    */
   protected function grabMoreActivities($max_count = 0, $after_timestamp = NULL) {
-    if ($this->isSiblingQueue()) return;
+    if ($this->isSiblingQueue()) {
+      return;
+    }
 
     $after_activity_id = $this->get('activity_id');
-    self::log("grabMoreActivities: max: {$max_count}, after: [{$after_activity_id}], earliest: " . ($after_timestamp ? date('Y-m-d H:i:s', strtotime($after_timestamp)) : 'none'));
+    self::log("grabMoreActivities: max: {$max_count}, after: [{$after_activity_id}], earliest: "
+      . ($after_timestamp ? date('Y-m-d H:i:s', strtotime($after_timestamp)) : 'none'));
 
     $configuration = CRM_I3val_Configuration::getConfiguration();
     $activity_status_ids = implode(',', $configuration->getLiveActivityStatuses());
@@ -429,17 +449,21 @@ class CRM_I3val_Session {
       $timestamp = date('YmdHis', strtotime($after_timestamp));
       $extra_join = '';
       $extra_where_clause = "AND activity.activity_date_time >= '{$timestamp}'";
-    } elseif ($after_activity_id) {
+    }
+    elseif ($after_activity_id) {
       $extra_join = "JOIN civicrm_activity reference ON reference.id = {$after_activity_id}";
-      $extra_where_clause = "AND activity.id <> {$after_activity_id} AND activity.activity_date_time >= reference.activity_date_time";
-    } else {
+      $extra_where_clause = "AND activity.id <> {$after_activity_id}
+        AND activity.activity_date_time >= reference.activity_date_time";
+    }
+    else {
       $extra_join = '';
       $extra_where_clause = '';
     }
 
     if ($max_count) {
       $limit = 'LIMIT ' . (int) $max_count;
-    } else {
+    }
+    else {
       $limit = '';
     }
 
@@ -458,12 +482,17 @@ class CRM_I3val_Session {
               {$extra_where_clause}
             ORDER BY activity.activity_date_time ASC, activity.id ASC
             {$limit}";
+    /** @var CRM_Core_DAO $entries */
     $entries = CRM_Core_DAO::executeQuery($sql);
     while ($entries->fetch()) {
-      CRM_Core_DAO::executeQuery("INSERT INTO i3val_session_cache (session_key, activity_id, expires) VALUES (%1, %2, %3)", array(
-        1 => array($cache_key,            'String'),
-        2 => array($entries->activity_id, 'Integer'),
-        3 => array($expires,              'String')));
+      CRM_Core_DAO::executeQuery(
+        'INSERT INTO i3val_session_cache (session_key, activity_id, expires) VALUES (%1, %2, %3)',
+        [
+          1 => [$cache_key, 'String'],
+          2 => [$entries->activity_id, 'Integer'],
+          3 => [$expires, 'String'],
+        ]
+      );
       self::log("Grabbed [{$entries->activity_id}]");
     }
     $entries->free();
@@ -473,7 +502,7 @@ class CRM_I3val_Session {
    * will remove all data for the given session
    */
   protected function destroySession($cache_key) {
-    self::log("destroySession");
+    self::log('destroySession');
     CRM_Core_DAO::executeQuery("DELETE FROM i3val_session_cache WHERE session_key = '{$cache_key}'");
   }
 
@@ -481,8 +510,8 @@ class CRM_I3val_Session {
    * simply remove all expired entries from the cache
    */
   protected function purgeCache() {
-    self::log("purgeCache");
-    CRM_Core_DAO::executeQuery("DELETE FROM i3val_session_cache WHERE expires < NOW()");
+    self::log('purgeCache');
+    CRM_Core_DAO::executeQuery('DELETE FROM i3val_session_cache WHERE expires < NOW()');
   }
 
   /**
@@ -513,9 +542,10 @@ class CRM_I3val_Session {
   public function getContinuationURL() {
     $activity_types = $this->get('activity_types');
     if (empty($activity_types)) {
-      return CRM_Utils_System::url("civicrm/i3val/desktop", "restart=1&reset=1");
-    } else {
-      return CRM_Utils_System::url("civicrm/i3val/desktop", "restart=1&reset=1&types={$activity_types}");
+      return CRM_Utils_System::url('civicrm/i3val/desktop', 'restart=1&reset=1');
+    }
+    else {
+      return CRM_Utils_System::url('civicrm/i3val/desktop', "restart=1&reset=1&types={$activity_types}");
     }
   }
 
@@ -546,21 +576,22 @@ class CRM_I3val_Session {
     $activity_id = (int) $activity_id;
     if ($activity_id) {
       // get the old activity timestamp
-      $current_status = civicrm_api3('Activity', 'getsingle', array(
+      $current_status = civicrm_api3('Activity', 'getsingle', [
         'id'     => $activity_id,
         'return' => 'activity_date_time',
-      ));
+      ]);
 
       if ($delay) {
         $new_date = date('YmdHis', strtotime("+{$delay}"));
-      } else {
+      }
+      else {
         $new_date = date('YmdHis');
       }
 
-      civicrm_api3('Activity', 'create', array(
+      civicrm_api3('Activity', 'create', [
         'id'                 => $activity_id,
-        'activity_date_time' => $new_date
-      ));
+        'activity_date_time' => $new_date,
+      ]);
 
       return $current_status['activity_date_time'];
     }
@@ -575,10 +606,10 @@ class CRM_I3val_Session {
     if ($activity_id) {
       $configuration = CRM_I3val_Configuration::getConfiguration();
       $error_status_id = $configuration->getErrorStatusID();
-      civicrm_api3('Activity', 'create', array(
+      civicrm_api3('Activity', 'create', [
         'id'        => $activity_id,
-        'status_id' => $error_status_id
-      ));
+        'status_id' => $error_status_id,
+      ]);
     }
   }
 
@@ -590,24 +621,27 @@ class CRM_I3val_Session {
    * @return array activity IDs
    */
   public static function getSiblingActivityIDs($activity_id) {
-    $sibling_ids = array();
+    $sibling_ids = [];
     $configuration = CRM_I3val_Configuration::getConfiguration();
     $activity_status_ids = implode(',', $configuration->getLiveActivityStatuses());
     $activity_types = implode(',', array_keys($configuration->getActivityTypes()));
     $sql_query = "
       SELECT DISTINCT(activity.id) AS activity_id
       FROM civicrm_activity_contact       search
-      LEFT JOIN civicrm_activity_contact related ON related.contact_id = search.contact_id AND related.record_type_id = 3
-      LEFT JOIN civicrm_activity        activity ON activity.id = related.activity_id    
+      LEFT JOIN civicrm_activity_contact related ON related.contact_id = search.contact_id
+                                                    AND related.record_type_id = 3
+      LEFT JOIN civicrm_activity        activity ON activity.id = related.activity_id
       WHERE search.record_type_id = 3
         AND search.activity_id = {$activity_id}
         AND activity.activity_type_id IN ({$activity_types})
         AND activity.status_id IN ({$activity_status_ids})
       ORDER BY activity.activity_date_time ASC;";
+    /** @var CRM_Core_DAO $query */
     $query = CRM_Core_DAO::executeQuery($sql_query);
     while ($query->fetch()) {
       $sibling_ids[] = $query->activity_id;
     }
     return $sibling_ids;
   }
+
 }
