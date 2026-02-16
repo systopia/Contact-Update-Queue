@@ -29,7 +29,7 @@ function civicrm_api3_i3val_service($params) {
       return $handler_class::$method($params);
     }
     else {
-      return civicrm_api3_create_error("Handler '{$handler_class}' doesn't provide servivce '{$method}'.");
+      return civicrm_api3_create_error("Handler '{$handler_class}' doesn't provide service '{$method}'.");
     }
   }
   else {
