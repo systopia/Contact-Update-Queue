@@ -424,7 +424,7 @@ class CRM_I3val_Configuration {
    * get the raw config array
    */
   public static function getRawConfig(): array {
-    $value = CRM_Core_BAO_Setting::getItem('i3val', 'i3val_config');
+    $value = Civi::settings()->get('i3val_config');
     if (!is_array($value)) {
       return [];
     }
