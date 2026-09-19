@@ -45,7 +45,7 @@
 
     {$form.i3val_email_updates_email_id.html}
 
-    <div class="crm-section" class="i3val-control">
+    <div class="crm-section i3val-control">
       <div class="label">{$form.i3val_email_updates_action.label}</div>
       <div class="content">{$form.i3val_email_updates_action.html}</div>
       <div class="clear"></div>
