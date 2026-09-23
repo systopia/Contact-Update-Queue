@@ -21,6 +21,7 @@ declare(strict_types = 1);
 require_once 'i3val.civix.php';
 // phpcs:enable
 
+use Civi\Core\ClassScanner;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -119,4 +120,16 @@ function i3val_civicrm_navigationMenu(&$menu) {
   ]);
 
   _i3val_civix_navigationMenu($menu);
+}
+
+/**
+ * Implements hook_civicrm_scanClasses().
+ *
+ * @see CRM_Utils_Hook::scanClasses()
+ *
+ * @phpstan-param list<string> $classes
+ */
+function i3val_civicrm_scanClasses(array &$classes): void {
+  // @phpstan-ignore parameterByRef.type
+  ClassScanner::scanFolders($classes, __DIR__, 'Civi/Api4', '\\');
 }

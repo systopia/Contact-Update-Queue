@@ -2843,12 +2843,6 @@ parameters:
 			path: CRM/I3val/Handler/SddUpdate.php
 
 		-
-			message: '#^Only booleans are allowed in an if condition, null given\.$#'
-			identifier: if.condNotBoolean
-			count: 2
-			path: CRM/I3val/Handler/SddUpdate.php
-
-		-
 			message: '#^Only booleans are allowed in an if condition, string\|false given\.$#'
 			identifier: if.condNotBoolean
 			count: 1
@@ -3440,12 +3434,6 @@ parameters:
 			identifier: empty.notAllowed
 			count: 1
 			path: Civi/I3val/ActionProvider/Action/RequestMandateUpdate.php
-
-		-
-			message: '#^Method Civi\\I3val\\ContainerSpecs\:\:process\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: Civi/I3val/ContainerSpecs.php
 
 		-
 			message: '#^Function _civicrm_api3_address_request_update_spec\(\) has parameter \$spec with no value type specified in iterable type array\.$#'
