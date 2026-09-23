@@ -266,7 +266,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
     $error_fields = [];
     if (isset($values['iban']['submitted'])) {
       $error = CRM_Sepa_Logic_Verification::verifyIBAN($values['iban']['submitted']);
-      if ($error) {
+      if (NULL !== $error) {
         $error_fields["{$prefix}iban_submitted"] = $error;
       }
     }
@@ -751,7 +751,7 @@ class CRM_I3val_Handler_SddUpdate extends CRM_I3val_ActivityHandler {
       $reply['iban'] = strtoupper(trim($params['iban']));
       if (strlen($reply['iban']) > 0) {
         $error = CRM_Sepa_Logic_Verification::verifyIBAN($reply['iban']);
-        if ($error) {
+        if (NULL !== $error) {
           $reply['error'] = $error;
         }
 

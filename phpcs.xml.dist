@@ -6,6 +6,7 @@
     <file>api</file>
     <file>Civi</file>
     <file>CRM</file>
+    <file>settings</file>
     <file>tests</file>
     <file>i3val.php</file>
 

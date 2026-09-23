@@ -15,9 +15,11 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 /*
-* Settings metadata file
-*/
+ * Settings metadata file
+ */
 return [
   'i3val_config' => [
     'group_name' => 'be.aivl.i3val',
@@ -28,6 +30,6 @@ return [
     'add' => '4.6',
     'is_domain' => 1,
     'is_contact' => 0,
-    'description' => 'i3val configuration'
-  ]
- ];
+    'description' => 'i3val configuration',
+  ],
+];

@@ -29,7 +29,7 @@ class ContainerSpecs implements CompilerPassInterface {
   /**
    * Register this one action: RequestContactUpdate
    */
-  public function process(ContainerBuilder $container) {
+  public function process(ContainerBuilder $container): void {
     if (!$container->hasDefinition('action_provider')) {
       return;
     }

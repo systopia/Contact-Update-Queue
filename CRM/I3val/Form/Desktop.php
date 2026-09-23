@@ -48,7 +48,6 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
     if (empty($activity_types)) {
       CRM_Core_Session::setStatus(E::ts('Please configure I3Val first.'), E::ts('Warning'), 'info');
       CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/admin/i3val'));
-      return;
     }
 
     // get the subset if requested
@@ -66,7 +65,6 @@ class CRM_I3val_Form_Desktop extends CRM_Core_Form {
       if (empty($selected_types)) {
         CRM_Core_Session::setStatus(E::ts('The types requested are not configured.'), E::ts('Warning'), 'info');
         CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/admin/i3val'));
-        return;
       }
     }
 

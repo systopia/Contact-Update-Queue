@@ -20,7 +20,7 @@ EOD
 
 if [ $# -eq 1 ]; then
   usage
-  if [ $1 = -h ] || [ $1 = --help ]; then
+  if [ "$1" = -h ] || [ "$1" = --help ]; then
     exit
   fi
   exit 1
@@ -33,20 +33,3 @@ cd "$SCRIPT_DIR/.."
 
 [ -d l10n ] || mkdir l10n
 civistrings -o "l10n/i3val.pot" - < <(git ls-files)
-
-# append strings from the resource files
-echo
-echo "appending all 'title' values from ./resources/*.json"
-fgrep '"title":' resources/*.json | sed -E 's/.*"title" *: *"/\
-#: resources\/*.json\
-msgid "/' | sed 's/",/"\
-msgstr ""/' >> l10n/i3val.pot
-
-echo "appending all 'label' values from ./resources/*.json"
-fgrep '"label":' resources/* | sed -E 's/.*"label" *: *"/\
-#: resources\/*.json\
-msgid "/' | sed 's/",/"\
-msgstr ""/' >> l10n/i3val.pot
-
-echo "cleaning out duplicates..."
-msguniq -o l10n/i3val.pot l10n/i3val.pot
