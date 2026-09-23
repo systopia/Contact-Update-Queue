@@ -18,8 +18,8 @@
 /*
 * Settings metadata file
 */
-return array(
-  'i3val_config' => array(
+return [
+  'i3val_config' => [
     'group_name' => 'be.aivl.i3val',
     'group' => 'i3val',
     'name' => 'i3val_config',
@@ -29,5 +29,5 @@ return array(
     'is_domain' => 1,
     'is_contact' => 0,
     'description' => 'i3val configuration'
-  )
- );
+  ]
+ ];
